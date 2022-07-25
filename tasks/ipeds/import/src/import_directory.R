@@ -1,6 +1,6 @@
 # for now just a placeholder function (it does something, but nothing useful)
 # to get things going
-get_ipeds <- function(){
+import_directory <- function(){
   years <- 2012:2018
   base_url <- "https://nces.ed.gov/ipeds/datacenter/data/"
 
