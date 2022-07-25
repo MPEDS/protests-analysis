@@ -1,11 +1,14 @@
 # Guidelines and code conventions for the protest-analyses project
 
-- Principles
-- Using `targets`
-- Using `renv`
-- Filename conventions
+- [Principles](#principles)
+- [Using `targets`](#targets)
+- [Using `renv`](#renv)
+- [R packages](#r-packages)
+- [File and filename conventions](#file-and-filename-conventions)
+- [Within scripts](#within-scripts)
+- [Misc](#misc)
 
-### Principles for coding
+### Principles
 
 This section is continually developed.
 
@@ -92,7 +95,7 @@ If you'd like to use a new package, make sure to:
 Read more on the [overview page](https://rstudio.github.io/renv/) for
 the package.
 
-### The tidyverse and R packages at large
+### R packages
 
 The R community is large and beautiful because of the proliferation of
 many, many useful packages. R is strong because of its contributors, and
