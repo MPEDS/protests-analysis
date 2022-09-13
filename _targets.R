@@ -1,24 +1,50 @@
 library(targets)
 
-
 fn_filenames <- list.files("tasks", full.names = TRUE,
                            pattern = ".R",
                            recursive = TRUE)
 invisible(lapply(fn_filenames, source))
 
-tar_option_set(packages = c("tidyverse", "ssh", "httr"))
+tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh",
+                            "httr", "tidycensus"))
 
 list(
-  tar_target(coder_table, get_coder_table(),
-            # uncomment cue = ... to force an update, since technically
-            # targets has no knowledge of changes on the server
-            # and won't update the data on its own
-            # cue = tar_cue(mode = "always"))
-            # tar_target(ipeds_demo, import_directory())
+  tar_target(canonical_events, get_canonical_events(),
+            # uncomment cue = ... to force an update when we want
+            # to refresh data, since `targets` has no knowledge
+            # of changes on the server and won't update the data
+            # on its own
+            # cue = tar_cue(mode = "always")
      ),
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
-  tar_target(coder_table_wide, process_coder_table(coder_table, uni_pub_xwalk_file)),
-  tar_target(geocoded_locations, get_protest_coords(coder_table_wide))
+  tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
+  tar_target(geocoded, get_protest_coords(events_wide)),
+
+  tar_target(ccc_url, format = "url",
+             command = "https://github.com/nonviolent-action-lab/crowd-counting-consortium/raw/master/ccc_compiled.csv"
+             ),
+  tar_target(ccc, get_ccc(ccc_url)),
+
+  tar_target(mhi_url, format = "url",
+             command = get_mhi_urls()[1]
+             ),
+  tar_target(mhi, get_mhi(mhi_url)),
+
+  tar_target(eviction_url, format = "url",
+             command = "https://eviction-lab-data-downloads.s3.amazonaws.com/estimating-eviction-prevalance-across-us/county_proprietary_2000_2018.csv"
+             ),
+  tar_target(evictions, get_evictions(eviction_url)),
+
+  # This queries the ACS, and doesn't depend on a URL
+  # IMO the ACS is stable enough not to update 2012-2018 data
+  # But as with the first target we can force a run with `cue = ...`
+  tar_target(white_prop, get_white_prop()),
+
+  tar_target(directory_url, get_directory_url(2018)),
+  tar_target(uni_directory, get_school_directory(directory_url)),
+
+  tar_target(tuition_url, get_tuition_url(2018)),
+  tar_target(tuition, get_tuition(tuition_url))
 )
 
