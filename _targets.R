@@ -36,7 +36,8 @@ list(
              ),
   tar_target(evictions, get_evictions(eviction_url)),
 
-  # This queries the ACS, and doesn't depend on a URL
+  # This queries the ACS, and doesn't depend on a URL,
+  # so it will only be run once by the targets pipeline
   # IMO the ACS is stable enough not to update 2012-2018 data
   # But as with the first target we can force a run with `cue = ...`
   tar_target(white_prop, get_white_prop()),

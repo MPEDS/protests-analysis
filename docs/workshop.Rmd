@@ -1,0 +1,71 @@
+---
+title: "scratchpad/notebook for code workshopping sesh - 09-13"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(RMariaDB)
+library(targets)
+library(tidycensus)
+library(ssh)
+```
+
+```{r}
+# async ssh session needed for tunneling (for database access)
+# can't use ssh::ssh_tunnel because it closes after passing a
+# single request (which is so silly??)
+
+user <- Sys.getenv("SSH_USERNAME")
+make_tunnel <- paste0("ssh -L 3306:localhost:3306 ",
+                      user, "@sheriff.ssc.wisc.edu -fN")
+system(make_tunnel, intern = TRUE)
+
+# wait 1 second at a time while connection is being established
+is_connected <- FALSE
+while(!is_connected){
+  tryCatch({
+    con <- suppressWarnings(socketConnection(port = 3306))
+    is_connected <- TRUE
+    close(con)
+    # if fails, means nothing is sending on port 3306
+    # so we just try again until it does (:
+  }, error = function(e){ Sys.sleep(1) })
+}
+
+# R-interfacing ssh session useful for downloading specific files
+session <- ssh_connect(paste0(user, "@sheriff.ssc.wisc.edu"))
+
+# grab database auth info
+invisible(scp_download(session,
+             paste0("/home/", user, "/.my.cnf"),
+             to = tempdir(),
+             verbose = FALSE))
+ssh_disconnect(session)
+
+con <- dbConnect(MariaDB(),
+                 dbname = "campus_protest_staging",
+                 default.file = paste0(tempdir(), "/.my.cnf"),
+                 host = "127.0.0.1",
+                 port = 3306)
+invisible(file.remove(paste0(tempdir(), "/.my.cnf")))
+```
+
+```{r load}
+table_names <- dbListTables(con)
+walk(table_names, function(table_name){
+  dataset <- tbl(con, table_name) %>% collect()
+  assign(table_name, dataset, envir = as.environment(1))
+})
+
+# loading targets second means that any target with the same name
+# as a table overwrites the table
+tar_load_everything()
+```
+
+```{r}
+ces <- tbl(con, "canonical_event") %>% 
+  left_join(tbl(con, "canonical_event_link"), by = c("id" = "canonical_id")) %>% 
+  left_join(tbl(con, "coder_event_creator"), by = c("cec_id" = "id"))
+```
+
