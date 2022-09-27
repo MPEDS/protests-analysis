@@ -6,7 +6,7 @@ fn_filenames <- list.files("tasks", full.names = TRUE,
 invisible(lapply(fn_filenames, source))
 
 tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh",
-                            "httr", "tidycensus"))
+                            "httr", "curl", "tidycensus"))
 
 list(
   tar_target(canonical_events, get_canonical_events(),
@@ -46,6 +46,9 @@ list(
   tar_target(uni_directory, get_school_directory(directory_url)),
 
   tar_target(tuition_url, get_tuition_url(2018)),
-  tar_target(tuition, get_tuition(tuition_url))
+  tar_target(tuition, get_tuition(tuition_url)),
+
+  tar_target(mit_elections_url, get_mit_elections_url()),
+  tar_target(mit_elections, get_mit_elections(mit_elections_url))
 )
 
