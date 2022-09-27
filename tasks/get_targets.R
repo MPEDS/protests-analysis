@@ -13,5 +13,3 @@ get_targets <- function(){
   session <- ssh_connect(paste0(user, "@sheriff.ssc.wisc.edu"))
   scp_download(session, "/var/www/protests_analysis/_targets")
 }
-
-get_targets()
