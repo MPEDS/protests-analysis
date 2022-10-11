@@ -40,15 +40,15 @@ list(
   # so it will only be run once by the targets pipeline
   # IMO the ACS is stable enough not to update 2012-2018 data
   # But as with the first target we can force a run with `cue = ...`
-  tar_target(white_prop, get_white_prop()),
+  tar_target(acs, get_acs_indicators()),
 
   tar_target(directory_url, get_directory_url(2018)),
   tar_target(uni_directory, get_school_directory(directory_url)),
 
   tar_target(tuition_url, get_tuition_url(2018)),
-  tar_target(tuition, get_tuition(tuition_url)),
+  tar_target(tuition, get_tuition(tuition_url))
 
-  tar_target(mit_elections_url, get_mit_elections_url()),
-  tar_target(mit_elections, get_mit_elections(mit_elections_url))
+  # tar_target(mit_elections_url, get_mit_elections_url()),
+  #tar_target(mit_elections, get_mit_elections(mit_elections_url))
 )
 

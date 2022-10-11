@@ -19,18 +19,17 @@ get_school_directory <- function(dummy_url){
       return(directory)
   }) %>%
     mutate(
-      state_fips = case_when(
-        nchar(FIPS) == 1 ~ paste0("0", FIPS),
-        nchar(FIPS) == 2 ~ as.character(FIPS),
+      # state_fips = case_when(
+      #   nchar(FIPS) == 1 ~ paste0("0", FIPS),
+      #   nchar(FIPS) == 2 ~ as.character(FIPS),
+      #   TRUE ~ NA_character_
+      #   ),
+      fips = case_when(
+        nchar(COUNTYCD) == 4 ~ paste0("0", COUNTYCD),
+        nchar(COUNTYCD) == 5 ~ as.character(COUNTYCD),
         TRUE ~ NA_character_
         ),
-      county_fips = case_when(
-        nchar(COUNTYCD) == 1 ~ paste0("00", COUNTYCD),
-        nchar(COUNTYCD) == 2 ~ paste0("0", COUNTYCD),
-        nchar(COUNTYCD) == 3 ~ as.character(COUNTYCD),
-        TRUE ~ NA_character_
-        ),
-      fips = paste0(state_fips, county_fips),
+      # fips = paste0(state_fips, county_fips),
       hbcu = case_when(
         HBCU == 1 ~ TRUE,
         HBCU == 2 ~ FALSE,

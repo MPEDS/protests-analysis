@@ -13,7 +13,6 @@ get_elephrame_blm <- function(){
 
   blm_shps <- st_read(filename) %>%
     select(start, end,
-           loc, sub, desc, num, url) %>%
-    mutate(date = start,ko)
+           loc, sub, desc, num, url)
   return(blm_shps)
 }
