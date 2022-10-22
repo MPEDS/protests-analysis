@@ -5,14 +5,11 @@
 # Legally the dataset is under CC 2.0 so nothing wrong there,
 # but still feels weird to query it programmatically when
 # they want explicit human interaction
-#
 # But I'm sure it's fine, plus I did fill out the form
 # manually a few times
-get_mit_elections_url <- function(){
-  return("https://dataverse.harvard.edu/api/access/datafile/6104822?format=original&gbrecs=true")
-}
-
-get_mit_elections <- function(url){
+get_mit_elections <- function(){
+  # No ETag or Last-Modified header, so cannot track for changes in targets
+  url <- "https://dataverse.harvard.edu/api/access/datafile/6104822?format=original&gbrecs=true"
   # cleanest dataset I've ever seen in my life
   elections <- read_csv(url) %>%
     filter(year %in% c(2012, 2016),

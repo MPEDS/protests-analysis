@@ -26,6 +26,7 @@ list(
              ),
   tar_target(ccc, get_ccc(ccc_url)),
 
+  # County+year-level covariates ---
   tar_target(mhi_url, format = "url",
              command = get_mhi_urls()[1]
              ),
@@ -35,6 +36,7 @@ list(
              command = "https://eviction-lab-data-downloads.s3.amazonaws.com/estimating-eviction-prevalance-across-us/county_proprietary_2000_2018.csv"
              ),
   tar_target(evictions, get_evictions(eviction_url)),
+  tar_target(mit_elections, get_mit_elections()),
 
   # This queries the ACS, and doesn't depend on a URL,
   # so it will only be run once by the targets pipeline
@@ -42,13 +44,16 @@ list(
   # But as with the first target we can force a run with `cue = ...`
   tar_target(acs, get_acs_indicators()),
 
-  tar_target(directory_url, get_directory_url(2018)),
+  # school-level covariates ---
+  tar_target(directory_url, format = "url", get_directory_url(2018)),
   tar_target(uni_directory, get_school_directory(directory_url)),
 
-  tar_target(tuition_url, get_tuition_url(2018)),
-  tar_target(tuition, get_tuition(tuition_url))
+  tar_target(tuition_url, format = "url", get_tuition_url(2018)),
+  tar_target(tuition, get_tuition(tuition_url)),
 
-  # tar_target(mit_elections_url, get_mit_elections_url()),
-  #tar_target(mit_elections, get_mit_elections(mit_elections_url))
+  # Integration steps ---
+  # IPEDS and MPEDS
+  tar_target(raw_names, clean_mpeds_names(geocoded, uni_directory),
+             format = "file")
 )
 

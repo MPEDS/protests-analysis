@@ -1,4 +1,4 @@
 get_ccc <- function(url){
-  ccc <- read_csv(url, guess_max = Inf) %>%
-    select(-starts_with("source_"))
+  read_csv(url, guess_max = Inf) %>%
+    select(date, fips = fips_code)
 }
