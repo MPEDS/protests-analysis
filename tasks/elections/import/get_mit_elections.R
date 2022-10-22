@@ -1,7 +1,15 @@
-# Have to pretend to be Harvard Dataverse site when requesting, hence the
-# complicated URL
+# Query Harvard Dataverse site directly for MIT Elections data
+# Note that there is actually a form on that site
+# requesting you put your name,  email, university, and position,
+#that this script bypasses.
+# Legally the dataset is under CC 2.0 so nothing wrong there,
+# but still feels weird to query it programmatically when
+# they want explicit human interaction
+#
+# But I'm sure it's fine, plus I did fill out the form
+# manually a few times
 get_mit_elections_url <- function(){
-  return("https://dvn-cloud.s3.amazonaws.com/10.7910/DVN/VOQCHQ/17f9e79c5c2-be7fac8a22ad.orig?response-content-disposition=attachment%3B%20filename%2A%3DUTF-8%27%27countypres_2000-2020.csv&response-content-type=text%2Fcsv&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220927T145447Z&X-Amz-SignedHeaders=host&X-Amz-Expires=3600&X-Amz-Credential=AKIAIEJ3NV7UYCSRJC7A%2F20220927%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Signature=6ea585423d2f22071870ceb7b639733d88cdf941423891b300a9048e046d9b75")
+  return("https://dataverse.harvard.edu/api/access/datafile/6104822?format=original&gbrecs=true")
 }
 
 get_mit_elections <- function(url){
