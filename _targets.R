@@ -54,6 +54,10 @@ list(
   # Integration steps ---
   # IPEDS and MPEDS
   tar_target(raw_names, clean_mpeds_names(geocoded, uni_directory),
-             format = "file")
+             format = "file"),
+  tar_target(ipeds_xwalk_filename,
+             "tasks/ipeds/hand/cleaned_ipeds_match.csv",
+             format = "file"),
+  tar_target(matched_ipeds, match_ipeds(geocoded, ipeds_xwalk_filename))
 )
 

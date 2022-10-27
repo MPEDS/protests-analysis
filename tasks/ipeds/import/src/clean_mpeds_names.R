@@ -13,8 +13,12 @@
 #' @param events canonical events with geocoded names (the `geocoded` target)
 #' @param ipeds The university directory from IPEDS
 clean_mpeds_names <- function(events, ipeds){
-  mpeds_names <- events %>%
-    pull(university) %>%
+  mpeds_names <- c(
+      events$university,
+      events$participating_universities
+    ) %>%
+    str_remove_all(",") %>%
+    str_trim() %>%
     unlist() %>%
     unique() %>%
     tibble(name = ., og_name = .)
@@ -64,6 +68,7 @@ clean_mpeds_names <- function(events, ipeds){
     left_join(ipeds_matcher, by = "name") %>%
     mutate(ipeds_dummy = case_when(ipeds_dummy == TRUE ~ TRUE, TRUE ~ FALSE)) %>%
     arrange(ipeds_dummy) %>%
+    filter(source == 2) %>%
     write_csv(filename)
 
   return(filename)

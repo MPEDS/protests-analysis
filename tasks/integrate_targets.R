@@ -6,9 +6,11 @@
 #' 3) other things
 integrate_targets <- function(
     events,
+    ipeds,
     county_covariates = list(),
     uni_covariates = list()
 ){
+
 
 
 }
