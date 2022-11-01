@@ -14,10 +14,11 @@ get_acs_indicators <- function(){
     result <- get_acs("county",
                       variables = variables,
                       year = year,
-                      output = "wide")
+                      output = "wide") %>%
+      mutate(year = year)
     return(result)
   }) %>%
     mutate(white_prop = whiteE / totalE) %>%
-    select(fips = GEOID, white_prop)
+    select(fips = GEOID, white_prop, year)
 }
 

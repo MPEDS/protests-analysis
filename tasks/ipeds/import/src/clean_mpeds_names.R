@@ -68,9 +68,16 @@ clean_mpeds_names <- function(events, ipeds){
     left_join(ipeds_matcher, by = "name") %>%
     mutate(ipeds_dummy = case_when(ipeds_dummy == TRUE ~ TRUE, TRUE ~ FALSE)) %>%
     arrange(ipeds_dummy) %>%
-    filter(source == 2) %>%
     write_csv(filename)
 
   return(filename)
 }
 
+#' exports IPEDS info itself
+export_ipeds <- function(){
+  tar_read(uni_directory) %>%
+    pull(name) %>%
+    unique() %>%
+    tibble(ipeds_names = .) %>%
+    write_csv("tasks/ipeds/hand/ipeds_names.csv")
+}

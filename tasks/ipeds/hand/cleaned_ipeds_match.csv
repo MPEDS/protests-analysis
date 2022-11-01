@@ -11,7 +11,7 @@ University of Texas Austin,University of Texas Austin,The University of Texas at
 Indiana University,Indiana University,Indiana University-Bloomington,FALSE,,
 University at Albany,University at Albany,SUNY at Albany,FALSE,,
 University of Nevada Las Vegas,University of Nevada Las Vegas,University of Nevada-Las Vegas,FALSE,,
-Carleton University,Carleton University,Carleton College,FALSE,,
+Carleton University,Carleton University,,FALSE,TRUE,
 University of Ottawa,University of Ottawa,,FALSE,TRUE,
 University of Colorado,University of Colorado,University of Colorado Boulder,FALSE,,
 Southern Illinois University,Southern Illinois University,Southern Illinois University Carbondale,FALSE,,
@@ -408,7 +408,7 @@ Massachusetts Institute of Technology,Massachusetts Institute of Technology,,TRU
 Berklee College of Music,Berklee College of Music,,TRUE,,
 Emerson College,Emerson College,,TRUE,,
 Brandeis University,Brandeis University,,TRUE,,
-York,York College,,TRUE,,
+York,York College,,TRUE,,ambiguous; could be canadian
 University of Pennsylvania,University of Pennsylvania,,TRUE,,
 Drexel,Drexel University,,TRUE,,
 Temple,Temple University,,TRUE,,
@@ -439,7 +439,7 @@ Southern Connecticut State University,Southern Connecticut State University,,TRU
 Eastern Illinois,Eastern Illinois University,,TRUE,,
 Northeastern Illinois,Northeastern Illinois University,,TRUE,,
 Northeastern Illinois University,Northeastern Illinois University,,TRUE,,
-Carleton,Carleton College,,TRUE,,
+Carleton,Carleton College,,TRUE,,ambiguous; could be canadian
 Carlow,Carlow University,,TRUE,,
 Community College of Allegheny County,Community College of Allegheny County,,TRUE,,
 Weber State,Weber State University,,TRUE,,

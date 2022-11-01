@@ -1,0 +1,24 @@
+---
+title: "Exploratory Plots"
+output: github_document
+date: "2022-11-01"
+---
+
+```{r setup, include=FALSE, message=FALSE}
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+library(targets)
+library(sf)
+library(here)
+library(tidyverse)
+mpeds <- readRDS(here("_targets", "objects", "integrated"))
+```
+
+```{r plots}
+
+```
+
+```{r maps}
+county_sf <- tigris::counties(keep_zipped_shapefile = TRUE) %>% 
+  select(fips = GEOID)
+mpeds_sf <- mpeds %>% left_join(county_sf) 
+```

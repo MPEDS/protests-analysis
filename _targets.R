@@ -32,6 +32,8 @@ list(
              ),
   tar_target(mhi, get_mhi(mhi_url)),
 
+  tar_target(bls, get_bls()),
+
   tar_target(eviction_url, format = "url",
              command = "https://eviction-lab-data-downloads.s3.amazonaws.com/estimating-eviction-prevalance-across-us/county_proprietary_2000_2018.csv"
              ),
@@ -53,11 +55,20 @@ list(
 
   # Integration steps ---
   # IPEDS and MPEDS
+  # the `raw_names` target is meant to be cleaned by hand
   tar_target(raw_names, clean_mpeds_names(geocoded, uni_directory),
              format = "file"),
+  # and the cleaned version of `raw_names` will be read in from the below filename
   tar_target(ipeds_xwalk_filename,
              "tasks/ipeds/hand/cleaned_ipeds_match.csv",
              format = "file"),
-  tar_target(matched_ipeds, match_ipeds(geocoded, ipeds_xwalk_filename))
+  tar_target(ipeds_xwalk, match_ipeds(uni_directory, geocoded, ipeds_xwalk_filename
+                                      )),
+
+  # with that, attach everything
+  tar_target(integrated, integrate_targets(geocoded, uni_directory, ipeds_xwalk,
+                                           list(
+                                             mhi, bls, evictions, mit_elections
+                                           )))
 )
 
