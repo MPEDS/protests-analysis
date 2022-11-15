@@ -4,6 +4,7 @@ University of Michigan Ann Arbor,University of Michigan Ann Arbor,FALSE
 Georgia State University in Atlanta,Georgia State University in Atlanta,FALSE
 University of Wisconsin Green Bay,University of Wisconsin Green Bay,FALSE
 Depauw University,Depauw University,FALSE
+"c(""Massachusetts College of Art and Design"" ""Berklee College of Music"" ""Emerson College"")","c(""Massachusetts College of Art and Design"" ""Berklee College of Music"" ""Emerson College"")",FALSE
 Harvard Law,Harvard Law,FALSE
 Harvard Law School,Harvard Law School,FALSE
 University of Texas Austin,University of Texas Austin,FALSE
@@ -18,6 +19,7 @@ Shippensburg University,Shippensburg University,FALSE
 University of Minnesota,University of Minnesota,FALSE
 York University,York University,FALSE
 Ryerson University,Ryerson University,FALSE
+"c(""University of Toronto"" ""Ryerson"")","c(""University of Toronto"" ""Ryerson"")",FALSE
 University of Toronto,University of Toronto,FALSE
 University of California Los Angeles,University of California Los Angeles,FALSE
 California State University Los Angeles,California State University Los Angeles,FALSE
@@ -60,8 +62,10 @@ Central Connecticut University,Central Connecticut University,FALSE
 UC Santa Barbara,UC Santa Barbara,FALSE
 UC Santa Cruz,UC Santa Cruz,FALSE
 Western Illinois University Quad City riverfront campus,Western Illinois University Quad City riverfront campus,FALSE
-University of Pittsburgh,University of Pittsburgh,FALSE
-Chatham College,Chatham College,FALSE
+"c(""University of Pittsburgh"" ""Chatham College"")","c(""University of Pittsburgh"" ""Chatham College"")",FALSE
+"c(""University of Pittsburgh"" ""Carnegie Mellon University"")","c(""University of Pittsburgh"" ""Carnegie Mellon University"")",FALSE
+"c(""Chatham College"" ""University of Pittsburgh"")","c(""Chatham College"" ""University of Pittsburgh"")",FALSE
+"c(""UC Santa Cruz"" ""University of California"")","c(""UC Santa Cruz"" ""University of California"")",FALSE
 University of Illinois Springfield,University of Illinois Springfield,FALSE
 Laurentian University,Laurentian University,FALSE
 Louisiana State University,Louisiana State University,FALSE
@@ -70,7 +74,7 @@ Missouri Western State College,Missouri Western State College,FALSE
 University of Colorado at Boulder,University of Colorado at Boulder,FALSE
 California State University Long Beach,California State University Long Beach,FALSE
 SUNY New Paltz,SUNY New Paltz,FALSE
-Buffalo,Buffalo,FALSE
+"c(""Buffalo"" ""SUNY"")","c(""Buffalo"" ""SUNY"")",FALSE
 University of Illinois,University of Illinois,FALSE
 College of Staten Island,College of Staten Island,FALSE
 SUNY College at New Paltz,SUNY College at New Paltz,FALSE
@@ -79,7 +83,7 @@ College of New Jersey,College of New Jersey,FALSE
 Concordia University,Concordia University,FALSE
 University of Toronto Mississauga,University of Toronto Mississauga,FALSE
 Hampshire College in Massachusetts,Hampshire College in Massachusetts,FALSE
-University of Massachusetts,University of Massachusetts,FALSE
+"c(""University of Massachusetts"" ""Amherst College"")","c(""University of Massachusetts"" ""Amherst College"")",FALSE
 University of Texas Arlington,University of Texas Arlington,FALSE
 University of Louisiana Lafayette,University of Louisiana Lafayette,FALSE
 University of Manitoba,University of Manitoba,FALSE
@@ -88,22 +92,25 @@ Longwood College,Longwood College,FALSE
 Framingham State College,Framingham State College,FALSE
 Mary Washington,Mary Washington,FALSE
 McGill University,McGill University,FALSE
+"c(""Concordia University"" ""UQÀM"")","c(""Concordia University"" ""UQÀM"")",FALSE
 UQÀM,UQÀM,FALSE
 University of Michigan,University of Michigan,FALSE
 McGill,McGill,FALSE
 University of Guelph,University of Guelph,FALSE
 University of Victoria,University of Victoria,FALSE
 University of Texas at Austin,University of Texas at Austin,FALSE
-Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania,Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania,FALSE
+"c(""Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania"" ""Pennsylvania university system"")","c(""Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania"" ""Pennsylvania university system"")",FALSE
 North Carolina A-T State University,North Carolina A-T State University,FALSE
 Baruch College,Baruch College,FALSE
-New School,New School,FALSE
+"c(""Columbia University"" ""University of Missouri"" ""University of Chicago"")","c(""Columbia University"" ""University of Missouri"" ""University of Chicago"")",FALSE
+"c(""New School"" ""University of Missouri"")","c(""New School"" ""University of Missouri"")",FALSE
 UH-Manoa,UH-Manoa,FALSE
-The Massachusetts Institute of Technology,The Massachusetts Institute of Technology,FALSE
+"c(""The Massachusetts Institute of Technology"" ""Harvard University"" ""Northeastern University"" ""Boston University"" ""Cornell University's School of Industrial and Labor Relations"")","c(""The Massachusetts Institute of Technology"" ""Harvard University"" ""Northeastern University"" ""Boston University"" ""Cornell University's School of Industrial and Labor Relations"")",FALSE
 UC Irvine,UC Irvine,FALSE
 University of Missouri Kansas City,University of Missouri Kansas City,FALSE
 Creighton University The Creightonian,Creighton University The Creightonian,FALSE
 SUNY,SUNY,FALSE
+"c(""Texas Southern University"" ""University of Houston"")","c(""Texas Southern University"" ""University of Houston"")",FALSE
 University of Texas- Austin,University of Texas- Austin,FALSE
 The University of San Diego,The University of San Diego,FALSE
 University of Texas,University of Texas,FALSE
@@ -119,6 +126,7 @@ Cegep du Vieux Montreal,Cegep du Vieux Montreal,FALSE
 Cégep de Saint-Laurent,Cégep de Saint-Laurent,FALSE
 Concord College,Concord College,FALSE
 Rutgers University,Rutgers University,FALSE
+University of Pittsburgh,University of Pittsburgh,FALSE
 University of Puerto Rico,University of Puerto Rico,FALSE
 Long Island University Brooklyn Campus,Long Island University Brooklyn Campus,FALSE
 Hunter College,Hunter College,FALSE
@@ -170,40 +178,51 @@ CEGEP Maisonneuve,CEGEP Maisonneuve,FALSE
 CEGEP Marie-Victorin,CEGEP Marie-Victorin,FALSE
 CEGEP Saint-Laurent,CEGEP Saint-Laurent,FALSE
 UTSG,UTSG,FALSE
+"c(""Ryerson University"" ""University of Toronto"")","c(""Ryerson University"" ""University of Toronto"")",FALSE
 Selkirk College,Selkirk College,FALSE
 University of North Carolina Charlotte,University of North Carolina Charlotte,FALSE
 Southern Illinois UniversityCarbondale,Southern Illinois UniversityCarbondale,FALSE
 North Carolina at Charlotte,North Carolina at Charlotte,FALSE
 St.Mary's College of Maryland,St.Mary's College of Maryland,FALSE
 sign listing kinds of sinners hated by God,sign listing kinds of sinners hated by God,FALSE
-Auraria Campus,Auraria Campus,FALSE
-UQAM,UQAM,FALSE
+"c(""Tufts University"" ""Harvard University"")","c(""Tufts University"" ""Harvard University"")",FALSE
+"c(""Auraria Campus"" ""University of Colorado Denver"")","c(""Auraria Campus"" ""University of Colorado Denver"")",FALSE
+"c(""San Diego State"" ""San Diego City College"")","c(""San Diego State"" ""San Diego City College"")",FALSE
+"c(""Concordia University"" ""McGill University"" ""Université de Québec a Montréal"" ""CEGEP Vieux-Montreal"")","c(""Concordia University"" ""McGill University"" ""Université de Québec a Montréal"" ""CEGEP Vieux-Montreal"")",FALSE
+"c(""UQAM"" ""McGill"")","c(""UQAM"" ""McGill"")",FALSE
 CEGEP du Vieux-Montreal,CEGEP du Vieux-Montreal,FALSE
+"c(""McGill"" ""Université de Québec à Montréal (UQAM)"")","c(""McGill"" ""Université de Québec à Montréal (UQAM)"")",FALSE
 L’Université du Québec à Montréal,L’Université du Québec à Montréal,FALSE
 ETSU,ETSU,FALSE
 East Tennessee State University:,East Tennessee State University:,FALSE
 University of Arkansas Main Campus,University of Arkansas Main Campus,FALSE
 University of Nebraska at Lincoln,University of Nebraska at Lincoln,FALSE
+"c(""McGill"" ""Université du Québec à Montréal (UQAM)"")","c(""McGill"" ""Université du Québec à Montréal (UQAM)"")",FALSE
 K-State,K-State,FALSE
 Georgia Tech,Georgia Tech,FALSE
 University of California-Berkley,University of California-Berkley,FALSE
 University of California at Berkeley,University of California at Berkeley,FALSE
+"c(""McGill"" ""Concordia"")","c(""McGill"" ""Concordia"")",FALSE
 Millersville University,Millersville University,FALSE
 Virginia Tech,Virginia Tech,FALSE
 Berklee College,Berklee College,FALSE
+"c(""McGill"" ""Concordia"" ""Université du Québec à Montréal (UQAM)"")","c(""McGill"" ""Concordia"" ""Université du Québec à Montréal (UQAM)"")",FALSE
 Université de Montréal (UdeM),Université de Montréal (UdeM),FALSE
 the University of Minnesota's St. Paul campus,the University of Minnesota's St. Paul campus,FALSE
 University of South Florida St.Petersburg,University of South Florida St.Petersburg,FALSE
 Florida A&M University,Florida A&M University,FALSE
 Laurier,Laurier,FALSE
 Peace College,Peace College,FALSE
-Centennial College,Centennial College,FALSE
+"c(""Centennial College"" ""George Brown"" ""Ryerson University"" ""Niagara College"")","c(""Centennial College"" ""George Brown"" ""Ryerson University"" ""Niagara College"")",FALSE
 Seneca at York,Seneca at York,FALSE
 George Brown College,George Brown College,FALSE
 Seneca college campus at York University,Seneca college campus at York University,FALSE
 Sheridan college,Sheridan college,FALSE
 Brooklyn College,Brooklyn College,FALSE
+"c(""Notre Dame"" ""Holy Cross"")","c(""Notre Dame"" ""Holy Cross"")",FALSE
+"c(""Utah Valley University"" ""University of Utah"")","c(""Utah Valley University"" ""University of Utah"")",FALSE
 University of Waterloo,University of Waterloo,FALSE
+Centennial College,Centennial College,FALSE
 Université du Québec à Montréal,Université du Québec à Montréal,FALSE
 Université de Montréal,Université de Montréal,FALSE
 Universite de Montreal,Universite de Montreal,FALSE
@@ -218,7 +237,9 @@ UCSF Mission Bay campus,UCSF Mission Bay campus,FALSE
 Ocean,Ocean,FALSE
 Chinatown,Chinatown,FALSE
 Caltech,Caltech,FALSE
+"c(""University of Utah"" ""Westminster College"")","c(""University of Utah"" ""Westminster College"")",FALSE
 UCSD,UCSD,FALSE
+"c(""Centennial College"" ""UTSC"")","c(""Centennial College"" ""UTSC"")",FALSE
 University of Toronto Scarborough,University of Toronto Scarborough,FALSE
 University of Maryland,University of Maryland,FALSE
 USC,USC,FALSE
@@ -230,11 +251,14 @@ City College of New York,City College of New York,FALSE
 GVSU,GVSU,FALSE
 CUPE members held a silent protest outside of the library and Maggie Benston Centre and on Oct. 19 they walked off the job and picketed the SFU Vancouver locations including the Harbour Centre and Woodward’s campuses,CUPE members held a silent protest outside of the library and Maggie Benston Centre and on Oct. 19 they walked off the job and picketed the SFU Vancouver locations including the Harbour Centre and Woodward’s campuses,FALSE
 SFU’s Vancouver campuses including Harbour Centre and Woodward’s were picketed on Saturday and Sunday,SFU’s Vancouver campuses including Harbour Centre and Woodward’s were picketed on Saturday and Sunday,FALSE
+"c(""University of Oregon"" ""Lane Community Downtown Campus"")","c(""University of Oregon"" ""Lane Community Downtown Campus"")",FALSE
 Native Education College,Native Education College,FALSE
 Simon Fraser,Simon Fraser,FALSE
 University of Tennessee in Chattanooga,University of Tennessee in Chattanooga,FALSE
 SFU’s Vancouver and Surrey campuses,SFU’s Vancouver and Surrey campuses,FALSE
 all three of SFU’s campuses,all three of SFU’s campuses,FALSE
+"c(""Boston College"" ""Boston University"" ""Tufts University"" ""Brandeis University"" ""MIT"" ""Northeastern University"" ""Wellesley College"" ""Olin College of Engineering"" ""Lesley University"" ""Middlebury College"" ""Pomona College"")","c(""Boston College"" ""Boston University"" ""Tufts University"" ""Brandeis University"" ""MIT"" ""Northeastern University"" ""Wellesley College"" ""Olin College of Engineering"" ""Lesley University"" ""Middlebury College"" ""Pomona College"")",FALSE
+"c(""University of British Columbia"" ""the University of Victoria"" ""Simon Fraser University"" ""Thompson Rivers University"" ""University of Northern British Columbia"")","c(""University of British Columbia"" ""the University of Victoria"" ""Simon Fraser University"" ""Thompson Rivers University"" ""University of Northern British Columbia"")",FALSE
 Rutgers,Rutgers,FALSE
 California State University - Fullerton,California State University - Fullerton,FALSE
 Mesa State College,Mesa State College,FALSE
@@ -242,6 +266,56 @@ Haverford and Bryn Mawr Colleges,Haverford and Bryn Mawr Colleges,FALSE
 University of Hawai'i at Hilo,University of Hawai'i at Hilo,FALSE
 Michigan Tech,Michigan Tech,FALSE
 University of Hawaii,University of Hawaii,FALSE
+Dawson College,Dawson College,FALSE
+"c(""UC Irvine"" ""UC Santa Barbara"" ""UCLA"" ""UC Davis"")","c(""UC Irvine"" ""UC Santa Barbara"" ""UCLA"" ""UC Davis"")",FALSE
+"c(""UC Santa Cruz"" ""UC Davis"" ""UCSF"" ""UC Berkeley"" ""UCLA"" ""the UC system at almost every campus"")","c(""UC Santa Cruz"" ""UC Davis"" ""UCSF"" ""UC Berkeley"" ""UCLA"" ""the UC system at almost every campus"")",FALSE
+Université de Montréal’s (UdeM),Université de Montréal’s (UdeM),FALSE
+"c(""Concordia"" ""McGill University"")","c(""Concordia"" ""McGill University"")",FALSE
+Cégep du Vieux Montréal,Cégep du Vieux Montréal,FALSE
+Collège de Maisonneuve,Collège de Maisonneuve,FALSE
+City University of New York,City University of New York,FALSE
+"c(""Macaulay Honors College"" ""CCNY"")","c(""Macaulay Honors College"" ""CCNY"")",FALSE
+CUNY,CUNY,FALSE
+CCNY,CCNY,FALSE
+Kwantlen Polytechnic University,Kwantlen Polytechnic University,FALSE
+University of Windsor,University of Windsor,FALSE
+Capilano University,Capilano University,FALSE
+UBC Okanagan,UBC Okanagan,FALSE
+City University of New York (CUNY),City University of New York (CUNY),FALSE
+Medgar Evers College,Medgar Evers College,FALSE
+University of Alabama,University of Alabama,FALSE
+University of California Washington Center,University of California Washington Center,FALSE
+Laurentian,Laurentian,FALSE
+Ontario Institute for Studies in Education,Ontario Institute for Studies in Education,FALSE
+Mount Royal University (MRU),Mount Royal University (MRU),FALSE
+Ohio State University and the University of Akron,Ohio State University and the University of Akron,FALSE
+University of South Carolina,University of South Carolina,FALSE
+Claremont Colleges,Claremont Colleges,FALSE
+University of Chicago Pritzker School of Medicine,University of Chicago Pritzker School of Medicine,FALSE
+UC San Francisco Mission Bay campus,UC San Francisco Mission Bay campus,FALSE
+"c(""UCSF Mission Bay campus"" ""UC Berkeley"")","c(""UCSF Mission Bay campus"" ""UC Berkeley"")",FALSE
+Texas A&M,Texas A&M,FALSE
+UCR's assistant vice chancellor and dean of students Ryan Alcantara,UCR's assistant vice chancellor and dean of students Ryan Alcantara,FALSE
+Seattle Central Community College,Seattle Central Community College,FALSE
+Linn Benton Community College,Linn Benton Community College,FALSE
+Université du Québec à Montréal (UQAM),Université du Québec à Montréal (UQAM),FALSE
+"c(""Yale"" ""Penn"")","c(""Yale"" ""Penn"")",FALSE
+"c(""Tufts University"" ""Harvard"" ""MIT"")","c(""Tufts University"" ""Harvard"" ""MIT"")",FALSE
+Loyola University Chicago Stritch School of Medicine,Loyola University Chicago Stritch School of Medicine,FALSE
+UC Merced,UC Merced,FALSE
+Tulane,Tulane,FALSE
+University of California at Santa Barbara,University of California at Santa Barbara,FALSE
+"c(""Harvard"" ""Stanford"" ""Yale"" ""Michigan"" ""Northwestern"" ""Syracuse"" ""Rutgers"")","c(""Harvard"" ""Stanford"" ""Yale"" ""Michigan"" ""Northwestern"" ""Syracuse"" ""Rutgers"")",FALSE
+"c(""Bryn Mawr"" ""Haverford"")","c(""Bryn Mawr"" ""Haverford"")",FALSE
+Minneapolis Community &Technical College,Minneapolis Community &Technical College,FALSE
+"c(""Harvard University"" ""Johns Hopkins University"" ""University of Minnesota"")","c(""Harvard University"" ""Johns Hopkins University"" ""University of Minnesota"")",FALSE
+Johns Hopkins Univeristy,Johns Hopkins Univeristy,FALSE
+UW-Madison,UW-Madison,FALSE
+"c(""Wesleyan University"" ""Columbia University"")","c(""Wesleyan University"" ""Columbia University"")",FALSE
+he University of Regina,he University of Regina,FALSE
+University of Toronto Mississauga (UTM),University of Toronto Mississauga (UTM),FALSE
+UTM,UTM,FALSE
+Missouri State University,Missouri State University,FALSE
 NULL,NULL,FALSE
 Amherst College in Massachusetts,Amherst College in Massachusetts,FALSE
 "c(""Emory University"" ""Morehouse College"" ""Georgia State University"" ""Georgia Institute of Technology"" ""Spelman College"" ""Kennesaw State University"" ""Clark Atlanta University"")","c(""Emory University"" ""Morehouse College"" ""Georgia State University"" ""Georgia Institute of Technology"" ""Spelman College"" ""Kennesaw State University"" ""Clark Atlanta University"")",FALSE
@@ -270,8 +344,7 @@ universities across Louisiana,universities across Louisiana,FALSE
 "c(""Lewis University"" ""Columbia College Chicago"" ""University of Illinois at Chicago"" ""DePaul"" ""Elmhurst College"" ""several Chicago-area colleges"")","c(""Lewis University"" ""Columbia College Chicago"" ""University of Illinois at Chicago"" ""DePaul"" ""Elmhurst College"" ""several Chicago-area colleges"")",FALSE
 "c(""Fresno State"" ""University of California Merced"")","c(""Fresno State"" ""University of California Merced"")",FALSE
 "c(""Eastern Michigan University"" ""University of Michigan-Ann Arbor"")","c(""Eastern Michigan University"" ""University of Michigan-Ann Arbor"")",FALSE
-"c(""McGill"" ""Concordia"")","c(""McGill"" ""Concordia"")",FALSE
-"c(""Concordia University"" ""UQÀM"")","c(""Concordia University"" ""UQÀM"")",FALSE
+UQAM,UQAM,FALSE
 "c(""Concordia University"" ""University of Michigan"")","c(""Concordia University"" ""University of Michigan"")",FALSE
 "c(""Concordia"" ""McGill"" ""John Abbott College"")","c(""Concordia"" ""McGill"" ""John Abbott College"")",FALSE
 "c(""Bloomsburg University of Pennsylvania"" ""California University of Pennsylvania"" ""Cheyney University of Pennsylvania"" ""Clarion University of Pennsylvania"" ""East Stroudsburg University of Pennsylvania"" ""Edinboro University of Pennsylvania"" ""Indiana University of Pennsylvania"" ""Kutztown University of Pennsylvania"" ""Lock Haven University of Pennsylvania"" ""Mansfield University of Pennsylvania"" ""Millersville University of Pennsylvania"" ""Shippensburg University of Pennsylvania"" ""Slippery Rock University of Pennsylvania"" 
@@ -281,7 +354,6 @@ universities across Louisiana,universities across Louisiana,FALSE
 "c(""Guilford College"" ""UNCG"" ""A&T"")","c(""Guilford College"" ""UNCG"" ""A&T"")",FALSE
 "c(""CUNY"" ""Baruch"")","c(""CUNY"" ""Baruch"")",FALSE
 "c(""Honolulu CC"" ""UH-Manoa"")","c(""Honolulu CC"" ""UH-Manoa"")",FALSE
-CUNY,CUNY,FALSE
 "c(""Barnard"" ""Columbia"")","c(""Barnard"" ""Columbia"")",FALSE
 "c(""University of Houston"" ""Texas Southern University."")","c(""University of Houston"" ""Texas Southern University."")",FALSE
 "c(""DePaul"" ""Chicago State University"" ""Eastern Illinois"" ""Northeastern Illinois"")","c(""DePaul"" ""Chicago State University"" ""Eastern Illinois"" ""Northeastern Illinois"")",FALSE
@@ -289,7 +361,6 @@ CUNY,CUNY,FALSE
 "c(""the 23 California State University campuses"" ""San Diego State University"")","c(""the 23 California State University campuses"" ""San Diego State University"")",FALSE
 "c(""St Olaf College"" ""Carleton"")","c(""St Olaf College"" ""Carleton"")",FALSE
 "c(""University of Ottawa"" ""Concordia"")","c(""University of Ottawa"" ""Concordia"")",FALSE
-Cégep du Vieux Montréal,Cégep du Vieux Montréal,FALSE
 "c(""UQAM"" ""McGill University"")","c(""UQAM"" ""McGill University"")",FALSE
 "c(""McGill University"" ""Concordia University"")","c(""McGill University"" ""Concordia University"")",FALSE
 "c(""Concordia"" ""MSUM"")","c(""Concordia"" ""MSUM"")",FALSE
@@ -301,7 +372,6 @@ WSU,WSU,FALSE
 "c(""University of Pennsylvania"" ""Drexel University"")","c(""University of Pennsylvania"" ""Drexel University"")",FALSE
 "c(""Tufts"" ""Harvard"")","c(""Tufts"" ""Harvard"")",FALSE
 "c(""California State University"" ""San Diego State University"" ""all 23 California State Universities"")","c(""California State University"" ""San Diego State University"" ""all 23 California State Universities"")",FALSE
-"c(""University of Utah"" ""Westminster College"")","c(""University of Utah"" ""Westminster College"")",FALSE
 "c(""University of Utah"" ""Weber State"")","c(""University of Utah"" ""Weber State"")",FALSE
 "c(""Cal State Long Beach"" ""other CSUs"")","c(""Cal State Long Beach"" ""other CSUs"")",FALSE
 "c(""different CSU campuses"" ""Cal State Long Beach"" ""CSU Northridge"" ""CSU Dominguez Hills"" ""CSU Los Angeles"")","c(""different CSU campuses"" ""Cal State Long Beach"" ""CSU Northridge"" ""CSU Dominguez Hills"" ""CSU Los Angeles"")",FALSE
@@ -332,11 +402,9 @@ CEGEP Vieux-Montreal,CEGEP Vieux-Montreal,FALSE
 "c(""University of Toronto"" ""Ryerson University"")","c(""University of Toronto"" ""Ryerson University"")",FALSE
 "c(""Duke"" ""UNC-Chapel Hill"" ""NC State"")","c(""Duke"" ""UNC-Chapel Hill"" ""NC State"")",FALSE
 "c(""York University"" ""UTSC"" ""UTSG"")","c(""York University"" ""UTSC"" ""UTSG"")",FALSE
-Claremont Colleges,Claremont Colleges,FALSE
 "c(""Claremont McKenna College"" ""Pomona College"" ""Pitzer College"")","c(""Claremont McKenna College"" ""Pomona College"" ""Pitzer College"")",FALSE
 "c(""Dunwoody College of Technology"" ""University of Minnesota"")","c(""Dunwoody College of Technology"" ""University of Minnesota"")",FALSE
 "c(""Augsburg"" ""Macalester College"" ""University of Minnesota"")","c(""Augsburg"" ""Macalester College"" ""University of Minnesota"")",FALSE
-"c(""San Diego State"" ""San Diego City College"")","c(""San Diego State"" ""San Diego City College"")",FALSE
 "c(""Cégep du Vieux-Montréal"" ""l’Université du Québec à Montréal (UQAM)"" ""Concordia University"" ""McGill University"")","c(""Cégep du Vieux-Montréal"" ""l’Université du Québec à Montréal (UQAM)"" ""Concordia University"" ""McGill University"")",FALSE
 "c(""l’Université du Québec à Montréal (UQAM)"" ""McGill"")","c(""l’Université du Québec à Montréal (UQAM)"" ""McGill"")",FALSE
 "c(""Université du Québec à Montreal"" ""Collège de Maisonneuve"" ""McGill"")","c(""Université du Québec à Montreal"" ""Collège de Maisonneuve"" ""McGill"")",FALSE
@@ -352,12 +420,10 @@ Middleburry College,Middleburry College,FALSE
 "c(""McGill"" ""Collège de Maisonneuve"")","c(""McGill"" ""Collège de Maisonneuve"")",FALSE
 "c(""UC Berkeley"" ""UC San Diego"")","c(""UC Berkeley"" ""UC San Diego"")",FALSE
 "c(""francophone universities"" ""CEGEPs"" ""Concordia"" ""McGill"" ""l’Université de Montréal"")","c(""francophone universities"" ""CEGEPs"" ""Concordia"" ""McGill"" ""l’Université de Montréal"")",FALSE
-"c(""McGill"" ""Université du Québec à Montréal (UQAM)"")","c(""McGill"" ""Université du Québec à Montréal (UQAM)"")",FALSE
 "c(""UC San Francisco"" ""UC Davis"" ""UC Santa Cruz"" ""UC Merced"" ""UC Berkeley"")","c(""UC San Francisco"" ""UC Davis"" ""UC Santa Cruz"" ""UC Merced"" ""UC Berkeley"")",FALSE
 "c(""Central Connecticut State University"" ""Wesleyan University"")","c(""Central Connecticut State University"" ""Wesleyan University"")",FALSE
 "c(""UC San Diego"" ""UC Davis"" ""UC campuses"")","c(""UC San Diego"" ""UC Davis"" ""UC campuses"")",FALSE
 Boston University',Boston University',FALSE
-"c(""McGill"" ""Concordia"" ""Université du Québec à Montréal (UQAM)"")","c(""McGill"" ""Concordia"" ""Université du Québec à Montréal (UQAM)"")",FALSE
 "c(""Harvard"" ""Yale"" ""Brown"" ""Tufts"")","c(""Harvard"" ""Yale"" ""Brown"" ""Tufts"")",FALSE
 "c(""Concordia"" ""McGill"")","c(""Concordia"" ""McGill"")",FALSE
 "c(""College the School of Public Health"" ""Lesley University"" ""Harvard"")","c(""College the School of Public Health"" ""Lesley University"" ""Harvard"")",FALSE
@@ -377,7 +443,6 @@ Indiana University South Bend,Indiana University South Bend,FALSE
 "c(""George Brown College"" ""Centennial College"")","c(""George Brown College"" ""Centennial College"")",FALSE
 "c(""Concordia"" ""Vanier College"")","c(""Concordia"" ""Vanier College"")",FALSE
 "c(""Oakland University."" ""Saginaw Valley State University"")","c(""Oakland University."" ""Saginaw Valley State University"")",FALSE
-"c(""UQAM"" ""McGill"")","c(""UQAM"" ""McGill"")",FALSE
 "c(""Université de Québec à Montréal"" ""CÉGEP de Saint-Laurent"" ""McGill"" ""Concordia"")","c(""Université de Québec à Montréal"" ""CÉGEP de Saint-Laurent"" ""McGill"" ""Concordia"")",FALSE
 "c(""Montreal CEGEPS"" ""UQAM"")","c(""Montreal CEGEPS"" ""UQAM"")",FALSE
 "c(""Vanier College"" ""CÉGEP du Vieux-Montréal"")","c(""Vanier College"" ""CÉGEP du Vieux-Montréal"")",FALSE
@@ -415,9 +480,35 @@ students from different CUNY schools,students from different CUNY schools,FALSE
 "c(""Université du Québec à Montréal"" ""Concordia"")","c(""Université du Québec à Montréal"" ""Concordia"")",FALSE
 "c(""University of Oregon"" ""Lane Community"")","c(""University of Oregon"" ""Lane Community"")",FALSE
 "c(""UC campuses"" ""UCLA"" ""UC Berkeley"" ""University of Virginia"")","c(""UC campuses"" ""UCLA"" ""UC Berkeley"" ""University of Virginia"")",FALSE
-"c(""University of British Columbia"" ""the University of Victoria"" ""Simon Fraser University"" ""Thompson Rivers University"" ""University of Northern British Columbia"")","c(""University of British Columbia"" ""the University of Victoria"" ""Simon Fraser University"" ""Thompson Rivers University"" ""University of Northern British Columbia"")",FALSE
 "c(""McGill"" ""Concordia Universities"" ""Dawson College"")","c(""McGill"" ""Concordia Universities"" ""Dawson College"")",FALSE
 University of Saskatchewan,University of Saskatchewan,FALSE
+"c(""Georgetown University"" ""Middlebury College."" ""Bennington College"" ""UVM"")","c(""Georgetown University"" ""Middlebury College."" ""Bennington College"" ""UVM"")",FALSE
+"c(""McGill University"" ""Vanier College"" ""Concordia University"" ""Dawson College"")","c(""McGill University"" ""Vanier College"" ""Concordia University"" ""Dawson College"")",FALSE
+"c(""the UC system at almost every campus"" ""UC Berkeley"" ""UCSF"" ""UC Santa Cruz"" ""UC Davis"" ""UCLA"")","c(""the UC system at almost every campus"" ""UC Berkeley"" ""UCSF"" ""UC Santa Cruz"" ""UC Davis"" ""UCLA"")",FALSE
+"c(""Concordia University"" ""McGill University"")","c(""Concordia University"" ""McGill University"")",FALSE
+"c(""Université du Québec à Montréal (UQAM)"" ""McGill"")","c(""Université du Québec à Montréal (UQAM)"" ""McGill"")",FALSE
+"c(""Ontario Institute for Studies in Education"" ""Ryerson University"")","c(""Ontario Institute for Studies in Education"" ""Ryerson University"")",FALSE
+"c(""Laurentian University"" ""University of Ottawa"" ""University of Guelph"" ""University of Western Ontario"" ""Carleton University"" ""Algoma University"" ""University of Windsor"" ""Ryerson"" ""Ontario College of Arts and Design"" ""Trent"" ""York"")","c(""Laurentian University"" ""University of Ottawa"" ""University of Guelph"" ""University of Western Ontario"" ""Carleton University"" ""Algoma University"" ""University of Windsor"" ""Ryerson"" ""Ontario College of Arts and Design"" ""Trent"" ""York"")",FALSE
+"c(""Concordia"" ""Dawson College"" ""McGill University"")","c(""Concordia"" ""Dawson College"" ""McGill University"")",FALSE
+the University of Chicago,the University of Chicago,FALSE
+University of Illinois College of Medicine,University of Illinois College of Medicine,FALSE
+"c(""University of Texas at Dallas"" ""Southern Methodist University"" ""University of North Texas"")","c(""University of Texas at Dallas"" ""Southern Methodist University"" ""University of North Texas"")",FALSE
+"c(""UCSF"" ""UC Berkeley"")","c(""UCSF"" ""UC Berkeley"")",FALSE
+UCSF's Parnassus campus,UCSF's Parnassus campus,FALSE
+"c(""Kenyon College"" ""Ohio State University"")","c(""Kenyon College"" ""Ohio State University"")",FALSE
+"c(""McGill"" ""Concordia"" ""UQAM"")","c(""McGill"" ""Concordia"" ""UQAM"")",FALSE
+Mount Allison University,Mount Allison University,FALSE
+"c(""Santa Rosa Junior College and Solano Community College"" ""City College of San Francisco"")","c(""Santa Rosa Junior College and Solano Community College"" ""City College of San Francisco"")",FALSE
+"c(""Dawson College"" ""Concordia"")","c(""Dawson College"" ""Concordia"")",FALSE
+"c(""CNM"" ""UNM"")","c(""CNM"" ""UNM"")",FALSE
+"c(""University of Alberta"" ""MacEwan University"" ""Mount Royal University"" ""University of Calgary"" ""University of Lethbridge"")","c(""University of Alberta"" ""MacEwan University"" ""Mount Royal University"" ""University of Calgary"" ""University of Lethbridge"")",FALSE
+"c(""Tufts University"" ""MIT"" ""Harvard"")","c(""Tufts University"" ""MIT"" ""Harvard"")",FALSE
+"c(""San Diego City College"" ""San Diego State"")","c(""San Diego City College"" ""San Diego State"")",FALSE
+"c(""MIT"" ""Tufts"" ""Brandeis"" ""Boston College"" ""Harvard"")","c(""MIT"" ""Tufts"" ""Brandeis"" ""Boston College"" ""Harvard"")",FALSE
+"c(""Concordia"" ""McGill"" ""Université du Québec à Montréal"" ""Collège de Maisonneuve"")","c(""Concordia"" ""McGill"" ""Université du Québec à Montréal"" ""Collège de Maisonneuve"")",FALSE
+Dalhousie University.,Dalhousie University.,FALSE
+"c(""UTM"" ""UTSC"" ""St George campus"")","c(""UTM"" ""UTSC"" ""St George campus"")",FALSE
+Université de Sherbrooke.,Université de Sherbrooke.,FALSE
 University of Missouri-Columbia,University of Missouri-Columbia,TRUE
 University of Missouri-Columbia,University of Missouri Columbia,TRUE
 University of Missouri-Columbia,University of Missouri-Columbia's campus,TRUE
@@ -436,7 +527,6 @@ University of North Dakota,University of North Dakota,TRUE
 Pitzer College,Pitzer College,TRUE
 Pomona College,Pomona College,TRUE
 Boston University,Boston University,TRUE
-Massachusetts College of Art and Design,Massachusetts College of Art and Design,TRUE
 Dartmouth College,Dartmouth College,TRUE
 Dartmouth College,Dartmouth,TRUE
 Boston College,Boston College,TRUE
@@ -622,10 +712,8 @@ Simpson College,Simpson College,TRUE
 Barnard College,Barnard,TRUE
 Barnard College,Barnard College,TRUE
 University of North Florida,University of North Florida,TRUE
-Edward Waters College,Edward Waters College,TRUE
 Keene State College,Keene State College,TRUE
 University of Rhode Island,University of Rhode Island,TRUE
-Texas Southern University,Texas Southern University,TRUE
 Loyola University Chicago,Loyola University Chicago,TRUE
 Chicago State University,Chicago State University,TRUE
 Northeastern University,Northeastern University,TRUE
@@ -701,7 +789,6 @@ Drew University,Drew University,TRUE
 Abilene Christian University,Abilene Christian University,TRUE
 Scripps College,Scripps College,TRUE
 University of Colorado Denver,University of Colorado Denver,TRUE
-San Diego State University,San Diego State,TRUE
 Michigan State University,Michigan State University,TRUE
 DePauw University,DePauw University,TRUE
 Texas Wesleyan University,Texas Wesleyan University,TRUE
@@ -722,10 +809,8 @@ Babson College,Babson College,TRUE
 Buena Vista University,Buena Vista University,TRUE
 University of Wisconsin-Platteville,University of Wisconsin Platteville,TRUE
 Reed College,Reed College,TRUE
-Notre Dame College,Notre Dame,TRUE
 South Puget Sound Community College,South Puget Sound Community College,TRUE
 South Carolina State University,South Carolina State,TRUE
-Utah Valley University,Utah Valley University,TRUE
 Saginaw Valley State University,Saginaw Valley State University,TRUE
 University of Massachusetts-Boston,University of Massachusetts Boston,TRUE
 Monmouth College,Monmouth College,TRUE
@@ -739,7 +824,6 @@ Johnson County Community College,Johnson County Community College,TRUE
 Central New Mexico Community College,Central New Mexico Community College,TRUE
 Westminster College,Westminster College,TRUE
 Augusta State University,Augusta State University,TRUE
-Jacksonville University,Jacksonville University,TRUE
 Georgetown University,Georgetown,TRUE
 Iowa State University,Iowa State University,TRUE
 Roosevelt University,Roosevelt University,TRUE
@@ -750,7 +834,34 @@ North Park University,North Park University,TRUE
 Haverford College,Haverford College,TRUE
 Fort Hays State University,Fort Hays State University,TRUE
 Northwest Missouri State University,Northwest Missouri State University,TRUE
+San Jose State University,San Jose State University,TRUE
+Lake Superior State University,Lake Superior State University,TRUE
+Mount Holyoke College,Mount Holyoke,TRUE
+Indiana State University,Indiana State University,TRUE
+Lebanon Valley College,Lebanon Valley College,TRUE
 Smith College,Smith College,TRUE
+Oberlin College,Oberlin,TRUE
+Southeast Missouri State University,Southeast Missouri State University,TRUE
+Charleston School of Law,Charleston School of Law,TRUE
+Southwestern College,Southwestern College,TRUE
+Saint Joseph's University,Saint Joseph's University,TRUE
+Pittsburg State University,Pittsburg State University,TRUE
+Brown University,Brown,TRUE
+Colorado State University-Pueblo,Colorado State University Pueblo,TRUE
+Edward Waters College,Edward Waters College,TRUE
+Shaw University,Shaw University,TRUE
+Ohio State University-Main Campus,Ohio State University,TRUE
+Del Mar College,Del Mar College,TRUE
+Wright State University-Main Campus,Wright State University,TRUE
+University of Minnesota-Duluth,University of Minnesota Duluth,TRUE
+Grossmont College,Grossmont College,TRUE
+University of Southern Indiana,University of Southern Indiana,TRUE
+Allegheny College,Allegheny College,TRUE
+Iona College,Iona College,TRUE
+Eastfield College,Eastfield College,TRUE
+Pacific Lutheran University,Pacific Lutheran University,TRUE
+Prescott College,Prescott College,TRUE
+Palomar College,Palomar College,TRUE
 University at Buffalo,University at Buffalo,TRUE
 DePaul University,DePaul,TRUE
 Chatham University,Chatham University,TRUE

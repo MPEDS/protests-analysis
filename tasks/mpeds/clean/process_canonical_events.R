@@ -18,7 +18,12 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
         TRUE ~ value
       )
     ) %>%
-    filter(!(variable == "location" & str_detect(value, "(V|v)irtual"))) %>%
+    # necessary to hard-code to exclude canonical events
+    # with two (equivalent) locations
+    filter(!(variable == "location" & str_detect(value, "(V|v)irtual")),
+           !(key == "20130918_AnnArbor_Demonstration_ProChoice" &
+               value == "Ann Arbor, Michigan, USA")
+    ) %>%
     select(-text)
 
   wide <-  canonical_events %>%
@@ -66,9 +71,12 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
       university = ifelse(is.na(pub_uni), uni, pub_uni),
       # use university_names, which coders annotated, when available
       university = map2(university_names, university,
-                        function(uni_name, uni){
-                          ifelse(length(uni_name) == 0L,
-                               uni, uni_name)
+                        function(annotated_uni, publication_uni){
+                          if(length(annotated_uni) > 0){
+                            return(annotated_uni)
+                          } else {
+                            return(publication_uni)
+                          }
                           })) %>%
     select(-uni, -pub_uni, -university_names)
 

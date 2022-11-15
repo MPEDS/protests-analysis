@@ -13,14 +13,17 @@
 #' lon<numeric> | lat<numeric> | location<character>
 #'   | location_type<"city" | "uni" >
 get_protest_coords <- function(events){
-  locations <- events %>%
-    filter(!is.na(location)) %>%
+  cities <- events %>%
     pull(location) %>%
-    unique()
+    unlist() %>%
+    tibble(cities = .) %>%
+    drop_na(cities) %>%
+    distinct() %>%
+    pull(cities)
 
   message("Geocoding cities...")
-  city_coords <- imap_dfr(locations, \(loc, index){
-    message(index, "/", length(locations), ": ", loc)
+  city_coords <- imap_dfr(cities, \(loc, index){
+    message(index, "/", length(cities), ": ", loc)
     return(get_coords(loc))
   }) %>%
     filter(!is.na(lng), !is.na(lat))
@@ -28,7 +31,11 @@ get_protest_coords <- function(events){
   message("Geocoding universities...")
   unique_unis <- events %>%
     pull(university) %>%
-    unique()
+    unlist() %>%
+    tibble(unis = .) %>%
+    drop_na(unis) %>%
+    distinct() %>%
+    pull(unis)
   uni_coords <- imap_dfr(unique_unis, \(uni, index){
     message(index, "/", length(unique_unis), ": ", uni)
     return(get_coords(uni))
@@ -38,17 +45,18 @@ get_protest_coords <- function(events){
     left_join(city_coords, by = "location") %>%
     rename(location_lng = lng,
            location_lat = lat) %>%
-    mutate(university_locations = map(
-      university, \(uni_name){
+    # not sure how to do a join properly on a list-col, as the `university`
+    # column is (e.g. multiple possible universities for a single event)
+    # So far I have this very inefficient method
+    mutate(university_locations = imap(
+      university, \(uni_name, index){
+        cat('\r', index, 'events processed out of', nrow(.), 'total.')
         # if university name is null, return empty tibble
         if(is.null(uni_name)){
           return(tibble())
         }
         # otherwise, match it with the uni_coords geocoded set
-        map_dfr(uni_name, \(uni_name){
-          return(uni_coords %>% filter(location == uni_name))
-        }) %>%
-          return()
+        return(tibble(location = uni_name) %>% left_join(uni_coords, by = "location"))
       }
     ))
   return(events)
