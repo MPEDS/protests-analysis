@@ -1,4 +1,5 @@
 library(targets)
+library(tarchetypes)
 
 fn_filenames <- list.files("tasks", full.names = TRUE,
                            pattern = ".R",
@@ -10,11 +11,14 @@ tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh",
 
 list(
   tar_target(canonical_events, get_canonical_events(),
-            # uncomment cue = ... to force an update when we want
-            # to refresh data, since `targets` has no knowledge
-            # of changes on the server and won't update the data
-            # on its own
-            # cue = tar_cue(mode = "always")
+            # set the DOWNLOAD_MPEDS variable in your .Renviron file
+            # to force a download of the MPEDS database from the `sheriff` server
+            # this lets us toggle the download on and off without changes to
+            # source-control tracked files
+            cue = tar_cue(mode = ifelse(
+              Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'), 'never', 'always'
+              )
+            )
      ),
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
@@ -58,6 +62,8 @@ list(
   # the `raw_names` target is meant to be cleaned by hand
   tar_target(raw_names, clean_mpeds_names(geocoded, uni_directory),
              format = "file"),
+  # then passed off to coders in a readable format
+  tar_target(postprocess_filename, postprocess_names(geocoded, "tasks/ipeds/hand/cleaned_ipeds_match.csv")),
   # and the cleaned version of `raw_names` will be read in from the below filename
   tar_target(ipeds_xwalk_filename,
              "tasks/ipeds/hand/cleaned_ipeds_match.csv",
@@ -65,10 +71,12 @@ list(
   tar_target(ipeds_xwalk, match_ipeds(uni_directory, geocoded, ipeds_xwalk_filename
                                       )),
 
-  # with that, attach everything
-  tar_target(integrated, integrate_targets(geocoded, uni_directory, ipeds_xwalk,
-                                           list(
-                                             mhi, bls, evictions, mit_elections
-                                           )))
+  tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
+
+  tar_target(integrated, integrate_targets(
+    geocoded, uni_directory, ipeds_xwalk, county_covariates, ccc
+    ))
+
+  # Plotting and other exploratory analysis ---
 )
 

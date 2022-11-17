@@ -9,6 +9,7 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 library(targets)
 library(sf)
 library(here)
+library(showtext)
 library(tidyverse)
 mpeds <- readRDS(here("_targets", "objects", "integrated"))
 ```
@@ -22,3 +23,35 @@ county_sf <- tigris::counties(keep_zipped_shapefile = TRUE) %>%
   select(fips = GEOID)
 mpeds_sf <- mpeds %>% left_join(county_sf) 
 ```
+
+```{r mpeds_map}
+
+mpeds %>% 
+  drop_na(location_lat, location_lng) %>% 
+  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) %>% 
+  ggplot() + 
+  geom_sf(size = 0.1) +
+  geom_sf(data = county_sf, fill = "white", color = NA)
+
+```
+
+- basic summary stats for each variable
+- bar plot for universities with most canonical event-protests
+- bar plot for counties with most canonical event protests
+- moran's I statistic of protest occurrence 
+
+```{r summary}
+
+mpeds %>% select(where(is.numeric)) %>% 
+  map(summary)
+
+mpeds %>% select(where(is.numeric), -canonical_id, -starts_with("location"),
+                 -year, -id, -uni_id, -size_category) %>% 
+  pairs()
+  
+```
+
+```{r}
+
+```
+
