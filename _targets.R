@@ -10,11 +10,14 @@ tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh",
 
 list(
   tar_target(canonical_events, get_canonical_events(),
-            # uncomment cue = ... to force an update when we want
-            # to refresh data, since `targets` has no knowledge
-            # of changes on the server and won't update the data
-            # on its own
-            # cue = tar_cue(mode = "always")
+            # set the DOWNLOAD_MPEDS variable in your .Renviron file
+            # to force a download of the MPEDS database from the `sheriff` server
+            # this lets us toggle the download on and off without changes to
+            # source-control tracked files
+            cue = tar_cue(mode = ifelse(
+              Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'), 'never', 'always'
+              )
+            )
      ),
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),

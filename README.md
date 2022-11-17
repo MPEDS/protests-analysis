@@ -79,6 +79,25 @@ the following dependencies.
   `.Renviron` file (if you use `tidycensus` elsewhere, you likely have
   already done this via `census_api_key()`), you may skip this step.
 
+- Optionally set the `DOWNLOAD_MPEDS` variable in your `.Renviron` file to 
+  any value other than "false" in order to force targets to download the MPEDS
+  database each time the pipeline is run:
+  
+  ```
+  # .Renviron
+  SSH_USERNAME=<YOUR_USERNAME>
+  GMAPS_API_KEY=<YOUR_API_KEY>
+  DOWNLOAD_MPEDS="yes"
+  ```
+  
+  - If the variable is not set, or set to `"false"`, the pipeline will download
+  MPEDS data from our `sheriff` server once and will not continually check it for 
+  updates again. Setting the variable ensures maximum reproducibility, but also 
+  can be time-consuming to run the entire pipeline again and even result in 
+  extra costs related to geocoding.
+  - The switch is controlled through an environment variable so that the
+  switch can be toggled without changes to source control-tracked files.
+
 ### Quickstart
 
 In a terminal, first run:
