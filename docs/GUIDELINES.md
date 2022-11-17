@@ -157,6 +157,12 @@ Ball et. al don't mention much about within-script practices of code
 organization. Here are some rules that help follow the principles of
 pipeline-oriented reproducible work:
 
+- For functions that directly process targets, have the arguments of the 
+  function be the same as the name of the target, to eliminate all ambiguity. 
+  This can be a little tedious when we have targets that are variations of the
+  same dataset, for instance for our code that processes the MPEDS database in
+  several steps, but it is also in these situations that adhering to strict
+  naming is most useful.
 - Use the pipe operator `|>`, which chains the outputs of one function
   into the second. It helps us write code that we can read from left to
   right, cuts down on repeating names, and prevents naming conflicts.
@@ -180,10 +186,8 @@ As well as a few for formatting:
 - Always maintain one level of indentation per curly bracket ("block")
   level of code. E.g. code in an `if` statement in a function requires
   two indents.
-- Use spaces between blocks of code to denote logical separation between
+- Use line breaks between blocks of code to denote logical separation between
   different actions.
-- Optional tip: You may use the `styler` package and the associated
-  RStudio
 - Some rules-of-thumb for R commands:
   - Use `dplyr::pull` or (if needed) `purrr::pluck` instead of `$`
   - Use `purrr::*map_*` functions instead of `lapply`, `sapply`, and so

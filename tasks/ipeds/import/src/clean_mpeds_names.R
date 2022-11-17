@@ -10,19 +10,19 @@
 # writing down corresponding IPEDS names for each unmatched MPEDS name.
 
 #' First pass function- helps dedup/correct names in MPEDS
-#' @param events canonical events with geocoded names (the `geocoded` target)
-#' @param ipeds The university directory from IPEDS
-clean_mpeds_names <- function(events, ipeds){
+#' @param geocoded canonical events with geocoded names (the `geocoded` target)
+#' @param uni_directory The university directory from IPEDS
+clean_mpeds_names <- function(geocoded, uni_directory){
   mpeds_names <- c(
-      events$university,
-      events$participating_universities
+      geocoded$university,
+      geocoded$participating_universities
     ) %>%
     str_remove_all(",") %>%
     str_trim() %>%
     unlist() %>%
     unique() %>%
     tibble(name = ., og_name = .)
-  ipeds_matcher <- select(ipeds, name) %>%
+  ipeds_matcher <- select(uni_directory, name) %>%
     mutate(ipeds_dummy = TRUE) %>%
     distinct()
   filename <- "tasks/ipeds/hand/raw_ipeds_match.csv"
@@ -81,3 +81,31 @@ export_ipeds <- function(){
     tibble(ipeds_names = .) %>%
     write_csv("tasks/ipeds/hand/ipeds_names.csv")
 }
+
+#' after I cleaned the names, process them once more to
+postprocess_names <- function(geocoded, cleaned_ipeds_match_filename){
+  cleaned_ipeds_match <- read_csv(cleaned_ipeds_match_filename)
+  # Creating a keys dataframe so that coders can reference canonical event keys
+  # for names
+  keys <- geocoded %>% select(key, university) %>% unnest(university)
+  keys <- geocoded %>% select(key, participating_universities) %>%
+    unnest(participating_universities) %>%
+    rename(university = participating_universities) %>%
+    bind_rows(keys) %>%
+    mutate(university = str_remove_all(university, ",") %>% str_trim()) %>%
+    group_by(university) %>%
+    summarize(key = str_c(key, sep = ","), .groups = "drop")
+
+  postprocess_filename <- "tasks/ipeds/hand/ipeds_verification.csv"
+  cleaned_ipeds_match %>%
+    mutate(ipeds_name = ifelse(!is.na(true_name), true_name, name)) %>%
+    # since coders can't currently verify canadian unis, we exclude
+    filter(is.na(canada)) %>%
+    left_join(keys, by = c("og_name" = "university")) %>%
+    select(raw_name = og_name, ipeds_name, canonical_event_key = key) %>%
+    mutate(notes = "") %>%
+    write_csv(postprocess_filename)
+
+  return(postprocess_filename)
+}
+
