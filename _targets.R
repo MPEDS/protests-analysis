@@ -23,6 +23,10 @@ list(
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
+
+  #tar_read(geocoded_cache_file, "tasks/mpeds/clean/geocoding_cache.RDS",
+  #         format = "file"),
+  #tar_read(geocoded_cache, readRDS(geocoded_cache_file)),
   tar_target(geocoded, get_protest_coords(events_wide)),
 
   tar_target(ccc_url, format = "url",
@@ -37,6 +41,7 @@ list(
   tar_target(mhi, get_mhi(mhi_url)),
 
   tar_target(bls, get_bls()),
+  tar_target(elephrame_blm, get_elephrame_blm()),
 
   tar_target(eviction_url, format = "url",
              command = "https://eviction-lab-data-downloads.s3.amazonaws.com/estimating-eviction-prevalance-across-us/county_proprietary_2000_2018.csv"
@@ -75,8 +80,9 @@ list(
 
   tar_target(integrated, integrate_targets(
     geocoded, uni_directory, ipeds_xwalk, county_covariates, ccc
-    ))
+    )),
 
   # Plotting and other exploratory analysis ---
+  tar_render(exploratory, "docs/exploratory_plots.Rmd" )
 )
 
