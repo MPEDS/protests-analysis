@@ -20,7 +20,7 @@ integrate_targets <- function(
     mutate(start_date = map_chr(start_date, ~ifelse(is.null(.), NA_character_, .[1])),
            start_date = as.Date(start_date),
            year = lubridate::year(start_date)) %>%
-    left_join(uni_directory, by = c("university" = "name", "year"))
+    left_join(uni_directory, by = c("uni_id" = "id", "year"))
 
   # ccc_joinable <- ccc %>%
   #   arrange(fips, date) %>%
