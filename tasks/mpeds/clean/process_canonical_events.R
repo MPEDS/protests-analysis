@@ -15,13 +15,13 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
       across(where(is.character), str_trim),
       value = case_when(
         !is.na(text) ~ text,
+        variable == "location" & str_detect(value, "(V|v)irtual") ~ NA_character_,
         TRUE ~ value
       )
     ) %>%
     # necessary to hard-code to exclude canonical events
     # with two (equivalent) locations
-    filter(!(variable == "location" & str_detect(value, "(V|v)irtual")),
-           !(key == "20130918_AnnArbor_Demonstration_ProChoice" &
+    filter(!(key == "20130918_AnnArbor_Demonstration_ProChoice" &
                value == "Ann Arbor, Michigan, USA")
     ) %>%
     select(-text)
@@ -32,8 +32,13 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
              str_remove_all("_text")) %>%
     pivot_wider(names_from = variable,
                 values_from = value,
-                values_fn = list)  %>%
+                values_fn = list) %>%
     mutate(across(where(is_list), \(col){
+      # remove NAs -- we want to drop NAs of the form c("Toledo, OH, USA", NA)
+      col <- map(col, \(vec){
+        if(is.null(vec)) return(vec)
+        return(vec[!is.na(vec)])
+      })
       # if all the list items in the col have length 1
       if(all(unlist(unique(map(col, length))) <= 1)){
         # and it's not a list of tbls
