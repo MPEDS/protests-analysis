@@ -28,18 +28,19 @@ The initial import of the MPEDS db found 5220 unique canonical events,
 and after all cleaning steps we still have 5220 canonical events.
 
 However, there’s still an issue regarding duplicate matches in IPEDS we
-can detect; there are lots of schools called “Columbia College” inside
-IPEDS, so any schools with that name in MPEDS will be assigned multiple
-schools. The MPEDS-IPEDS join is crucial because we also use IPEDS to
-join county FIPS identifiers, and thus no further joins will be accurate
-unless the MPEDS-IPEDS join is accurate. We currently have 5260 rows in
-the final dataset, indicating that this problem applies to some 40
-canonical events.
+can detect (there are likely also incorrect matches that we can’t detect
+programmatically right now); there are lots of schools called “Columbia
+College” (or another common name) inside IPEDS, so any schools with that
+name in MPEDS will be assigned multiple schools. The MPEDS-IPEDS join is
+crucial because we also use IPEDS to join county FIPS identifiers, and
+thus no further joins will be accurate unless the MPEDS-IPEDS join is
+accurate. We currently have 5260 rows in the final dataset, indicating
+that this problem applies to some 40 canonical events.
 
 Fixing it just requires a rewrite of how the join is done, so that we
-join on IDs, not names, for at least all ambiguous cases. This doesn’t
-require adjustments to the instructions given to student coders, but it
-does require a little bit of time on my part, so it hasn’t been
+join on IPEDS IDs, not names, for at least all ambiguous cases. This
+doesn’t require adjustments to the instructions given to student coders,
+but it does require a little bit of time on my part, so it hasn’t been
 completed yet.
 
 Of those events, there were 517 unique locations, 291 unique counties,
@@ -49,9 +50,10 @@ indicates that there isn’t a strong pattern of missing value
 substitution, e.g. Google isn’t sending the majority of results to the
 centroid of America or to `(-1, -1)` or anything weird like that.
 Universities had a harder time, with 23 universities and 133 rows
-(canonical events) not returning lon/lat coords. That comes out to \~5%
-of universities not having coordinates, and \~2.5% of canonical events
-not having universities with coordinates.
+(canonical events) not returning lon/lat coords for universities.
+
+That comes out to \~5% of universities not having coordinates, and
+\~2.5% of canonical events not having universities with coordinates.
 
 The top universities by appearances:
 
@@ -117,6 +119,45 @@ kable(location_counts)
 | Davis, CA, USA         |  47 |
 | Ithaca, NY, USA        |  46 |
 
+Top states:
+
+``` r
+state_fips <- fips_codes %>% 
+  select(state_code, state_name) %>% 
+  distinct()
+
+state_counts <- mpeds %>% 
+  mutate(state_code = str_sub(fips, 1, 2)) %>% 
+  group_by(state_code) %>% 
+  count() %>% 
+  ungroup() %>% 
+  drop_na() %>% 
+  slice_max(order_by = n, n = 15) %>% 
+  left_join(state_fips, by = "state_code") %>% 
+  select(-state_code)
+  
+kable(state_counts)
+```
+
+|   n | state_name           |
+|----:|:---------------------|
+| 730 | California           |
+| 332 | Massachusetts        |
+| 281 | New York             |
+| 254 | Illinois             |
+| 168 | Michigan             |
+| 160 | Pennsylvania         |
+| 144 | Texas                |
+| 108 | Florida              |
+| 107 | District of Columbia |
+| 106 | Virginia             |
+| 101 | North Carolina       |
+|  90 | Connecticut          |
+|  89 | Ohio                 |
+|  88 | Indiana              |
+|  85 | Missouri             |
+|  85 | New Jersey           |
+
 And finally the top counties:
 
 ``` r
@@ -156,8 +197,11 @@ kable(county_counts)
 |  43 | Boone County, Missouri                     |
 
 These glimpses seem mostly in line with what we should expect, with a
-strong caveat that the Missouri protests are not making an appearance
-here. That’s a bit alarming, so I’ll look into that.
+strong caveat that the Missouri protests are not making a leading
+appearance here. That’s a bit alarming; some playing around with the
+dataset reveals there are a fair number of protests both in Missouri and
+at University of Missouri-Columbia. There could still be errors here, so
+I’m continuing to revise the code.
 
 # Basic summary plots
 
@@ -311,6 +355,7 @@ mpeds_sf <- mpeds %>% left_join(county_sf, by = "fips")
 mpeds %>% 
   drop_na(location_lat, location_lng) %>% 
   st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) %>% 
+  mutate(geometry = st_jitter(geometry, factor = 0.005)) %>% 
   ggplot() + 
   geom_sf(data = us_sf, fill = "white", color = "gray") + 
   geom_sf(size = 0.1, alpha = 0.2) + 
@@ -319,7 +364,8 @@ mpeds %>%
     y = c(20, 55)
   ) +
   labs(
-    title = "Spread of protests and geocoded locations",
+    title = "Spread of canonical events and geocoded locations",
+    subtitle = "Locations jittered slightly, by 0.005*bounding box diagonal.",
     caption = "Alaska, Hawaii, a few other locations with only a\nfew protests excluded in this map only."
     
   ) + 

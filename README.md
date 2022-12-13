@@ -69,7 +69,12 @@ the following dependencies.
   SSH_USERNAME=<YOUR_USERNAME>
   GMAPS_API_KEY=<YOUR_API_KEY>
   ```
-
+  
+  The Google Maps API does require a valid credit card to use. But it gives $200
+  per month of requests for free, or 40,000 geocoding requests. We only have
+  about 1,200 unique places to geocode, so your card should generally not be
+  charged.
+  
 - **Census API Key**. The Census API also requires credentialed access;
   luckily it's quite easy to get. Visit
   [this link](http://api.census.gov/data/key_signup.html) to sign up for

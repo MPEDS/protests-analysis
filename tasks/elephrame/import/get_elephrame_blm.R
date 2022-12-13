@@ -11,8 +11,14 @@ get_elephrame_blm <- function(){
     headers = c(referer = "https://elephrame.com/textbook/BLM/chart")
   )
 
+  county_shps <- counties() %>%
+    mutate(fips = paste0(STATEFP, COUNTYFP)) %>%
+    select(fips)
+
+  # adding county matches to it via a spatial join
   blm_shps <- st_read(filename) %>%
-    select(start, end,
-           loc, sub, desc, num, url)
+    select(blm_protest_date = start, blm_protest_num = num,
+           blm_protest_url = url)
+
   return(blm_shps)
 }
