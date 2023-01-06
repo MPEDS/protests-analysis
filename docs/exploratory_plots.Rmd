@@ -206,43 +206,53 @@ The following chunk gives a glimpse at total number of matches:
 
 ```{r}
 ccc <- tar_read(ccc) %>% 
-  distinct()
-# a version where dates are a list-col, to assist in the testing below
-ccc_dates <- ccc %>% 
-  group_by(fips) %>% 
-  summarize(dates_lst = list(ccc_protest_date))
+  distinct() %>% 
+  rename(protest_date = ccc_protest_date)
 
-# return a TRUE value if any protests occurred between 
-# a given date and `diff` days from that date
-compute_protests <- function(vec, date, diff){
-  if(is.na(date)) return(NA)
-  any(vec %in% (date + 1):(diff + date))
+blm <- tar_read(elephrame_blm) %>% 
+  distinct() %>% 
+  rename(protest_date = blm_protest_date)
+
+test_date_diffs <- function(protests){
+  # a version where dates are a list-col, to assist in the testing below
+  dates <- protests %>% 
+    group_by(fips) %>% 
+    summarize(dates_lst = list(protest_date))
+  
+  # return a TRUE value if any protests in `vec` occurred between 
+  # a given date and `diff` days after that date
+  compute_protests <- function(vec, date, diff){
+    if(is.na(date)) return(NA)
+    any(vec %in% (date + 1):(diff + date))
+  }
+  
+  match_date_diff <- function(diff){
+    diffed_protests <- protests %>% 
+      left_join(dates, by = "fips") %>% 
+      mutate(
+        dummy = unlist(map2(
+          dates_lst, protest_date,
+          function(x,y){compute_protests(x, y, diff)}
+        ))
+      )
+    
+    joined <- mpeds %>% 
+      left_join(
+        diffed_protests, by = c("start_date" = "protest_date", "fips")
+        ) 
+    
+    n_matches <- sum(joined$dummy, na.rm = TRUE)
+    
+    tribble(~date_offset, ~recent_protests, ~match_percentage,
+            diff, n_matches, 100 * n_matches/nrow(joined)
+            )
+  }
+  return(map_dfr(c(0, 1,3,5,7), match_date_diff))
 }
 
-match_date_diff <- function(diff){
-  ccc_diff <- ccc %>% 
-    left_join(ccc_dates, by = "fips") %>% 
-    mutate(
-      ccc_dummy = unlist(map2(
-        dates_lst, ccc_protest_date,
-        function(x,y){compute_protests(x, y, diff)}
-      ))
-    )
-  
-  joined <- mpeds %>% 
-    left_join(
-      ccc_diff, by = c("start_date" = "ccc_protest_date", "fips")
-      ) 
-  
-  joins <- sum(joined$ccc_dummy, na.rm = TRUE)
-  
-  tribble(~date_offset, ~recent_protests, ~match_percentage,
-          diff, joins, 100 * joins/nrow(joined)
-          )
-}
+map_dfr(list(ccc, blm), test_date_diffs, .id = "source")
 
-map_dfr(c(0, 1,3,5,7), match_date_diff) %>% 
-  kable()
+kable()
 ```
 
 So it seems that there are a fair number of duplicates occurring if we don't

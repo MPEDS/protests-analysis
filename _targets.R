@@ -7,7 +7,7 @@ fn_filenames <- list.files("tasks", full.names = TRUE,
 invisible(lapply(fn_filenames, source))
 
 tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh",
-                            "httr", "curl", "tidycensus"))
+                            "httr", "curl", "sf", "tigris", "tidycensus"))
 
 list(
   tar_target(canonical_events, get_canonical_events(),
