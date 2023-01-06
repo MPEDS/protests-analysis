@@ -16,13 +16,23 @@
               curl.dev
               gcc
               libgit2
+							/* Needed for various R dependencies */
+							libssh
+							libpng
 							gdal
-							proj
+							geos
+							freetype.dev
+							proj.dev
               libxml2.dev
               openssl.dev
+							sqlite.dev
               pandoc
-							zlib
+							zlib.dev
+							unixODBC
+							libmysqlclient.dev
+							udunits
               pkg-config
+							/* Needed for basic R setup */ 
               R
               rPackages.renv
             ]);
