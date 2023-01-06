@@ -12,7 +12,19 @@
 #' @return A four-column tibble:
 #' lon<numeric> | lat<numeric> | location<character>
 #'   | location_type<"city" | "uni" >
-get_protest_coords <- function(events){
+get_protest_coords <- function(events, geocoded_cache_filename){
+  # Filename not stored as separate target because we don't want
+  # changes to the cache to trigger changes to the pipeline
+  geocoded_cache_filename <-"tasks/mpeds/clean/geocoding_cache.csv"
+  if(file.exists(geocoded_cache_filename)){
+    geocoded_cache <- read_csv(geocoded_cache_filename)
+  } else {
+    geocoded_cache <- tibble(
+      lon = numeric(0), lat = numeric(0),
+      location = character(0)
+    )
+  }
+
   cities <- events %>%
     pull(location) %>%
     unlist() %>%
@@ -24,7 +36,7 @@ get_protest_coords <- function(events){
   message("Geocoding cities...")
   city_coords <- imap_dfr(cities, \(loc, index){
     message(index, "/", length(cities), ": ", loc)
-    return(get_coords(loc))
+    return(get_coords(loc, geocoded_cache))
   }) %>%
     filter(!is.na(lng), !is.na(lat))
 
@@ -38,8 +50,10 @@ get_protest_coords <- function(events){
     pull(unis)
   uni_coords <- imap_dfr(unique_unis, \(uni, index){
     message(index, "/", length(unique_unis), ": ", uni)
-    return(get_coords(uni))
+    return(get_coords(uni, geocoded_cache))
   })
+  updated_cache <- bind_rows(city_coords, uni_coords)
+  write_csv(updated_cache, geocoded_cache_filename)
 
   events <- events %>%
     left_join(city_coords, by = "location") %>%
@@ -62,7 +76,11 @@ get_protest_coords <- function(events){
   return(events)
 }
 
-get_coords <- function(location){
+get_coords <- function(location, cache){
+  if(location %in% cache$location){
+    return(cache[location == cache$location, ])
+  }
+
   response <- "https://maps.googleapis.com/maps/api/geocode/json" %>%
     GET(query = list(
         address = location,

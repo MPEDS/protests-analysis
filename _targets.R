@@ -24,9 +24,6 @@ list(
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
 
-  #tar_read(geocoded_cache_file, "tasks/mpeds/clean/geocoding_cache.RDS",
-  #         format = "file"),
-  #tar_read(geocoded_cache, readRDS(geocoded_cache_file)),
   tar_target(geocoded, get_protest_coords(events_wide)),
 
   tar_target(ccc_url, format = "url",

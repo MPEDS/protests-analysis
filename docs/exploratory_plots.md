@@ -44,12 +44,12 @@ but it does require a little bit of time on my part, so it hasn’t been
 completed yet.
 
 Of those events, there were 517 unique locations, 291 unique counties,
-and 422. Surprisingly, all of the locations that were not universities
-found geocoding matches, and hand-checking the most common ones
-indicates that there isn’t a strong pattern of missing value
-substitution, e.g. Google isn’t sending the majority of results to the
-centroid of America or to `(-1, -1)` or anything weird like that.
-Universities had a harder time, with 23 universities and 133 rows
+and 422 unique universities. Surprisingly, all of the locations that
+were not universities found geocoding matches, and hand-checking the
+most common ones indicates that there isn’t a strong pattern of missing
+value substitution, e.g. Google isn’t sending the majority of results to
+the centroid of America or to `(-1, -1)` or anything weird like that.
+Universities had a harder time, with 24 universities and 191 rows
 (canonical events) not returning lon/lat coords for universities.
 
 That comes out to \~5% of universities not having coordinates, and
@@ -319,11 +319,11 @@ map_dfr(c(0, 1,3,5,7), match_date_diff) %>%
 
 | date_offset | recent_protests | match_percentage |
 |------------:|----------------:|-----------------:|
-|           0 |             554 |        10.532319 |
-|           1 |             150 |         2.851711 |
-|           3 |             251 |         4.771863 |
-|           5 |             324 |         6.159696 |
-|           7 |             372 |         7.072243 |
+|           0 |             557 |        10.589354 |
+|           1 |             151 |         2.870722 |
+|           3 |             254 |         4.828897 |
+|           5 |             327 |         6.216730 |
+|           7 |             376 |         7.148289 |
 
 So it seems that there are a fair number of duplicates occurring if we
 don’t have a date offset, but once we add one (of any days) that pretty

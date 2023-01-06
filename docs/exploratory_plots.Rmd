@@ -62,7 +62,7 @@ require adjustments to the instructions given to student coders, but it does
 require a little bit of time on my part, so it hasn't been completed yet.
 
 Of those events, there were `r n_locations` unique locations, 
-`r n_fips` unique counties, and `r n_universities`.
+`r n_fips` unique counties, and `r n_universities` unique universities.
 Surprisingly, all of the locations that were not universities 
 found geocoding matches, and hand-checking the most common ones indicates that
 there isn't a strong pattern of missing value substitution, e.g. Google isn't
