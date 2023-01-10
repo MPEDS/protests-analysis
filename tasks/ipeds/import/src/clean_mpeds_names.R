@@ -84,7 +84,7 @@ export_ipeds <- function(){
 
 #' after I cleaned the names, process them once more to
 postprocess_names <- function(geocoded, cleaned_ipeds_match_filename){
-  cleaned_ipeds_match <- read_csv(cleaned_ipeds_match_filename)
+  cleaned_ipeds_match <- read_csv(cleaned_ipeds_match_filename, show_col_types = FALSE)
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
   keys <- geocoded |> select(key, university) |> unnest(university)

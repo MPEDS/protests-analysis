@@ -8,10 +8,12 @@ get_elephrame_blm <- function(){
   download.file(
     url = url,
     destfile = filename,
-    headers = c(referer = "https://elephrame.com/textbook/BLM/chart")
+    headers = c(referer = "https://elephrame.com/textbook/BLM/chart"),
+    quiet = TRUE
   )
 
-  county_shps <- counties() |>
+  county_shps <- counties(progress_bar = FALSE) |>
+    suppressMessages() |>
     mutate(fips = paste0(STATEFP, COUNTYFP)) |>
     select(fips)
 

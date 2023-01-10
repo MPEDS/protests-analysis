@@ -1,6 +1,6 @@
 # attach MPEDS names to IPEDS names, based on the cleaned dataset
 match_ipeds <- function(ipeds, mpeds, xwalk_filename){
-  xwalk <- read_csv(xwalk_filename) |>
+  xwalk <- read_csv(xwalk_filename, show_col_types = FALSE) |>
     mutate(
       true_name = case_when(ipeds_dummy == TRUE ~ name,
                             ipeds_dummy == FALSE ~ true_name,

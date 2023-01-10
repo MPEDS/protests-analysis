@@ -29,5 +29,5 @@ get_coder_table <- function(){
 
   tempdir() |>
     paste0("/", last_file) |>
-    read_csv()
+    read_csv(show_col_types = FALSE)
 }

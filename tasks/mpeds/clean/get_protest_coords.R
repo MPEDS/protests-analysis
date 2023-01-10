@@ -17,7 +17,7 @@ get_protest_coords <- function(events){
   # changes to the cache to trigger changes to the pipeline
   geocoded_cache_filename <-"tasks/mpeds/clean/geocoding_cache.csv"
   if(file.exists(geocoded_cache_filename)){
-    geocoded_cache <- read_csv(geocoded_cache_filename)
+    geocoded_cache <- read_csv(geocoded_cache_filename, show_col_types = FALSE)
   } else {
     geocoded_cache <- tibble(
       lon = numeric(0), lat = numeric(0),
@@ -33,14 +33,15 @@ get_protest_coords <- function(events){
     distinct() |>
     pull(cities)
 
-  message("Geocoding cities...")
   city_coords <- imap_dfr(cities, \(loc, index){
-    message(index, "/", length(cities), ": ", loc)
-    return(get_coords(loc, geocoded_cache))
-  }) |>
+    coords <- tryCatch(
+      get_coords(loc, geocoded_cache),
+      error = function(e){ stop(paste0("At ", loc, ": ", e))}
+    )
+    return(coords)
+  }, .progress = "Fetching city coordinates") |>
     filter(!is.na(lng), !is.na(lat))
 
-  message("Geocoding universities...")
   unique_unis <- events |>
     pull(university) |>
     unlist() |>
@@ -49,9 +50,13 @@ get_protest_coords <- function(events){
     distinct() |>
     pull(unis)
   uni_coords <- imap_dfr(unique_unis, \(uni, index){
-    message(index, "/", length(unique_unis), ": ", uni)
-    return(get_coords(uni, geocoded_cache))
-  })
+    coords <- tryCatch(
+      get_coords(uni, geocoded_cache),
+      error = function(e){ stop(paste0("At ", uni, ": ", e))}
+    )
+    return(coords)
+  }, .progress = "Fetching university coordinates") |>
+    filter(!is.na(lng), !is.na(lat))
   updated_cache <- bind_rows(city_coords, uni_coords)
   write_csv(updated_cache, geocoded_cache_filename)
 

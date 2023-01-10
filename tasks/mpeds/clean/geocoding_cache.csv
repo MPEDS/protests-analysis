@@ -527,7 +527,6 @@ lat,lng,location
 33.7971368,-84.32224,Emory University
 40.19396769999999,-75.4563232,Ursinus College
 33.753068,-84.38528190000001,Georgia State University in Atlanta
-NA,NA,University of Miami
 37.3192806,-122.0447919,De Anza College
 38.5382322,-121.7617125,University of California Davis
 43.3147914,-91.8052049,Luther College
@@ -589,7 +588,6 @@ NA,NA,University of Miami
 43.7734535,-79.50186839999999,York University
 43.6576585,-79.3788017,Ryerson University
 43.653226,-79.3831843,University of Toronto
-NA,NA,Ryerson
 42.0564594,-87.67526699999999,Northwestern University
 36.1447034,-86.8026551,Vanderbilt University
 33.4551742,-88.79437659999999,Mississippi State University
@@ -664,8 +662,6 @@ NA,NA,Ryerson
 43.2103817,-77.95108309999999,SUNY Brockport
 37.72569,-122.4510797,City College of San Francisco
 49.2780937,-122.9198833,Simon Fraser University
-NA,NA,Polytechnic State University
-NA,NA,University of Calgary
 35.9049122,-79.0469134,UNC-Chapel Hill
 36.21356280000001,-81.68432179999999,Appalachian State
 39.7296653,-121.8478871,California State University Chico
@@ -673,13 +669,12 @@ NA,NA,University of Calgary
 38.5382322,-121.7617125,University of California at Davis
 38.5382322,-121.7617125,University of California-Davis
 42.3222599,-83.17631449999999,University of Michigan Dearborn
-35.1802684,-111.6540336,NAU
+35.1802684,-111.6540336,"NAU"
 40.736746,-73.8203195,Queens College
 26.4626967,-81.7800748,Florida Gulf Coast University
 36.1270236,-97.0737222,Oklahoma State University
 39.90383300000001,-75.3526567,Swarthmore College
 42.3867598,-72.5300515,University of Massachusetts at Amherst
-NA,NA,University of New Brunswick
 39.7099689,-75.1191932,Rowan University
 35.6068806,-77.3665364,East Carolina University
 44.63658119999999,-63.59165549999999,Dalhousie University
@@ -730,7 +725,6 @@ NA,NA,University of New Brunswick
 40.4443533,-79.960835,University of Pittsburgh
 40.4486611,-79.92407279999999,Chatham College
 44.6925546,-73.4669464,SUNY College at Plattsburgh
-NA,NA,University of California
 39.7305338,-89.6176711,University of Illinois Springfield
 46.4672485,-80.9757296,Laurentian University
 30.4132579,-91.1800023,Louisiana State University
@@ -744,7 +738,6 @@ NA,NA,University of California
 33.7838235,-118.1140904,California State University Long Beach
 41.73856199999999,-74.085197,SUNY New Paltz
 42.88644679999999,-78.8783689,Buffalo
-NA,NA,SUNY
 42.9237929,-78.8550954,Canisius College
 40.1019523,-88.2271615,University of Illinois at Urbana Champaign
 40.1019523,-88.2271615,University of Illinois
@@ -780,7 +773,6 @@ NA,NA,SUNY
 38.908422,-76.99238749999999,Gallaudet University
 38.9368811,-76.99869199999999,Catholic University of America
 41.8742327,-87.62483379999999,Columbia College Chicago
-NA,NA,University of Manitoba
 46.8619309,-113.9845969,University of Montana
 34.0414348,-118.1501982,East Los Angeles College
 34.0555994,-117.819263,California State Polytechnic University Pomona
@@ -800,7 +792,6 @@ NA,NA,University of Manitoba
 38.3013039,-77.47447,Mary Washington
 42.4532365,-79.340746,SUNY at Fredonia
 45.50478469999999,-73.5771511,McGill University
-NA,NA,UQÀM
 42.2762537,-83.7412441,University of Michigan
 45.50478469999999,-73.5771511,McGill
 42.9269528,-85.58897189999999,Calvin College
@@ -855,7 +846,6 @@ NA,NA,UQÀM
 32.8800604,-117.2340135,UC San Diego
 45.514669,-73.5663793,Cegep du Vieux Montreal
 45.5123906,-73.67180809999999,Cégep de Saint-Laurent
-NA,NA,Saint Mary's
 32.2792887,-106.7491391,New Mexico State University
 38.9543439,-95.2557961,University of Kansas
 34.1482032,-118.1404425,Fuller Theological Seminary
@@ -863,15 +853,11 @@ NA,NA,Saint Mary's
 41.2580268,-96.010696,University of Nebraska at Omaha
 42.8627836,-112.429762,Idaho State University
 40.3430942,-74.65507389999999,Princeton
-NA,NA,Concord College
-NA,NA,Rutgers University
 18.220833,-66.590149,University of Puerto Rico
 29.9346582,-90.1209925,Loyola University New Orleans
 40.2390377,-74.96717900000002,Bucks County Community College
 40.691145,-73.9805528,Long Island University Brooklyn Campus
-NA,NA,University of Connecticut
 39.9566127,-75.18994409999999,Drexel University
-NA,NA,Columbia
 40.7678398,-73.9645291,Hunter College
 40.8506041,-73.9297205,Yeshiva University
 36.9847153,-86.4559991,Western Kentucky University
@@ -884,14 +870,11 @@ NA,NA,Columbia
 35.3050053,-120.6624942,Cal Poly San Luis Obispo
 41.06597319999999,-73.7891834,Westchester Community College
 29.888411,-97.938351,Texas State University
-NA,NA,University of Texas Pan American
 37.4274745,-122.169719,Stanford
 30.0954974,-95.9907076,Prairie View A&M University
 44.0081076,-73.1760412,Middlebury College
 47.6491714,-122.3618554,Seattle Pacific University
-NA,NA,University of Washington
 47.6062095,-122.3320708,University of Washington Seattle campus
-NA,NA,University of Saksa
 37.8718992,-122.2585399,UC Berkeley
 37.7626459,-122.4587106,UCSF
 37.765574,-122.3901281,UCSF Mission Bay
@@ -952,7 +935,6 @@ NA,NA,University of Saksa
 46.560196500000004,-87.4076051,Northern Michigan University
 45.2006802,-123.1993365,Linfield College
 35.1187498,-89.9374928,University of Memphis
-NA,NA,Media network college
 45.4948363,-73.577912799999993,Concordia
 45.514669,-73.5663793,CÉGEP Vieux-Montreal
 45.5131547,-73.5602937,l’Université du Québec à Montréal (UQAM)
@@ -976,7 +958,6 @@ NA,NA,Media network college
 38.1885119,-76.42627499999999,St Mary's College of Maryland
 38.1885119,-76.42627499999999,St.Mary's College of Maryland
 37.3647146,-120.4241184,University of California Merced
-NA,NA,sign listing kinds of sinners hated by God
 32.9211774,-96.7284624,Richland College
 42.3242969,-83.2376024,Henry Ford Community College
 40.7602397,-74.4266389,Drew University
@@ -987,7 +968,6 @@ NA,NA,sign listing kinds of sinners hated by God
 32.7774047,-117.0714068,San Diego State
 45.5131547,-73.5602937,Université de Québec a Montréal
 45.514669,-73.5663793,CEGEP Vieux-Montreal
-NA,NA,UQAM
 45.514669,-73.5663793,CEGEP du Vieux-Montreal
 42.701848,-84.4821719,Michigan State University
 45.5018869,-73.56739189999999,Université de Québec à Montréal (UQAM)
@@ -1063,7 +1043,6 @@ NA,NA,UQAM
 38.7455928,-90.437059,St. Louis Community College
 33.1298249,-117.1586856,"California State University, San Marcos"
 37.765574,-122.3901281,UCSF Mission Bay campus
-NA,NA,Ocean
 1.2814942,103.8448202,Chinatown
 38.9237863,-94.7306238,Johnson County Community College
 34.1376576,-118.125269,Caltech
@@ -1095,11 +1074,9 @@ NA,NA,Ocean
 41.8685636,-87.6484497,University of Illinois at Chicago campus
 41.9748871,-87.7108736,North Park University
 49.28458939999999,-123.11146,SFU’s Vancouver and Surrey campuses
-NA,NA,all three of SFU’s campuses
 42.2930114,-71.26378199999999,Olin College of Engineering
 42.3811689,-71.11756679999999,Lesley University
 48.4634067,-123.3116935,the University of Victoria
-NA,NA,Rutgers
 33.8823476,-117.8851033,California State University - Fullerton
 39.0804917,-108.5534074,Mesa State College
 39.9927652,-75.2941372,Haverford and Bryn Mawr Colleges
@@ -1113,7 +1090,6 @@ NA,NA,Rutgers
 37.3351874,-121.8810715,San Jose State University
 46.4918881,-84.36387739999999,Lake Superior State University
 42.255425,-72.5728843,Mount Holyoke
-NA,NA,the UC system at almost every campus
 45.5056156,-73.61375919999999,Université de Montréal’s (UdeM)
 45.514669,-73.5663793,Cégep du Vieux Montréal
 45.55086130000001,-73.5532995,Collège de Maisonneuve

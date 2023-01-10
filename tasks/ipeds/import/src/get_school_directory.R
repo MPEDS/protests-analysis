@@ -14,7 +14,7 @@ get_school_directory <- function(dummy_url){
       filename <- tempfile()
       download.file(url, filename, method = "curl", quiet = TRUE)
       unzipped_filename <- unzip(filename, exdir = tempdir())
-      directory <- read_csv(unzipped_filename) |>
+      directory <- read_csv(unzipped_filename, show_col_types = FALSE) |>
         mutate(year = year)
       return(directory)
   }) |>
