@@ -14,10 +14,10 @@ get_coder_table <- function(){
 
   exports_location <- "/var/www/campus_protest/exports/"
   get_last_file <- paste0("ls -tr ", exports_location, " | tail -1")
-  last_file <- session %>%
-    ssh_exec_internal(get_last_file) %>%
-    "$"(stdout) %>%
-    rawToChar() %>%
+  last_file <- session |>
+    ssh_exec_internal(get_last_file) |>
+    pluck("stdout") |>
+    rawToChar() |>
     str_trim()
 
   date <- str_extract(last_file, "([0-9]){4}-([0-9]){2}-([0-9]){2}")
@@ -27,7 +27,7 @@ get_coder_table <- function(){
                to = tempdir())
   ssh_disconnect(session)
 
-  tempdir() %>%
-    paste0("/", last_file) %>%
+  tempdir() |>
+    paste0("/", last_file) |>
     read_csv()
 }

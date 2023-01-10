@@ -16,14 +16,14 @@ clean_mpeds_names <- function(geocoded, uni_directory){
   mpeds_names <- c(
       geocoded$university,
       geocoded$participating_universities
-    ) %>%
-    str_remove_all(",") %>%
-    str_trim() %>%
-    unlist() %>%
-    unique() %>%
-    tibble(name = ., og_name = .)
-  ipeds_matcher <- select(uni_directory, name) %>%
-    mutate(ipeds_dummy = TRUE) %>%
+    ) |>
+    str_remove_all(",") |>
+    str_trim() |>
+    unlist() |>
+    unique() |>
+    {\(.) tibble(name = ., og_name = .)}()
+  ipeds_matcher <- select(uni_directory, name) |>
+    mutate(ipeds_dummy = TRUE) |>
     distinct()
   filename <- "tasks/ipeds/hand/raw_ipeds_match.csv"
 
@@ -47,27 +47,27 @@ clean_mpeds_names <- function(geocoded, uni_directory){
   )
 
   reduce(patterns, function(prev_tbl, matcher){
-    prev_tbl %>%
-      drop_na() %>%
+    prev_tbl |>
+      drop_na() |>
       mutate(alt_name = str_replace(
           name,
           # if "pattern" isn't given, append it to the end of a word ("$" in regex)
           if_else(is.null(matcher$pattern), "$", matcher$pattern),
-          matcher$repl)) %>%
-      left_join(ipeds_matcher, by = c("alt_name" = "name")) %>%
+          matcher$repl)) |>
+      left_join(ipeds_matcher, by = c("alt_name" = "name")) |>
       mutate(
         # if ipeds_dummy is TRUE, then the new rule helped find a match
         # case_when() needed since ipeds_dummy is TRUE or NA, not TRUE or FALSE
         name = case_when(
           ipeds_dummy == TRUE ~ alt_name,
           TRUE ~ name
-        )) %>%
+        )) |>
       select(-ipeds_dummy, -alt_name)
-  }, .init = mpeds_names) %>%
+  }, .init = mpeds_names) |>
     # final match to know which are correct and which need adjustments
-    left_join(ipeds_matcher, by = "name") %>%
-    mutate(ipeds_dummy = case_when(ipeds_dummy == TRUE ~ TRUE, TRUE ~ FALSE)) %>%
-    arrange(ipeds_dummy) %>%
+    left_join(ipeds_matcher, by = "name") |>
+    mutate(ipeds_dummy = case_when(ipeds_dummy == TRUE ~ TRUE, TRUE ~ FALSE)) |>
+    arrange(ipeds_dummy) |>
     write_csv(filename)
 
   return(filename)
@@ -75,10 +75,10 @@ clean_mpeds_names <- function(geocoded, uni_directory){
 
 #' exports IPEDS info itself
 export_ipeds <- function(){
-  tar_read(uni_directory) %>%
-    pull(name) %>%
-    unique() %>%
-    tibble(ipeds_names = .) %>%
+  tar_read(uni_directory) |>
+    pull(name) |>
+    unique() |>
+    {\(.) tibble(ipeds_names = .)}() |>
     write_csv("tasks/ipeds/hand/ipeds_names.csv")
 }
 
@@ -87,23 +87,23 @@ postprocess_names <- function(geocoded, cleaned_ipeds_match_filename){
   cleaned_ipeds_match <- read_csv(cleaned_ipeds_match_filename)
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
-  keys <- geocoded %>% select(key, university) %>% unnest(university)
-  keys <- geocoded %>% select(key, participating_universities) %>%
-    unnest(participating_universities) %>%
-    rename(university = participating_universities) %>%
-    bind_rows(keys) %>%
-    mutate(university = str_remove_all(university, ",") %>% str_trim()) %>%
-    group_by(university) %>%
+  keys <- geocoded |> select(key, university) |> unnest(university)
+  keys <- geocoded |> select(key, participating_universities) |>
+    unnest(participating_universities) |>
+    rename(university = participating_universities) |>
+    bind_rows(keys) |>
+    mutate(university = str_remove_all(university, ",") |> str_trim()) |>
+    group_by(university) |>
     summarize(key = str_c(key, sep = ","), .groups = "drop")
 
   postprocess_filename <- "tasks/ipeds/hand/ipeds_verification.csv"
-  cleaned_ipeds_match %>%
-    mutate(ipeds_name = ifelse(!is.na(true_name), true_name, name)) %>%
+  cleaned_ipeds_match |>
+    mutate(ipeds_name = ifelse(!is.na(true_name), true_name, name)) |>
     # since coders can't currently verify canadian unis, we exclude
-    filter(is.na(canada)) %>%
-    left_join(keys, by = c("og_name" = "university")) %>%
-    select(raw_name = og_name, ipeds_name, canonical_event_key = key) %>%
-    mutate(notes = "") %>%
+    filter(is.na(canada)) |>
+    left_join(keys, by = c("og_name" = "university")) |>
+    select(raw_name = og_name, ipeds_name, canonical_event_key = key) |>
+    mutate(notes = "") |>
     write_csv(postprocess_filename)
 
   return(postprocess_filename)

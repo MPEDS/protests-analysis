@@ -2,8 +2,8 @@ upload_targets <- function(){
   paste0(
     "You are about to upload your local _targets directory to `sheriff`, ",
     "which will overwrite the contents of the directory on that server. "
-  ) %>%
-    str_wrap() %>%
+  ) |>
+    str_wrap() |>
     message()
 
   confirmation <- readline("Enter 'y' to proceed; input anything else to quit: ")

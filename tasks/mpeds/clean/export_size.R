@@ -8,31 +8,31 @@
 #'
 export_size <- function(canonical_events, blm){
   articles <- get_articles()
-  articles <- articles %>%
-    select(article_id = id, event_id, title, full_text = text) %>%
+  articles <- articles |>
+    select(article_id = id, event_id, title, full_text = text) |>
     filter(!is.na(event_id))
-  canonical_events %>%
-    filter(variable == "size-text") %>%
-    left_join(articles, by = "event_id") %>%
-    select(article_id, canonical_key = key, title, full_text, text) %>%
-    mutate(text = str_to_lower(text)) %>%
-    distinct() %>%
+  canonical_events |>
+    filter(variable == "size-text") |>
+    left_join(articles, by = "event_id") |>
+    select(article_id, canonical_key = key, title, full_text, text) |>
+    mutate(text = str_to_lower(text)) |>
+    distinct() |>
     write_csv("tasks/mpeds/hand/size_raw.csv")
 
-  blm <- blm %>%
-    st_drop_geometry() %>%
+  blm <- blm |>
+    st_drop_geometry() |>
     as_tibble()
 
   # The Elephrame BLM dataset has
 
-  blm %>%
-    select(url, desc, text = num) %>%
+  blm |>
+    select(url, desc, text = num) |>
     mutate(
       # Filler characters
-      parsed = text %>% str_remove_all(" \\(\\.est\\)") %>%
-        str_remove_all(" \\(est\\.\\)") %>%
-        str_remove_all("\\+") %>%
-        str_remove_all("≥") %>%
+      parsed = text |> str_remove_all(" \\(\\.est\\)") |>
+        str_remove_all(" \\(est\\.\\)") |>
+        str_remove_all("\\+") |>
+        str_remove_all("≥") |>
         str_trim(),
       # Missingness
       parsed = if_else(
@@ -40,23 +40,23 @@ export_size <- function(canonical_events, blm){
         NA_character_,
         parsed),
       # semantic words
-      parsed = parsed %>%
-        str_replace_all("Dozens", "36") %>%
-        str_replace_all("Hundreds", "150") %>%
+      parsed = parsed |>
+        str_replace_all("Dozens", "36") |>
+        str_replace_all("Hundreds", "150") |>
         str_replace_all("Thousands", "1500"),
       # ranges
       parsed = map_chr(parsed, function(x){
         if(is.na(x)) return(x)
         if(!str_detect(x, "-")) return(x)
-        str_split(x, "-") %>%
-          unlist() %>%
-          str_trim() %>%
-          as.numeric() %>%
-          mean() %>%
+        str_split(x, "-") |>
+          unlist() |>
+          str_trim() |>
+          as.numeric() |>
+          mean() |>
           as.character()
       }),
-    ) %>%
-    select(url, desc, raw = text, parsed) %>%
+    ) |>
+    select(url, desc, raw = text, parsed) |>
     write_csv("tasks/mpeds/hand/blm_size.csv")
 }
 

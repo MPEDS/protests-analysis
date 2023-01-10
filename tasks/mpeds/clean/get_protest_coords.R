@@ -12,7 +12,7 @@
 #' @return A four-column tibble:
 #' lon<numeric> | lat<numeric> | location<character>
 #'   | location_type<"city" | "uni" >
-get_protest_coords <- function(events, geocoded_cache_filename){
+get_protest_coords <- function(events){
   # Filename not stored as separate target because we don't want
   # changes to the cache to trigger changes to the pipeline
   geocoded_cache_filename <-"tasks/mpeds/clean/geocoding_cache.csv"
@@ -25,28 +25,28 @@ get_protest_coords <- function(events, geocoded_cache_filename){
     )
   }
 
-  cities <- events %>%
-    pull(location) %>%
-    unlist() %>%
-    tibble(cities = .) %>%
-    drop_na(cities) %>%
-    distinct() %>%
+  cities <- events |>
+    pull(location) |>
+    unlist() |>
+    {\(.) tibble(cities = .) }() |>
+    drop_na(cities) |>
+    distinct() |>
     pull(cities)
 
   message("Geocoding cities...")
   city_coords <- imap_dfr(cities, \(loc, index){
     message(index, "/", length(cities), ": ", loc)
     return(get_coords(loc, geocoded_cache))
-  }) %>%
+  }) |>
     filter(!is.na(lng), !is.na(lat))
 
   message("Geocoding universities...")
-  unique_unis <- events %>%
-    pull(university) %>%
-    unlist() %>%
-    tibble(unis = .) %>%
-    drop_na(unis) %>%
-    distinct() %>%
+  unique_unis <- events |>
+    pull(university) |>
+    unlist() |>
+    {\(.) tibble(unis = .) }() |>
+    drop_na(unis) |>
+    distinct() |>
     pull(unis)
   uni_coords <- imap_dfr(unique_unis, \(uni, index){
     message(index, "/", length(unique_unis), ": ", uni)
@@ -55,22 +55,21 @@ get_protest_coords <- function(events, geocoded_cache_filename){
   updated_cache <- bind_rows(city_coords, uni_coords)
   write_csv(updated_cache, geocoded_cache_filename)
 
-  events <- events %>%
-    left_join(city_coords, by = "location") %>%
+  events <- events |>
+    left_join(city_coords, by = "location") |>
     rename(location_lng = lng,
-           location_lat = lat) %>%
+           location_lat = lat) |>
     # not sure how to do a join properly on a list-col, as the `university`
     # column is (e.g. multiple possible universities for a single event)
     # So far I have this very inefficient method
     mutate(university_locations = imap(
       university, \(uni_name, index){
-        cat('\r', index, 'events processed out of', nrow(.), 'total.')
         # if university name is null, return empty tibble
         if(is.null(uni_name)){
           return(tibble())
         }
         # otherwise, match it with the uni_coords geocoded set
-        return(tibble(location = uni_name) %>% left_join(uni_coords, by = "location"))
+        return(tibble(location = uni_name) |> left_join(uni_coords, by = "location"))
       }
     ))
   return(events)
@@ -81,11 +80,11 @@ get_coords <- function(location, cache){
     return(cache[location == cache$location, ])
   }
 
-  response <- "https://maps.googleapis.com/maps/api/geocode/json" %>%
+  response <- "https://maps.googleapis.com/maps/api/geocode/json" |>
     GET(query = list(
         address = location,
         key = Sys.getenv("GMAPS_API_KEY")
-      )) %>%
+      )) |>
     content(as = "parsed")
 
   if(response$status == "ZERO_RESULTS"){

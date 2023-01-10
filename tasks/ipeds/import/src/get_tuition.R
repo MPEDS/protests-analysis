@@ -13,10 +13,10 @@ get_tuition <- function(dummy_url){
       filename <- tempfile()
       download.file(url, filename, method = "curl", quiet = TRUE)
       unzipped_filename <- unzip(filename, exdir = tempdir())
-      tuition <- read_csv(unzipped_filename) %>%
+      tuition <- read_csv(unzipped_filename) |>
         mutate(year = year)
 
       return(tuition)
-    }) %>%
+    }) |>
     select(id = UNITID)
 }

@@ -42,12 +42,12 @@ get_articles <- function(){
   invisible(file.remove(paste0(tempdir(), "/.my.cnf")))
 
   articles <- tbl(con, "article_metadata")
-  coder_event_creator <- tbl(con, "coder_event_creator") %>%
-    select(article_id, event_id) %>%
+  coder_event_creator <- tbl(con, "coder_event_creator") |>
+    select(article_id, event_id) |>
     distinct()
 
-  articles <- articles %>%
-    left_join(coder_event_creator, by = c("id" = "article_id")) %>%
+  articles <- articles |>
+    left_join(coder_event_creator, by = c("id" = "article_id")) |>
     collect()
   return(articles)
 }

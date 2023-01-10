@@ -9,8 +9,8 @@
 process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
   uni_pub_xwalk <- read_csv(uni_pub_xwalk_file, show_col_types = FALSE)
 
-  canonical_events <- canonical_events %>%
-    select(-event_id, -cec_id) %>%
+  canonical_events <- canonical_events |>
+    select(-event_id, -cec_id) |>
     mutate(
       across(where(is.character), str_trim),
       value = case_when(
@@ -18,21 +18,21 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
         variable == "location" & str_detect(value, "(V|v)irtual") ~ NA_character_,
         TRUE ~ value
       )
-    ) %>%
+    ) |>
     # necessary to hard-code to exclude canonical events
     # with two (equivalent) locations
     filter(!(key == "20130918_AnnArbor_Demonstration_ProChoice" &
                value == "Ann Arbor, Michigan, USA")
-    ) %>%
+    ) |>
     select(-text)
 
-  wide <-  canonical_events %>%
-    distinct() %>%
-    mutate(variable = str_replace_all(variable, '-', '_') %>%
-             str_remove_all("_text")) %>%
+  wide <-  canonical_events |>
+    distinct() |>
+    mutate(variable = str_replace_all(variable, '-', '_') |>
+             str_remove_all("_text")) |>
     pivot_wider(names_from = variable,
                 values_from = value,
-                values_fn = list) %>%
+                values_fn = list) |>
     mutate(across(where(is_list), \(col){
       # remove NAs -- we want to drop NAs of the form c("Toledo, OH, USA", NA)
       col <- map(col, \(vec){
@@ -47,7 +47,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
         # then this should just be a regular vector
         col_vector <- map(col, \(item){
           ifelse(is.null(item), NA, item)
-        }) %>% unlist()
+        }) |> unlist()
         return(col_vector)
       }
       return(col) # and otherwise just return col
@@ -56,20 +56,20 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
   # creating a university column based off of the publication name
   # partly to help with geocoding as a stand-in for the actual location
   # also does cleaning of the university names variable itself
-  with_unis <- wide %>%
+  with_unis <- wide |>
     mutate(publication = str_replace_all(publication, " ", "-"),
-           pub_uni = publication %>%
-             str_extract(":-.*$") %>%
-             str_remove(":-") %>%
-             str_replace_all("([A-Za-z])(?=-)", "\\1 ") %>%
-             str_remove_all("-") %>%
+           pub_uni = publication |>
+             str_extract(":-.*$") |>
+             str_remove(":-") |>
+             str_replace_all("([A-Za-z])(?=-)", "\\1 ") |>
+             str_remove_all("-") |>
              str_replace("St Michael.*", "St Michael's College"),
            university_names = map(university_names,
-                                  ~str_remove_all(., "(,|\\.|')$") %>%
-                                    str_trim())) %>%
+                                  ~str_remove_all(., "(,|\\.|')$") |>
+                                    str_trim())) |>
   # around 7k/35k don't match because they dont fit the above patterns,
   # so we use this hand-coded table for university-publication matching
-    left_join(uni_pub_xwalk, by = c("publication" = "pub")) %>%
+    left_join(uni_pub_xwalk, by = c("publication" = "pub")) |>
     mutate(
       # use pub_uni when uni is not available; pub_uni contains
       # manual corrections I made
@@ -82,20 +82,20 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
                           } else {
                             return(publication_uni)
                           }
-                          })) %>%
+                          })) |>
     select(-uni, -pub_uni, -university_names)
 
   # converting yes/no columns to lgl
   is_yesno <- function(col){
     if(!is.character(col)) return(FALSE)
-    col %>%
+    col |>
       map_lgl(\(cell){
         cell %in% c("yes", NA_character_)
-      }) %>%
+      }) |>
       all()
   }
 
-  with_bools <- with_unis %>%
+  with_bools <- with_unis |>
     mutate(across(where(is_yesno), ~map_lgl(., \(x) isTRUE(x == "yes"))),
            # converts yes/NA -> TRUE/FALSE,
            )

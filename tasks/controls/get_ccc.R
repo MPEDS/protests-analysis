@@ -3,7 +3,7 @@ get_ccc <- function(url){
   # don't want dups
   school_phrases <- "school|college|university|universities|students|teachers|faculty"
   ccc <- read_csv(url, guess_max = Inf)
-  ccc %>%
+  ccc |>
     # filter(
     #   !str_detect(tolower(location_detail), school_phrases),
     #   !str_detect(tolower(actors), school_phrases)

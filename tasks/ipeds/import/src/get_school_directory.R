@@ -14,10 +14,10 @@ get_school_directory <- function(dummy_url){
       filename <- tempfile()
       download.file(url, filename, method = "curl", quiet = TRUE)
       unzipped_filename <- unzip(filename, exdir = tempdir())
-      directory <- read_csv(unzipped_filename) %>%
+      directory <- read_csv(unzipped_filename) |>
         mutate(year = year)
       return(directory)
-  }) %>%
+  }) |>
     mutate(
       # state_fips = case_when(
       #   nchar(FIPS) == 1 ~ paste0("0", FIPS),
@@ -40,7 +40,7 @@ get_school_directory <- function(dummy_url){
         TRIBAL == 2 ~ FALSE,
         TRUE ~ NA
         ),
-    ) %>%
+    ) |>
     select(id = UNITID, name = INSTNM,
            fips, size_category = INSTSIZE,
            hbcu, tribal, year)

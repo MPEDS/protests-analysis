@@ -10,12 +10,12 @@
 get_mit_elections <- function(){
   # No ETag or Last-Modified header, so cannot track for changes in targets
   url <- "https://dataverse.harvard.edu/api/access/datafile/6104822?format=original&gbrecs=true"
-  elections <- read_csv(url) %>%
+  elections <- read_csv(url) |>
     filter(year %in% c(2012, 2016),
            party == "REPUBLICAN"
-          ) %>%
-    mutate(republican_vote_prop = candidatevotes / totalvotes) %>%
-    select(year, fips = county_fips, republican_vote_prop) %>%
+          ) |>
+    mutate(republican_vote_prop = candidatevotes / totalvotes) |>
+    select(year, fips = county_fips, republican_vote_prop) |>
     drop_na()
 
   return(elections)
