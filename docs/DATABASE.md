@@ -135,8 +135,8 @@ LEFT JOIN `coder_event_creator` AS `RHS`
 In R:
 
 ```r
-ces <- tbl(con, "canonical_event") %>%
-  left_join(tbl(con, "canonical_event_link"), by = c("id" = "canonical_id")) %>%
+ces <- tbl(con, "canonical_event") |>
+  left_join(tbl(con, "canonical_event_link"), by = c("id" = "canonical_id")) |> 
   left_join(tbl(con, "coder_event_creator"), by = c("cec_id" = "id"))
 ```
 

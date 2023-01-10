@@ -18,7 +18,7 @@ the following dependencies.
   Hanna at alex[dot]hanna[at]gmail.com to have these provided.
 
   Once you obtain credentials, you should strongly consider creating and
-  uploading SSH public key to the remote server to use passwordless
+  uploading an SSH public key to the remote server to use passwordless
   login. This is convenient and also much more secure than password
   entry. One way to do so is by entering the following in a terminal:
 
@@ -31,8 +31,8 @@ the following dependencies.
   ssh-copy-id <YOUR_USERNAME>@cliff.ssc.wisc.edu
   ```
 
-  Finally, enter your SSH username into a file called `.Renviron` at the
-  root of the project:
+  Finally, create a file called `.Renviron` at the root of the project and enter
+  your SSH username:
 
   ```
   # .Renviron
@@ -45,22 +45,20 @@ the following dependencies.
   the relevant client and connector for your platform. On Windows you
   may skip this step entirely.
 
-  Pro tip: On Arch, you should install
-  [`mariadb-clients`](https://archlinux.org/packages/extra/x86_64/mariadb-clients/)
-  and
-  [`mariadb-connector-c`](https://aur.archlinux.org/packages/mariadb-connector-c).
-
 - **A free port 3306.** This may sound strange, but **before** you run
   the pipeline, please check to make sure port 3306 on your local
   machine is open, or that entering `nc localhost 3306` in a terminal
   does not return anything. The most likely scenario is if you have
   another instance of MySQL or MariaDB open and they run on this port.
+  If this is the case, then the pipeline will attempt to use port 3306 and fail.
 
-- **Google Maps API key**. This project geocodes protest data using the
+- **Google Maps API key**. This project turns semantic descriptions of protest
+  data locations into longitude/latitude coordinates using the
   Google Maps Geocoding API. The Google Maps APIs require credentials;
   you should go ahead and create one by following the instructions
   [here](https://developers.google.com/maps/documentation/javascript/get-api-key#console).
-  You may ignore the last step, it is handled by the code here.
+  You may ignore the last step referenced in the linked guide, it is handled by
+  the code here.
 
   Once you create an API key, you should add it to the `.Renviron` file:
 
@@ -101,7 +99,7 @@ the following dependencies.
   can be time-consuming to run the entire pipeline again and even result in 
   extra costs related to geocoding.
   - The switch is controlled through an environment variable so that the
-  switch can be toggled without changes to source control-tracked files.
+  switch can be toggled without changes to version control-tracked files.
 
 ### Quickstart
 
@@ -132,7 +130,7 @@ with several data sources:
 - Statistics Canada, Universities Canada, and Canadian Association of
   University Business Officers
 - Elephrame and the Crowd Counting Consortium
-- Tweets collected by
+- Twitter data collected by the Distributed AI Research Institute
 
 [^1]:
     unless you run Arch or another Linux variant that does not provide

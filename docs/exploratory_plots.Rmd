@@ -31,12 +31,12 @@ n_locations <- length(unique(mpeds$location))
 n_fips <- length(unique(mpeds$fips))
 n_universities <- length(unique(mpeds$university))
 
-missing_unis <- mpeds$university_locations %>%
-  bind_rows() %>%
+missing_unis <- mpeds$university_locations |>
+  bind_rows() |>
   filter(is.na(lat), !is.na(location))
 n_missing_uni_rows <- nrow(missing_unis)
-n_missing_unis <- missing_unis$location %>%
-  unique() %>% 
+n_missing_unis <- missing_unis$location |>
+  unique() |> 
   length()
 
 ```
@@ -78,11 +78,11 @@ The top universities by appearances:
 
 ```{r university_counts}
 
-university_counts <- mpeds %>% 
-  group_by(university) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
+university_counts <- mpeds |> 
+  group_by(university) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
   slice_max(order_by = n, n = 15)
 
 kable(university_counts)
@@ -92,11 +92,11 @@ And the top locations:
 
 
 ```{r location_counts}
-location_counts <- mpeds %>% 
-  group_by(location) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
+location_counts <- mpeds |> 
+  group_by(location) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
   slice_max(order_by = n, n = 15)
 
 kable(location_counts)
@@ -106,18 +106,18 @@ Top states:
 
 ```{r state_counts}
 
-state_fips <- fips_codes %>% 
-  select(state_code, state_name) %>% 
+state_fips <- fips_codes |> 
+  select(state_code, state_name) |> 
   distinct()
 
-state_counts <- mpeds %>% 
-  mutate(state_code = str_sub(fips, 1, 2)) %>% 
-  group_by(state_code) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
-  slice_max(order_by = n, n = 15) %>% 
-  left_join(state_fips, by = "state_code") %>% 
+state_counts <- mpeds |> 
+  mutate(state_code = str_sub(fips, 1, 2)) |> 
+  group_by(state_code) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
+  slice_max(order_by = n, n = 15) |> 
+  left_join(state_fips, by = "state_code") |> 
   select(-state_code)
   
 kable(state_counts)
@@ -128,18 +128,18 @@ And finally the top counties:
 
 ```{r county_counts}
 
-county_fips <- fips_codes %>% 
+county_fips <- fips_codes |> 
   mutate(fips = paste0(state_code, county_code),
-         county_name = paste0(county, ", ", state_name)) %>% 
+         county_name = paste0(county, ", ", state_name)) |> 
   select(fips, county_name)
 
-county_counts <- mpeds %>% 
-  group_by(fips) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
-  slice_max(order_by = n, n = 15) %>% 
-  left_join(county_fips, by = "fips") %>% 
+county_counts <- mpeds |> 
+  group_by(fips) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
+  slice_max(order_by = n, n = 15) |> 
+  left_join(county_fips, by = "fips") |> 
   select(-fips)
   
 kable(county_counts)
@@ -156,24 +156,24 @@ There could still be errors here, so I'm continuing to revise the code.
 
 ```{r pairs}
 
-mpeds %>% select(where(function(x){is.numeric(x) || is.logical(x)}),
+mpeds |> select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -link) %>% 
-  pivot_longer(cols = everything()) %>% 
-  filter(name != "NA") %>% 
-  group_by(name) %>% 
+                 -year, -uni_id, -size_category, -link) |> 
+  pivot_longer(cols = everything()) |> 
+  filter(name != "NA") |> 
+  group_by(name) |> 
   summarize(
     type = ifelse(is.numeric(pull(mpeds[name[1]], 1)), "numeric", "boolean"),
     mean = mean(value, na.rm = TRUE),
     sd = sd(value, na.rm = TRUE)
-  ) %>% 
-  mutate(across(where(is.numeric), ~round(., 3))) %>% 
-  arrange(type) %>% 
+  ) |> 
+  mutate(across(where(is.numeric), ~round(., 3))) |> 
+  arrange(type) |> 
   kable()
   
 
-mpeds %>% select(where(is.numeric), -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category) %>% 
+mpeds |> select(where(is.numeric), -canonical_id, -starts_with("location"),
+                 -year, -uni_id, -size_category) |> 
   pairs()
   
 ```
@@ -204,19 +204,19 @@ We discussed two solutions to this problem to avoid deduplication:
   
 The following chunk gives a glimpse at total number of matches:
 
-```{r}
-ccc <- tar_read(ccc) %>% 
-  distinct() %>% 
+```{r external_protest_sources}
+ccc <- tar_read(ccc) |> 
+  distinct() |> 
   rename(protest_date = ccc_protest_date)
 
-blm <- tar_read(elephrame_blm) %>% 
-  distinct() %>% 
+blm <- tar_read(elephrame_blm) |> 
+  distinct() |> 
   rename(protest_date = blm_protest_date)
 
 test_date_diffs <- function(protests){
   # a version where dates are a list-col, to assist in the testing below
-  dates <- protests %>% 
-    group_by(fips) %>% 
+  dates <- protests |> 
+    group_by(fips) |> 
     summarize(dates_lst = list(protest_date))
   
   # return a TRUE value if any protests in `vec` occurred between 
@@ -227,8 +227,8 @@ test_date_diffs <- function(protests){
   }
   
   match_date_diff <- function(diff){
-    diffed_protests <- protests %>% 
-      left_join(dates, by = "fips") %>% 
+    diffed_protests <- protests |> 
+      left_join(dates, by = "fips") |> 
       mutate(
         dummy = unlist(map2(
           dates_lst, protest_date,
@@ -236,7 +236,7 @@ test_date_diffs <- function(protests){
         ))
       )
     
-    joined <- mpeds %>% 
+    joined <- mpeds |> 
       left_join(
         diffed_protests, by = c("start_date" = "protest_date", "fips")
         ) 
@@ -250,9 +250,10 @@ test_date_diffs <- function(protests){
   return(map_dfr(c(0, 1,3,5,7), match_date_diff))
 }
 
-map_dfr(list(ccc, blm), test_date_diffs, .id = "source")
+match_results <- map_dfr(list("CCC" = ccc, "Elephrame" = blm),
+                         test_date_diffs, .id = "source")
 
-kable()
+kable(match_results)
 ```
 
 So it seems that there are a fair number of duplicates occurring if we don't
@@ -269,23 +270,23 @@ in 2014, and I haven't actually joined it in yet.
 # Maps and related things
 
 ```{r maps, message = FALSE, warning = FALSE}
-county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) %>% 
+county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) |> 
   select(fips = GEOID)
-us_sf <- states(progress_bar = FALSE) %>% 
+us_sf <- states(progress_bar = FALSE) |> 
   filter(!(NAME %in% c("Hawaii", "Puerto Rico", "American Samoa", 
                        "United States Virgin Islands", 
                        "Commonwealth of the Northern Mariana Islands",
-                       "Alaska", "Guam"))) %>% 
+                       "Alaska", "Guam"))) |> 
   st_union()
-mpeds_sf <- mpeds %>% left_join(county_sf, by = "fips") 
+mpeds_sf <- mpeds |> left_join(county_sf, by = "fips") 
 ```
 
 ```{r mpeds_map}
 
-mpeds %>% 
-  drop_na(location_lat, location_lng) %>% 
-  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) %>% 
-  mutate(geometry = st_jitter(geometry, factor = 0.005)) %>% 
+mpeds |> 
+  drop_na(location_lat, location_lng) |> 
+  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) |> 
+  mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
   ggplot() + 
   geom_sf(data = us_sf, fill = "white", color = "gray") + 
   geom_sf(size = 0.1, alpha = 0.2) + 

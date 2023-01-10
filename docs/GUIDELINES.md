@@ -1,8 +1,8 @@
 # Guidelines and code conventions for the protest-analyses project
 
 - [Principles](#principles)
-- [Using `targets`](#targets)
-- [Using `renv`](#renv)
+- [Using `targets`](#using-targets)
+- [Using `renv`](#using-renv)
 - [R packages](#r-packages)
 - [File and filename conventions](#file-and-filename-conventions)
 - [Within scripts](#within-scripts)
@@ -55,11 +55,17 @@ and clarify their goals through the actual code we write, so it is best
 to read through this document and take a look at our codebase if you are
 to familiarize yourself with the practices adopted.
 
-### `targets`
+### Using `targets`
 
-[`targets`](https://books.ropensci.org/targets/) is a relatively new (as
-of 2022) package helping to ensure simple, reproducible, and
-understandable data processing workflows in R. It does this by:
+Our project is built upon the `targets` framework for data pipelines. 
+Instead of any one script running any piece of data processing or analysis
+by itself, each scripts exports a function that describes how data should be processed,
+and these functions are fit together and called in the `_targets.R` file at the
+root of the project. The `targets` framework then uses this file and its 
+data cache to efficiently run our pipeline. 
+
+We use this package because `targets` promotes reproducible and (relatively) simple
+data processing workflows. It does this by:
 
 - Requiring high-level instructions be placed in a single file, in a
   relatively simple (but extensible) syntax
@@ -78,19 +84,28 @@ Read
 [the walkthrough](https://books.ropensci.org/targets/walkthrough.html)
 in Chapter 2 of the `targets` user manual for a how-to.
 
-### `renv`
+### Using `renv`
 
 `targets` is great, but even a rock-solid pipeline can be inconsistent
 across different R environments. For example, loading the `tidyverse`
 package on my machine may load `lubridate` because I have downloaded
 [recent updates](https://twitter.com/hadleywickham/status/1558166157059919878)
-to the `tidyverse`, but someone else's machine might not have lubridate
+to the `tidyverse` package, but someone else's machine might not have `lubridate`
 loaded with the tidyverse and may encounter errors when trying to use
-functions from that `renv` helps solves this problem by ensuring that
-any machine, across any (theoretical) point in time, uses the same
-packages.
+functions from that version of the tidyverse. 
 
-If you'd like to use a new package, make sure to:
+To solve this problem, we rely on the `renv` library to pin packages to 
+specific versions, validated by "hashes" or a computational understanding of
+exactly what a package's contents are. It prevents the usage of any package
+installed globally to force you to rely on it.
+
+For the most part, you don't need to worry about `renv`. If you open up the 
+file called `protests-analysis.Rproj` in an RStudio project or otherwise begin
+an R session in the root level folder of this project, `renv` will begin checking
+for installed packages, hide globally installed ones, and guide you to perform
+certain actions if you need to install anything.
+
+If you'd like to use a new package in our project, make sure to:
 
 - call `install.packages()` from **within the `protests-analysis` R
   project** so that `renv` can install it correctly.
@@ -101,6 +116,11 @@ If you'd like to use a new package, make sure to:
 
 Read more on the [overview page](https://rstudio.github.io/renv/) for
 the package.
+
+`renv` and `targets` are the biggest steps we take to ensure reproducibility and 
+simplicity in our project. But reproducibility comes from the little things, too; 
+comments, variable names, file organization, logical flow, strict control of 
+environment variables, and so on. Read on and in our README to learn more.
 
 ### R packages
 
@@ -129,7 +149,7 @@ that have solid documentation and a history of maintenance and use.
 Here is an avenue where the exact principles we stick to can be
 important, but even more important is just the fact that we have
 principles. Sticking to something ensures structure and uniformity,
-which helps ensure complexity. All the usual caveats and exceptions
+which helps ensure simplicity. All the usual caveats and exceptions
 apply.
 
 - All code goes in the `tasks/` folder, labeled by dataset. `tasks/all`
@@ -157,6 +177,13 @@ Ball et. al don't mention much about within-script practices of code
 organization. Here are some rules that help follow the principles of
 pipeline-oriented reproducible work:
 
+- Each script should create one function, not run any processing or analysis code.
+  This is useful for projects in general to keep the environment clean, and is 
+  especially useful for our project since all R scripts in the `tasks/` folder
+  will be sourced by the `_targets.R` file in order to make the functions within them 
+  available to the `targets` pipeline. We don't want the initial import of these
+  functions to be slowed down by extraneous work not wrapped in the appropriate 
+  abstractions.
 - For functions that directly process targets, have the arguments of the 
   function be the same as the name of the target, to eliminate all ambiguity. 
   This can be a little tedious when we have targets that are variations of the
@@ -193,7 +220,7 @@ As well as a few for formatting:
   - Use `purrr::*map_*` functions instead of `lapply`, `sapply`, and so
     on.
     - When using `purrr` functions, prefer `map_{type}` functions over
-      the pattern `map() %>% unlist()` to break down types
+      the pattern `map() |> unlist()` to break down types
     - Unless they are short enough to be defined with the shorthand
       tilde (`~`) syntax, prefer to write functions for `purrr` notation
       outside of their calling context. This gives the chance to name
@@ -221,7 +248,7 @@ with each other through a common set of conventions.
     code is good, but how would we document principles, conventions for
     filenames, or in general anything qualitative? Obviously some level
     of documentation is useful; it's good to think judiciously about
-    this so our documentation can always be useful, concise, but
+    this so our documentation can always be useful -- concise, but
     informative.
   - This codebase is curated with the intent of sharing. Social science
     researchers have a wide array of skillsets and practices. It makes
@@ -233,11 +260,11 @@ with each other through a common set of conventions.
     making our project legible and accessible.
 - Take care of how you name things!
   - Unlike most other languages, R doesn't really have a concept of
-    immutable code, meaning `my_data` in line 19 and a different
-    `my_data` in line 31 will clash without R shouting it in your face.
+    immutable code, meaning `my_data` in line 19 and a new
+    `my_data` declaration in line 31 will clash without R shouting it in your face.
     Only one of these can exist in R (in the default global environment)
     at a time, so you must take care to name and remember which is
-    modified at a givent ime
+    modified at a given time
   - R, also unlike other languages, has no concept of files as modules
     or of immutable code, meaning that a function nonspecifically called
     `import` in one file can conflict silently with a function of the

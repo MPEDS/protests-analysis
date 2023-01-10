@@ -15,12 +15,12 @@ n_locations <- length(unique(mpeds$location))
 n_fips <- length(unique(mpeds$fips))
 n_universities <- length(unique(mpeds$university))
 
-missing_unis <- mpeds$university_locations %>%
-  bind_rows() %>%
+missing_unis <- mpeds$university_locations |>
+  bind_rows() |>
   filter(is.na(lat), !is.na(location))
 n_missing_uni_rows <- nrow(missing_unis)
-n_missing_unis <- missing_unis$location %>%
-  unique() %>% 
+n_missing_unis <- missing_unis$location |>
+  unique() |> 
   length()
 ```
 
@@ -58,11 +58,11 @@ That comes out to \~5% of universities not having coordinates, and
 The top universities by appearances:
 
 ``` r
-university_counts <- mpeds %>% 
-  group_by(university) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
+university_counts <- mpeds |> 
+  group_by(university) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
   slice_max(order_by = n, n = 15)
 
 kable(university_counts)
@@ -91,11 +91,11 @@ kable(university_counts)
 And the top locations:
 
 ``` r
-location_counts <- mpeds %>% 
-  group_by(location) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
+location_counts <- mpeds |> 
+  group_by(location) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
   slice_max(order_by = n, n = 15)
 
 kable(location_counts)
@@ -122,18 +122,18 @@ kable(location_counts)
 Top states:
 
 ``` r
-state_fips <- fips_codes %>% 
-  select(state_code, state_name) %>% 
+state_fips <- fips_codes |> 
+  select(state_code, state_name) |> 
   distinct()
 
-state_counts <- mpeds %>% 
-  mutate(state_code = str_sub(fips, 1, 2)) %>% 
-  group_by(state_code) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
-  slice_max(order_by = n, n = 15) %>% 
-  left_join(state_fips, by = "state_code") %>% 
+state_counts <- mpeds |> 
+  mutate(state_code = str_sub(fips, 1, 2)) |> 
+  group_by(state_code) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
+  slice_max(order_by = n, n = 15) |> 
+  left_join(state_fips, by = "state_code") |> 
   select(-state_code)
   
 kable(state_counts)
@@ -161,18 +161,18 @@ kable(state_counts)
 And finally the top counties:
 
 ``` r
-county_fips <- fips_codes %>% 
+county_fips <- fips_codes |> 
   mutate(fips = paste0(state_code, county_code),
-         county_name = paste0(county, ", ", state_name)) %>% 
+         county_name = paste0(county, ", ", state_name)) |> 
   select(fips, county_name)
 
-county_counts <- mpeds %>% 
-  group_by(fips) %>% 
-  count() %>% 
-  ungroup() %>% 
-  drop_na() %>% 
-  slice_max(order_by = n, n = 15) %>% 
-  left_join(county_fips, by = "fips") %>% 
+county_counts <- mpeds |> 
+  group_by(fips) |> 
+  count() |> 
+  ungroup() |> 
+  drop_na() |> 
+  slice_max(order_by = n, n = 15) |> 
+  left_join(county_fips, by = "fips") |> 
   select(-fips)
   
 kable(county_counts)
@@ -206,19 +206,19 @@ I’m continuing to revise the code.
 # Basic summary plots
 
 ``` r
-mpeds %>% select(where(function(x){is.numeric(x) || is.logical(x)}),
+mpeds |> select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -link) %>% 
-  pivot_longer(cols = everything()) %>% 
-  filter(name != "NA") %>% 
-  group_by(name) %>% 
+                 -year, -uni_id, -size_category, -link) |> 
+  pivot_longer(cols = everything()) |> 
+  filter(name != "NA") |> 
+  group_by(name) |> 
   summarize(
     type = ifelse(is.numeric(pull(mpeds[name[1]], 1)), "numeric", "boolean"),
     mean = mean(value, na.rm = TRUE),
     sd = sd(value, na.rm = TRUE)
-  ) %>% 
-  mutate(across(where(is.numeric), ~round(., 3))) %>% 
-  arrange(type) %>% 
+  ) |> 
+  mutate(across(where(is.numeric), ~round(., 3))) |> 
+  arrange(type) |> 
   kable()
 ```
 
@@ -241,8 +241,8 @@ mpeds %>% select(where(function(x){is.numeric(x) || is.logical(x)}),
 | unemp                   | numeric |     4.693 |     1.515 |
 
 ``` r
-mpeds %>% select(where(is.numeric), -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category) %>% 
+mpeds |> select(where(is.numeric), -canonical_id, -starts_with("location"),
+                 -year, -uni_id, -size_category) |> 
   pairs()
 ```
 
@@ -277,53 +277,69 @@ We discussed two solutions to this problem to avoid deduplication:
 The following chunk gives a glimpse at total number of matches:
 
 ``` r
-ccc <- tar_read(ccc) %>% 
-  distinct()
-# a version where dates are a list-col, to assist in the testing below
-ccc_dates <- ccc %>% 
-  group_by(fips) %>% 
-  summarize(dates_lst = list(ccc_protest_date))
+ccc <- tar_read(ccc) |> 
+  distinct() |> 
+  rename(protest_date = ccc_protest_date)
 
-# return a TRUE value if any protests occurred between 
-# a given date and `diff` days from that date
-compute_protests <- function(vec, date, diff){
-  if(is.na(date)) return(NA)
-  any(vec %in% (date + 1):(diff + date))
+blm <- tar_read(elephrame_blm) |> 
+  distinct() |> 
+  rename(protest_date = blm_protest_date)
+
+test_date_diffs <- function(protests){
+  # a version where dates are a list-col, to assist in the testing below
+  dates <- protests |> 
+    group_by(fips) |> 
+    summarize(dates_lst = list(protest_date))
+  
+  # return a TRUE value if any protests in `vec` occurred between 
+  # a given date and `diff` days after that date
+  compute_protests <- function(vec, date, diff){
+    if(is.na(date)) return(NA)
+    any(vec %in% (date + 1):(diff + date))
+  }
+  
+  match_date_diff <- function(diff){
+    diffed_protests <- protests |> 
+      left_join(dates, by = "fips") |> 
+      mutate(
+        dummy = unlist(map2(
+          dates_lst, protest_date,
+          function(x,y){compute_protests(x, y, diff)}
+        ))
+      )
+    
+    joined <- mpeds |> 
+      left_join(
+        diffed_protests, by = c("start_date" = "protest_date", "fips")
+        ) 
+    
+    n_matches <- sum(joined$dummy, na.rm = TRUE)
+    
+    tribble(~date_offset, ~recent_protests, ~match_percentage,
+            diff, n_matches, 100 * n_matches/nrow(joined)
+            )
+  }
+  return(map_dfr(c(0, 1,3,5,7), match_date_diff))
 }
 
-match_date_diff <- function(diff){
-  ccc_diff <- ccc %>% 
-    left_join(ccc_dates, by = "fips") %>% 
-    mutate(
-      ccc_dummy = unlist(map2(
-        dates_lst, ccc_protest_date,
-        function(x,y){compute_protests(x, y, diff)}
-      ))
-    )
-  
-  joined <- mpeds %>% 
-    left_join(
-      ccc_diff, by = c("start_date" = "ccc_protest_date", "fips")
-      ) 
-  
-  joins <- sum(joined$ccc_dummy, na.rm = TRUE)
-  
-  tribble(~date_offset, ~recent_protests, ~match_percentage,
-          diff, joins, 100 * joins/nrow(joined)
-          )
-}
+match_results <- map_dfr(list("CCC" = ccc, "Elephrame" = blm),
+                         test_date_diffs, .id = "source")
 
-map_dfr(c(0, 1,3,5,7), match_date_diff) %>% 
-  kable()
+kable(match_results)
 ```
 
-| date_offset | recent_protests | match_percentage |
-|------------:|----------------:|-----------------:|
-|           0 |             557 |        10.589354 |
-|           1 |             151 |         2.870722 |
-|           3 |             254 |         4.828897 |
-|           5 |             327 |         6.216730 |
-|           7 |             376 |         7.148289 |
+| source    | date_offset | recent_protests | match_percentage |
+|:----------|------------:|----------------:|-----------------:|
+| CCC       |           0 |             557 |       10.5893536 |
+| CCC       |           1 |             151 |        2.8707224 |
+| CCC       |           3 |             254 |        4.8288973 |
+| CCC       |           5 |             327 |        6.2167300 |
+| CCC       |           7 |             376 |        7.1482890 |
+| Elephrame |           0 |             199 |        3.7582625 |
+| Elephrame |           1 |              39 |        0.7365439 |
+| Elephrame |           3 |              65 |        1.2275732 |
+| Elephrame |           5 |              75 |        1.4164306 |
+| Elephrame |           7 |              78 |        1.4730878 |
 
 So it seems that there are a fair number of duplicates occurring if we
 don’t have a date offset, but once we add one (of any days) that pretty
@@ -340,22 +356,22 @@ actually joined it in yet.
 # Maps and related things
 
 ``` r
-county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) %>% 
+county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) |> 
   select(fips = GEOID)
-us_sf <- states(progress_bar = FALSE) %>% 
+us_sf <- states(progress_bar = FALSE) |> 
   filter(!(NAME %in% c("Hawaii", "Puerto Rico", "American Samoa", 
                        "United States Virgin Islands", 
                        "Commonwealth of the Northern Mariana Islands",
-                       "Alaska", "Guam"))) %>% 
+                       "Alaska", "Guam"))) |> 
   st_union()
-mpeds_sf <- mpeds %>% left_join(county_sf, by = "fips") 
+mpeds_sf <- mpeds |> left_join(county_sf, by = "fips") 
 ```
 
 ``` r
-mpeds %>% 
-  drop_na(location_lat, location_lng) %>% 
-  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) %>% 
-  mutate(geometry = st_jitter(geometry, factor = 0.005)) %>% 
+mpeds |> 
+  drop_na(location_lat, location_lng) |> 
+  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) |> 
+  mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
   ggplot() + 
   geom_sf(data = us_sf, fill = "white", color = "gray") + 
   geom_sf(size = 0.1, alpha = 0.2) + 
