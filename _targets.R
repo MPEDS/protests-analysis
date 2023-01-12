@@ -6,7 +6,7 @@ fn_filenames <- list.files("tasks", full.names = TRUE,
                            recursive = TRUE)
 invisible(lapply(fn_filenames, source))
 
-tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh",
+tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven",
                             "httr", "curl", "sf", "tigris", "tidycensus"))
 
 list(
@@ -46,6 +46,9 @@ list(
   tar_target(evictions, get_evictions(eviction_url)),
   tar_target(mit_elections, get_mit_elections()),
 
+  tar_target(canada_shapefiles, get_canada_shapefiles()),
+  tar_target(glued, get_glued()),
+
   # This queries the ACS, and doesn't depend on a URL,
   # so it will only be run once by the targets pipeline
   # IMO the ACS is stable enough not to update 2012-2018 data
@@ -76,7 +79,8 @@ list(
   tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
 
   tar_target(integrated, integrate_targets(
-    geocoded, uni_directory, ipeds_xwalk, county_covariates, ccc
+    geocoded, uni_directory, ipeds_xwalk, county_covariates, ccc,
+    canada_shapefiles = canada_shapefiles
     )),
 
   # Plotting and other exploratory analysis ---
