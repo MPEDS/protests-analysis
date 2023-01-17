@@ -9,7 +9,7 @@ get_glued <- function(){
   glued <- read_dta(
     "https://borealisdata.ca/api/access/datafile/424713?format=original&gbrecs=true"
   ) |>
-    filter(country == "canada") |>
+    filter(country == "canada",  orig_name != "") |>
     mutate(private = case_when(private01 == 1 ~ TRUE,
                                 private01 == 0 ~ FALSE,
                                 TRUE ~ NA)) |>

@@ -846,6 +846,7 @@ lat,lng,location
 32.8800604,-117.2340135,UC San Diego
 45.514669,-73.5663793,Cegep du Vieux Montreal
 45.5123906,-73.67180809999999,Cégep de Saint-Laurent
+-33.769979,150.7734575,Saint Mary's
 32.2792887,-106.7491391,New Mexico State University
 38.9543439,-95.2557961,University of Kansas
 34.1482032,-118.1404425,Fuller Theological Seminary
@@ -853,6 +854,7 @@ lat,lng,location
 41.2580268,-96.010696,University of Nebraska at Omaha
 42.8627836,-112.429762,Idaho State University
 40.3430942,-74.65507389999999,Princeton
+37.4245914,-81.005363,Concord College
 18.220833,-66.590149,University of Puerto Rico
 29.9346582,-90.1209925,Loyola University New Orleans
 40.2390377,-74.96717900000002,Bucks County Community College
@@ -875,6 +877,7 @@ lat,lng,location
 44.0081076,-73.1760412,Middlebury College
 47.6491714,-122.3618554,Seattle Pacific University
 47.6062095,-122.3320708,University of Washington Seattle campus
+52.157902,-106.6701577,University of Saskatoon
 37.8718992,-122.2585399,UC Berkeley
 37.7626459,-122.4587106,UCSF
 37.765574,-122.3901281,UCSF Mission Bay
@@ -968,6 +971,7 @@ lat,lng,location
 32.7774047,-117.0714068,San Diego State
 45.5131547,-73.5602937,Université de Québec a Montréal
 45.514669,-73.5663793,CEGEP Vieux-Montreal
+45.5131547,-73.5602937,UQAM
 45.514669,-73.5663793,CEGEP du Vieux-Montreal
 42.701848,-84.4821719,Michigan State University
 45.5018869,-73.56739189999999,Université de Québec à Montréal (UQAM)

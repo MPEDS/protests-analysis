@@ -82,7 +82,7 @@ university_counts <- mpeds |>
   group_by(university) |> 
   count() |> 
   ungroup() |> 
-  drop_na() |> 
+  drop_na() |>
   slice_max(order_by = n, n = 15)
 
 kable(university_counts)
@@ -284,8 +284,7 @@ mpeds_sf <- mpeds |> left_join(county_sf, by = "fips")
 ```{r mpeds_map}
 
 mpeds |> 
-  drop_na(location_lat, location_lng) |> 
-  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) |> 
+  st_transform(st_crs(county_sf)) |>
   mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
   ggplot() + 
   geom_sf(data = us_sf, fill = "white", color = "gray") + 

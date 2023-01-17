@@ -47,7 +47,6 @@ list(
   tar_target(mit_elections, get_mit_elections()),
 
   tar_target(canada_shapefiles, get_canada_shapefiles()),
-  tar_target(glued, get_glued()),
 
   # This queries the ACS, and doesn't depend on a URL,
   # so it will only be run once by the targets pipeline
@@ -57,29 +56,34 @@ list(
 
   # school-level covariates ---
   tar_target(directory_url, format = "url", get_directory_url(2018)),
-  tar_target(uni_directory, get_school_directory(directory_url)),
+  tar_target(ipeds, get_school_directory(directory_url)),
+  tar_target(glued, get_glued()),
 
   tar_target(tuition_url, format = "url", get_tuition_url(2018)),
   tar_target(tuition, get_tuition(tuition_url)),
 
+
   # Integration steps ---
   # IPEDS and MPEDS
-  # the `raw_names` target is meant to be cleaned by hand
-  tar_target(raw_names, clean_mpeds_names(geocoded, uni_directory),
+  # the `raw_names` target is meant to be cleaned by hand (by me)
+  tar_target(raw_names, clean_mpeds_names(geocoded, ipeds, glued),
              format = "file"),
   # then passed off to coders in a readable format
-  tar_target(postprocess_filename, postprocess_names(geocoded, "tasks/ipeds/hand/cleaned_ipeds_match.csv")),
+  tar_target(postprocess_filename, postprocess_names(
+    geocoded, "tasks/university_covariates/hand/coarse_uni_match.csv"
+  )),
   # and the cleaned version of `raw_names` will be read in from the below filename
-  tar_target(ipeds_xwalk_filename,
-             "tasks/ipeds/hand/cleaned_ipeds_match.csv",
+  tar_target(coarse_xwalk_filename,
+             "tasks/university_covariates/hand/coarse_uni_match.csv",
              format = "file"),
-  tar_target(ipeds_xwalk, match_ipeds(uni_directory, geocoded, ipeds_xwalk_filename
-                                      )),
+  tar_target(ipeds_xwalk, match_ipeds(
+    ipeds, glued, geocoded, coarse_xwalk_filename
+  )),
 
   tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
 
   tar_target(integrated, integrate_targets(
-    geocoded, uni_directory, ipeds_xwalk, county_covariates, ccc,
+    geocoded, ipeds, glued, ipeds_xwalk, county_covariates, ccc,
     canada_shapefiles = canada_shapefiles
     )),
 

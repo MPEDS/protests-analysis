@@ -1,0 +1,841 @@
+original_name,authoritative_name,canada,uni_id,uni_data_source
+University of Missouri,University of Missouri-Columbia,NA,NA,NA
+University of Michigan Ann Arbor,University of Michigan-Ann Arbor,NA,NA,NA
+Georgia State University in Atlanta,Georgia State University,NA,NA,NA
+University of Wisconsin Green Bay,University of Wisconsin-Green Bay,NA,NA,NA
+Depauw University,DePauw University,NA,NA,NA
+"University of California, Berkeley",University of California-Berkeley,NA,NA,NA
+Harvard Law,Harvard University,NA,NA,NA
+Harvard Law School,Harvard University,NA,NA,NA
+University of Texas Austin,The University of Texas at Austin,NA,NA,NA
+Indiana University,Indiana University-Bloomington,NA,NA,NA
+University at Albany,SUNY at Albany,NA,NA,NA
+University of Nevada Las Vegas,University of Nevada-Las Vegas,NA,NA,NA
+Carleton University,NA,TRUE,IAU-001997-1,glued
+University of Ottawa,NA,TRUE,NA,NA
+University of Colorado,University of Colorado Boulder,NA,NA,NA
+Southern Illinois University,Southern Illinois University Carbondale,NA,NA,NA
+Shippensburg University,Shippensburg University of Pennsylvania,NA,NA,NA
+University of Minnesota,University of Minnesota-Twin Cities,NA,NA,NA
+York University,NA,TRUE,IAU-021739-1,glued
+Ryerson University,NA,TRUE,NA,NA
+University of Toronto,NA,NA,NA,NA
+University of California Los Angeles,University of California-Los Angeles,NA,NA,NA
+California State University Los Angeles,California State University-Los Angeles,NA,NA,NA
+West Chester University,West Chester University of Pennsylvania,NA,NA,NA
+University of Georgia in Athens,University of Georgia,NA,NA,NA
+University of California San Diego,University of California-San Diego,NA,NA,NA
+Colorado State University,Colorado State University-Fort Collins,NA,NA,NA
+University of British Columbia,NA,TRUE,NA,NA
+SUNY at Geneseo,SUNY College at Geneseo,NA,NA,NA
+Michigan Tech University,Michigan Technological University,NA,NA,NA
+"Smith College in Northampton, Massachusetts",Smith College,NA,NA,NA
+Miami University,University of Miami,NA,NA,NA
+North Carolina State University,North Carolina State University at Raleigh,NA,NA,NA
+University of Pittsburgh Pittsburgh Campus,University of Pittsburgh-Pittsburgh Campus,NA,NA,NA
+Texas State University San Marcos,Texas State University-San Marcos,NA,NA,NA
+University of North Carolina Asheville,University of North Carolina at Asheville,NA,NA,NA
+SUNY Brockport,SUNY College at Brockport,NA,NA,NA
+Simon Fraser University,NA,TRUE,IAU-015440-1,glued
+Polytechnic State University,California Polytechnic State University-San Luis Obispo,NA,NA,NA
+University of Calgary,NA,TRUE,NA,NA
+UNC-Chapel Hill,University of North Carolina at Chapel Hill,NA,NA,NA
+University of California at Davis,University of California-Davis,NA,NA,NA
+"NAU",Northern Arizona University,NA,NA,NA
+Queens College,CUNY Queens College,NA,NA,NA
+University of Massachusetts at Amherst,University of Massachusetts Amherst,NA,NA,NA
+University of New Brunswick,NA,TRUE,NA,NA
+Dalhousie University,NA,TRUE,IAU-003505-3,glued
+Columbia University,Columbia University in the City of New York,NA,NA,NA
+University of Southern Misissippi,University of Southern Mississippi,NA,NA,NA
+MIT,Massachusetts Institute of Technology,NA,NA,NA
+Cal State East Bay,California State University-East Bay,NA,NA,NA
+Kent State University,Kent State University at Kent,NA,NA,NA
+McMaster University,NA,TRUE,NA,NA
+University of Hawaii Manoa,University of Hawaii at Manoa,NA,NA,NA
+Brigham Young University,Brigham Young University-Provo,NA,NA,NA
+SUNY Purchase,SUNY at Purchase College,NA,NA,NA
+St Cloud State University,Saint Cloud State University,NA,NA,NA
+Washington University St.Louis,Washington University in St Louis,NA,NA,NA
+Central Connecticut University,Central Connecticut State University,NA,NA,NA
+UC Santa Barbara,University of California-Santa Barbara,NA,NA,NA
+UC Santa Cruz,University of California-Santa Cruz,NA,NA,NA
+Western Illinois University Quad City riverfront campus,Western Illinois University,NA,NA,NA
+University of Pittsburgh,University of Pittsburgh-Pittsburgh Campus,NA,NA,NA
+Chatham College,Chatham University,NA,NA,NA
+University of Illinois Springfield,University of Illinois at Springfield,NA,NA,NA
+Laurentian University,NA,TRUE,NA,NA
+Louisiana State University,Louisiana State University-System Office,NA,NA,NA
+Brock University,NA,TRUE,IAU-001778-1,glued
+Missouri Western State College,Missouri Western State University,NA,NA,NA
+University of Colorado at Boulder,University of Colorado Boulder,NA,NA,NA
+California State University Long Beach,California State University-Long Beach,NA,NA,NA
+SUNY New Paltz,State University of New York at New Paltz,NA,NA,NA
+Buffalo,University at Buffalo,NA,NA,NA
+University of Illinois,University of Illinois at Urbana-Champaign,NA,NA,NA
+College of Staten Island,College of Staten Island CUNY,NA,NA,NA
+SUNY College at New Paltz,State University of New York at New Paltz,NA,NA,NA
+University of Prince Edward Island,NA,TRUE,NA,NA
+College of New Jersey,The College of New Jersey,NA,NA,NA
+Concordia University,NA,TRUE,IAU-003125-1,glued
+University of Toronto Mississauga,NA,TRUE,NA,NA
+Hampshire College in Massachusetts,Hampshire College,NA,NA,NA
+University of Massachusetts,University of Massachusetts-Amherst,NA,NA,NA
+University of Texas Arlington,The University of Texas at Arlington,NA,NA,NA
+University of Louisiana Lafayette,University of Louisiana at Lafayette,NA,NA,NA
+University of Manitoba,NA,TRUE,NA,NA
+University of Montana,The University of Montana,NA,NA,NA
+Longwood College,Longwood University,NA,NA,NA
+Framingham State College,Framingham State University,NA,NA,NA
+Mary Washington,Framingham State University,NA,NA,NA
+McGill University,NA,TRUE,NA,NA
+UQÀM,NA,TRUE,NA,NA
+University of Michigan,University of Michigan-Ann Arbor,NA,NA,NA
+McGill,NA,TRUE,NA,NA
+University of Guelph,NA,TRUE,NA,NA
+University of Victoria,NA,TRUE,NA,NA
+University of Texas at Austin,The University of Texas at Austin,NA,NA,NA
+"Bloomsburg, California, Cheyney, Clarion, East Stroudsburg, Edinboro, Indiana, Kutztown, Lock Haven, Mansfield, Millersville, Shippensburg, Slippery Rock and West Chester universities of Pennsylvania",NA,NA,NA,NA
+North Carolina A-T State University,North Carolina A & T State University,NA,NA,NA
+Baruch College,CUNY Bernard M Baruch College,NA,NA,NA
+New School,The New School,NA,NA,NA
+UH-Manoa,University of Hawaii at Manoa,NA,NA,NA
+The Massachusetts Institute of Technology,Massachusetts Institute of Technology,NA,NA,NA
+UC Irvine,University of California-Irvine,NA,NA,NA
+University of Missouri Kansas City,University of Missouri-Kansas City,NA,NA,NA
+Creighton University The Creightonian,Creighton University,NA,NA,NA
+SUNY,SUNY Buffalo State,NA,NA,NA
+University of Texas- Austin,The University of Texas at Austin,NA,NA,NA
+The University of San Diego,University of San Diego,NA,NA,NA
+University of Texas,The University of Texas at Austin,NA,NA,NA
+the University of Southern California,University of Southern California,NA,NA,NA
+UCLA,University of California-Los Angeles,NA,NA,NA
+Texas A &M University Kingsville,Texas A & M University-Kingsville,NA,NA,NA
+University of Wisconsin LaCrosse,University of Wisconsin-La Crosse,NA,NA,NA
+University of California,University of California-Berkeley,NA,NA,NA
+"University of Nevada, Las Vegas",University of Nevada-Las Vegas,NA,NA,NA
+The Claremont Colleges,Claremont McKenna College,NA,NA,NA
+St. Olaf,St Olaf College,NA,NA,NA
+"University of California, San Diego",University of California-San Diego,NA,NA,NA
+UC San Diego,University of California-San Diego,NA,NA,NA
+Cegep du Vieux Montreal,NA,TRUE,NA,NA
+Cégep de Saint-Laurent,NA,TRUE,NA,NA
+Concord College,Concord University,NA,NA,NA
+Rutgers University,Rutgers University-New Brunswick,NA,NA,NA
+University of Puerto Rico,University of Puerto Rico-Rio Piedras,NA,NA,NA
+Long Island University Brooklyn Campus,Long Island University-Brooklyn Campus,NA,NA,NA
+Hunter College,CUNY Hunter College,NA,NA,NA
+Lehman College,CUNY Lehman College,NA,NA,NA
+NYU,New York University,NA,NA,NA
+Cal Poly San Luis Obispo,California Polytechnic State University-San Luis Obispo,NA,NA,NA
+Westchester Community College,SUNY Westchester Community College,NA,NA,NA
+University of Texas Pan American,The University of Texas-Pan American,NA,NA,NA
+Prairie View A&M University,Prairie View A & M University,NA,NA,NA
+University of Washington,University of Washington-Seattle Campus,NA,NA,NA
+University of Washington Seattle campus,University of Washington-Seattle Campus,NA,NA,NA
+University of Saksa,NA,TRUE,NA,NA
+UC Berkeley,University of California-Berkeley,NA,NA,NA
+UCSF,University of California-San Francisco,NA,NA,NA
+UCSF Mission Bay,University of California-San Francisco,NA,NA,NA
+UC San Francisco,NA,NA,NA,NA
+St Michael's College,Saint Michael's College,NA,NA,NA
+the University of California San Diego,University of California-San Diego,NA,NA,NA
+University California San Diego,University of California-San Diego,NA,NA,NA
+Shippensburg,Shippensburg University of Pennsylvania,NA,NA,NA
+Loyola College Maryland,Loyola University Maryland,NA,NA,NA
+University of Missouri St.Louis,University of Missouri-St Louis,NA,NA,NA
+University of Wisconsin Eau Claire,University of Wisconsin-Eau Claire,NA,NA,NA
+Wilfrid Laurier University,NA,TRUE,NA,NA
+St. Paul College,Saint Paul College,NA,NA,NA
+El Camino College,El Camino College-Compton Center,NA,NA,NA
+Florida A&M,Florida Agricultural and Mechanical University,NA,NA,NA
+University of Tampa,The University of Tampa,NA,NA,NA
+Texas A&M University in College Station,Texas A & M University-College Station,NA,NA,NA
+Texas A &M University,Texas A & M University-College Station,NA,NA,NA
+Texas A&M University,Texas A & M University-College Station,NA,NA,NA
+University of Winnipeg,NA,TRUE,NA,NA
+the University of Toronto campus,NA,TRUE,NA,NA
+University of Alberta,NA,TRUE,NA,NA
+UC Riverside,University of California-Riverside,NA,NA,NA
+University of Virginia Wise,The University of Virginia's College at Wise,NA,NA,NA
+University of Texas Dallas,The University of Texas at Dallas,NA,NA,NA
+UC Davis,University of California-Davis,NA,NA,NA
+"University of California, Davis",University of California-Davis,NA,NA,NA
+"University of California,Davis",University of California-Davis,NA,NA,NA
+Bethune Cookman University,Bethune-Cookman University,NA,NA,NA
+Linfield College,Linfield College-McMinnville Campus,NA,NA,NA
+Media network college,NA,NA,NA,NA
+Concordia,Concordia College-New York,NA,IAU-003125-1,glued
+CÉGEP Vieux-Montreal,NA,TRUE,NA,NA
+l’Université du Québec à Montréal (UQAM),NA,TRUE,NA,NA
+University of Montreal,NA,TRUE,NA,NA
+"already demonstrated at Humber College, Sheridan College and Fanshaw College in London, Ont",NA,TRUE,NA,NA
+CEGEP Maisonneuve,NA,TRUE,NA,NA
+CEGEP Marie-Victorin,NA,TRUE,NA,NA
+CEGEP Saint-Laurent,NA,TRUE,NA,NA
+UTSG,NA,TRUE,NA,NA
+Selkirk College,NA,TRUE,NA,NA
+University of North Carolina Charlotte,University of North Carolina at Charlotte,NA,NA,NA
+"Southern Illinois University,Carbondale",Southern Illinois University Carbondale,NA,NA,NA
+North Carolina at Charlotte,University of North Carolina at Charlotte,NA,NA,NA
+St.Mary's College of Maryland,St. Mary's College of Maryland,NA,NA,NA
+sign listing kinds of sinners hated by God,NA,NA,NA,NA
+Auraria Campus,University of Colorado Denver,NA,NA,NA
+UQAM,NA,TRUE,NA,NA
+CEGEP du Vieux-Montreal,NA,TRUE,NA,NA
+L’Université du Québec à Montréal,NA,TRUE,NA,NA
+ETSU,East Tennessee State University,NA,NA,NA
+East Tennessee State University:,East Tennessee State University,NA,NA,NA
+University of Arkansas Main Campus,University of Arkansas,NA,NA,NA
+University of Nebraska at Lincoln,University of Nebraska-Lincoln,NA,NA,NA
+K-State,Kansas State University,NA,NA,NA
+Georgia Tech,Georgia Institute of Technology-Main Campus,NA,NA,NA
+University of California-Berkley,University of California-Berkeley,NA,NA,NA
+University of California at Berkeley,University of California-Berkeley,NA,NA,NA
+Millersville University,Millersville University of Pennsylvania,NA,NA,NA
+Virginia Tech,Virginia Polytechnic Institute and State University,NA,NA,NA
+Berklee College,Berklee College of Music,NA,NA,NA
+Université de Montréal (UdeM),NA,TRUE,IAU-019623-1,glued
+the University of Minnesota's St. Paul campus,University of Minnesota-Twin Cities,NA,NA,NA
+University of South Florida St.Petersburg,University of South Florida-St Petersburg,NA,NA,NA
+Florida A&M University,Florida Agricultural and Mechanical University,NA,NA,NA
+Laurier,NA,TRUE,NA,NA
+Peace College,William Peace University,NA,NA,NA
+Centennial College,Centenary College,NA,IAU-002055-1,glued
+Seneca at York,NA,TRUE,NA,NA
+George Brown College,NA,TRUE,NA,NA
+Seneca college campus at York University,NA,TRUE,NA,NA
+Sheridan college,NA,TRUE,NA,NA
+Brooklyn College,CUNY Brooklyn College,NA,NA,NA
+University of Waterloo,NA,TRUE,NA,NA
+Université du Québec à Montréal,NA,TRUE,NA,NA
+Université de Montréal,NA,TRUE,NA,NA
+Universite de Montreal,NA,TRUE,NA,NA
+CEGEP Lionel-Groulx,NA,TRUE,NA,NA
+Université Laval,NA,TRUE,NA,NA
+CEGEP Edouard-Montpetit,NA,TRUE,NA,NA
+University of Sherbrooke,NA,TRUE,NA,NA
+CEGEP Montmorency,NA,TRUE,NA,NA
+St. Louis Community College,Saint Louis Community College,NA,NA,NA
+"California State University, San Marcos",California State University-San Marcos,NA,NA,NA
+UCSF Mission Bay campus,University of San Francisco,NA,NA,NA
+Ocean,Ocean County College,NA,NA,NA
+Chinatown,NA,NA,NA,NA
+Caltech,California Institute of Technology,NA,NA,NA
+UCSD,University of California-San Diego,NA,NA,NA
+University of Toronto Scarborough,NA,TRUE,NA,NA
+University of Maryland,University of Maryland-College Park,NA,NA,NA
+USC,University of Southern California,NA,NA,NA
+University of Northern British Columbia,NA,TRUE,NA,NA
+Thompson Rivers University,NA,TRUE,NA,NA
+UCSF Mission Bay Campus,University of California-San Francisco,NA,NA,NA
+Ontario College of Art and Design University,NA,TRUE,NA,NA
+City College of New York,CUNY City College,NA,NA,NA
+GVSU,Grand Valley State University,NA,NA,NA
+"CUPE members held a silent protest outside of the library and Maggie Benston Centre, and on Oct. 19, they walked off the job and picketed the SFU Vancouver locations, including the Harbour Centre and Woodward’s campuses",NA,TRUE,NA,NA
+"SFU’s Vancouver campuses, including Harbour Centre and Woodward’s, were picketed on Saturday and Sunday",NA,TRUE,NA,NA
+Native Education College,NA,TRUE,NA,NA
+Simon Fraser,NA,TRUE,NA,NA
+University of Tennessee in Chattanooga,The University of Tennessee-Chattanooga,NA,NA,NA
+SFU’s Vancouver and Surrey campuses,NA,TRUE,NA,NA
+all three of SFU’s campuses,NA,TRUE,NA,NA
+Rutgers,Rutgers University-New Brunswick,NA,NA,NA
+California State University - Fullerton,California State University-Fullerton,NA,NA,NA
+Mesa State College,Mesa Community College,NA,NA,NA
+Haverford and Bryn Mawr Colleges,"Haverford College,ryn Mawr College",NA,NA,NA
+University of Hawai'i at Hilo,University of Hawaii at Hilo,NA,NA,NA
+Michigan Tech,Michigan Technological University,NA,NA,NA
+University of Hawaii,University of Hawaii at Manoa,NA,NA,NA
+Amherst College in Massachusetts,University of Massachusetts-Amherst,NA,NA,NA
+Harvard Medical School,Harvard University,NA,NA,NA
+Harvard Graduate School of Education,Harvard University,NA,NA,NA
+University of Toronto.,NA,TRUE,NA,NA
+Ryerson,NA,TRUE,NA,NA
+Cal Poly Pomona,California State Polytechnic University-Pomona,NA,NA,NA
+Cal State Fullerton,California State University-Fullerton,NA,NA,NA
+Cal State Northridge,California State University-Northridge,NA,NA,NA
+OU,University of Oklahoma-Norman Campus,NA,NA,NA
+University of Texas-Austin,The University of Texas at Austin,NA,NA,NA
+UIS,University of Illinois at Springfield,NA,NA,NA
+Laurentian University’,NA,TRUE,NA,NA
+UTM,The University of Tennessee-Martin,NA,NA,NA
+universities across Louisiana,NA,NA,NA,NA
+IU-Purdue University Indianapolis,Indiana University-Purdue University-Indianapolis,NA,NA,NA
+IU-Bloomington,Indiana University-Bloomington,NA,NA,NA
+20 other SUNY campuses,NA,NA,NA,NA
+University of Illinois [at] Chicago,University of Illinois at Chicago,NA,NA,NA
+several Chicago-area colleges,NA,NA,NA,NA
+Fresno State,California State University-Fresno,NA,NA,NA
+John Abbott College,NA,TRUE,NA,NA
+Lock Haven University of Pennsylvania,Lock Haven University,NA,NA,NA
+Connecticut State University,Central Connecticut State University,NA,NA,NA
+UNCG,University of North Carolina at Greensboro,NA,NA,NA
+A&T,North Carolina A & T State University,NA,NA,NA
+CUNY,CUNY City College,NA,NA,NA
+Baruch,CUNY Bernard M Baruch College,NA,NA,NA
+Honolulu CC,Honolulu Community College,NA,NA,NA
+Texas Southern University.,Texas Southern University,NA,NA,NA
+the 23 California State University campuses,NA,NA,NA,NA
+Cégep du Vieux Montréal,NA,TRUE,NA,NA
+MSUM,Minnesota State University Moorhead,NA,NA,NA
+WSU,Washington State University,NA,NA,NA
+California State University,California State University-Fullerton,NA,NA,NA
+all 23 California State Universities,NA,NA,NA,NA
+Cal State Long Beach,California State University-Long Beach,NA,NA,NA
+other CSUs,NA,NA,NA,NA
+different CSU campuses,NA,NA,NA,NA
+CSU Northridge,California State University-Northridge,NA,NA,NA
+CSU Dominguez Hills,California State University-Dominguez Hills,NA,NA,NA
+CSU Los Angeles,California State University-Los Angeles,NA,NA,NA
+Chico State,California State University-Chico,NA,NA,NA
+City University of New York,CUNY City College,NA,NA,NA
+University of Washington.,University of Washington-Seattle Campus,NA,NA,NA
+Alameda Community College,College of Alameda,NA,NA,NA
+University of California - Los Angeles,University of California-Los Angeles,NA,NA,NA
+California State University Los Angeles,California State University-Los Angeles,NA,NA,NA
+Georgetown Solidarity Committee,Georgetown University,NA,NA,NA
+University California San Diego],University of California-San Diego,NA,NA,NA
+UTSC,NA,TRUE,NA,NA
+Community College of Baltimore County Essex,Community College of Baltimore County,NA,NA,NA
+Brandon University,NA,TRUE,NA,NA
+Université de Saint Boniface,NA,TRUE,NA,NA
+Collège Lionel-Groulx,NA,TRUE,NA,NA
+CÉGEP de Drummondville,NA,TRUE,NA,NA
+CÉGEP du Vieux-Montréal,NA,TRUE,NA,NA
+CÉGEP St-Laurent,NA,TRUE,NA,NA
+University of Laval,NA,TRUE,NA,NA
+CEGEP Vieux-Montreal,NA,TRUE,NA,NA
+Brock University,NA,TRUE,IAU-001778-1,glued
+York University,NA,TRUE,IAU-021739-1,glued
+Geulph University,NA,TRUE,NA,NA
+George Brown College.,NA,TRUE,NA,NA
+NC State,North Carolina State University at Raleigh,NA,NA,NA
+St. Augustine,Saint Augustine College,NA,NA,NA
+Claremont Colleges,Pomona College,NA,NA,NA
+Concordia,NA,TRUE,IAU-003125-1,glued
+Cégep du Vieux-Montréal,NA,TRUE,NA,NA
+Université du Québec à Montreal,NA,TRUE,NA,NA
+Collège de Maisonneuve,NA,TRUE,NA,NA
+CEGEP du Vieux Montréal,NA,TRUE,NA,NA
+several CEGEPs in the downtown Montreal area,NA,TRUE,NA,NA
+UChicago,University of Chicago,NA,NA,NA
+the Art Institute of Chicago,School of the Art Institute of Chicago,NA,NA,NA
+Middleburry College,Middlebury College,NA,NA,NA
+universities across Quebec,NA,TRUE,NA,NA
+Cégep de Jonquière.,NA,TRUE,NA,NA
+McGill University.,NA,TRUE,NA,NA
+Université du Québec à Montréal (UQAM),NA,TRUE,IAU-019703-1,glued
+Cégép Ahuntsic,NA,TRUE,NA,NA
+CEGEP Regional De Lanaudière à L’assomption,NA,TRUE,NA,NA
+Loyola,Loyola University Chicago,NA,NA,NA
+University of Louisiana,University of Louisiana at Lafayette,NA,NA,NA
+UL system,University of Louisiana at Lafayette,NA,NA,NA
+University of New Orleans school of hotel restaurant and tourism.,University of New Orleans,NA,NA,NA
+Nicholls State John Folse culinary institute,Nicholls State University,NA,NA,NA
+francophone universities,NA,TRUE,NA,NA
+CEGEPs,NA,TRUE,NA,NA
+l’Université de Montréal,NA,TRUE,NA,NA
+UC San Francisco,University of California-San Francisco,NA,NA,NA
+UC Santa Cruz,University of California-Santa Cruz,NA,NA,NA
+UC Merced,University of California-Merced,NA,NA,NA
+UC campuses,NA,NA,NA,NA
+Boston University',Boston University,NA,NA,NA
+College the School of Public Health,NA,NA,NA,NA
+mix of university and CEGEP students,NA,TRUE,NA,NA
+UMass Boston,University of Massachusetts-Boston,NA,NA,NA
+Florida A&M Universit,Florida Agricultural and Mechanical University,NA,NA,NA
+George Brown,NA,TRUE,NA,NA
+Niagara College,NA,TRUE,NA,NA
+Seneca’s Newnham campus.,NA,TRUE,NA,NA
+Indiana University South Bend,Indiana University-South Bend,NA,NA,NA
+Evergreen State college,The Evergreen State College,NA,NA,NA
+South Puget Sound,South Puget Sound Community College,NA,NA,NA
+Claflin universities,Claflin University,NA,NA,NA
+Vanier College,NA,TRUE,NA,NA
+Oakland University.,Oakland University,NA,NA,NA
+Université de Québec à Montréal,NA,TRUE,NA,NA
+CÉGEP de Saint-Laurent,NA,TRUE,NA,NA
+Montreal CEGEPS,NA,TRUE,NA,NA
+l’Université du Québec à Montréal (UQAM),NA,TRUE,NA,NA
+Cégep Rosemont,NA,TRUE,NA,NA
+Université de Montréal (UdeM).,NA,TRUE,NA,NA
+Indiana University |,Indiana University-Bloomington,NA,NA,NA
+CEGEP de Jonquière,NA,TRUE,NA,NA
+Université du Québec à Chicoutimi,NA,TRUE,NA,NA
+Cégep de Montmorency,NA,TRUE,NA,NA
+Sac State,California State University-Sacramento,NA,NA,NA
+Cal State,California State University-Fullerton,NA,NA,NA
+Cal State East Bay,California State University-East Bay,NA,NA,NA
+Cal State Los Angeles,California State University-Los Angeles,NA,NA,NA
+University of California San Francisco,University of San Francisco,NA,NA,NA
+City College campuses-Civic Center,City College of San Francisco,NA,NA,NA
+universities throughout Utah,NA,NA,NA,NA
+UTM-Sheridan,NA,TRUE,NA,NA
+UTSC-Centennial,NA,TRUE,NA,NA
+Colleges of Applied Arts and Technology,NA,TRUE,NA,NA
+University of Maryland,University of Maryland-College Park,NA,NA,NA
+King’s,King's College,NA,NA,NA
+Dalhousie,NA,TRUE,IAU-003505-3,glued
+Nova Scotia College of Arts and Design (NSCAD),NA,TRUE,NA,NA
+Mount Saint Vincent,College of Mount Saint Vincent,NA,NA,NA
+Saint Mary’s,St Mary's University,NA,NA,NA
+Université de Saint-Boniface,NA,TRUE,NA,NA
+several Montreal universities and CEGEPs,NA,TRUE,NA,NA
+CEGEP du Vieux-Montréal.,NA,TRUE,NA,NA
+UCLA,University of California-Los Angeles,NA,NA,NA
+Université du Québec à Montréal (UQAM,NA,TRUE,NA,NA
+Le cégep du Vieux Montréal,NA,TRUE,NA,NA
+Rutgers University,Rutgers University-New Brunswick,NA,NA,NA
+Columbia University,Columbia University in the City of New York,NA,NA,NA
+Princeton University l,Princeton University,NA,NA,NA
+students from different CUNY schools,CUNY City College,NA,NA,NA
+John Jay College,CUNY John Jay College of Criminal Justice,NA,NA,NA
+Hunter College,CUNY Hunter College,NA,NA,NA
+other CUNY schools,CUNY City College,NA,NA,NA
+University of British Columbia,NA,TRUE,NA,NA
+the University of Victoria,NA,TRUE,NA,NA
+Simon Fraser University,NA,TRUE,IAU-015440-1,glued
+Concordia Universities,NA,TRUE,NA,NA
+Dawson College,Dawson Community College,NA,NA,NA
+University of Saskatchewan,NA,TRUE,NA,NA
+Emory University,Emory University,NA,139658,ipeds
+Morehouse College,Morehouse College,NA,140553,ipeds
+Georgia Institute of Technology,Georgia Institute of Technology-Main Campus,NA,139755,ipeds
+Spelman College,Spelman College,NA,141060,ipeds
+Kennesaw State University,Kennesaw State University,NA,140164,ipeds
+Kennesaw State University,Kennesaw State University,NA,140164,ipeds
+Kennesaw State University,Kennesaw State University,NA,486840,ipeds
+Kennesaw State University,Kennesaw State University,NA,486840,ipeds
+Tufts,Tufts University,NA,168148,ipeds
+Massachusetts Institute of Technology,Massachusetts Institute of Technology,NA,166683,ipeds
+Berklee College of Music,Berklee College of Music,NA,164748,ipeds
+Emerson College,Emerson College,NA,165662,ipeds
+Brandeis University,Brandeis University,NA,165015,ipeds
+York,York College,NA,IAU-021739-1,glued
+University of Pennsylvania,University of Pennsylvania,NA,215062,ipeds
+Drexel,Drexel University,NA,212054,ipeds
+Temple,Temple University,NA,216339,ipeds
+Lewis & Clark,Lewis & Clark College,NA,209056,ipeds
+Pacific,Pacific University,NA,209612,ipeds
+Smith College,Smith College,NA,167835,ipeds
+Carnegie Mellon,Carnegie Mellon University,NA,211440,ipeds
+Houston Community College,Houston Community College,NA,225423,ipeds
+University at Buffalo,University at Buffalo,NA,196088,ipeds
+Yale University,Yale University,NA,130794,ipeds
+Lewis University,Lewis University,NA,146612,ipeds
+DePaul,DePaul University,NA,144740,ipeds
+University of Michigan-Ann Arbor,University of Michigan-Ann Arbor,NA,170976,ipeds
+Bloomsburg University of Pennsylvania,Bloomsburg University of Pennsylvania,NA,211158,ipeds
+California University of Pennsylvania,California University of Pennsylvania,NA,211361,ipeds
+Cheyney University of Pennsylvania,Cheyney University of Pennsylvania,NA,211608,ipeds
+Clarion University of Pennsylvania,Clarion University of Pennsylvania,NA,211644,ipeds
+East Stroudsburg University of Pennsylvania,East Stroudsburg University of Pennsylvania,NA,212115,ipeds
+Edinboro University of Pennsylvania,Edinboro University of Pennsylvania,NA,212160,ipeds
+Indiana University of Pennsylvania,Indiana University of Pennsylvania-Main Campus,NA,213020,ipeds
+Kutztown University of Pennsylvania,Kutztown University of Pennsylvania,NA,213349,ipeds
+Mansfield University of Pennsylvania,Mansfield University of Pennsylvania,NA,213783,ipeds
+Millersville University of Pennsylvania,Millersville University of Pennsylvania,NA,214041,ipeds
+Shippensburg University of Pennsylvania,Shippensburg University of Pennsylvania,NA,216010,ipeds
+Slippery Rock University of Pennsylvania,Slippery Rock University of Pennsylvania,NA,216038,ipeds
+West Chester University of Pennsylvania,West Chester University of Pennsylvania,NA,216764,ipeds
+Southern Connecticut State University,Southern Connecticut State University,NA,130493,ipeds
+Eastern Illinois,Eastern Illinois University,NA,144892,ipeds
+Northeastern Illinois,Northeastern Illinois University,NA,147776,ipeds
+Northeastern Illinois University,Northeastern Illinois University,NA,147776,ipeds
+Carleton,Carleton College,NA,IAU-001997-1,glued
+Carlow,Carlow University,NA,211431,ipeds
+Community College of Allegheny County,Community College of Allegheny County,NA,210605,ipeds
+Weber State,Weber State University,NA,230782,ipeds
+Texas State University,Texas State University,NA,228459,ipeds
+University of the District of Columbia,University of the District of Columbia,NA,131399,ipeds
+College of William and Mary,College of William and Mary,NA,231624,ipeds
+Johns Hopkins,Johns Hopkins University,NA,162928,ipeds
+University of Southern California,University of Southern California,NA,123961,ipeds
+Shaw,Shaw University,NA,199643,ipeds
+Duke,Duke University,NA,198419,ipeds
+Dunwoody College of Technology,Dunwoody College of Technology,NA,175227,ipeds
+Augsburg,Augsburg University,NA,173045,ipeds
+Macalester College,Macalester College,NA,173902,ipeds
+Lutheran School of Theology at Chicago,Lutheran School of Theology at Chicago,NA,146728,ipeds
+Milligan College,Milligan College,NA,221014,ipeds
+Milligan College,Milligan College,NA,221014,ipeds
+Milligan College,Milligan College,NA,486901,ipeds
+Milligan College,Milligan College,NA,486901,ipeds
+Emmanuel Christian Seminary,Emmanuel Christian Seminary,NA,220136,ipeds
+Northwestern,Northwestern University,NA,147767,ipeds
+Central Connecticut State University,Central Connecticut State University,NA,128771,ipeds
+Brown,Brown University,NA,217156,ipeds
+Lesley University,Lesley University,NA,166452,ipeds
+Lesley,Lesley University,NA,166452,ipeds
+Northeastern,Northeastern University,NA,167358,ipeds
+Holy Cross,Holy Cross College,NA,150774,ipeds
+Otterbein University,Otterbein University,NA,204936,ipeds
+Ohio University,Ohio University-Main Campus,NA,204857,ipeds
+Salt Lake Community College,Salt Lake Community College,NA,230746,ipeds
+Chatham University,Chatham University,NA,211556,ipeds
+The New School,The New School,NA,193654,ipeds
+Lane Community,Lane Community College,NA,209038,ipeds
+University of Missouri-Columbia,University of Missouri-Columbia,NA,NA,NA
+University of Missouri Columbia,University of Missouri-Columbia,NA,NA,NA
+University of Missouri-Columbia's campus,University of Missouri-Columbia,NA,NA,NA
+University of California Berkeley,University of California-Berkeley,NA,110635,ipeds
+Amherst College,Amherst College,NA,164465,ipeds
+University of Massachusetts Amherst,University of Massachusetts-Amherst,NA,NA,NA
+Clark Atlanta University,Clark Atlanta University,NA,138947,ipeds
+Emory University,Emory University,NA,139658,ipeds
+Ursinus College,Ursinus College,NA,NA,NA
+University of Miami,University of Miami,NA,NA,NA
+De Anza College,De Anza College,NA,NA,NA
+University of California Davis,University of California-Davis,NA,110644,ipeds
+Luther College,Luther College,NA,NA,NA
+Fairfield University,Fairfield University,NA,NA,NA
+University of North Dakota,University of North Dakota,NA,NA,NA
+Pitzer College,Pitzer College,NA,121257,ipeds
+Pomona College,Pomona College,NA,121345,ipeds
+Boston University,Boston University,NA,164988,ipeds
+Massachusetts College of Art and Design,Massachusetts College of Art and Design,NA,166674,ipeds
+Dartmouth College,Dartmouth College,NA,NA,NA
+Dartmouth,Dartmouth College,NA,NA,NA
+Boston College,Boston College,NA,164924,ipeds
+James Madison University,James Madison University,NA,NA,NA
+Harvard University,Harvard University,NA,166027,ipeds
+Harvard,Harvard University,NA,166027,ipeds
+Illinois Wesleyan University,Illinois Wesleyan University,NA,NA,NA
+University of Louisville,University of Louisville,NA,157289,ipeds
+Yale,Yale University,NA,130794,ipeds
+Texas Tech University,Texas Tech University,NA,NA,NA
+University of Notre Dame,University of Notre Dame,NA,152080,ipeds
+Mills College,Mills College,NA,NA,NA
+SUNY at Albany,SUNY at Albany,NA,NA,NA
+University of Delaware,University of Delaware,NA,NA,NA
+University of Wisconsin Madison,University of Wisconsin-Madison,NA,NA,NA
+Illinois State University,Illinois State University,NA,NA,NA
+Oberlin College,Oberlin College,NA,204501,ipeds
+Chapman University,Chapman University,NA,NA,NA
+Princeton University,Princeton University,NA,186131,ipeds
+Seattle University,Seattle University,NA,NA,NA
+Brown University,Brown University,NA,NA,NA
+Providence College,Providence College,NA,NA,NA
+Rhode Island School of Design,Rhode Island School of Design,NA,NA,NA
+Washington State University,Washington State University,NA,236939,ipeds
+Wesleyan University,Wesleyan University,NA,130697,ipeds
+Seton Hall University,Seton Hall University,NA,NA,NA
+Stanford University,Stanford University,NA,NA,NA
+Marquette University,Marquette University,NA,NA,NA
+Cerritos College,Cerritos College,NA,NA,NA
+West Virginia University,West Virginia University,NA,NA,NA
+University of Idaho,University of Idaho,NA,142285,ipeds
+University of Toledo,University of Toledo,NA,NA,NA
+Northwestern University,Northwestern University,NA,147767,ipeds
+Vanderbilt University,Vanderbilt University,NA,NA,NA
+Mississippi State University,Mississippi State University,NA,NA,NA
+Pennsylvania State University,Pennsylvania State University-Main Campus,NA,NA,NA
+Florida State University,Florida State University,NA,134097,ipeds
+Middle Tennessee State University,Middle Tennessee State University,NA,NA,NA
+University of New Mexico,University of New Mexico-Main Campus,NA,187985,ipeds
+St Olaf College,St Olaf College,NA,174844,ipeds
+Temple University,Temple University,NA,216339,ipeds
+University of South Florida,University of South Florida-Main Campus,NA,NA,NA
+Towson University,Towson University,NA,164076,ipeds
+University of Utah,University of Utah,NA,230764,ipeds
+Brandeis University,Brandeis University,NA,165015,ipeds
+University of California Riverside,University of California-Riverside,NA,NA,NA
+San Francisco State University,San Francisco State University,NA,NA,NA
+University of Illinois at Chicago,University of Illinois at Chicago,NA,145600,ipeds
+University of Houston,University of Houston,NA,225511,ipeds
+DePaul University,DePaul University,NA,144740,ipeds
+Clemson University,Clemson University,NA,217882,ipeds
+Georgetown University,Georgetown University,NA,131496,ipeds
+University of New Hampshire,University of New Hampshire-Main Campus,NA,NA,NA
+Duke University,Duke University,NA,198419,ipeds
+American University,American University,NA,131159,ipeds
+Webster University,Webster University,NA,NA,NA
+College of William and Mary,College of William and Mary,NA,231624,ipeds
+Wake Forest University,Wake Forest University,NA,199847,ipeds
+George Washington University,George Washington University,NA,131469,ipeds
+Grand Valley State University,Grand Valley State University,NA,NA,NA
+Ohio University,Ohio University-Main Campus,NA,204857,ipeds
+San Diego State University,San Diego State University,NA,122409,ipeds
+Auburn University,Auburn University,NA,NA,NA
+University of Vermont,University of Vermont,NA,NA,NA
+Case Western Reserve University,Case Western Reserve University,NA,NA,NA
+University of South Carolina Columbia,University of South Carolina-Columbia,NA,NA,NA
+San Diego City College,San Diego City College,NA,122339,ipeds
+Emporia State University,Emporia State University,NA,NA,NA
+Tufts University,Tufts University,NA,168148,ipeds
+Pacific University,Pacific University,NA,209612,ipeds
+University of Florida,University of Florida,NA,134130,ipeds
+Knox College,Knox College,NA,NA,NA
+Kenyon College,Kenyon College,NA,203535,ipeds
+Whitman College,Whitman College,NA,NA,NA
+Clark University,Clark University,NA,165334,ipeds
+Worcester State University,Worcester State University,NA,168430,ipeds
+Glendale Community College,Glendale Community College,NA,NA,NA
+University of Central Florida,University of Central Florida,NA,132903,ipeds
+University of Maine,University of Maine,NA,NA,NA
+Radford University,Radford University,NA,NA,NA
+Bradley University,Bradley University,NA,NA,NA
+Carnegie Mellon University,Carnegie Mellon University,NA,211440,ipeds
+Lewis & Clark College,Lewis & Clark College,NA,209056,ipeds
+University of Nevada Reno,University of Nevada-Reno,NA,NA,NA
+Virginia Commonwealth University,Virginia Commonwealth University,NA,NA,NA
+University of Rochester,University of Rochester,NA,NA,NA
+University of San Francisco,University of San Francisco,NA,NA,NA
+Lawrence University,Lawrence University,NA,NA,NA
+City College of San Francisco,City College of San Francisco,NA,112190,ipeds
+Appalachian State,Appalachian State University,NA,NA,NA
+California State University Chico,California State University-Chico,NA,NA,NA
+Hamilton College,Hamilton College,NA,NA,NA
+University of California-Davis,University of California-Davis,NA,NA,NA
+University of Michigan Dearborn,University of Michigan-Dearborn,NA,NA,NA
+Florida Gulf Coast University,Florida Gulf Coast University,NA,NA,NA
+Oklahoma State University,Oklahoma State University-Main Campus,NA,207388,ipeds
+Swarthmore College,Swarthmore College,NA,NA,NA
+Rowan University,Rowan University,NA,NA,NA
+East Carolina University,East Carolina University,NA,198464,ipeds
+University of Iowa,University of Iowa,NA,NA,NA
+Columbia College,Columbia College,NA,NA,NA
+East Tennessee State University,East Tennessee State University,NA,NA,NA
+University of Oklahoma Norman Campus,University of Oklahoma Norman Campus,NA,NA,NA
+Guilford College,Guilford College,NA,198613,ipeds
+Georgia State University,Georgia State University,NA,139940,ipeds
+SUNY at Binghamton,SUNY at Binghamton,NA,NA,NA
+Suffolk University,Suffolk University,NA,NA,NA
+Ithaca College,Ithaca College,NA,NA,NA
+Cornell University,Cornell University,NA,190415,ipeds
+University of Wyoming,University of Wyoming,NA,NA,NA
+University of Nebraska Lincoln,University of Nebraska-Lincoln,NA,NA,NA
+Utah State University,Utah State University,NA,NA,NA
+Mesa Community College,Mesa Community College,NA,NA,NA
+Ball State University,Ball State University,NA,NA,NA
+Murray State University,Murray State University,NA,157401,ipeds
+Kentucky State University,Kentucky State University,NA,157058,ipeds
+Eastern Illinois University,Eastern Illinois University,NA,144892,ipeds
+Lafayette College,Lafayette College,NA,NA,NA
+California State University Fresno,California State University-Fresno,NA,110556,ipeds
+University of Indianapolis,University of Indianapolis,NA,NA,NA
+Butler University,Butler University,NA,NA,NA
+Washburn University,Washburn University,NA,NA,NA
+Western Illinois University,Western Illinois University,NA,149772,ipeds
+Rock Valley College,Rock Valley College,NA,NA,NA
+University of Southern California,University of Southern California,NA,123961,ipeds
+Texas State,Texas State University,NA,228459,ipeds
+Santa Clara University,Santa Clara University,NA,NA,NA
+Union College,Union College,NA,NA,NA
+SUNY College at Plattsburgh,SUNY College at Plattsburgh,NA,NA,NA
+University of Chicago,University of Chicago,NA,144050,ipeds
+Appalachian State University,Appalachian State University,NA,197869,ipeds
+Naropa University,Naropa University,NA,NA,NA
+Lock Haven University,Lock Haven University,NA,NA,NA
+Canisius College,Canisius College,NA,NA,NA
+University of Illinois at Urbana Champaign,University of Illinois at Urbana-Champaign,NA,NA,NA
+University of Tulsa,University of Tulsa,NA,NA,NA
+Oral Roberts University,Oral Roberts University,NA,NA,NA
+Valdosta State University,Valdosta State University,NA,141264,ipeds
+Baylor University,Baylor University,NA,223232,ipeds
+Elmhurst College,Elmhurst College,NA,144962,ipeds
+California State University Fullerton,California State University-Fullerton,NA,110565,ipeds
+Grinnell College,Grinnell College,NA,NA,NA
+University of Mississippi,University of Mississippi,NA,NA,NA
+Wheaton College,Wheaton College,NA,NA,NA
+University of North Carolina Wilmington,University of North Carolina Wilmington,NA,NA,NA
+Rensselaer Polytechnic Institute,Rensselaer Polytechnic Institute,NA,NA,NA
+Villanova University,Villanova University,NA,NA,NA
+Alma College,Alma College,NA,NA,NA
+University of San Diego,University of San Diego,NA,122436,ipeds
+Yale University,Yale University,NA,130794,ipeds
+Hampshire College,Hampshire College,NA,NA,NA
+Marshall University,Marshall University,NA,NA,NA
+Bates College,Bates College,NA,NA,NA
+Howard University,Howard University,NA,131520,ipeds
+Gallaudet University,Gallaudet University,NA,NA,NA
+Catholic University of America,Catholic University of America,NA,NA,NA
+Columbia College Chicago,Columbia College-Chicago,NA,144281,ipeds
+East Los Angeles College,East Los Angeles College,NA,113856,ipeds
+California State Polytechnic University Pomona,California State Polytechnic University-Pomona,NA,NA,NA
+Vassar College,Vassar College,NA,NA,NA
+Community College of Philadelphia,Community College of Philadelphia,NA,NA,NA
+Southern Illinois University Edwardsville,Southern Illinois University-Edwardsville,NA,NA,NA
+Elizabethtown College,Elizabethtown College,NA,NA,NA
+Gannon University,Gannon University,NA,NA,NA
+University of Oregon,University of Oregon,NA,209551,ipeds
+University of Alaska Fairbanks,University of Alaska Fairbanks,NA,NA,NA
+Sonoma State University,Sonoma State University,NA,NA,NA
+George Mason University,George Mason University,NA,232186,ipeds
+University of Arkansas,University of Arkansas,NA,NA,NA
+Fayetteville State University,Fayetteville State University,NA,NA,NA
+SUNY at Fredonia,SUNY at Fredonia,NA,NA,NA
+Calvin College,Calvin College,NA,NA,NA
+Grand Rapids Community College,Grand Rapids Community College,NA,NA,NA
+Denison University,Denison University,NA,NA,NA
+University of Northern Colorado,University of Northern Colorado,NA,NA,NA
+University of Kentucky,University of Kentucky,NA,NA,NA
+College of Menominee Nation,College of Menominee Nation,NA,413617,ipeds
+Quinnipiac University,Quinnipiac University,NA,NA,NA
+Trinity College,Trinity College,NA,NA,NA
+New York University,New York University,NA,193900,ipeds
+Hofstra University,Hofstra University,NA,NA,NA
+Simpson College,Simpson College,NA,NA,NA
+Barnard,Barnard College,NA,189097,ipeds
+Barnard College,Barnard College,NA,189097,ipeds
+University of North Florida,University of North Florida,NA,NA,NA
+Edward Waters College,Edward Waters College,NA,133526,ipeds
+Keene State College,Keene State College,NA,NA,NA
+University of Rhode Island,University of Rhode Island,NA,NA,NA
+Texas Southern University,Texas Southern University,NA,229063,ipeds
+Loyola University Chicago,Loyola University Chicago,NA,NA,NA
+Chicago State University,Chicago State University,NA,144005,ipeds
+Northeastern University,Northeastern University,NA,167358,ipeds
+Cornell,Cornell University,NA,190415,ipeds
+California State University Sacramento,California State University-Sacramento,NA,110617,ipeds
+University of Puget Sound,University of Puget Sound,NA,236328,ipeds
+University of Arizona,University of Arizona,NA,NA,NA
+Saint Mary's,Saint Mary's College,NA,IAU-014271-1,glued
+New Mexico State University,New Mexico State University-Main Campus,NA,NA,NA
+University of Kansas,University of Kansas,NA,155317,ipeds
+Fuller Theological Seminary,Fuller Theological Seminary,NA,114840,ipeds
+University of Wisconsin Oshkosh,University of Wisconsin-Oshkosh,NA,NA,NA
+University of Nebraska at Omaha,University of Nebraska at Omaha,NA,NA,NA
+Idaho State University,Idaho State University,NA,NA,NA
+Princeton,Princeton University,NA,186131,ipeds
+Loyola University New Orleans,Loyola University New Orleans,NA,NA,NA
+Bucks County Community College,Bucks County Community College,NA,NA,NA
+University of Connecticut,University of Connecticut,NA,NA,NA
+Drexel University,Drexel University,NA,212054,ipeds
+Columbia,Columbia College,NA,112561,ipeds
+Columbia,Columbia College,NA,112561,ipeds
+Columbia,Columbia College,NA,112561,ipeds
+Columbia,Columbia College,NA,112561,ipeds
+Columbia,Columbia College,NA,112561,ipeds
+Columbia,Columbia College,NA,177065,ipeds
+Columbia,Columbia College,NA,177065,ipeds
+Columbia,Columbia College,NA,177065,ipeds
+Columbia,Columbia College,NA,177065,ipeds
+Columbia,Columbia College,NA,177065,ipeds
+Columbia,Columbia College,NA,217934,ipeds
+Columbia,Columbia College,NA,217934,ipeds
+Columbia,Columbia College,NA,217934,ipeds
+Columbia,Columbia College,NA,217934,ipeds
+Columbia,Columbia College,NA,217934,ipeds
+Columbia,Columbia College,NA,455983,ipeds
+Columbia,Columbia College,NA,455983,ipeds
+Columbia,Columbia College,NA,455983,ipeds
+Columbia,Columbia College,NA,455983,ipeds
+Columbia,Columbia College,NA,455983,ipeds
+Columbia,Columbia College,NA,479248,ipeds
+Columbia,Columbia College,NA,479248,ipeds
+Columbia,Columbia College,NA,479248,ipeds
+Columbia,Columbia College,NA,479248,ipeds
+Columbia,Columbia College,NA,479248,ipeds
+Yeshiva University,Yeshiva University,NA,NA,NA
+Western Kentucky University,Western Kentucky University,NA,NA,NA
+Bowling Green State University,Bowling Green State University-Main Campus,NA,NA,NA
+San Antonio College,San Antonio College,NA,NA,NA
+The University of Texas at San Antonio,The University of Texas at San Antonio,NA,229027,ipeds
+Delta College,Delta College,NA,NA,NA
+Texas State University,Texas State University,NA,228459,ipeds
+Stanford,Stanford University,NA,243744,ipeds
+Middlebury College,Middlebury College,NA,230959,ipeds
+Seattle Pacific University,Seattle Pacific University,NA,NA,NA
+Bennington College,Bennington College,NA,230816,ipeds
+University of New Haven,University of New Haven,NA,NA,NA
+University of Northern Iowa,University of Northern Iowa,NA,NA,NA
+Eastern Washington University,Eastern Washington University,NA,NA,NA
+Azusa Pacific University,Azusa Pacific University College,NA,NA,NA
+Georgia Southern University,Georgia Southern University,NA,NA,NA
+Saint Louis University,Saint Louis University-Main Campus,NA,NA,NA
+Wayne State University,Wayne State University,NA,NA,NA
+University of Central Oklahoma,University of Central Oklahoma,NA,NA,NA
+University of Virginia,University of Virginia-Main Campus,NA,234076,ipeds
+Wellesley College,Wellesley College,NA,168218,ipeds
+University of the Pacific,University of the Pacific,NA,NA,NA
+California State University Stanislaus,California State University-Stanislaus,NA,NA,NA
+Monmouth University,Monmouth University,NA,NA,NA
+Florida Agricultural and Mechanical University,Florida Agricultural and Mechanical University,NA,NA,NA
+Morgan State University,Morgan State University,NA,NA,NA
+Johns Hopkins University,Johns Hopkins University,NA,162928,ipeds
+Presbyterian College,Presbyterian College,NA,NA,NA
+Arizona State University,Arizona State University,NA,NA,NA
+Colorado College,Colorado College,NA,NA,NA
+Oregon State University,Oregon State University,NA,NA,NA
+Davidson College,Davidson College,NA,198385,ipeds
+Youngstown State University,Youngstown State University,NA,NA,NA
+Eastern Michigan University,Eastern Michigan University,NA,169798,ipeds
+Dominican University,Dominican University,NA,NA,NA
+University of Dayton,University of Dayton,NA,NA,NA
+Northern Illinois University,Northern Illinois University,NA,NA,NA
+Montana State University,Montana State University,NA,NA,NA
+Northern Michigan University,Northern Michigan University,NA,NA,NA
+University of Memphis,University of Memphis,NA,220862,ipeds
+University of Richmond,University of Richmond,NA,NA,NA
+Dickinson College,Dickinson College,NA,NA,NA
+University of Illinois at Urbana-Champaign,University of Illinois at Urbana-Champaign,NA,145637,ipeds
+Piedmont Virginia Community College,Piedmont Virginia Community College,NA,NA,NA
+Claremont McKenna College,Claremont McKenna College,NA,112260,ipeds
+Pomona,Pomona College,NA,121345,ipeds
+Queens University of Charlotte,Queens University of Charlotte,NA,NA,NA
+St Mary's College of Maryland,St Mary's College of Maryland,NA,NA,NA
+University of California Merced,University of California-Merced,NA,445188,ipeds
+Richland College,Richland College,NA,NA,NA
+Henry Ford Community College,Henry Ford Community College,NA,NA,NA
+Drew University,Drew University,NA,NA,NA
+Abilene Christian University,Abilene Christian University,NA,NA,NA
+Scripps College,Scripps College,NA,NA,NA
+University of Colorado Denver,University of Colorado Denver,NA,NA,NA
+San Diego State,San Diego State University,NA,122409,ipeds
+Michigan State University,Michigan State University,NA,171100,ipeds
+DePauw University,DePauw University,NA,NA,NA
+Texas Wesleyan University,Texas Wesleyan University,NA,NA,NA
+The University of Texas at Austin,The University of Texas at Austin,NA,NA,NA
+Wartburg College,Wartburg College,NA,NA,NA
+Hope College,Hope College,NA,NA,NA
+Sam Houston State University,Sam Houston State University,NA,NA,NA
+Northern Kentucky University,Northern Kentucky University,NA,NA,NA
+Virginia University of Lynchburg,Virginia University of Lynchburg,NA,NA,NA
+Kansas State University,Kansas State University,NA,155399,ipeds
+University of Louisiana Monroe,University of Louisiana-Monroe,NA,159993,ipeds
+University of Wisconsin Stout,University of Wisconsin-Stout,NA,NA,NA
+Tennessee State University,Tennessee State University,NA,NA,NA
+Massachusetts Institute of Technology,Massachusetts Institute of Technology,NA,166683,ipeds
+University of North Texas,University of North Texas,NA,227216,ipeds
+Texas Woman's University,Texas Woman's University,NA,NA,NA
+Babson College,Babson College,NA,164580,ipeds
+Buena Vista University,Buena Vista University,NA,NA,NA
+University of Wisconsin Platteville,University of Wisconsin-Platteville,NA,NA,NA
+Reed College,Reed College,NA,209922,ipeds
+Notre Dame,Notre Dame College,NA,204468,ipeds
+South Puget Sound Community College,South Puget Sound Community College,NA,236656,ipeds
+South Carolina State,South Carolina State University,NA,218733,ipeds
+Utah Valley University,Utah Valley University,NA,NA,NA
+Saginaw Valley State University,Saginaw Valley State University,NA,172051,ipeds
+University of Massachusetts Boston,University of Massachusetts-Boston,NA,NA,NA
+Monmouth College,Monmouth College,NA,NA,NA
+Western Oregon University,Western Oregon University,NA,NA,NA
+Montclair State University,Montclair State University,NA,NA,NA
+Santa Rosa Junior College,Santa Rosa Junior College,NA,NA,NA
+Oakland University,Oakland University,NA,NA,NA
+Sheridan College,Sheridan College,NA,240666,ipeds
+Lincoln Land Community College,Lincoln Land Community College,NA,NA,NA
+Johnson County Community College,Johnson County Community College,NA,NA,NA
+Central New Mexico Community College,Central New Mexico Community College,NA,NA,NA
+Westminster College,Westminster College,NA,179946,ipeds
+Westminster College,Westminster College,NA,179946,ipeds
+Westminster College,Westminster College,NA,179946,ipeds
+Westminster College,Westminster College,NA,216807,ipeds
+Westminster College,Westminster College,NA,216807,ipeds
+Westminster College,Westminster College,NA,216807,ipeds
+Westminster College,Westminster College,NA,230807,ipeds
+Westminster College,Westminster College,NA,230807,ipeds
+Westminster College,Westminster College,NA,230807,ipeds
+Augusta State University,Augusta State University,NA,NA,NA
+Jacksonville University,Jacksonville University,NA,NA,NA
+Georgetown,Georgetown University,NA,131496,ipeds
+Iowa State University,Iowa State University,NA,153603,ipeds
+Roosevelt University,Roosevelt University,NA,NA,NA
+Texas Christian University,Texas Christian University,NA,NA,NA
+Washington College,Washington College,NA,NA,NA
+University of Illinois at Chicago campus,University of Illinois at Chicago,NA,NA,NA
+North Park University,North Park University,NA,NA,NA
+Haverford College,Haverford College,NA,NA,NA
+Fort Hays State University,Fort Hays State University,NA,NA,NA
+Northwest Missouri State University,Northwest Missouri State University,NA,NA,NA
