@@ -6,7 +6,7 @@
 get_canada_shapefiles <- function(){
   download_location <- tempfile()
   download.file(
-    "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcsd000b21a_e.zip",
+    "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcma000b21a_e.zip",
     download_location
   )
 
@@ -14,7 +14,7 @@ get_canada_shapefiles <- function(){
         exdir = paste0(tempdir(), "/canada-shapefiles"))
 
   canada_shapefiles <- read_sf(paste0(tempdir(), "/canada-shapefiles")) |>
-    select(canada_census_subdivision = CSDNAME) |>
+    select(canada_metropolitan_area = CMANAME) |>
     st_transform(4326) |>
     st_make_valid()
 
