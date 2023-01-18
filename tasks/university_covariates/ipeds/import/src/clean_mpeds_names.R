@@ -145,10 +145,14 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename){
 #' begin tracking down covariates
 #' Notably this exports unclean, MPEDS-style university names, not authoritative
 #' ones from GLUED
-export_canada <- function(geocoded){
-  read_csv("tasks/university_covariates/hand/coarse_uni_match.csv") |>
+export_canada <- function(uni_xwalk_filename, glued){
+  coarse_canada <- read_csv(uni_xwalk_filename) |>
     filter(canada) |>
-    select(university_name = original_name) |>
-    write_csv("tasks/university_covariates/hand/canadian_universities.csv")
+    select(university_name = original_name)
+  list(
+    GLUED = glued,
+    MPEDS = coarse_canada
+  ) |>
+    writexl::write_xlsx("tasks/university_covariates/hand/canadian_universities.xlsx")
 }
 
