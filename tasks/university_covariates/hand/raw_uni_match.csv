@@ -163,6 +163,7 @@ several CEGEPs in the downtown Montreal area,several CEGEPs in the downtown Mont
 several Chicago-area colleges,several Chicago-area colleges,,
 several Montreal universities and CEGEPs,several Montreal universities and CEGEPs,,
 Sheridan college,Sheridan college,,
+Sheridan College,Sheridan College,,
 Smith College in Northampton Massachusetts,Smith College in Northampton Massachusetts,,
 South Puget Sound,South Puget Sound,,
 Southern Illinois University,Southern Illinois University,,
@@ -249,6 +250,7 @@ University of Illinois Springfield,University of Illinois Springfield,,
 University of Laval,University of Laval,,
 University of Lethbridge,University of Lethbridge,,
 University of Louisiana,University of Louisiana,,
+University of Louisiana Monroe,University of Louisiana Monroe,,
 University of Manitoba,University of Manitoba,,
 University of Maryland,University of Maryland,,
 University of Massachusetts at Amherst,University of Massachusetts at Amherst,,
@@ -260,6 +262,7 @@ University of Montreal,University of Montreal,,
 University of New Brunswick,University of New Brunswick,,
 University of New Orleans school of hotel restaurant and tourism.,University of New Orleans school of hotel restaurant and tourism.,,
 University of Northern British Columbia,University of Northern British Columbia,,
+University of Oklahoma Norman Campus,University of Oklahoma Norman Campus,,
 University of Ottawa,University of Ottawa,,
 University of Pittsburgh,University of Pittsburgh,,
 University of Pittsburgh Pittsburgh Campus,University of Pittsburgh Pittsburgh Campus,,
@@ -357,7 +360,7 @@ Columbia,Columbia College,479248,ipeds
 Columbia,Columbia College,479248,ipeds
 Columbia,Columbia College,479248,ipeds
 Columbia,Columbia College,479248,ipeds
-Columbia College Chicago,Columbia College-Chicago,144281,ipeds
+Columbia College Chicago,Columbia College Chicago,144281,ipeds
 Community College of Allegheny County,Community College of Allegheny County,210605,ipeds
 Concordia,Concordia University,IAU-003125-1,glued
 Concordia University,Concordia University,IAU-003125-1,glued
@@ -465,7 +468,6 @@ San Diego City College,San Diego City College,122339,ipeds
 San Diego State,San Diego State University,122409,ipeds
 San Diego State University,San Diego State University,122409,ipeds
 Shaw,Shaw University,199643,ipeds
-Sheridan College,Sheridan College,240666,ipeds
 Shippensburg University of Pennsylvania,Shippensburg University of Pennsylvania,216010,ipeds
 Simon Fraser University,Simon Fraser University,IAU-015440-1,glued
 Slippery Rock University of Pennsylvania,Slippery Rock University of Pennsylvania,216038,ipeds
@@ -512,14 +514,12 @@ University of Idaho,University of Idaho,142285,ipeds
 University of Illinois at Chicago,University of Illinois at Chicago,145600,ipeds
 University of Illinois at Urbana-Champaign,University of Illinois at Urbana-Champaign,145637,ipeds
 University of Kansas,University of Kansas,155317,ipeds
-University of Louisiana Monroe,University of Louisiana-Monroe,159993,ipeds
 University of Louisville,University of Louisville,157289,ipeds
 University of Memphis,University of Memphis,220862,ipeds
 University of Michigan-Ann Arbor,University of Michigan-Ann Arbor,170976,ipeds
 University of New Mexico,University of New Mexico-Main Campus,187985,ipeds
 University of North Texas,University of North Texas,227216,ipeds
 University of Notre Dame,University of Notre Dame,152080,ipeds
-University of Oklahoma Norman Campus,University of Oklahoma Norman Campus,,
 University of Oregon,University of Oregon,209551,ipeds
 University of Pennsylvania,University of Pennsylvania,215062,ipeds
 University of Puget Sound,University of Puget Sound,236328,ipeds

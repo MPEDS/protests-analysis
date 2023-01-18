@@ -10,17 +10,21 @@ get_glued <- function(){
     "https://borealisdata.ca/api/access/datafile/424713?format=original&gbrecs=true"
   ) |>
     filter(country == "canada", is.na(yrclosed), orig_name != "") |>
-    mutate(private = case_when(private01 == 1 ~ TRUE,
-                                private01 == 0 ~ FALSE,
-                                TRUE ~ NA)) |>
+    mutate(across(c(private01, phd_granting, b_granting, m_granting),
+                  function(x){
+                    case_when(x == 1 ~ TRUE,
+                              x == 0 ~ FALSE,
+                              TRUE ~ NA)
+                  })) |>
     select(
       uni_name = orig_name,
       glued_id = iau_id1,
       phd_granting,
       bachelors_granting = b_granting,
       masters_granting = m_granting,
-      private,
-      enrollment_count = students5_estimated
+      private = private01,
+      enrollment_count = students5_estimated,
+      year
     )
 
   return(glued)

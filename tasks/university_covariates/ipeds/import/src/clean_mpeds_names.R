@@ -17,8 +17,16 @@
 clean_mpeds_names <- function(geocoded, ipeds, glued){
   authoritative_uni_directory <- bind_rows(
     list(
-      ipeds = select(ipeds, id, uni_name),
-      glued = select(glued, id = glued_id, uni_name)
+      ipeds = ipeds |>
+        group_by(id) |>
+        arrange(desc(year)) |>
+        slice(n = 1) |>
+        select(id, uni_name),
+      glued = glued |>
+        group_by(glued_id) |>
+        arrange(desc(year)) |>
+        select(id = glued_id, uni_name) |>
+        slice(n = 1)
     ),
     .id = "data_source"
   )
@@ -149,6 +157,11 @@ export_canada <- function(uni_xwalk_filename, glued){
   coarse_canada <- read_csv(uni_xwalk_filename) |>
     filter(canada) |>
     select(university_name = original_name)
+  glued <- glued |>
+    group_by(uni_name) |>
+    arrange(desc(year)) |>
+    slice(n = 1) |>
+    select(-year)
   list(
     GLUED = glued,
     MPEDS = coarse_canada
