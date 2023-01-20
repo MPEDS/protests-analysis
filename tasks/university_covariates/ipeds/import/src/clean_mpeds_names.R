@@ -37,8 +37,8 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
 
   mpeds_names <- geocoded |>
     select(university, participating_universities) |>
-    unnest(participating_universities) |>
-    unnest(university) |>
+    unnest(participating_universities, keep_empty = TRUE) |>
+    unnest(university, keep_empty = TRUE) |>
     pivot_longer(cols = c(university, participating_universities),
                  values_to = "university"
                  ) |>
@@ -110,6 +110,39 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
   return(filename)
 }
 
+#' updates to the matching method or underlying data will create
+#' changes to the raw coarse match file that have to be propagated
+#' to the cleaned coarse match file. For the first pass (catching the majority)
+#' that was done manually be me;
+#' This function propagates changes so that the undergrad RAs can catch
+#' future changes
+update_coarse_matches <- function(raw_coarse_filename){
+  raw_coarse <- read_csv(raw_coarse_filename, show_col_types = FALSE)
+  coarse_filename <- "tasks/university_covariates/hand/coarse_uni_match.csv"
+  cleaned_coarse <- read_csv(coarse_filename, show_col_types = FALSE) |>
+    full_join(raw_coarse, by = "original_name") |>
+    mutate(
+      authoritative_name.x = ifelse(!is.na(authoritative_name.x),
+                                    authoritative_name.x,
+                                    authoritative_name.y),
+      uni_id.x = ifelse(!is.na(uni_id.x), uni_id.x, uni_id.y),
+      uni_data_source.x = ifelse(!is.na(uni_data_source.x),
+                                 uni_data_source.x, uni_data_source.y),
+    ) |>
+    select(
+      original_name,
+      authoritative_name = authoritative_name.x,
+      canada,
+      uni_id = uni_id.x,
+      uni_data_source = uni_data_source.x
+    ) |>
+    distinct()
+
+  write_csv(cleaned_coarse, coarse_filename)
+  return(coarse_filename)
+}
+
+
 #' After the coarse clean by name only, add in canonical event keys and
 #' format the match spreadsheet so coders can clean it easily
 postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds){
@@ -151,7 +184,7 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds)
 #' ones from GLUED
 export_canada <- function(uni_xwalk_filename, glued){
   coarse_canada <- read_csv(uni_xwalk_filename, show_col_types = FALSE) |>
-    filter(canada) |>
+    filter(canada | uni_data_source == "glued") |>
     select(university_name = original_name)
   list(
     GLUED = glued,
