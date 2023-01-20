@@ -74,7 +74,7 @@ list(
              format = "file"),
   # then passed off to coders in a readable format
   tar_target(postprocess_filename, postprocess_names(
-    geocoded, uni_xwalk_filename
+    geocoded, uni_xwalk_filename, glued, ipeds
   )),
   # Export Canadian universities for additional manual data input
   tar_target(canadian_universities_filename, export_canada(

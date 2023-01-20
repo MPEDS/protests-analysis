@@ -110,20 +110,9 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
   return(filename)
 }
 
-#' exports IPEDS/GLUED basic info itself for reference when manually checking
-export_ipeds <- function(){
-  writexl::write_xlsx(
-    list(
-      glued = tar_read(glued),
-      ipeds = tar_read(ipeds)
-    ),
-    "tasks/university_covariates/hand/university_reference.xlsx"
-  )
-}
-
 #' After the coarse clean by name only, add in canonical event keys and
 #' format the match spreadsheet so coders can clean it easily
-postprocess_names <- function(geocoded, coarse_uni_match_filename){
+postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds){
   coarse_uni_match <- read_csv(coarse_uni_match_filename, show_col_types = FALSE)
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
@@ -134,8 +123,8 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename){
     bind_rows(initial_keys) |>
     mutate(university = str_remove_all(university, ",") |> str_trim())
 
-  postprocess_filename <- "tasks/university_covariates/hand/university_names_verification.csv"
-  coarse_uni_match |>
+  postprocess_filename <- "tasks/university_covariates/hand/university_names_verification.xlsx"
+  MPEDS <- coarse_uni_match |>
     mutate(authoritative_name = ifelse(
       !is.na(authoritative_name),
       authoritative_name,
@@ -143,9 +132,16 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename){
     left_join(keys, by = c("original_name" = "university")) |>
     select(original_name, authoritative_name, uni_id, uni_data_source,
            canonical_event_key = key) |>
-    mutate(notes = "") |>
-    write_csv(postprocess_filename)
+    mutate(notes = "")
 
+  writexl::write_xlsx(
+    list(
+      MPEDS = MPEDS,
+      GLUED = glued,
+      IPEDS = ipeds
+    ),
+    postprocess_filename
+  )
   return(postprocess_filename)
 }
 
