@@ -10,7 +10,6 @@ Baruch College,Baruch College,,
 Bethune Cookman University,Bethune Cookman University,,
 Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania,Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania,,
 Boston University',Boston University',,
-Brandon University,Brandon University,,
 Brigham Young University,Brigham Young University,,
 Brooklyn College,Brooklyn College,,
 Buffalo,Buffalo,,
@@ -82,8 +81,6 @@ Florida A&M Universit,Florida A&M Universit,,
 Florida A&M University,Florida A&M University,,
 francophone universities,francophone universities,,
 Fresno State,Fresno State,,
-George Brown,George Brown,,
-George Brown College,George Brown College,,
 George Brown College.,George Brown College.,,
 Georgetown Solidarity Committee,Georgetown Solidarity Committee,,
 Georgia Tech,Georgia Tech,,
@@ -106,8 +103,6 @@ King’s,King’s,,
 l’Université de Montréal,l’Université de Montréal,,
 l’Université du Québec à Montréal (UQAM),l’Université du Québec à Montréal (UQAM),,
 Lane Community Downtown Campus,Lane Community Downtown Campus,,
-Laurentian,Laurentian,,
-Laurentian University,Laurentian University,,
 Laurentian University’,Laurentian University’,,
 Le cégep du Vieux Montréal,Le cégep du Vieux Montréal,,
 Lehman College,Lehman College,,
@@ -127,13 +122,10 @@ Middlebury College.,Middlebury College.,,
 MIT,MIT,,
 mix of university and CEGEP students,mix of university and CEGEP students,,
 Montreal CEGEPS,Montreal CEGEPS,,
-Mount Allison University,Mount Allison University,,
 Mount Royal University (MRU),Mount Royal University (MRU),,
-Mount Saint Vincent,Mount Saint Vincent,,
 MSUM,MSUM,,
 Native Education College,Native Education College,,
 NC State,NC State,,
-Niagara College,Niagara College,,
 Nicholls State John Folse culinary institute,Nicholls State John Folse culinary institute,,
 North Carolina at Charlotte,North Carolina at Charlotte,,
 North Carolina State University,North Carolina State University,,
@@ -151,8 +143,6 @@ Princeton University l,Princeton University l,,
 Queens College,Queens College,,
 Rutgers,Rutgers,,
 Rutgers University,Rutgers University,,
-Ryerson,Ryerson,,
-Ryerson University,Ryerson University,,
 Sac State,Sac State,,
 Saint Mary’s,Saint Mary’s,,
 Santa Rosa Junior College and Solano Community College,Santa Rosa Junior College and Solano Community College,,
@@ -188,7 +178,6 @@ the University of Chicago,the University of Chicago,,
 the University of Southern California,the University of Southern California,,
 the University of Toronto campus,the University of Toronto campus,,
 the University of Victoria,the University of Victoria,,
-Thompson Rivers University,Thompson Rivers University,,
 UBC Okanagan,UBC Okanagan,,
 UC Berkeley,UC Berkeley,,
 UC campuses,UC campuses,,
@@ -213,6 +202,7 @@ UNC-Chapel Hill,UNC-Chapel Hill,,
 UNCG,UNCG,,
 Universite de Montreal,Universite de Montreal,,
 Université de Montréal,Université de Montréal,,
+Université de Montréal (UdeM),Université de Montréal (UdeM),,
 Université de Montréal (UdeM).,Université de Montréal (UdeM).,,
 Université de Montréal’s (UdeM),Université de Montréal’s (UdeM),,
 Université de Québec a Montréal,Université de Québec a Montréal,,
@@ -225,6 +215,7 @@ Université du Québec à Chicoutimi,Université du Québec à Chicoutimi,,
 Université du Québec à Montreal,Université du Québec à Montreal,,
 Université du Québec à Montréal,Université du Québec à Montréal,,
 Université du Québec à Montréal (UQAM,Université du Québec à Montréal (UQAM,,
+Université du Québec à Montréal (UQAM),Université du Québec à Montréal (UQAM),,
 Université Laval,Université Laval,,
 universities across Louisiana,universities across Louisiana,,
 universities across Quebec,universities across Quebec,,
@@ -281,6 +272,7 @@ University of Washington,University of Washington,,
 University of Washington Seattle campus,University of Washington Seattle campus,,
 University of Washington.,University of Washington.,,
 University of Western Ontario,University of Western Ontario,,
+University of Windsor,University of Windsor,,
 University of Winnipeg,University of Winnipeg,,
 UNM,UNM,,
 UQAM,UQAM,,
@@ -310,6 +302,7 @@ Boston College,Boston College,164924,ipeds
 Boston University,Boston University,164988,ipeds
 Brandeis,Brandeis University,165015,ipeds
 Brandeis University,Brandeis University,165015,ipeds
+Brandon University,Brandon University,IAU-001747-1,glued
 Brock University,Brock University,IAU-001778-1,glued
 Brown,Brown University,217156,ipeds
 California State University Fresno,California State University-Fresno,110556,ipeds
@@ -390,6 +383,8 @@ Emmanuel Christian Seminary,Emmanuel Christian Seminary,220136,ipeds
 Emory University,Emory University,139658,ipeds
 Florida State University,Florida State University,134097,ipeds
 Fuller Theological Seminary,Fuller Theological Seminary,114840,ipeds
+George Brown,George Brown College,IAU-006615-1,glued
+George Brown College,George Brown College,IAU-006615-1,glued
 George Mason University,George Mason University,232186,ipeds
 George Washington University,George Washington University,131469,ipeds
 Georgetown,Georgetown University,131496,ipeds
@@ -417,6 +412,8 @@ Kenyon College,Kenyon College,203535,ipeds
 Kutztown University of Pennsylvania,Kutztown University of Pennsylvania,213349,ipeds
 Kwantlen Polytechnic University,Kwantlen Polytechnic University,IAU-010661-1,glued
 Lane Community,Lane Community College,209038,ipeds
+Laurentian,Laurentian University,IAU-010871-2,glued
+Laurentian University,Laurentian University,IAU-010871-2,glued
 Lesley,Lesley University,166452,ipeds
 Lesley University,Lesley University,166452,ipeds
 Lewis & Clark,Lewis & Clark College,209056,ipeds
@@ -435,10 +432,13 @@ Milligan College,Milligan College,221014,ipeds
 Milligan College,Milligan College,486901,ipeds
 Milligan College,Milligan College,486901,ipeds
 Morehouse College,Morehouse College,140553,ipeds
+Mount Allison University,Mount Allison University,IAU-012185-1,glued
 Mount Holyoke,Mount Holyoke College,166939,ipeds
 Mount Royal University,Mount Royal University,IAU-012199-1,glued
+Mount Saint Vincent,Mount Saint Vincent University,IAU-012203-1,glued
 Murray State University,Murray State University,157401,ipeds
 New York University,New York University,193900,ipeds
+Niagara College,Niagara College,IAU-012666-1,glued
 Northeastern,Northeastern University,167358,ipeds
 Northeastern Illinois,Northeastern Illinois University,147776,ipeds
 Northeastern Illinois University,Northeastern Illinois University,147776,ipeds
@@ -461,8 +461,10 @@ Pomona College,Pomona College,121345,ipeds
 Princeton,Princeton University,186131,ipeds
 Princeton University,Princeton University,186131,ipeds
 Reed College,Reed College,209922,ipeds
+Ryerson,Ryerson University,IAU-014158-1,glued
+Ryerson University,Ryerson University,IAU-014158-1,glued
 Saginaw Valley State University,Saginaw Valley State University,172051,ipeds
-Saint Mary's,Saint Mary's University,IAU-014271-1,glued
+Saint Mary's,Saint Mary's College,152390,ipeds
 Salt Lake Community College,Salt Lake Community College,230746,ipeds
 San Diego City College,San Diego City College,122339,ipeds
 San Diego State,San Diego State University,122409,ipeds
@@ -496,12 +498,11 @@ Texas State,Texas State University,228459,ipeds
 Texas State University,Texas State University,228459,ipeds
 The New School,The New School,193654,ipeds
 The University of Texas at San Antonio,The University of Texas at San Antonio,229027,ipeds
+Thompson Rivers University,Thompson Rivers University,IAU-016643-1,glued
 Towson University,Towson University,164076,ipeds
 Trent,Trent University,IAU-016840-1,glued
 Tufts,Tufts University,168148,ipeds
 Tufts University,Tufts University,168148,ipeds
-Université de Montréal (UdeM),Université de Montréal (UdeM),IAU-019623-1,glued
-Université du Québec à Montréal (UQAM),Université du Québec à Montréal (UQAM),IAU-019703-1,glued
 University at Buffalo,University at Buffalo,196088,ipeds
 University of California Berkeley,University of California-Berkeley,110635,ipeds
 University of California Davis,University of California-Davis,110644,ipeds
@@ -528,7 +529,6 @@ University of Southern California,University of Southern California,123961,ipeds
 University of the District of Columbia,University of the District of Columbia,131399,ipeds
 University of Utah,University of Utah,230764,ipeds
 University of Virginia,University of Virginia-Main Campus,234076,ipeds
-University of Windsor,University of Windsor,IAU-020639-1,glued
 Valdosta State University,Valdosta State University,141264,ipeds
 Wake Forest University,Wake Forest University,199847,ipeds
 Washington State University,Washington State University,236939,ipeds

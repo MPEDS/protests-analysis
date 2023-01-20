@@ -9,7 +9,8 @@ get_glued <- function(){
   glued <- read_dta(
     "https://borealisdata.ca/api/access/datafile/424713?format=original&gbrecs=true"
   ) |>
-    filter(country == "canada", is.na(yrclosed), orig_name != "") |>
+    filter(country == "canada", is.na(yrclosed),
+           orig_name != "", year == 2015) |>
     mutate(across(c(private01, phd_granting, b_granting, m_granting),
                   function(x){
                     case_when(x == 1 ~ TRUE,
@@ -17,7 +18,7 @@ get_glued <- function(){
                               TRUE ~ NA)
                   })) |>
     select(
-      uni_name = orig_name,
+      uni_name = eng_name,
       glued_id = iau_id1,
       phd_granting,
       bachelors_granting = b_granting,

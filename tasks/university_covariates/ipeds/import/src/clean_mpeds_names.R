@@ -154,14 +154,9 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename){
 #' Notably this exports unclean, MPEDS-style university names, not authoritative
 #' ones from GLUED
 export_canada <- function(uni_xwalk_filename, glued){
-  coarse_canada <- read_csv(uni_xwalk_filename) |>
+  coarse_canada <- read_csv(uni_xwalk_filename, show_col_types = FALSE) |>
     filter(canada) |>
     select(university_name = original_name)
-  glued <- glued |>
-    group_by(uni_name) |>
-    arrange(desc(year)) |>
-    slice(n = 1) |>
-    select(-year)
   list(
     GLUED = glued,
     MPEDS = coarse_canada
