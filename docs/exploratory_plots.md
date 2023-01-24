@@ -34,8 +34,8 @@ College” (or another common name) inside IPEDS, so any schools with that
 name in MPEDS will be assigned multiple schools. The MPEDS-IPEDS join is
 crucial because we also use IPEDS to join county FIPS identifiers, and
 thus no further joins will be accurate unless the MPEDS-IPEDS join is
-accurate. We currently have 5260 rows in the final dataset, indicating
-that this problem applies to some 40 canonical events.
+accurate. We currently have 5578 rows in the final dataset, indicating
+that this problem applies to some 358 canonical events.
 
 Fixing it just requires a rewrite of how the join is done, so that we
 join on IPEDS IDs, not names, for at least all ambiguous cases. This
@@ -43,13 +43,13 @@ doesn’t require adjustments to the instructions given to student coders,
 but it does require a little bit of time on my part, so it hasn’t been
 completed yet.
 
-Of those events, there were 517 unique locations, 291 unique counties,
-and 422 unique universities. Surprisingly, all of the locations that
+Of those events, there were 517 unique locations, 251 unique counties,
+and 557 unique universities. Surprisingly, all of the locations that
 were not universities found geocoding matches, and hand-checking the
 most common ones indicates that there isn’t a strong pattern of missing
 value substitution, e.g. Google isn’t sending the majority of results to
 the centroid of America or to `(-1, -1)` or anything weird like that.
-Universities had a harder time, with 24 universities and 191 rows
+Universities had a harder time, with 20 universities and 190 rows
 (canonical events) not returning lon/lat coords for universities.
 
 That comes out to \~5% of universities not having coordinates, and
@@ -62,31 +62,29 @@ university_counts <- mpeds |>
   group_by(university) |> 
   count() |> 
   ungroup() |> 
-  drop_na() |> 
+  drop_na() |>
   slice_max(order_by = n, n = 15)
 
 kable(university_counts)
 ```
 
-| university                                  |   n |
-|:--------------------------------------------|----:|
-| University of California-Berkeley           | 179 |
-| Harvard University                          | 139 |
-| University of Michigan-Ann Arbor            | 120 |
-| University of California-Los Angeles        |  82 |
-| University of Chicago                       |  65 |
-| University of California-Davis              |  50 |
-| University of Wisconsin-Madison             |  49 |
-| Tufts University                            |  48 |
-| Columbia University in the City of New York |  47 |
-| The University of Texas at Austin           |  46 |
-| Cornell University                          |  44 |
-| Georgetown University                       |  44 |
-| New York University                         |  42 |
-| University of Illinois at Urbana-Champaign  |  39 |
-| Rutgers University-New Brunswick            |  38 |
-| University of Colorado Boulder              |  38 |
-| University of Miami                         |  38 |
+| university                                  |   n | geometry                     |
+|:--------------------------------------------|----:|:-----------------------------|
+| University of California-Berkeley           | 184 | MULTIPOINT ((-121.7405 38.5… |
+| McGill University                           | 154 | MULTIPOINT ((-66.06331 45.2… |
+| Concordia University                        | 146 | MULTIPOINT ((-71.89367 45.4… |
+| Harvard University                          | 145 | MULTIPOINT ((-91.53462 41.6… |
+| University of Michigan-Ann Arbor            | 122 | MULTIPOINT ((-84.48387 42.7… |
+| University of California-Los Angeles        |  86 | MULTIPOINT ((-122.273 37.87… |
+| University of Toronto                       |  69 | MULTIPOINT ((-60.19422 46.1… |
+| University of Chicago                       |  66 | POINT (-87.6298 41.87811)    |
+| Ryerson University                          |  56 | MULTIPOINT ((-75.69719 45.4… |
+| Columbia University in the City of New York |  49 | MULTIPOINT ((-72.28955 43.7… |
+| Tufts University                            |  49 | MULTIPOINT ((-71.05888 42.3… |
+| University of Wisconsin-Madison             |  49 | MULTIPOINT ((-96.49815 41.4… |
+| Georgetown University                       |  48 | POINT (-77.03687 38.90719)   |
+| The University of Texas at Austin           |  47 | MULTIPOINT ((-97.74306 30.2… |
+| Cornell University                          |  46 | MULTIPOINT ((-76.50188 42.4… |
 
 And the top locations:
 
@@ -101,23 +99,23 @@ location_counts <- mpeds |>
 kable(location_counts)
 ```
 
-| location               |   n |
-|:-----------------------|----:|
-| Montreal, QC, Canada   | 301 |
-| Berkeley, CA, USA      | 162 |
-| New York City, NY, USA | 148 |
-| Toronto, ON, Canada    | 142 |
-| Cambridge, MA, USA     | 132 |
-| Chicago, IL, USA       | 124 |
-| Los Angeles, CA, USA   | 113 |
-| Ann Arbor, MI, USA     | 111 |
-| San Francisco, CA, USA |  69 |
-| San Diego, CA, USA     |  68 |
-| Boston, MA, USA        |  57 |
-| Washington, D.C., USA  |  56 |
-| Madison, WI, USA       |  48 |
-| Davis, CA, USA         |  47 |
-| Ithaca, NY, USA        |  46 |
+| location               |   n | geometry                   |
+|:-----------------------|----:|:---------------------------|
+| Montreal, QC, Canada   | 352 | POINT (-73.56739 45.50189) |
+| New York City, NY, USA | 172 | POINT (-74.00597 40.71278) |
+| Berkeley, CA, USA      | 170 | POINT (-122.273 37.87152)  |
+| Toronto, ON, Canada    | 157 | POINT (-79.38318 43.65323) |
+| Cambridge, MA, USA     | 139 | POINT (-71.10973 42.37362) |
+| Chicago, IL, USA       | 133 | POINT (-87.6298 41.87811)  |
+| Los Angeles, CA, USA   | 121 | POINT (-118.2437 34.05223) |
+| Ann Arbor, MI, USA     | 113 | POINT (-83.74304 42.28083) |
+| San Diego, CA, USA     |  77 | POINT (-117.1611 32.71574) |
+| San Francisco, CA, USA |  76 | POINT (-122.4194 37.77493) |
+| Boston, MA, USA        |  61 | POINT (-71.05888 42.36008) |
+| Washington, D.C., USA  |  58 | POINT (-77.03687 38.90719) |
+| Madison, WI, USA       |  48 | POINT (-89.40075 43.07217) |
+| Davis, CA, USA         |  47 | POINT (-121.7405 38.54491) |
+| Ithaca, NY, USA        |  47 | POINT (-76.50188 42.44396) |
 
 Top states:
 
@@ -139,24 +137,23 @@ state_counts <- mpeds |>
 kable(state_counts)
 ```
 
-|   n | state_name           |
-|----:|:---------------------|
-| 730 | California           |
-| 332 | Massachusetts        |
-| 281 | New York             |
-| 254 | Illinois             |
-| 168 | Michigan             |
-| 160 | Pennsylvania         |
-| 144 | Texas                |
-| 108 | Florida              |
-| 107 | District of Columbia |
-| 106 | Virginia             |
-| 101 | North Carolina       |
-|  90 | Connecticut          |
-|  89 | Ohio                 |
-|  88 | Indiana              |
-|  85 | Missouri             |
-|  85 | New Jersey           |
+|   n | geometry                     | state_name           |
+|----:|:-----------------------------|:---------------------|
+| 562 | MULTIPOINT ((-121.8375 39.7… | California           |
+| 341 | MULTIPOINT ((-105.2705 40.0… | Massachusetts        |
+| 228 | MULTIPOINT ((-155.5828 19.8… | Illinois             |
+| 172 | MULTIPOINT ((-84.34759 46.4… | Michigan             |
+| 163 | MULTIPOINT ((-73.45291 44.6… | New York             |
+| 142 | MULTIPOINT ((-96.79699 32.7… | Pennsylvania         |
+| 113 | MULTIPOINT ((-79.94143 37.2… | District of Columbia |
+| 111 | MULTIPOINT ((-119.8143 39.5… | Virginia             |
+| 108 | MULTIPOINT ((-119.6982 34.4… | Florida              |
+| 103 | MULTIPOINT ((-95.3698 29.76… | Texas                |
+|  96 | MULTIPOINT ((-77.03687 38.9… | Connecticut          |
+|  79 | MULTIPOINT ((-122.3321 47.6… | Wisconsin            |
+|  77 | MULTIPOINT ((-85.38636 40.1… | Ohio                 |
+|  72 | MULTIPOINT ((-81.67455 36.2… | North Carolina       |
+|  59 | MULTIPOINT ((-122.4443 47.2… | Washington           |
 
 And finally the top counties:
 
@@ -178,23 +175,23 @@ county_counts <- mpeds |>
 kable(county_counts)
 ```
 
-|   n | county_name                                |
-|----:|:-------------------------------------------|
-| 238 | Middlesex County, Massachusetts            |
-| 185 | Los Angeles County, California             |
-| 184 | Alameda County, California                 |
-| 127 | Cook County, Illinois                      |
-| 122 | Washtenaw County, Michigan                 |
-| 120 | New York County, New York                  |
-| 107 | District of Columbia, District of Columbia |
-|  79 | San Diego County, California               |
-|  63 | San Francisco County, California           |
-|  50 | Yolo County, California                    |
-|  49 | Dane County, Wisconsin                     |
-|  46 | Tompkins County, New York                  |
-|  46 | Travis County, Texas                       |
-|  44 | Santa Clara County, California             |
-|  43 | Boone County, Missouri                     |
+|   n | geometry                     | county_name                                |
+|----:|:-----------------------------|:-------------------------------------------|
+| 238 | MULTIPOINT ((-105.2705 40.0… | Middlesex County, Massachusetts            |
+| 188 | MULTIPOINT ((-121.7405 38.5… | Alameda County, California                 |
+| 128 | MULTIPOINT ((-87.6298 41.87… | Cook County, Illinois                      |
+| 126 | MULTIPOINT ((-84.48387 42.7… | Washtenaw County, Michigan                 |
+| 113 | MULTIPOINT ((-79.94143 37.2… | District of Columbia, District of Columbia |
+|  80 | MULTIPOINT ((-118.2551 34.1… | Los Angeles County, California             |
+|  63 | POINT (-74.00597 40.71278)   | New York County, New York                  |
+|  59 | MULTIPOINT ((-121.7405 38.5… | San Diego County, California               |
+|  56 | MULTIPOINT ((-122.4194 37.7… | San Francisco County, California           |
+|  49 | MULTIPOINT ((-96.49815 41.4… | Dane County, Wisconsin                     |
+|  48 | MULTIPOINT ((-92.17352 38.5… | Boone County, Missouri                     |
+|  48 | MULTIPOINT ((-76.50188 42.4… | Tompkins County, New York                  |
+|  47 | MULTIPOINT ((-122.0322 37.3… | Santa Clara County, California             |
+|  47 | MULTIPOINT ((-97.74306 30.2… | Travis County, Texas                       |
+|  42 | MULTIPOINT ((-71.80229 42.2… | Hampshire County, Massachusetts            |
 
 These glimpses seem mostly in line with what we should expect, with a
 strong caveat that the Missouri protests are not making a leading
@@ -206,7 +203,8 @@ I’m continuing to revise the code.
 # Basic summary plots
 
 ``` r
-mpeds |> select(where(function(x){is.numeric(x) || is.logical(x)}),
+mpeds |> st_drop_geometry() |> 
+  select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
                  -year, -uni_id, -size_category, -link) |> 
   pivot_longer(cols = everything()) |> 
@@ -224,24 +222,32 @@ mpeds |> select(where(function(x){is.numeric(x) || is.logical(x)}),
 
 | name                    | type    |      mean |        sd |
 |:------------------------|:--------|----------:|----------:|
-| campaign                | boolean |     0.235 |     0.424 |
-| counterprotest          | boolean |     0.044 |     0.205 |
-| hbcu                    | boolean |     0.008 |     0.087 |
-| inaccurate_date         | boolean |     0.009 |     0.093 |
-| multiple_cities         | boolean |     0.025 |     0.155 |
-| off_campus              | boolean |     0.069 |     0.253 |
-| on_campus_no_student    | boolean |     0.071 |     0.258 |
-| quotes                  | boolean |     0.650 |     0.477 |
-| ritual                  | boolean |     0.033 |     0.178 |
-| tribal                  | boolean |     0.000 |     0.016 |
-| eviction_filing_rate    | numeric |     3.936 |     5.536 |
-| eviction_judgement_rate | numeric |     1.497 |     1.527 |
-| mhi                     | numeric | 64936.340 | 16919.497 |
-| republican_vote_prop    | numeric |     0.321 |     0.152 |
-| unemp                   | numeric |     4.693 |     1.515 |
+| bachelors_granting      | boolean |     1.000 |     0.000 |
+| campaign                | boolean |     0.248 |     0.432 |
+| counterprotest          | boolean |     0.042 |     0.201 |
+| hbcu                    | boolean |     0.010 |     0.099 |
+| inaccurate_date         | boolean |     0.008 |     0.090 |
+| masters_granting        | boolean |     1.000 |     0.000 |
+| multiple_cities         | boolean |     0.027 |     0.163 |
+| notes.y                 | boolean |       NaN |        NA |
+| off_campus              | boolean |     0.067 |     0.250 |
+| on_campus_no_student    | boolean |     0.071 |     0.257 |
+| phd_granting            | boolean |     1.000 |     0.000 |
+| private                 | boolean |     0.125 |     0.336 |
+| quotes                  | boolean |     0.645 |     0.478 |
+| ritual                  | boolean |     0.032 |     0.177 |
+| tribal                  | boolean |     0.001 |     0.025 |
+| enrollment_count        | numeric | 36583.172 |  9991.500 |
+| eviction_filing_rate    | numeric |     4.029 |     5.174 |
+| eviction_judgement_rate | numeric |     1.579 |     1.585 |
+| mhi                     | numeric | 65260.556 | 17706.571 |
+| republican_vote_prop    | numeric |     0.311 |     0.150 |
+| unemp                   | numeric |     4.680 |     1.466 |
 
 ``` r
-mpeds |> select(where(is.numeric), -canonical_id, -starts_with("location"),
+mpeds |> 
+  st_drop_geometry() |> 
+  select(where(is.numeric), -canonical_id, -starts_with("location"),
                  -year, -uni_id, -size_category) |> 
   pairs()
 ```
@@ -330,16 +336,16 @@ kable(match_results)
 
 | source    | date_offset | recent_protests | match_percentage |
 |:----------|------------:|----------------:|-----------------:|
-| CCC       |           0 |             557 |       10.5893536 |
-| CCC       |           1 |             151 |        2.8707224 |
-| CCC       |           3 |             254 |        4.8288973 |
-| CCC       |           5 |             327 |        6.2167300 |
-| CCC       |           7 |             376 |        7.1482890 |
-| Elephrame |           0 |             199 |        3.7582625 |
-| Elephrame |           1 |              39 |        0.7365439 |
-| Elephrame |           3 |              65 |        1.2275732 |
-| Elephrame |           5 |              75 |        1.4164306 |
-| Elephrame |           7 |              78 |        1.4730878 |
+| CCC       |           0 |             478 |         8.569380 |
+| CCC       |           1 |             121 |         2.169236 |
+| CCC       |           3 |             210 |         3.764790 |
+| CCC       |           5 |             265 |         4.750807 |
+| CCC       |           7 |             301 |         5.396199 |
+| Elephrame |           0 |             254 |         4.505144 |
+| Elephrame |           1 |              74 |         1.312522 |
+| Elephrame |           3 |             107 |         1.897836 |
+| Elephrame |           5 |             120 |         2.128414 |
+| Elephrame |           7 |             125 |         2.217098 |
 
 So it seems that there are a fair number of duplicates occurring if we
 don’t have a date offset, but once we add one (of any days) that pretty
@@ -364,13 +370,11 @@ us_sf <- states(progress_bar = FALSE) |>
                        "Commonwealth of the Northern Mariana Islands",
                        "Alaska", "Guam"))) |> 
   st_union()
-mpeds_sf <- mpeds |> left_join(county_sf, by = "fips") 
 ```
 
 ``` r
 mpeds |> 
-  drop_na(location_lat, location_lng) |> 
-  st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(county_sf)) |> 
+  st_transform(st_crs(county_sf)) |>
   mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
   ggplot() + 
   geom_sf(data = us_sf, fill = "white", color = "gray") + 
@@ -383,7 +387,6 @@ mpeds |>
     title = "Spread of canonical events and geocoded locations",
     subtitle = "Locations jittered slightly, by 0.005*bounding box diagonal.",
     caption = "Alaska, Hawaii, a few other locations with only a\nfew protests excluded in this map only."
-    
   ) + 
   theme_void() + 
   theme(text = element_text(family = "Lato"),

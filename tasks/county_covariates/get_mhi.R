@@ -49,10 +49,10 @@ get_mhi <- function(dummy_url){
                                nchar(cfips) == 3 ~ as.character(cfips))) |>
       unite("fips", sfips, cfips, sep = "") |>
       mutate(year = year,
-             mhi = suppressWarnings(
+             median_household_income = suppressWarnings(
                as.numeric(`Median Household Income`))
              ) |>
-      select(fips, year, mhi)
+      select(fips, year, median_household_income)
 
     return(data)
   }) |>
@@ -60,5 +60,5 @@ get_mhi <- function(dummy_url){
   #some metadata collected as regular data in the loop;
   # this last line throws it out
 
-  return(mhi)
+  return(median_household_income)
 }

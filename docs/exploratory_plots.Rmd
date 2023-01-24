@@ -10,6 +10,7 @@ library(sf)
 library(showtext)
 library(tigris)
 library(tidyverse)
+library(GGally)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 
@@ -19,7 +20,8 @@ showtext_auto()
 
 ```{r}
 mpeds_raw <- tar_read(canonical_events)
-mpeds <- tar_read(integrated)
+mpeds_sf <- tar_read(integrated) 
+mpeds <- mpeds_sf |> st_drop_geometry()
 ```
 
 # Basic counts
@@ -154,9 +156,9 @@ There could still be errors here, so I'm continuing to revise the code.
 
 # Basic summary plots 
 
-```{r pairs}
-
-mpeds |> select(where(function(x){is.numeric(x) || is.logical(x)}),
+```{r summary}
+mpeds |> 
+  select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
                  -year, -uni_id, -size_category, -link) |> 
   pivot_longer(cols = everything()) |> 
@@ -165,24 +167,55 @@ mpeds |> select(where(function(x){is.numeric(x) || is.logical(x)}),
   summarize(
     type = ifelse(is.numeric(pull(mpeds[name[1]], 1)), "numeric", "boolean"),
     mean = mean(value, na.rm = TRUE),
-    sd = sd(value, na.rm = TRUE)
+    sd = ifelse(type == "boolean", NA_integer_, sd(value, na.rm = TRUE))
   ) |> 
   mutate(across(where(is.numeric), ~round(., 3))) |> 
   arrange(type) |> 
   kable()
-  
-
-mpeds |> select(where(is.numeric), -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category) |> 
-  pairs()
-  
 ```
 
 For boolean variables, "mean" is the proportion that they are TRUE. Many of the
 variables recorded in MPEDS allowed for the input of multiple values, 
 so those are handled as list-cols and not shown here.
 
-# Trying out CCC joins
+```{r pairs, warning = FALSE, width = 8, height = 8}
+mpeds |> 
+  select(where(is.numeric), -canonical_id, -starts_with("location"),
+                 -year, -uni_id, -size_category, -enrollment_count) |> 
+  ggpairs(progress = FALSE, lower = list(
+    continuous = wrap(ggally_points, size = 0.1, alpha = 0.2)
+    ),
+    title = "Glimpse at relationships among numeric variables"
+    )
+
+```
+
+The pairs plot is still very difficult to read after adjustments. This should be
+treated as a glimpse or overview, and more detailed and cleaner plots will be made
+later on.
+
+```{r distributions}
+mpeds |> 
+  select(where(is.numeric), -canonical_id, -starts_with("location"),
+                 -year, -uni_id, -size_category) |> 
+  pivot_longer(everything()) |> 
+  drop_na() |> 
+  ggplot(aes(value)) + 
+  geom_histogram() + 
+  facet_wrap(~name, scales = "free") + 
+  labs(
+    title = "Glimpse of numeric covariates at the canonical event level",
+    y = "Number of occurrences",
+    x = "Value of variable",
+  ) + 
+  theme_bw() + 
+  theme(text = element_text(family = "Lato"),
+    strip.background = element_rect(fill = "transparent")
+  )
+
+```
+
+# Trying out joins with protest data
 
 To recap from our last conversation, it's a bit difficult to join the CCC data
 and our data since a lot of MPEDS data points could presumably be in the CCC
@@ -212,12 +245,24 @@ ccc <- tar_read(ccc) |>
 blm <- tar_read(elephrame_blm) |> 
   distinct() |> 
   rename(protest_date = blm_protest_date)
+  
+# We want to assess successful match rates in a sensible manner, which means 
+# restricting the MPEDS dataset to just the protest years available in either 
+# CCC or Elephrame
+n_ccc <- matched_mpeds |> 
+  filter(start_date > min(ccc$protest_date, na.rm = TRUE)) |> 
+  nrow()
+n_elephrame <- matched_mpeds |> 
+  filter(start_date > min(blm$protest_date, na.rm = TRUE)) |> 
+  nrow()
 
 test_date_diffs <- function(protests){
   # a version where dates are a list-col, to assist in the testing below
-  dates <- protests |> 
+  protest_dates <- protests |> 
     group_by(fips) |> 
-    summarize(dates_lst = list(protest_date))
+    summarize(recent_protest_dates_lst = list(protest_date))
+  matched_mpeds <- mpeds |> 
+    left_join(protest_dates, by = "fips") 
   
   # return a TRUE value if any protests in `vec` occurred between 
   # a given date and `diff` days after that date
@@ -227,34 +272,44 @@ test_date_diffs <- function(protests){
   }
   
   match_date_diff <- function(diff){
-    diffed_protests <- protests |> 
-      left_join(dates, by = "fips") |> 
+    # For each canonical event, use the `recent_protest_dates_lst` column
+    # representing protests in the same county to assess if any
+    # those nearby protests happened recently
+    recent_protests <- matched_mpeds |> 
       mutate(
-        dummy = unlist(map2(
-          dates_lst, protest_date,
+        has_recent_protest_nearby = unlist(map2(
+          recent_protest_dates_lst, start_date,
           function(x,y){compute_protests(x, y, diff)}
         ))
       )
     
-    joined <- mpeds |> 
-      left_join(
-        diffed_protests, by = c("start_date" = "protest_date", "fips")
-        ) 
+    n_matches <- sum(recent_protests$has_recent_protest_nearby, na.rm = TRUE)
     
-    n_matches <- sum(joined$dummy, na.rm = TRUE)
-    
-    tribble(~date_offset, ~recent_protests, ~match_percentage,
-            diff, n_matches, 100 * n_matches/nrow(joined)
+    tribble(~date_offset, ~recent_protests,
+            diff, n_matches, 
             )
+    
   }
-  return(map_dfr(c(0, 1,3,5,7), match_date_diff))
+  return(map_dfr(c(0,1,3,5,7), match_date_diff))
 }
 
 match_results <- map_dfr(list("CCC" = ccc, "Elephrame" = blm),
-                         test_date_diffs, .id = "source")
+                         test_date_diffs, .id = "source") |> 
+  mutate(match_percentage = ifelse(
+    source == "CCC", 100 * recent_protests / n_ccc,
+    100 * recent_protests / n_elephrame
+  ))
 
 kable(match_results)
+
 ```
+
+Here, the `match_percentage` column indicates how many canonical events saw another
+protest occur in the same county within `diff` days, according to the dataset
+in `source`. The fact that the match rate for 0 is much higher than 1 for both
+Elephrame and CCC indicates that there is some double-counting of protests;
+rather than multiple protests occurring concurrently, we may have recorded a protest
+in our dataset that is also present in another dataset.
 
 So it seems that there are a fair number of duplicates occurring if we don't
 have a date offset, but once we add one (of any days) that pretty much solves
@@ -263,9 +318,8 @@ the data quality issue.
 That being said, the likely larger problem with the CCC data is that it's only 
 available after 2017, so it may not be relevant even after we become satisfied
 with the deduped match process. This can be refined a little bit by adding in 
-Elephrame data on BLM protests, but we've had problems there already, the topic 
-differences mean we can't pretend we have complete data, Elephrame only begins
-in 2014, and I haven't actually joined it in yet.
+Elephrame data on BLM protests, but we've had problems there already, and the topic 
+differences mean we can't pretend we have complete data.
 
 # Maps and related things
 
@@ -278,12 +332,11 @@ us_sf <- states(progress_bar = FALSE) |>
                        "Commonwealth of the Northern Mariana Islands",
                        "Alaska", "Guam"))) |> 
   st_union()
-mpeds_sf <- mpeds |> left_join(county_sf, by = "fips") 
 ```
 
 ```{r mpeds_map}
 
-mpeds |> 
+mpeds_sf |> 
   st_transform(st_crs(county_sf)) |>
   mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
   ggplot() + 
@@ -297,7 +350,6 @@ mpeds |>
     title = "Spread of canonical events and geocoded locations",
     subtitle = "Locations jittered slightly, by 0.005*bounding box diagonal.",
     caption = "Alaska, Hawaii, a few other locations with only a\nfew protests excluded in this map only."
-    
   ) + 
   theme_void() + 
   theme(text = element_text(family = "Lato"),

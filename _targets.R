@@ -65,27 +65,26 @@ list(
 
   # Integration steps ---
   # IPEDS and MPEDS
-  # the `raw_names` target is meant to be cleaned by hand (by me)
-  tar_target(raw_names, clean_mpeds_names(geocoded, ipeds, glued),
+  # the `raw_coarse_filename` target is meant to be cleaned by hand (by me)
+  tar_target(raw_coarse_filename, clean_mpeds_names(geocoded, ipeds, glued),
              format = "file"),
-  # and the cleaned version of `raw_names` will be read in from the below filename
   tar_target(uni_xwalk_filename,
-             "tasks/university_covariates/hand/coarse_uni_match.csv",
+             update_coarse_matches(raw_coarse_filename),
              format = "file"),
   # then passed off to coders in a readable format
   tar_target(postprocess_filename, postprocess_names(
     geocoded, uni_xwalk_filename, glued, ipeds
-  )),
+  ), format = "file"),
   # Export Canadian universities for additional manual data input
   tar_target(canadian_universities_filename, export_canada(
     uni_xwalk_filename, glued
-  )),
+  ), format = "file"),
 
   tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
 
   tar_target(integrated, integrate_targets(
     geocoded, ipeds, glued,
-    read_csv(uni_xwalk_filename), county_covariates, ccc,
+    readxl::read_excel(postprocess_filename), county_covariates, ccc,
     canada_shapefiles = canada_shapefiles
     )),
 
