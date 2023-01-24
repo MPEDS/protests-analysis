@@ -1,28 +1,7 @@
 Exploratory Plots
 ================
 
-``` r
-mpeds_raw <- tar_read(canonical_events)
-mpeds <- tar_read(integrated)
-```
-
 # Basic counts
-
-``` r
-mpeds_raw_ids <- length(unique(mpeds_raw$canonical_id))
-mpeds_ids <- length(unique(mpeds$canonical_id))
-n_locations <- length(unique(mpeds$location))
-n_fips <- length(unique(mpeds$fips))
-n_universities <- length(unique(mpeds$university))
-
-missing_unis <- mpeds$university_locations |>
-  bind_rows() |>
-  filter(is.na(lat), !is.na(location))
-n_missing_uni_rows <- nrow(missing_unis)
-n_missing_unis <- missing_unis$location |>
-  unique() |> 
-  length()
-```
 
 The initial import of the MPEDS db found 5220 unique canonical events,
 and after all cleaning steps we still have 5220 canonical events.
@@ -57,141 +36,83 @@ That comes out to \~5% of universities not having coordinates, and
 
 The top universities by appearances:
 
-``` r
-university_counts <- mpeds |> 
-  group_by(university) |> 
-  count() |> 
-  ungroup() |> 
-  drop_na() |>
-  slice_max(order_by = n, n = 15)
-
-kable(university_counts)
-```
-
-| university                                  |   n | geometry                     |
-|:--------------------------------------------|----:|:-----------------------------|
-| University of California-Berkeley           | 184 | MULTIPOINT ((-121.7405 38.5… |
-| McGill University                           | 154 | MULTIPOINT ((-66.06331 45.2… |
-| Concordia University                        | 146 | MULTIPOINT ((-71.89367 45.4… |
-| Harvard University                          | 145 | MULTIPOINT ((-91.53462 41.6… |
-| University of Michigan-Ann Arbor            | 122 | MULTIPOINT ((-84.48387 42.7… |
-| University of California-Los Angeles        |  86 | MULTIPOINT ((-122.273 37.87… |
-| University of Toronto                       |  69 | MULTIPOINT ((-60.19422 46.1… |
-| University of Chicago                       |  66 | POINT (-87.6298 41.87811)    |
-| Ryerson University                          |  56 | MULTIPOINT ((-75.69719 45.4… |
-| Columbia University in the City of New York |  49 | MULTIPOINT ((-72.28955 43.7… |
-| Tufts University                            |  49 | MULTIPOINT ((-71.05888 42.3… |
-| University of Wisconsin-Madison             |  49 | MULTIPOINT ((-96.49815 41.4… |
-| Georgetown University                       |  48 | POINT (-77.03687 38.90719)   |
-| The University of Texas at Austin           |  47 | MULTIPOINT ((-97.74306 30.2… |
-| Cornell University                          |  46 | MULTIPOINT ((-76.50188 42.4… |
+| university                                  |   n |
+|:--------------------------------------------|----:|
+| University of California-Berkeley           | 184 |
+| McGill University                           | 154 |
+| Concordia University                        | 146 |
+| Harvard University                          | 145 |
+| University of Michigan-Ann Arbor            | 122 |
+| University of California-Los Angeles        |  86 |
+| University of Toronto                       |  69 |
+| University of Chicago                       |  66 |
+| Ryerson University                          |  56 |
+| Columbia University in the City of New York |  49 |
+| Tufts University                            |  49 |
+| University of Wisconsin-Madison             |  49 |
+| Georgetown University                       |  48 |
+| The University of Texas at Austin           |  47 |
+| Cornell University                          |  46 |
 
 And the top locations:
 
-``` r
-location_counts <- mpeds |> 
-  group_by(location) |> 
-  count() |> 
-  ungroup() |> 
-  drop_na() |> 
-  slice_max(order_by = n, n = 15)
-
-kable(location_counts)
-```
-
-| location               |   n | geometry                   |
-|:-----------------------|----:|:---------------------------|
-| Montreal, QC, Canada   | 352 | POINT (-73.56739 45.50189) |
-| New York City, NY, USA | 172 | POINT (-74.00597 40.71278) |
-| Berkeley, CA, USA      | 170 | POINT (-122.273 37.87152)  |
-| Toronto, ON, Canada    | 157 | POINT (-79.38318 43.65323) |
-| Cambridge, MA, USA     | 139 | POINT (-71.10973 42.37362) |
-| Chicago, IL, USA       | 133 | POINT (-87.6298 41.87811)  |
-| Los Angeles, CA, USA   | 121 | POINT (-118.2437 34.05223) |
-| Ann Arbor, MI, USA     | 113 | POINT (-83.74304 42.28083) |
-| San Diego, CA, USA     |  77 | POINT (-117.1611 32.71574) |
-| San Francisco, CA, USA |  76 | POINT (-122.4194 37.77493) |
-| Boston, MA, USA        |  61 | POINT (-71.05888 42.36008) |
-| Washington, D.C., USA  |  58 | POINT (-77.03687 38.90719) |
-| Madison, WI, USA       |  48 | POINT (-89.40075 43.07217) |
-| Davis, CA, USA         |  47 | POINT (-121.7405 38.54491) |
-| Ithaca, NY, USA        |  47 | POINT (-76.50188 42.44396) |
+| location               |   n |
+|:-----------------------|----:|
+| Montreal, QC, Canada   | 352 |
+| New York City, NY, USA | 172 |
+| Berkeley, CA, USA      | 170 |
+| Toronto, ON, Canada    | 157 |
+| Cambridge, MA, USA     | 139 |
+| Chicago, IL, USA       | 133 |
+| Los Angeles, CA, USA   | 121 |
+| Ann Arbor, MI, USA     | 113 |
+| San Diego, CA, USA     |  77 |
+| San Francisco, CA, USA |  76 |
+| Boston, MA, USA        |  61 |
+| Washington, D.C., USA  |  58 |
+| Madison, WI, USA       |  48 |
+| Davis, CA, USA         |  47 |
+| Ithaca, NY, USA        |  47 |
 
 Top states:
 
-``` r
-state_fips <- fips_codes |> 
-  select(state_code, state_name) |> 
-  distinct()
-
-state_counts <- mpeds |> 
-  mutate(state_code = str_sub(fips, 1, 2)) |> 
-  group_by(state_code) |> 
-  count() |> 
-  ungroup() |> 
-  drop_na() |> 
-  slice_max(order_by = n, n = 15) |> 
-  left_join(state_fips, by = "state_code") |> 
-  select(-state_code)
-  
-kable(state_counts)
-```
-
-|   n | geometry                     | state_name           |
-|----:|:-----------------------------|:---------------------|
-| 562 | MULTIPOINT ((-121.8375 39.7… | California           |
-| 341 | MULTIPOINT ((-105.2705 40.0… | Massachusetts        |
-| 228 | MULTIPOINT ((-155.5828 19.8… | Illinois             |
-| 172 | MULTIPOINT ((-84.34759 46.4… | Michigan             |
-| 163 | MULTIPOINT ((-73.45291 44.6… | New York             |
-| 142 | MULTIPOINT ((-96.79699 32.7… | Pennsylvania         |
-| 113 | MULTIPOINT ((-79.94143 37.2… | District of Columbia |
-| 111 | MULTIPOINT ((-119.8143 39.5… | Virginia             |
-| 108 | MULTIPOINT ((-119.6982 34.4… | Florida              |
-| 103 | MULTIPOINT ((-95.3698 29.76… | Texas                |
-|  96 | MULTIPOINT ((-77.03687 38.9… | Connecticut          |
-|  79 | MULTIPOINT ((-122.3321 47.6… | Wisconsin            |
-|  77 | MULTIPOINT ((-85.38636 40.1… | Ohio                 |
-|  72 | MULTIPOINT ((-81.67455 36.2… | North Carolina       |
-|  59 | MULTIPOINT ((-122.4443 47.2… | Washington           |
+|   n | state_name           |
+|----:|:---------------------|
+| 562 | California           |
+| 341 | Massachusetts        |
+| 228 | Illinois             |
+| 172 | Michigan             |
+| 163 | New York             |
+| 142 | Pennsylvania         |
+| 113 | District of Columbia |
+| 111 | Virginia             |
+| 108 | Florida              |
+| 103 | Texas                |
+|  96 | Connecticut          |
+|  79 | Wisconsin            |
+|  77 | Ohio                 |
+|  72 | North Carolina       |
+|  59 | Washington           |
 
 And finally the top counties:
 
-``` r
-county_fips <- fips_codes |> 
-  mutate(fips = paste0(state_code, county_code),
-         county_name = paste0(county, ", ", state_name)) |> 
-  select(fips, county_name)
-
-county_counts <- mpeds |> 
-  group_by(fips) |> 
-  count() |> 
-  ungroup() |> 
-  drop_na() |> 
-  slice_max(order_by = n, n = 15) |> 
-  left_join(county_fips, by = "fips") |> 
-  select(-fips)
-  
-kable(county_counts)
-```
-
-|   n | geometry                     | county_name                                |
-|----:|:-----------------------------|:-------------------------------------------|
-| 238 | MULTIPOINT ((-105.2705 40.0… | Middlesex County, Massachusetts            |
-| 188 | MULTIPOINT ((-121.7405 38.5… | Alameda County, California                 |
-| 128 | MULTIPOINT ((-87.6298 41.87… | Cook County, Illinois                      |
-| 126 | MULTIPOINT ((-84.48387 42.7… | Washtenaw County, Michigan                 |
-| 113 | MULTIPOINT ((-79.94143 37.2… | District of Columbia, District of Columbia |
-|  80 | MULTIPOINT ((-118.2551 34.1… | Los Angeles County, California             |
-|  63 | POINT (-74.00597 40.71278)   | New York County, New York                  |
-|  59 | MULTIPOINT ((-121.7405 38.5… | San Diego County, California               |
-|  56 | MULTIPOINT ((-122.4194 37.7… | San Francisco County, California           |
-|  49 | MULTIPOINT ((-96.49815 41.4… | Dane County, Wisconsin                     |
-|  48 | MULTIPOINT ((-92.17352 38.5… | Boone County, Missouri                     |
-|  48 | MULTIPOINT ((-76.50188 42.4… | Tompkins County, New York                  |
-|  47 | MULTIPOINT ((-122.0322 37.3… | Santa Clara County, California             |
-|  47 | MULTIPOINT ((-97.74306 30.2… | Travis County, Texas                       |
-|  42 | MULTIPOINT ((-71.80229 42.2… | Hampshire County, Massachusetts            |
+|   n | county_name                                |
+|----:|:-------------------------------------------|
+| 238 | Middlesex County, Massachusetts            |
+| 188 | Alameda County, California                 |
+| 128 | Cook County, Illinois                      |
+| 126 | Washtenaw County, Michigan                 |
+| 113 | District of Columbia, District of Columbia |
+|  80 | Los Angeles County, California             |
+|  63 | New York County, New York                  |
+|  59 | San Diego County, California               |
+|  56 | San Francisco County, California           |
+|  49 | Dane County, Wisconsin                     |
+|  48 | Boone County, Missouri                     |
+|  48 | Tompkins County, New York                  |
+|  47 | Santa Clara County, California             |
+|  47 | Travis County, Texas                       |
+|  42 | Hampshire County, Massachusetts            |
 
 These glimpses seem mostly in line with what we should expect, with a
 strong caveat that the Missouri protests are not making a leading
@@ -200,65 +121,48 @@ dataset reveals there are a fair number of protests both in Missouri and
 at University of Missouri-Columbia. There could still be errors here, so
 I’m continuing to revise the code.
 
-# Basic summary plots
+We can also begin to look at the top universities, counties, locations,
+or states over time. This inevitably produces more complex summaries,
+and it can be difficult to take an informative glimpse given so many
+categories, so I’ve only shown the universities over time for now:
 
-``` r
-mpeds |> st_drop_geometry() |> 
-  select(where(function(x){is.numeric(x) || is.logical(x)}),
-                 -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -link) |> 
-  pivot_longer(cols = everything()) |> 
-  filter(name != "NA") |> 
-  group_by(name) |> 
-  summarize(
-    type = ifelse(is.numeric(pull(mpeds[name[1]], 1)), "numeric", "boolean"),
-    mean = mean(value, na.rm = TRUE),
-    sd = sd(value, na.rm = TRUE)
-  ) |> 
-  mutate(across(where(is.numeric), ~round(., 3))) |> 
-  arrange(type) |> 
-  kable()
-```
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+
+# Basic summary plots
 
 | name                    | type    |      mean |        sd |
 |:------------------------|:--------|----------:|----------:|
-| bachelors_granting      | boolean |     1.000 |     0.000 |
-| campaign                | boolean |     0.248 |     0.432 |
-| counterprotest          | boolean |     0.042 |     0.201 |
-| hbcu                    | boolean |     0.010 |     0.099 |
-| inaccurate_date         | boolean |     0.008 |     0.090 |
-| masters_granting        | boolean |     1.000 |     0.000 |
-| multiple_cities         | boolean |     0.027 |     0.163 |
-| notes.y                 | boolean |       NaN |        NA |
-| off_campus              | boolean |     0.067 |     0.250 |
-| on_campus_no_student    | boolean |     0.071 |     0.257 |
-| phd_granting            | boolean |     1.000 |     0.000 |
-| private                 | boolean |     0.125 |     0.336 |
-| quotes                  | boolean |     0.645 |     0.478 |
-| ritual                  | boolean |     0.032 |     0.177 |
-| tribal                  | boolean |     0.001 |     0.025 |
-| enrollment_count        | numeric | 36583.172 |  9991.500 |
+| campaign                | boolean |     0.248 |        NA |
+| counterprotest          | boolean |     0.042 |        NA |
+| hbcu                    | boolean |     0.010 |        NA |
+| inaccurate_date         | boolean |     0.008 |        NA |
+| multiple_cities         | boolean |     0.027 |        NA |
+| off_campus              | boolean |     0.067 |        NA |
+| on_campus_no_student    | boolean |     0.071 |        NA |
+| quotes                  | boolean |     0.645 |        NA |
+| ritual                  | boolean |     0.032 |        NA |
+| tribal                  | boolean |     0.001 |        NA |
 | eviction_filing_rate    | numeric |     4.029 |     5.174 |
 | eviction_judgement_rate | numeric |     1.579 |     1.585 |
-| mhi                     | numeric | 65260.556 | 17706.571 |
+| median_household_income | numeric | 65260.556 | 17706.571 |
 | republican_vote_prop    | numeric |     0.311 |     0.150 |
 | unemp                   | numeric |     4.680 |     1.466 |
-
-``` r
-mpeds |> 
-  st_drop_geometry() |> 
-  select(where(is.numeric), -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category) |> 
-  pairs()
-```
-
-![](exploratory_plots_files/figure-gfm/pairs-1.png)<!-- -->
 
 For boolean variables, “mean” is the proportion that they are TRUE. Many
 of the variables recorded in MPEDS allowed for the input of multiple
 values, so those are handled as list-cols and not shown here.
 
-# Trying out CCC joins
+![](exploratory_plots_files/figure-gfm/pairs-1.png)<!-- -->
+
+The pairs plot is still very difficult to read after adjustments. This
+should be treated as a glimpse or overview, and more detailed and
+cleaner plots will be made later on.
+
+    ## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.
+
+![](exploratory_plots_files/figure-gfm/distributions-1.png)<!-- -->
+
+# Trying out joins with protest data
 
 To recap from our last conversation, it’s a bit difficult to join the
 CCC data and our data since a lot of MPEDS data points could presumably
@@ -282,70 +186,26 @@ We discussed two solutions to this problem to avoid deduplication:
 
 The following chunk gives a glimpse at total number of matches:
 
-``` r
-ccc <- tar_read(ccc) |> 
-  distinct() |> 
-  rename(protest_date = ccc_protest_date)
-
-blm <- tar_read(elephrame_blm) |> 
-  distinct() |> 
-  rename(protest_date = blm_protest_date)
-
-test_date_diffs <- function(protests){
-  # a version where dates are a list-col, to assist in the testing below
-  dates <- protests |> 
-    group_by(fips) |> 
-    summarize(dates_lst = list(protest_date))
-  
-  # return a TRUE value if any protests in `vec` occurred between 
-  # a given date and `diff` days after that date
-  compute_protests <- function(vec, date, diff){
-    if(is.na(date)) return(NA)
-    any(vec %in% (date + 1):(diff + date))
-  }
-  
-  match_date_diff <- function(diff){
-    diffed_protests <- protests |> 
-      left_join(dates, by = "fips") |> 
-      mutate(
-        dummy = unlist(map2(
-          dates_lst, protest_date,
-          function(x,y){compute_protests(x, y, diff)}
-        ))
-      )
-    
-    joined <- mpeds |> 
-      left_join(
-        diffed_protests, by = c("start_date" = "protest_date", "fips")
-        ) 
-    
-    n_matches <- sum(joined$dummy, na.rm = TRUE)
-    
-    tribble(~date_offset, ~recent_protests, ~match_percentage,
-            diff, n_matches, 100 * n_matches/nrow(joined)
-            )
-  }
-  return(map_dfr(c(0, 1,3,5,7), match_date_diff))
-}
-
-match_results <- map_dfr(list("CCC" = ccc, "Elephrame" = blm),
-                         test_date_diffs, .id = "source")
-
-kable(match_results)
-```
-
 | source    | date_offset | recent_protests | match_percentage |
 |:----------|------------:|----------------:|-----------------:|
-| CCC       |           0 |             478 |         8.569380 |
-| CCC       |           1 |             121 |         2.169236 |
-| CCC       |           3 |             210 |         3.764790 |
-| CCC       |           5 |             265 |         4.750807 |
-| CCC       |           7 |             301 |         5.396199 |
-| Elephrame |           0 |             254 |         4.505144 |
-| Elephrame |           1 |              74 |         1.312522 |
-| Elephrame |           3 |             107 |         1.897836 |
-| Elephrame |           5 |             120 |         2.128414 |
-| Elephrame |           7 |             125 |         2.217098 |
+| CCC       |           0 |             634 |        36.774942 |
+| CCC       |           1 |             277 |        16.067285 |
+| CCC       |           3 |             535 |        31.032483 |
+| CCC       |           5 |             694 |        40.255220 |
+| CCC       |           7 |             825 |        47.853828 |
+| Elephrame |           0 |             265 |         6.022727 |
+| Elephrame |           1 |             100 |         2.272727 |
+| Elephrame |           3 |             205 |         4.659091 |
+| Elephrame |           5 |             337 |         7.659091 |
+| Elephrame |           7 |             422 |         9.590909 |
+
+Here, the `match_percentage` column indicates how many canonical events
+saw another protest occur in the same county within `diff` days,
+according to the dataset in `source`. The fact that the match rate for 0
+is much higher than 1 for both Elephrame and CCC indicates that there is
+some double-counting of protests; rather than multiple protests
+occurring concurrently, we may have recorded a protest in our dataset
+that is also present in another dataset.
 
 So it seems that there are a fair number of duplicates occurring if we
 don’t have a date offset, but once we add one (of any days) that pretty
@@ -355,42 +215,9 @@ That being said, the likely larger problem with the CCC data is that
 it’s only available after 2017, so it may not be relevant even after we
 become satisfied with the deduped match process. This can be refined a
 little bit by adding in Elephrame data on BLM protests, but we’ve had
-problems there already, the topic differences mean we can’t pretend we
-have complete data, Elephrame only begins in 2014, and I haven’t
-actually joined it in yet.
+problems there already, and the topic differences mean we can’t pretend
+we have complete data.
 
 # Maps and related things
-
-``` r
-county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) |> 
-  select(fips = GEOID)
-us_sf <- states(progress_bar = FALSE) |> 
-  filter(!(NAME %in% c("Hawaii", "Puerto Rico", "American Samoa", 
-                       "United States Virgin Islands", 
-                       "Commonwealth of the Northern Mariana Islands",
-                       "Alaska", "Guam"))) |> 
-  st_union()
-```
-
-``` r
-mpeds |> 
-  st_transform(st_crs(county_sf)) |>
-  mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
-  ggplot() + 
-  geom_sf(data = us_sf, fill = "white", color = "gray") + 
-  geom_sf(size = 0.1, alpha = 0.2) + 
-  lims(
-    x = c(-130, -60),
-    y = c(20, 55)
-  ) +
-  labs(
-    title = "Spread of canonical events and geocoded locations",
-    subtitle = "Locations jittered slightly, by 0.005*bounding box diagonal.",
-    caption = "Alaska, Hawaii, a few other locations with only a\nfew protests excluded in this map only."
-  ) + 
-  theme_void() + 
-  theme(text = element_text(family = "Lato"),
-        plot.title = element_text(size = 20))
-```
 
 ![](exploratory_plots_files/figure-gfm/mpeds_map-1.png)<!-- -->

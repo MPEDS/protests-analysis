@@ -60,5 +60,5 @@ get_mhi <- function(dummy_url){
   #some metadata collected as regular data in the loop;
   # this last line throws it out
 
-  return(median_household_income)
+  return(mhi)
 }

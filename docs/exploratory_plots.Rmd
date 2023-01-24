@@ -13,6 +13,7 @@ library(tidyverse)
 library(GGally)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+opts_chunk$set(echo = FALSE)
 
 font_add_google("Lato")
 showtext_auto()
@@ -40,7 +41,6 @@ n_missing_uni_rows <- nrow(missing_unis)
 n_missing_unis <- missing_unis$location |>
   unique() |> 
   length()
-
 ```
 
 The initial import of the MPEDS db found `r mpeds_raw_ids` 
@@ -154,6 +154,36 @@ That's a bit alarming; some playing around with the dataset reveals there are
 a fair number of protests both in Missouri and at University of Missouri-Columbia. 
 There could still be errors here, so I'm continuing to revise the code.
 
+We can also begin to look at the top universities, counties, locations, or states
+over time. This inevitably produces more complex summaries, and it can
+be difficult to take an informative glimpse given so many categories, so I've only
+shown the universities over time for now:
+
+```{r}
+
+unis_over_time <- mpeds |> 
+  group_by(university, year) |> 
+  count() |> 
+  drop_na() |> 
+  filter(university %in% university_counts$university[1:10]) 
+
+ggplot(unis_over_time, aes(x = year, y = n, color = university)) + 
+  geom_line() + 
+  labs(
+    x = "Year",
+    y = "Number of associated canonical events",
+    title = "Top universities by protest count over time",
+    caption = "Universities displayed are top 10 overall universities
+    by protest count, not a top university in a given year."
+  ) + 
+  theme_bw() + 
+  theme(
+    text = element_text(family = "Lato")
+  )
+  
+
+```
+
 # Basic summary plots 
 
 ```{r summary}
@@ -249,10 +279,10 @@ blm <- tar_read(elephrame_blm) |>
 # We want to assess successful match rates in a sensible manner, which means 
 # restricting the MPEDS dataset to just the protest years available in either 
 # CCC or Elephrame
-n_ccc <- matched_mpeds |> 
+n_ccc <- mpeds |> 
   filter(start_date > min(ccc$protest_date, na.rm = TRUE)) |> 
   nrow()
-n_elephrame <- matched_mpeds |> 
+n_elephrame <- mpeds |> 
   filter(start_date > min(blm$protest_date, na.rm = TRUE)) |> 
   nrow()
 
