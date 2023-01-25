@@ -132,16 +132,21 @@ categories, so I’ve only shown the universities over time for now:
 
 | name                    | type    |      mean |        sd |
 |:------------------------|:--------|----------:|----------:|
+| bachelors_granting      | boolean |     1.000 |        NA |
 | campaign                | boolean |     0.248 |        NA |
 | counterprotest          | boolean |     0.042 |        NA |
 | hbcu                    | boolean |     0.010 |        NA |
 | inaccurate_date         | boolean |     0.008 |        NA |
+| masters_granting        | boolean |     1.000 |        NA |
 | multiple_cities         | boolean |     0.027 |        NA |
 | off_campus              | boolean |     0.067 |        NA |
 | on_campus_no_student    | boolean |     0.071 |        NA |
+| phd_granting            | boolean |     1.000 |        NA |
+| private                 | boolean |     0.125 |        NA |
 | quotes                  | boolean |     0.645 |        NA |
 | ritual                  | boolean |     0.032 |        NA |
 | tribal                  | boolean |     0.001 |        NA |
+| enrollment_count        | numeric | 36583.172 |  9991.500 |
 | eviction_filing_rate    | numeric |     4.029 |     5.174 |
 | eviction_judgement_rate | numeric |     1.579 |     1.585 |
 | median_household_income | numeric | 65260.556 | 17706.571 |

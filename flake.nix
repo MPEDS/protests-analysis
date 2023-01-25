@@ -6,16 +6,23 @@
 
   outputs = { self, nixpkgs, utils } :
     utils.lib.eachDefaultSystem (system:
-      let pkgs = import nixpkgs { inherit system; };
+		let pkgs = import nixpkgs {
+			inherit system; 
+			overlays = [(self: super: {
+					customRstudio = super.rstudioWrapper.override {
+						packages = [super.rPackages.renv];
+					};
+				})
+			];};
       in {
         devShell = (pkgs.buildFHSUserEnv {
 					name = "renv-compatible nix";
           targetPkgs = pkgs:
             (with pkgs; [
-              binutils
-              curl.dev
-              gcc
-              libgit2
+							binutils
+							curl.dev
+							gcc
+							libgit2
 							/* Needed for various R dependencies */
 							libssh
 							libpng
@@ -23,20 +30,24 @@
 							geos
 							freetype.dev
 							proj.dev
-              libxml2.dev
-              openssl.dev
+							libxml2.dev
+							openssl.dev
 							sqlite.dev
-              pandoc
+							pandoc
 							zlib.dev
 							unixODBC
 							libmysqlclient.dev
 							udunits
-              pkg-config
+							pkg-config
 							/* Needed for basic R setup */ 
-              R
-              rPackages.renv
-            ]);
-					runScript = "bash";
-        }).env;
+							R
+							rPackages.renv
+							customRstudio
+							]);
+							runScript = "bash";
+							profile = ''
+								export R_PROFILE=${builtins.toString ./.}/.Rprofile
+								'';
+					}).env;
       });
 }
