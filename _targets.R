@@ -46,6 +46,10 @@ list(
   tar_target(evictions, get_evictions(eviction_url)),
   tar_target(mit_elections, get_mit_elections()),
 
+  # Geographic information
+  tar_target(us_regions_filename, format = "file",
+             "tasks/county_covariates/hand/us-regions.csv"),
+  tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
   tar_target(canada_shapefiles, get_canada_shapefiles()),
 
   # This queries the ACS, and doesn't depend on a URL,
@@ -83,9 +87,14 @@ list(
   tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
 
   tar_target(integrated, integrate_targets(
-    geocoded, ipeds, glued,
-    readxl::read_excel(postprocess_filename), county_covariates, ccc,
-    canada_shapefiles = canada_shapefiles
+    geocoded,
+    ipeds,
+    glued,
+    readxl::read_excel(postprocess_filename),
+    county_covariates,
+    ccc,
+    canada_shapefiles = canada_shapefiles,
+    us_regions = us_regions
     )),
 
   # Plotting and other exploratory analysis ---

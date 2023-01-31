@@ -6,8 +6,8 @@ integrate_targets <- function(
     uni_xwalk,
     county_covariates = list(),
     ccc,
-    uni_covariates = list(),
-    canada_shapefiles
+    canada_shapefiles,
+    us_regions
 ){
   # for now convert "university" to simple column and match on that
   with_university_covariates <- geocoded |>
@@ -41,10 +41,12 @@ integrate_targets <- function(
   # and performing a spatial join with the canada shapefiles
   # Using EPSG:4326 because that's what Google Earth uses for (geographic)
   # coordinates, and we used Google APIs o get the coords
-  with_canada_census_subdivisions <- with_county_covariates |>
+  with_shapes <- with_county_covariates |>
     st_as_sf(coords = c("location_lng", "location_lat"), crs = st_crs(4326),
              na.fail = FALSE) |>
-    st_join(canada_shapefiles, st_within)
+    st_join(canada_shapefiles, st_within) |>
+    mutate(state = str_sub(fips, 1, 2)) |>
+    left_join(us_regions, by = "state")
 
-  return(with_canada_census_subdivisions)
+  return(with_shapes)
 }

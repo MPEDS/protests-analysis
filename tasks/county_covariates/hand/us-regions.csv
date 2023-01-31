@@ -1,0 +1,52 @@
+state,region,division
+09,Northeast,New England
+23,Northeast,New England
+25,Northeast,New England
+33,Northeast,New England
+44,Northeast,New England
+50,Northeast,New England
+34,Northeast,Middle Atlantic
+36,Northeast,Middle Atlantic
+42,Northeast,Middle Atlantic
+18,Midwest,East North Central
+17,Midwest,East North Central
+26,Midwest,East North Central
+39,Midwest,East North Central
+55,Midwest,East North Central
+19,Midwest,West North Central
+20,Midwest,West North Central
+27,Midwest,West North Central
+29,Midwest,West North Central
+31,Midwest,West North Central
+38,Midwest,West North Central
+46,Midwest,West North Central
+10,South,South Atlantic
+11,South,South Atlantic
+12,South,South Atlantic
+13,South,South Atlantic
+24,South,South Atlantic
+37,South,South Atlantic
+45,South,South Atlantic
+51,South,South Atlantic
+54,South,South Atlantic
+01,South,East South Central
+21,South,East South Central
+28,South,East South Central
+47,South,East South Central
+05,South,West South Central
+22,South,West South Central
+40,South,West South Central
+48,South,West South Central
+04,West,Mountain
+08,West,Mountain
+16,West,Mountain
+35,West,Mountain
+30,West,Mountain
+49,West,Mountain
+32,West,Mountain
+56,West,Mountain
+02,West,Pacific
+06,West,Pacific
+15,West,Pacific
+41,West,Pacific
+53,West,Pacific

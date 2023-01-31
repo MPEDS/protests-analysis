@@ -128,7 +128,7 @@ categories, so I’ve only shown the universities over time for now:
 
 ![](exploratory_plots_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
-# Basic summary plots
+# Basic summary plots by variable
 
 | name                    | type    |      mean |        sd |
 |:------------------------|:--------|----------:|----------:|

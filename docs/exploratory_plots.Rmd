@@ -184,7 +184,9 @@ ggplot(unis_over_time, aes(x = year, y = n, color = university)) +
 
 ```
 
-# Basic summary plots 
+
+
+# Basic summary plots by variable
 
 ```{r summary}
 mpeds |> 
