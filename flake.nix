@@ -25,10 +25,15 @@
 							libgit2
 							/* Needed for various R dependencies */
 							libssh
-							libpng
+							libpng.dev
+              libtiff.dev
+              libjpeg.dev
 							gdal
-							geos
-							freetype.dev
+              geos
+              fontconfig.dev
+              freetype.dev
+              harfbuzz.dev
+              fribidi
 							proj.dev
 							libxml2.dev
 							openssl.dev
