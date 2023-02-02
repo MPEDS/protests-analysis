@@ -13,10 +13,20 @@ library(tidyverse)
 library(GGally)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
-opts_chunk$set(echo = FALSE)
+opts_chunk$set(echo = FALSE, message = FALSE, fig.width = 12, fig.height = 8)
 
 font_add_google("Lato")
 showtext_auto()
+
+custom_theme <- function(...){
+  theme_bw() +
+    theme(
+      ...,
+      text = element_text(family = "Lato", size = 24)
+    )
+}
+
+theme_set(custom_theme())
 ```
 
 ```{r}
@@ -54,14 +64,8 @@ detect programmatically right now); there are lots of schools called
 in MPEDS will be assigned multiple schools. The MPEDS-IPEDS join
 is crucial because we also use IPEDS to join county FIPS identifiers,
 and thus no further joins will be accurate unless the MPEDS-IPEDS
-join is accurate. We currently have `r nrow(mpeds)` rows in the final
-dataset, indicating that this problem applies to some
-`r nrow(mpeds) - mpeds_ids` canonical events. 
-
-Fixing it just requires a rewrite of how the join is done, so that we join on
-IPEDS IDs, not names, for at least all ambiguous cases. This doesn't
-require adjustments to the instructions given to student coders, but it does
-require a little bit of time on my part, so it hasn't been completed yet.
+join is accurate. As of Jan 30, 2023, we are in the middle of repairing
+this join. 
 
 Of those events, there were `r n_locations` unique locations, 
 `r n_fips` unique counties, and `r n_universities` unique universities.
@@ -159,15 +163,15 @@ over time. This inevitably produces more complex summaries, and it can
 be difficult to take an informative glimpse given so many categories, so I've only
 shown the universities over time for now:
 
-```{r}
-
+```{r unis_over_time}
 unis_over_time <- mpeds |> 
-  group_by(university, year) |> 
+  mutate(start_date = lubridate::floor_date(start_date, "month")) |> 
+  group_by(university, start_date) |> 
   count() |> 
   drop_na() |> 
   filter(university %in% university_counts$university[1:10]) 
 
-ggplot(unis_over_time, aes(x = year, y = n, color = university)) + 
+ggplot(unis_over_time, aes(x = start_date, y = n, color = university)) + 
   geom_line() + 
   labs(
     x = "Year",
@@ -175,24 +179,46 @@ ggplot(unis_over_time, aes(x = year, y = n, color = university)) +
     title = "Top universities by protest count over time",
     caption = "Universities displayed are top 10 overall universities
     by protest count, not a top university in a given year."
-  ) + 
-  theme_bw() + 
-  theme(
-    text = element_text(family = "Lato")
+  ) 
+
+```
+
+```{r regions_over_time}
+regions_over_time <- mpeds |> 
+  mutate(start_date = lubridate::floor_date(start_date, "month"),
+         region = case_when(
+           !is.na(canada_metropolitan_area) ~ "Canada",
+           is.na(region) ~ NA_character_,
+           TRUE ~ region)
+         ) |> 
+  group_by(region, start_date) |> 
+  count() |> 
+  drop_na()
+
+ggplot(regions_over_time,
+       aes(color = region, x = start_date, y = n)) + 
+  geom_line() +
+  labs(
+    y = "Number of associated canonical events",
+    x = "Month of protest",
+    title = "Canonical events over time by geographical region",
+    color = "Geographic region"
+    
   )
-  
+```
+
+```{r}
 
 ```
 
 
-
 # Basic summary plots by variable
 
-```{r summary}
+```{r summary_by_uni}
 mpeds |> 
   select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -link) |> 
+                 -year, -uni_id, -size_category, -link) |>
   pivot_longer(cols = everything()) |> 
   filter(name != "NA") |> 
   group_by(name) |> 
@@ -203,6 +229,35 @@ mpeds |>
   ) |> 
   mutate(across(where(is.numeric), ~round(., 3))) |> 
   arrange(type) |> 
+  kable()
+```
+
+```{r binned_summary_by_uni}
+counts_quintile <- mpeds |>
+  group_by(university) |> 
+  count() |> 
+  ungroup() |> 
+  mutate(n = ntile(n, 5)) |> 
+  filter(n == 5 | n == 1)
+  
+mpeds |> 
+  select(university, where(function(x){is.numeric(x) || is.logical(x)}),
+                 -canonical_id, -starts_with("location"),
+         -bachelors_granting, -phd_granting, -masters_granting,
+                 -year, -uni_id, -size_category, -link) |> 
+  left_join(counts_quintile, by = "university") |> 
+  filter(n == 5 | n == 1) |> 
+  pivot_longer(cols = c(-university, -n)) |> 
+  filter(name != "NA") |> 
+  group_by(n, name) |> 
+  summarize(
+    type = ifelse(is.numeric(pull(mpeds[name[1]], 1)), "numeric", "boolean"),
+    mean = mean(value, na.rm = TRUE),
+    sd = ifelse(type == "boolean", NA_integer_, sd(value, na.rm = TRUE))
+  ) |> 
+  mutate(across(where(is.numeric), ~round(., 3))) |> 
+  arrange(type, name) |> 
+  rename("quintile (5 = highest)" = n) |> 
   kable()
 ```
 
