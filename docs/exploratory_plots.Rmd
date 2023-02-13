@@ -179,6 +179,8 @@ glimpse_counts <- function(colname){
       }
       return(item)
       })) |>
+    select({{colname}}) |> 
+    unnest(cols = {{colname}}) |> 
     group_by({{ colname }}) |> 
     count({{ colname }}) |> 
     arrange(desc(n)) |> 
