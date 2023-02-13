@@ -1,3 +1,5 @@
+# See https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx?gotoReportId=7&fromIpeds=true
+# for possible datasets and URLs
 get_directory_url <- function(year){
   base_url <- "https://nces.ed.gov/ipeds/datacenter/data/"
   full_url <- paste0(base_url, "HD", year, ".zip")

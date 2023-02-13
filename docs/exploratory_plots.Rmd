@@ -13,16 +13,16 @@ library(tidyverse)
 library(GGally)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
-opts_chunk$set(echo = FALSE, message = FALSE, fig.width = 12, fig.height = 8)
+opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 7)
 
 font_add_google("Lato")
 showtext_auto()
 
 custom_theme <- function(...){
-  theme_bw() +
+  theme_bw() + 
     theme(
-      ...,
-      text = element_text(family = "Lato", size = 24)
+      text = element_text(family = "Lato", size = 14),
+      ...
     )
 }
 
@@ -30,6 +30,17 @@ theme_set(custom_theme())
 ```
 
 ```{r}
+# During interactive use, this chunk has to be loaded separately from the setup chunk.
+# `targets` looks for a `_targets/` directory but cannot find one
+# if the working directory is pointed at the `docs/` directory already, as is the
+# case with Rmarkdown documents by default.
+
+# The line starting with `opts_knit$set` above sets the correct working directory,
+# but it only applies for chunks after the setup chunk, hence the separation of 
+# the data load and the rest of the setup
+
+# This is quite annoying workflow-wise, as the setup chunk is loaded automatically
+# but this chunk isn't
 mpeds_raw <- tar_read(canonical_events)
 mpeds_sf <- tar_read(integrated) 
 mpeds <- mpeds_sf |> st_drop_geometry()
@@ -158,67 +169,216 @@ That's a bit alarming; some playing around with the dataset reveals there are
 a fair number of protests both in Missouri and at University of Missouri-Columbia. 
 There could still be errors here, so I'm continuing to revise the code.
 
+```{r police_counts}
+# God that was hard
+glimpse_counts <- function(colname){
+  mpeds |>
+    mutate("{{ colname }}" := map({{ colname }}, \(item){
+      if(is.null(item)){
+        return(NA)
+      }
+      return(item)
+      })) |>
+    group_by({{ colname }}) |> 
+    count({{ colname }}) |> 
+    arrange(desc(n)) |> 
+    kable()
+}
+
+glimpse_counts(police_presence_and_size)
+glimpse_counts(police_activities)
+glimpse_counts(type_of_police)
+```
+
+```{r university_responses_counts}
+glimpse_counts(university_action_on_issue)
+glimpse_counts(university_discourse_on_issue)
+glimpse_counts(university_reactions_to_protest)
+```
+
+# Counts over time
+
+```{r basic_counts_over_time}
+
+mpeds |> 
+  mutate(date = floor_date(start_date, "month")) |> 
+  group_by(date) |> 
+  count() |> 
+  drop_na() |> 
+  ggplot(aes(x = date, y = n)) + 
+  geom_line() +
+  scale_x_date(breaks = "4 months",
+               date_labels =  "%b",
+               sec.axis = dup_axis(
+                 breaks = seq(as.Date("2012-01-01"), as.Date("2018-01-01"), by = "year"),
+                 labels = scales::label_date("%Y"),
+               )
+               ) + 
+  labs(
+    title = "Basic counts of canonical events over time",
+    x = "Date (floored to months)",
+    y = "Number of associated canonical events"
+  ) 
+
+
+mpeds |> 
+  mutate(date = floor_date(start_date, "year")) |> 
+  group_by(date) |> 
+  count() |> 
+  ggplot(aes(x = date, y = n)) + 
+  geom_line() +
+  labs(
+    title = "Same thing, floored to years"
+  )
+
+```
+
 We can also begin to look at the top universities, counties, locations, or states
 over time. This inevitably produces more complex summaries, and it can
 be difficult to take an informative glimpse given so many categories, so I've only
 shown the universities over time for now:
 
 ```{r unis_over_time}
-unis_over_time <- mpeds |> 
-  mutate(start_date = lubridate::floor_date(start_date, "month")) |> 
-  group_by(university, start_date) |> 
-  count() |> 
-  drop_na() |> 
-  filter(university %in% university_counts$university[1:10]) 
+uni_grouping <- tribble(
+  ~university, ~group,
+  "Columbia University in the City of New York", "Northeast",
+  "Harvard University", "Northeast",
+  "Tufts University", "Northeast",
+  "Concordia University",  "Quebec",
+  "McGill University", "Quebec",
+  "University of Toronto", "Ontario",
+  "Ryerson University", "Ontario",
+  "University of California-Berkeley", "California",
+  "University of California-Los Angeles", "California",
+  "University of Chicago", "Midwest",
+  "University of Michigan-Ann Arbor", "Midwest",
+  "University of Wisconsin-Madison", "Midwest"
+)
 
-ggplot(unis_over_time, aes(x = start_date, y = n, color = university)) + 
+plot_uni_counts <- function(unit){
+  unis_over_time <- mpeds |> 
+    mutate(date = floor_date(start_date, unit = unit)) |> 
+    group_by(university, date) |> 
+    count() |> 
+    drop_na() |> 
+    filter(university %in% university_counts$university[1:10]) |> 
+    mutate(university = str_wrap(university, 15)) |> 
+    left_join(uni_grouping, by = "university")
+  
+  uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, color = university)) + 
+    geom_line() + 
+    labs(
+      x = paste0("Time (", unit, ")"),
+      y = "Number of associated canonical events",
+      title = "Top universities by protest count over time",
+      caption = paste("Universities displayed are top 10 overall universities
+      by protest count, not a top university in a given year.", 
+      "Dates are aggregated to the", unit, "unit.")
+    )
+  
+  uni_grouping_over_time <- mpeds |> 
+    mutate(date = floor_date(start_date, unit = unit)) |> 
+    filter(university %in% university_counts$university[1:10]) |> 
+    left_join(uni_grouping, by = "university") |> 
+    group_by(group, date) |> 
+    count() |> 
+    drop_na() 
+  
+  uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, color = group)) + 
+    geom_line() + 
+    labs(
+      x = paste0("Time (", unit, ")"),
+      y = "Number of associated canonical events",
+      title = "Top university groups by protest count over time",
+      caption = paste("Dates are aggregated to the", unit, "unit.")
+    ) 
+  
+  return(list(uni_plot, uni_grouped_plot))
+}
+
+c("day", "week", "14 days", "month", "6 months", "year") |> map(plot_uni_counts)
+
+```
+
+```{r issues_over_time}
+# Tad tricky since there are often multiple issues per role
+issues <- mpeds |> 
+  select(issue, start_date) |> 
+  unnest(cols = issue) |> 
+  mutate(date = floor_date(start_date, "month"),
+         issue = str_wrap(issue, 20),
+         ) |> 
+  filter(issue != "_Not relevant")
+
+# 42 rows is still readable so I'll just print the entire table
+issues_count <- issues |> 
+  group_by(issue) |> 
+  count() |> 
+  arrange(desc(n)) 
+issues_count |>
+  kable()
+
+# 42 lines on a plot on the other hand is like 35 too many
+issues |> 
+  filter(issue %in% issues_count$issue[1:7]) |> 
+  group_by(issue, date) |> 
+  count() |> 
+  ggplot(aes(x = date, y = n, color = issue)) + 
   geom_line() + 
   labs(
-    x = "Year",
     y = "Number of associated canonical events",
-    title = "Top universities by protest count over time",
-    caption = "Universities displayed are top 10 overall universities
-    by protest count, not a top university in a given year."
-  ) 
+    x = "Date (month)"
+  )
+  
 
+# one where y-axis percentage of total issues in given month
+# We want to divide the number of CEs associated with an issue in a month
+# by the total number of CEs in a month; that latter statistic we have to get by 
+# using `mutate` instead of `summarize` in order to preserve the tibble format, 
+# but that means that the resulting column of counts will be duplicated,
+# as in we'll have one count of total issues for each issue occurrence in a month
+# I use `n_eventS[1]` to resolve that
+issues |> 
+  group_by(date) |> 
+  mutate(
+    n_events = n()
+  ) |> 
+  group_by(issue, date)  |> 
+  summarize(
+    issue_pct = n() / n_events[1],
+    .groups = "drop"
+  ) |> 
+  filter(issue %in% issues_count$issue[1:7]) |> 
+  ggplot(aes(x = date, y = issue_pct, color = issue)) + 
+  geom_line()
 ```
+
 
 ```{r regions_over_time}
-regions_over_time <- mpeds |> 
-  mutate(start_date = lubridate::floor_date(start_date, "month"),
-         region = case_when(
-           !is.na(canada_metropolitan_area) ~ "Canada",
-           is.na(region) ~ NA_character_,
-           TRUE ~ region)
-         ) |> 
+protests_by_region <- mpeds |> 
+  mutate(region = case_when(
+    !is.na(canada_metropolitan_area) ~ "Canada",
+    is.na(region) ~ NA_character_,
+    TRUE ~ region)
+    ) |> 
   group_by(region, start_date) |> 
   count() |> 
-  drop_na()
+  drop_na() 
 
-ggplot(regions_over_time,
+ggplot(protests_by_region,
        aes(color = region, x = start_date, y = n)) + 
-  geom_line() +
-  labs(
-    y = "Number of associated canonical events",
-    x = "Month of protest",
-    title = "Canonical events over time by geographical region",
-    color = "Geographic region"
-    
-  )
-```
-
-```{r}
+  geom_line()
 
 ```
 
 
 # Basic summary plots by variable
 
-```{r summary_by_uni}
+```{r summary}
 mpeds |> 
   select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -link) |>
+                 -year, -uni_id, -size_category, -link) |> 
   pivot_longer(cols = everything()) |> 
   filter(name != "NA") |> 
   group_by(name) |> 
@@ -229,35 +389,6 @@ mpeds |>
   ) |> 
   mutate(across(where(is.numeric), ~round(., 3))) |> 
   arrange(type) |> 
-  kable()
-```
-
-```{r binned_summary_by_uni}
-counts_quintile <- mpeds |>
-  group_by(university) |> 
-  count() |> 
-  ungroup() |> 
-  mutate(n = ntile(n, 5)) |> 
-  filter(n == 5 | n == 1)
-  
-mpeds |> 
-  select(university, where(function(x){is.numeric(x) || is.logical(x)}),
-                 -canonical_id, -starts_with("location"),
-         -bachelors_granting, -phd_granting, -masters_granting,
-                 -year, -uni_id, -size_category, -link) |> 
-  left_join(counts_quintile, by = "university") |> 
-  filter(n == 5 | n == 1) |> 
-  pivot_longer(cols = c(-university, -n)) |> 
-  filter(name != "NA") |> 
-  group_by(n, name) |> 
-  summarize(
-    type = ifelse(is.numeric(pull(mpeds[name[1]], 1)), "numeric", "boolean"),
-    mean = mean(value, na.rm = TRUE),
-    sd = ifelse(type == "boolean", NA_integer_, sd(value, na.rm = TRUE))
-  ) |> 
-  mutate(across(where(is.numeric), ~round(., 3))) |> 
-  arrange(type, name) |> 
-  rename("quintile (5 = highest)" = n) |> 
   kable()
 ```
 
@@ -294,10 +425,6 @@ mpeds |>
     title = "Glimpse of numeric covariates at the canonical event level",
     y = "Number of occurrences",
     x = "Value of variable",
-  ) + 
-  theme_bw() + 
-  theme(text = element_text(family = "Lato"),
-    strip.background = element_rect(fill = "transparent")
   )
 
 ```
@@ -441,7 +568,56 @@ mpeds_sf |>
   theme_void() + 
   theme(text = element_text(family = "Lato"),
         plot.title = element_text(size = 20))
+```
+
+# Investigating specific movements: Mizzou and Quebec solidarity protests
+
+The Mizzou umbrella was linked 104 times, with 98 unique canonical events inside.
+
+```{r mizzou, warning = FALSE}
+tar_load(canonical_event_relationship)
+
+mizzou_umbrella_id <- mpeds |>
+  filter(key == "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov") |> 
+  pull(canonical_id)
+
+mizzou_events <- canonical_event_relationship |> 
+  filter(canonical_id2 == mizzou_umbrella_id) |> 
+  group_by(canonical_id1) |> 
+  slice_head(n = 1) |> 
+  left_join(mpeds_sf, by = c("canonical_id1" = "canonical_id"))  |> 
+  st_as_sf()
+
+mizzou_events |> 
+  mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
+  ggplot() +
+  geom_sf(data = us_sf) +
+  geom_sf(aes(color = relationship_type), alpha = 0.5, size = 1) + 
+  labs(
+    title = "Spread of events within the Mizzou umbrella",
+    color = "Relationship type",
+    caption = "Jittered slightly to illustrate density"
+  ) + 
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+  )
+
+mizzou_events |> 
+  mutate(date = start_date) |> 
+  group_by(date) |> 
+  count() |> 
+  ggplot(aes(x = date, y = n)) + 
+  geom_line() + 
+  geom_vline(xintercept = as.Date("2015-08-26"), color = "red") +
+  annotate(geom = "text", label = "Mizzou grad student\nstrike start date",
+           color = "red", x = as.Date("2015-09-12"), y = 10) + 
+  scale_x_date(date_labels = "%b %y", date_breaks = "1 month") + 
+  labs(
+    x = "Date",
+    y = "Number of canonical events starting on date",
+    title = "Mizzou solidarity protest occurrences over time"
+  )
   
 
 ```
-
