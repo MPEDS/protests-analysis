@@ -222,75 +222,7 @@ or states over time. This inevitably produces more complex summaries,
 and it can be difficult to take an informative glimpse given so many
 categories, so I’ve only shown the universities over time for now:
 
-    ## [[1]]
-    ## [[1]][[1]]
-
 ![](exploratory_plots_files/figure-gfm/unis_over_time-1.png)<!-- -->
-
-    ## 
-    ## [[1]][[2]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-2.png)<!-- -->
-
-    ## 
-    ## 
-    ## [[2]]
-    ## [[2]][[1]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-3.png)<!-- -->
-
-    ## 
-    ## [[2]][[2]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-4.png)<!-- -->
-
-    ## 
-    ## 
-    ## [[3]]
-    ## [[3]][[1]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-5.png)<!-- -->
-
-    ## 
-    ## [[3]][[2]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-6.png)<!-- -->
-
-    ## 
-    ## 
-    ## [[4]]
-    ## [[4]][[1]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-7.png)<!-- -->
-
-    ## 
-    ## [[4]][[2]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-8.png)<!-- -->
-
-    ## 
-    ## 
-    ## [[5]]
-    ## [[5]][[1]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-9.png)<!-- -->
-
-    ## 
-    ## [[5]][[2]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-10.png)<!-- -->
-
-    ## 
-    ## 
-    ## [[6]]
-    ## [[6]][[1]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-11.png)<!-- -->
-
-    ## 
-    ## [[6]][[2]]
-
-![](exploratory_plots_files/figure-gfm/unis_over_time-12.png)<!-- -->
 
 | issue      |   n |
 |:-----------|----:|

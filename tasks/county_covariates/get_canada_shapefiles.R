@@ -13,8 +13,44 @@ get_canada_shapefiles <- function(){
   unzip(download_location,
         exdir = paste0(tempdir(), "/canada-shapefiles"))
 
+  # Cannot find a programmatic way to do a CMA -> province crosswalk, but
+  # the SGC code system says first two digits are province
+  # See info here, esp. table B
+  # https://www.statcan.gc.ca/en/subjects/standard/sgc/2021/introduction
+  provinces <- tribble(
+    ~code, ~province_name,
+    "10", "Newfoundland and Labrador",
+    "11", "Prince Edward Island",
+    "12", "Nova Scotia",
+    "13", "New Brunswick",
+    "24", "Quebec",
+    "35", "Ontario",
+    "46", "Manitoba",
+    "47", "Saskatchewawn",
+    "48", "Alberta",
+    "59", "British Col",
+    "60", "Yukon",
+    "61", "Northwest Territories",
+    "62", "Nunavut"
+  )
+  regions <- tribble(
+    ~code, ~region_name,
+    "1", "Atlantic",
+    "2", "Quebec",
+    "3", "Ontario",
+    "4", "Parairies",
+    "5", "British Columbia",
+    "6", "Territories"
+  )
+
   canada_shapefiles <- read_sf(paste0(tempdir(), "/canada-shapefiles")) |>
-    select(canada_metropolitan_area = CMANAME) |>
+    mutate(province_code = str_sub(CMAPUID, 1, 2),
+           region_code = str_sub(CMAPUID, 1, 1)) |>
+    left_join(provinces, by = c("province_code" = "code")) |>
+    left_join(regions, by = c("region_code" = "code")) |>
+    select(canada_metropolitan_area = CMANAME,
+           canada_province_name = province_name,
+           canada_region_name = region_name) |>
     st_transform(4326) |>
     st_make_valid()
 

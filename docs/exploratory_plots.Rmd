@@ -164,10 +164,21 @@ kable(county_counts)
 ```
 
 These glimpses seem mostly in line with what we should expect, with a strong
-caveat that the Missouri protests are not making a leading appearance here.
-That's a bit alarming; some playing around with the dataset reveals there are
-a fair number of protests both in Missouri and at University of Missouri-Columbia. 
-There could still be errors here, so I'm continuing to revise the code.
+caveat that the Missouri protests are not making a leading appearance in the 
+counts by location, but there do seem to be a fair number in Missouri when we
+take a look by state. What's going on there?
+
+```{r missouri_locations}
+mpeds |> 
+  filter(state == "29") |> 
+  count(location) |> 
+  kable()
+
+mpeds |>
+  filter(fips == "29019") |>
+  count(location) 
+
+```
 
 ```{r police_counts}
 # God that was hard
@@ -221,19 +232,39 @@ mpeds |>
     x = "Date (floored to months)",
     y = "Number of associated canonical events"
   ) 
-
-
-mpeds |> 
-  mutate(date = floor_date(start_date, "year")) |> 
-  group_by(date) |> 
-  count() |> 
-  ggplot(aes(x = date, y = n)) + 
-  geom_line() +
-  labs(
-    title = "Same thing, floored to years"
-  )
-
 ```
+
+
+```{r regions_over_time}
+protests_by_region <- mpeds |> 
+  mutate(region = case_when(
+    !is.na(canada_metropolitan_area) ~ "Canada",
+    is.na(region) ~ NA_character_,
+    TRUE ~ region)
+    ) |> 
+  mutate(date = floor_date(start_date, "month")) |> 
+  group_by(region, date) |> 
+  count() |> 
+  drop_na() 
+
+ggplot(protests_by_region,
+       aes(color = region, x = date, y = n)) + 
+  geom_line() + 
+  scale_x_date(breaks = "4 months",
+               date_labels =  "%b",
+               sec.axis = dup_axis(
+                 breaks = seq(as.Date("2012-01-01"), as.Date("2018-01-01"), by = "year"),
+                 labels = scales::label_date("%Y"),
+               )
+               ) + 
+  labs(
+    title = "Events over time by region",
+    x = "Date (floored to months)",
+    y = "Number of associated canonical events", 
+    color = "U.S. Census region,\nor Canadian province"
+  ) 
+```
+
 
 We can also begin to look at the top universities, counties, locations, or states
 over time. This inevitably produces more complex summaries, and it can
@@ -257,48 +288,44 @@ uni_grouping <- tribble(
   "University of Wisconsin-Madison", "Midwest"
 )
 
-plot_uni_counts <- function(unit){
-  unis_over_time <- mpeds |> 
-    mutate(date = floor_date(start_date, unit = unit)) |> 
-    group_by(university, date) |> 
-    count() |> 
-    drop_na() |> 
-    filter(university %in% university_counts$university[1:10]) |> 
-    mutate(university = str_wrap(university, 15)) |> 
-    left_join(uni_grouping, by = "university")
-  
-  uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, color = university)) + 
-    geom_line() + 
-    labs(
-      x = paste0("Time (", unit, ")"),
-      y = "Number of associated canonical events",
-      title = "Top universities by protest count over time",
-      caption = paste("Universities displayed are top 10 overall universities
-      by protest count, not a top university in a given year.", 
-      "Dates are aggregated to the", unit, "unit.")
-    )
-  
-  uni_grouping_over_time <- mpeds |> 
-    mutate(date = floor_date(start_date, unit = unit)) |> 
-    filter(university %in% university_counts$university[1:10]) |> 
-    left_join(uni_grouping, by = "university") |> 
-    group_by(group, date) |> 
-    count() |> 
-    drop_na() 
-  
-  uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, color = group)) + 
-    geom_line() + 
-    labs(
-      x = paste0("Time (", unit, ")"),
-      y = "Number of associated canonical events",
-      title = "Top university groups by protest count over time",
-      caption = paste("Dates are aggregated to the", unit, "unit.")
-    ) 
-  
-  return(list(uni_plot, uni_grouped_plot))
-}
+unis_over_time <- mpeds |> 
+  mutate(date = floor_date(start_date, unit = "months")) |> 
+  group_by(university, date) |> 
+  count() |> 
+  drop_na() |> 
+  filter(university %in% university_counts$university[1:10]) |> 
+  mutate(university = str_wrap(university, 15)) |> 
+  left_join(uni_grouping, by = "university")
 
-c("day", "week", "14 days", "month", "6 months", "year") |> map(plot_uni_counts)
+uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, color = university)) + 
+  geom_line() + 
+  labs(
+    x = paste0("Time (months)"),
+    y = "Number of associated canonical events",
+    title = "Top universities by protest count over time",
+    caption = paste("Universities displayed are top 10 overall universities
+    by protest count, not a top university in a given year.", 
+    "Dates are aggregated to the month unit.")
+  )
+
+uni_grouping_over_time <- mpeds |> 
+  mutate(date = floor_date(start_date, )) |> 
+  filter(university %in% university_counts$university[1:10]) |> 
+  left_join(uni_grouping, by = "university") |> 
+  group_by(group, date) |> 
+  count() |> 
+  drop_na() 
+
+uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, color = group)) + 
+  geom_line() + 
+  labs(
+    x = paste0("Time (floored to months)"),
+    y = "Number of associated canonical events",
+    title = "Top university groups by protest count over time",
+    caption = paste("Dates are aggregated to the month unit.")
+  ) 
+
+uni_grouped_plot
 
 ```
 
@@ -339,7 +366,7 @@ issues |>
 # using `mutate` instead of `summarize` in order to preserve the tibble format, 
 # but that means that the resulting column of counts will be duplicated,
 # as in we'll have one count of total issues for each issue occurrence in a month
-# I use `n_eventS[1]` to resolve that
+# I use `n_events1]` to resolve that
 issues |> 
   group_by(date) |> 
   mutate(
@@ -353,24 +380,6 @@ issues |>
   filter(issue %in% issues_count$issue[1:7]) |> 
   ggplot(aes(x = date, y = issue_pct, color = issue)) + 
   geom_line()
-```
-
-
-```{r regions_over_time}
-protests_by_region <- mpeds |> 
-  mutate(region = case_when(
-    !is.na(canada_metropolitan_area) ~ "Canada",
-    is.na(region) ~ NA_character_,
-    TRUE ~ region)
-    ) |> 
-  group_by(region, start_date) |> 
-  count() |> 
-  drop_na() 
-
-ggplot(protests_by_region,
-       aes(color = region, x = start_date, y = n)) + 
-  geom_line()
-
 ```
 
 
