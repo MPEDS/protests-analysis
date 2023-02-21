@@ -110,10 +110,37 @@ And finally the top counties:
 
 These glimpses seem mostly in line with what we should expect, with a
 strong caveat that the Missouri protests are not making a leading
-appearance here. That’s a bit alarming; some playing around with the
-dataset reveals there are a fair number of protests both in Missouri and
-at University of Missouri-Columbia. There could still be errors here, so
-I’m continuing to revise the code.
+appearance in the counts by location, but there do seem to be a fair
+number in Missouri when we take a look by state. What’s going on there?
+
+Associated semantic locations with canonical events assigned the
+Missouri FIPS code, and the Boone county FIPS code:
+
+| location                |   n |
+|:------------------------|----:|
+| Cape Girardeau, MO, USA |   1 |
+| Chicago, IL, USA        |   3 |
+| Columbia, MO, USA       |  35 |
+| Iowa City, IA, USA      |   2 |
+| Jefferson City, MO, USA |   2 |
+| Maryville, MO, USA      |   1 |
+| New York City, NY, USA  |   5 |
+| Salt Lake City, UT, USA |   1 |
+| St. Louis, MO, USA      |   3 |
+| Webster Groves, MO, USA |   2 |
+| NA                      |   1 |
+
+| location                |   n |
+|:------------------------|----:|
+| Chicago, IL, USA        |   3 |
+| Columbia, MO, USA       |  35 |
+| Iowa City, IA, USA      |   2 |
+| Jefferson City, MO, USA |   2 |
+| New York City, NY, USA  |   5 |
+| NA                      |   1 |
+
+Ah, that’s not good. It seems there are non-MO locations being
+recognized as happening in Missouri. See Google Doc for details
 
 | police_presence_and_size |    n |
 |:-------------------------|-----:|
@@ -213,53 +240,125 @@ I’m continuing to revise the code.
 
 ![](exploratory_plots_files/figure-gfm/basic_counts_over_time-1.png)<!-- -->
 
-    ## Warning: Removed 1 row containing missing values (`geom_line()`).
-
-![](exploratory_plots_files/figure-gfm/basic_counts_over_time-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/regions_over_time-1.png)<!-- -->
 
 We can also begin to look at the top universities, counties, locations,
 or states over time. This inevitably produces more complex summaries,
 and it can be difficult to take an informative glimpse given so many
 categories, so I’ve only shown the universities over time for now:
 
-![](exploratory_plots_files/figure-gfm/unis_over_time-1.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/unis_over_time-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/unis_over_time-2.png)<!-- -->
 
-| issue      |   n |
-|:-----------|----:|
-| University |     |
+    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
 
-governance, admin, policies, programs, curriculum \| 1526\| \|Labor and
-work \| 885\| \|Trump and/or his administration (Against) \| 639\|
-\|Tuition, fees, financial aid \| 562\| \|\_Other Issue \| 475\|
-\|Environmental \| 398\| \|Sexual assault/violence \| 298\|
-\|Feminism/women’s issues \| 296\| \|Economy/inequality \| 275\|
-\|Faith-based discrimination \| 242\| \|Public funding for higher
-education \| 215\| \|Far Right/Alt Right (Against) \| 130\| \|Hate
-speech \| 117\| \|LGB+/Sexual orientation (For) \| 105\| \|Abortion
-access \| 102\| \|Gun control \| 100\| \|LGB+/Sexual orientation \| 98\|
-\|Police violence/anti-law enforcement/criminal justice \| 87\|
-\|Transgender issues (For) \| 80\| \|Abortion (Against)/Pro-life \| 78\|
-\|Free speech \| 71\| \|Pro-Palestine/BDS \| 67\| \|Transgender issues
-\| 66\| \|Anti-war/peace \| 58\| \|Trump and/or his administration (For)
-\| 52\| \|Social services and welfare \| 42\| \|Human rights \| 40\|
-\|LGB+/Sexual orientation (Against) \| 39\| \|Far Right/Alt Right (For)
-\| 33\| \|Domestic foreign policy \| 28\| \|Hate crimes/Anti-minority
-violence \| 28\| \|Anti-colonial/political independence \| 24\|
-\|Accessibility \| 22\| \|Animal rights \| 21\| \|Political
-corruption/malfeasance \| 18\| \|Transgender issues (Against) \| 16\|
-\|Pro-Israel/Zionism \| 13\| \|Gun owner rights \| 12\| \|Traditional
-marriage/family \| 6\| \|Pro-law enforcement \| 4\| \|Men’s rights \|
-2\|
+![](exploratory_plots_files/figure-gfm/responses_over_time-1.png)<!-- -->
 
-    ## Warning: Removed 7 rows containing missing values (`geom_line()`).
+    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/responses_over_time-2.png)<!-- -->
+
+    ## Warning: Removed 3 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/responses_over_time-3.png)<!-- -->
+
+    ## Warning: Removed 4 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/responses_over_time-4.png)<!-- -->
+
+    ## Warning: Removed 3 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/responses_over_time-5.png)<!-- -->
+
+    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/responses_over_time-6.png)<!-- -->
+
+| issue                                                        |    n |
+|:-------------------------------------------------------------|-----:|
+| University governance, admin, policies, programs, curriculum | 1526 |
+| Labor and work                                               |  885 |
+| Trump and/or his administration (Against)                    |  639 |
+| Tuition, fees, financial aid                                 |  562 |
+| \_Other Issue                                                |  475 |
+| Environmental                                                |  398 |
+| Sexual assault/violence                                      |  298 |
+| Feminism/women’s issues                                      |  296 |
+| Economy/inequality                                           |  275 |
+| Faith-based discrimination                                   |  242 |
+| Public funding for higher education                          |  215 |
+| Far Right/Alt Right (Against)                                |  130 |
+| Hate speech                                                  |  117 |
+| LGB+/Sexual orientation (For)                                |  105 |
+| Abortion access                                              |  102 |
+| Gun control                                                  |  100 |
+| LGB+/Sexual orientation                                      |   98 |
+| Police violence/anti-law enforcement/criminal justice        |   87 |
+| Transgender issues (For)                                     |   80 |
+| Abortion (Against)/Pro-life                                  |   78 |
+| Free speech                                                  |   71 |
+| Pro-Palestine/BDS                                            |   67 |
+| Transgender issues                                           |   66 |
+| Anti-war/peace                                               |   58 |
+| Trump and/or his administration (For)                        |   52 |
+| Social services and welfare                                  |   42 |
+| Human rights                                                 |   40 |
+| LGB+/Sexual orientation (Against)                            |   39 |
+| Far Right/Alt Right (For)                                    |   33 |
+| Domestic foreign policy                                      |   28 |
+| Hate crimes/Anti-minority violence                           |   28 |
+| Anti-colonial/political independence                         |   24 |
+| Accessibility                                                |   22 |
+| Animal rights                                                |   21 |
+| Political corruption/malfeasance                             |   18 |
+| Transgender issues (Against)                                 |   16 |
+| Pro-Israel/Zionism                                           |   13 |
+| Gun owner rights                                             |   12 |
+| Traditional marriage/family                                  |    6 |
+| Pro-law enforcement                                          |    4 |
+| Men’s rights                                                 |    2 |
+
+| racial_issue                                                 |   n |
+|:-------------------------------------------------------------|----:|
+| Anti-racism                                                  | 825 |
+| University governance, admin, policies, programs, curriculum | 524 |
+| Immigration (For)                                            | 497 |
+| Campus climate                                               | 426 |
+| Police violence                                              | 400 |
+| White supremacy (Against)                                    | 162 |
+| Indigenous issues                                            | 159 |
+| \_Other Issue                                                | 134 |
+| Hate speech                                                  | 100 |
+| Racist/racialized symbols                                    |  84 |
+| Hate crimes/Anti-minority violence                           |  74 |
+| Prison/mass incarceration                                    |  37 |
+| Memorials & anniversaries                                    |  34 |
+| Affirmative action (For)                                     |  31 |
+| Immigration (Against)                                        |  21 |
+| White supremacy (For)                                        |  20 |
+| Cultural appropriation                                       |  19 |
+| Indigenous Issues                                            |  11 |
+| Racial/ethnic pride - white                                  |   7 |
+| Reparations                                                  |   5 |
+| Affirmative action (Against)                                 |   4 |
+| All Lives Matter                                             |   4 |
+| Pro-police                                                   |   2 |
+|                                                              |   1 |
+| K-12 education                                               |   1 |
+| Racial/ethnic pride - minority                               |   1 |
 
 ![](exploratory_plots_files/figure-gfm/issues_over_time-1.png)<!-- -->
 
-    ## Warning: Removed 7 rows containing missing values (`geom_line()`).
+    ## Warning: There was 1 warning in `mutate()`.
+    ## ℹ In argument: `issue = fct_relevel(as.factor(issue),
+    ##   c(issues_count$issue[1:4], racial_issue_count$racial_issue[1:4]))`.
+    ## Caused by warning:
+    ## ! 3 unknown levels in `f`: Anti-racism, Immigration (For), and Campus climate
 
 ![](exploratory_plots_files/figure-gfm/issues_over_time-2.png)<!-- -->
 
-![](exploratory_plots_files/figure-gfm/regions_over_time-1.png)<!-- -->
+    ## Warning: Removed 7 rows containing missing values (`geom_line()`).
+
+![](exploratory_plots_files/figure-gfm/issues_over_time-3.png)<!-- -->
 
 # Basic summary plots by variable
 
@@ -327,10 +426,10 @@ The following chunk gives a glimpse at total number of matches:
 | source    | date_offset | recent_protests | match_percentage |
 |:----------|------------:|----------------:|-----------------:|
 | CCC       |           0 |             636 |        36.890951 |
-| CCC       |           1 |             278 |        16.125290 |
-| CCC       |           3 |             544 |        31.554524 |
-| CCC       |           5 |             705 |        40.893271 |
-| CCC       |           7 |             838 |        48.607889 |
+| CCC       |           1 |             281 |        16.299304 |
+| CCC       |           3 |             551 |        31.960557 |
+| CCC       |           5 |             710 |        41.183295 |
+| CCC       |           7 |             841 |        48.781903 |
 | Elephrame |           0 |             265 |         6.022727 |
 | Elephrame |           1 |             100 |         2.272727 |
 | Elephrame |           3 |             205 |         4.659091 |

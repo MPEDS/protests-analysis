@@ -11,6 +11,7 @@ library(showtext)
 library(tigris)
 library(tidyverse)
 library(GGally)
+library(RColorBrewer)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 7)
@@ -168,6 +169,9 @@ caveat that the Missouri protests are not making a leading appearance in the
 counts by location, but there do seem to be a fair number in Missouri when we
 take a look by state. What's going on there?
 
+Associated semantic locations with canonical events assigned the Missouri FIPS 
+code, and the Boone county FIPS code:
+
 ```{r missouri_locations}
 mpeds |> 
   filter(state == "29") |> 
@@ -176,9 +180,13 @@ mpeds |>
 
 mpeds |>
   filter(fips == "29019") |>
-  count(location) 
+  count(location) |> 
+  kable()
 
 ```
+
+Ah, that's not good. It seems there are non-MO locations being recognized as happening in Missouri.
+See Google Doc for details
 
 ```{r police_counts}
 # God that was hard
@@ -209,6 +217,7 @@ glimpse_counts(university_discourse_on_issue)
 glimpse_counts(university_reactions_to_protest)
 ```
 
+
 # Counts over time
 
 ```{r basic_counts_over_time}
@@ -238,18 +247,20 @@ mpeds |>
 ```{r regions_over_time}
 protests_by_region <- mpeds |> 
   mutate(region = case_when(
-    !is.na(canada_metropolitan_area) ~ "Canada",
+    !is.na(canada_metropolitan_area) ~ paste0(canada_region_name, " (CA)"),
     is.na(region) ~ NA_character_,
     TRUE ~ region)
     ) |> 
-  mutate(date = floor_date(start_date, "month")) |> 
+  mutate(date = floor_date(start_date, "month"),
+         region = as_factor(region) |> 
+           fct_reorder(ifelse(is.na(canada_metropolitan_area), 0, 1))) |> 
   group_by(region, date) |> 
   count() |> 
   drop_na() 
 
 ggplot(protests_by_region,
-       aes(color = region, x = date, y = n)) + 
-  geom_line() + 
+       aes(fill = region, x = date, y = n)) + 
+  geom_bar(stat = "identity") + 
   scale_x_date(breaks = "4 months",
                date_labels =  "%b",
                sec.axis = dup_axis(
@@ -257,6 +268,7 @@ ggplot(protests_by_region,
                  labels = scales::label_date("%Y"),
                )
                ) + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
   labs(
     title = "Events over time by region",
     x = "Date (floored to months)",
@@ -289,7 +301,7 @@ uni_grouping <- tribble(
 )
 
 unis_over_time <- mpeds |> 
-  mutate(date = floor_date(start_date, unit = "months")) |> 
+  mutate(date = floor_date(start_date, "month")) |> 
   group_by(university, date) |> 
   count() |> 
   drop_na() |> 
@@ -297,8 +309,9 @@ unis_over_time <- mpeds |>
   mutate(university = str_wrap(university, 15)) |> 
   left_join(uni_grouping, by = "university")
 
-uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, color = university)) + 
-  geom_line() + 
+uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, fill = university)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer(type = "qual", palette = "Paired") + 
   labs(
     x = paste0("Time (months)"),
     y = "Number of associated canonical events",
@@ -306,18 +319,22 @@ uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, color = university)) +
     caption = paste("Universities displayed are top 10 overall universities
     by protest count, not a top university in a given year.", 
     "Dates are aggregated to the month unit.")
-  )
+  ) + 
+  guides(fill = guide_legend(byrow = TRUE)) + 
+  theme(legend.spacing.y = unit(0.2, "cm"))
+uni_plot
 
 uni_grouping_over_time <- mpeds |> 
-  mutate(date = floor_date(start_date, )) |> 
+  mutate(date = floor_date(start_date, "month")) |> 
   filter(university %in% university_counts$university[1:10]) |> 
   left_join(uni_grouping, by = "university") |> 
   group_by(group, date) |> 
   count() |> 
   drop_na() 
 
-uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, color = group)) + 
-  geom_line() + 
+uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, fill = group)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
   labs(
     x = paste0("Time (floored to months)"),
     y = "Number of associated canonical events",
@@ -327,6 +344,57 @@ uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, color = 
 
 uni_grouped_plot
 
+```
+
+```{r responses_over_time}
+plot_response_over_time <- function(colname){
+  unnested <- mpeds |>
+    mutate("{{ colname }}" := map({{ colname }}, \(item){
+      if(is.null(item)){
+        return(NA)
+      }
+      return(item)
+      })) |>
+    select(start_date, {{colname}}) |> 
+    unnest(cols = {{colname}}) |> 
+    filter(!is.na({{colname}}), {{colname}} != "NA/Unclear")
+  
+  top_overall <- unnested |> 
+    count({{colname}}) |> 
+    arrange(desc(n)) |> 
+    slice(1:9) |> 
+    pull({{colname}}) 
+  
+  name_string <- rlang::as_name(enquo(colname)) |> 
+    str_replace_all("_", " ") |> 
+    str_to_sentence() 
+  
+  unnested |> 
+    filter({{colname}} %in% top_overall) |> 
+    mutate(date = floor_date(start_date, "month")) |> 
+    group_by({{colname}}, date) |> 
+    count() |> 
+    ggplot(aes(x = date, y = n, fill = {{colname}})) + 
+    geom_bar(stat = "identity") + 
+    scale_fill_brewer(type = "qual", palette = "Paired") + 
+    labs(
+      title = paste(name_string, "over time"),
+      y = "Number of occurrences",
+      x = "Date (month)",
+      fill = name_string
+    ) +
+    guides(fill = guide_legend(byrow = TRUE)) +
+    theme(
+      legend.spacing.y = unit(0.2, "cm")
+    )
+}
+
+plot_response_over_time(police_presence_and_size)
+plot_response_over_time(police_activities)
+plot_response_over_time(type_of_police)
+plot_response_over_time(university_action_on_issue)
+plot_response_over_time(university_discourse_on_issue)
+plot_response_over_time(university_reactions_to_protest)
 ```
 
 ```{r issues_over_time}
@@ -339,24 +407,78 @@ issues <- mpeds |>
          ) |> 
   filter(issue != "_Not relevant")
 
+racial_issue <- mpeds |> 
+  select(issue = racial_issue, start_date) |> 
+  unnest(cols = issue) |> 
+  mutate(date = floor_date(start_date, "month"),
+         issue = str_wrap(issue, 20),
+         ) |> 
+  filter(issue != "_Not relevant")
+
 # 42 rows is still readable so I'll just print the entire table
 issues_count <- issues |> 
-  group_by(issue) |> 
-  count() |> 
+  count(issue) |> 
   arrange(desc(n)) 
 issues_count |>
+  mutate(issue = str_replace_all(issue, "\n", ' ')) |> 
   kable()
+
+racial_issue_count <- racial_issue |> 
+  count(racial_issue = issue) |> 
+  arrange(desc(n))
+
+racial_issue_count |> 
+  mutate(racial_issue = str_replace_all(racial_issue, "\n", ' ')) |> 
+  kable()
+
+top_racial_issues <- racial_issue |> 
+  filter(issue %in% racial_issue_count$racial_issue[1:4]) |> 
+  mutate(issue = paste(issue, "(racial)"))
+
 
 # 42 lines on a plot on the other hand is like 35 too many
 issues |> 
   filter(issue %in% issues_count$issue[1:7]) |> 
   group_by(issue, date) |> 
   count() |> 
-  ggplot(aes(x = date, y = n, color = issue)) + 
-  geom_line() + 
+  drop_na() |> 
+  ggplot(aes(x = date, y = n, fill = issue)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
   labs(
+    title = "Issue breakdown over time",
     y = "Number of associated canonical events",
-    x = "Date (month)"
+    x = "Date (month)",
+    caption = "Excludes racial issues."
+  ) +
+  guides(fill = guide_legend(byrow = TRUE)) +
+  theme(
+    legend.spacing.y = unit(0.5, "cm")
+  )
+  
+issues |> 
+  filter(issue %in% issues_count$issue[1:4]) |> 
+  bind_rows(top_racial_issues) |> 
+  mutate(issue = as.factor(issue) |> 
+           fct_relevel(c(
+             issues_count$issue[1:4],
+             racial_issue_count$racial_issue[1:4])
+             )) |> 
+  group_by(issue, date) |> 
+  count() |> 
+  drop_na() |> 
+  ggplot(aes(x = date, y = n, fill = issue)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
+  labs(
+    title = "Issue breakdown over time",
+    y = "Number of associated canonical events",
+    x = "Date (month)",
+    caption = "Includes racial issues."
+  ) +
+  guides(fill = guide_legend(byrow = TRUE)) +
+  theme(
+    legend.spacing.y = unit(0.5, "cm")
   )
   
 
