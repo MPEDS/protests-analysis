@@ -1,10 +1,11 @@
 library(targets)
 library(tarchetypes)
 
+source("tasks/source_safely.R")
 fn_filenames <- list.files("tasks", full.names = TRUE,
                            pattern = ".R",
                            recursive = TRUE)
-invisible(lapply(fn_filenames, source))
+invisible(lapply(fn_filenames, source_safely))
 
 tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven",
                             "httr", "curl", "sf", "tigris", "tidycensus"))
