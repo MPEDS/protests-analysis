@@ -20,13 +20,13 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
       ipeds = ipeds |>
         group_by(id) |>
         arrange(desc(year)) |>
-        slice(n = 1) |>
+        slice_head(n = 1) |>
         select(id, uni_name),
       glued = glued |>
         group_by(glued_id) |>
         arrange(desc(year)) |>
         select(id = glued_id, uni_name) |>
-        slice(n = 1)
+        slice_head(n = 1)
     ),
     .id = "data_source"
   )
@@ -75,9 +75,10 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
       mutate(alt_name = str_replace(
           name,
           # if `pattern` isn't given, append `repl` to the end of a word
-          if_else(is.null(matcher$pattern), "$", matcher$pattern),
+          ifelse(is.null(matcher$pattern), "$", matcher$pattern),
           matcher$repl)) |>
-      left_join(authoritative_uni_matcher, by = c("alt_name" = "uni_name")) |>
+      left_join(authoritative_uni_matcher, by = c("alt_name" = "uni_name"),
+                multiple = "all") |>
       mutate(
         # if is_authoritative is TRUE, then the new rule helped find a match
         # case_when() needed since ipeds_dummy is TRUE or NA, not TRUE or FALSE
@@ -96,7 +97,8 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
       select(-is_authoritative, -alt_name, -id, -data_source)
   }, .init = mpeds_names) |>
     # final match to know which are correct and which need adjustments
-    left_join(authoritative_uni_matcher, by = c("name" = "uni_name")) |>
+    left_join(authoritative_uni_matcher, by = c("name" = "uni_name"),
+              multiple = "all") |>
     mutate(is_authoritative = case_when(
       is_authoritative == TRUE ~ TRUE,
       TRUE ~ FALSE

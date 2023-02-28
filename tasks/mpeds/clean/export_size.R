@@ -5,7 +5,6 @@
 #' What happens between this function and the processing is out of scope for
 #' `targets` for now, because it 1) relies on code not managed by it and 2)
 #' relies on non-manageable human inputs
-#'
 export_size <- function(canonical_events, blm){
   articles <- get_articles()
   articles <- articles |>
@@ -22,8 +21,6 @@ export_size <- function(canonical_events, blm){
   blm <- blm |>
     st_drop_geometry() |>
     as_tibble()
-
-  # The Elephrame BLM dataset has
 
   blm |>
     select(url, desc, text = num) |>
@@ -59,5 +56,4 @@ export_size <- function(canonical_events, blm){
     select(url, desc, raw = text, parsed) |>
     write_csv("tasks/mpeds/hand/blm_size.csv")
 }
-
 

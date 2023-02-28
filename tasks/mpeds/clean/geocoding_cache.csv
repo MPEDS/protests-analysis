@@ -190,14 +190,12 @@ lat,lng,location
 33.7700504,-118.1937395,"Long Beach, CA, USA"
 41.7475933,-74.0868095,"New Paltz, NY, USA"
 42.88644679999999,-78.8783689,"Buffalo, NY, USA"
-40.1164204,-88.2433829,"Champaign, IL, USA"
-40.1105875,-88.2072697,"Urbana–Champaign, IL, USA"
+40.1164204,-88.2433829,"Champaign-Urbana, IL, USA"
 40.5795317,-74.1502007,"Staten Island, NY, USA"
 39.0473451,-95.6751576,"Topeka, KS, USA"
 36.1539816,-95.992775,"Tulsa, OK, USA"
 30.8327022,-83.2784851,"Valdosta, GA, USA"
 31.549333,-97.1466695,"Waco, TX, USA"
-40.1105875,-88.2072697,"Urbana, IL, USA"
 46.23824,-63.13107040000001,"Charlottetown, PEI, Canada"
 41.8994744,-87.9403418,"Elmhurst, IL, USA"
 40.2599864,-74.79091249999999,"Ewing, NJ, USA"
@@ -365,7 +363,6 @@ lat,lng,location
 35.1495343,-90.0489801,"Memphis, TN, USA"
 33.916475,-117.9002918,"Brea, CA, USA"
 40.0149856,-105.2705456,"Boulder, Colorado, USA"
-40.1164204,-88.2433829,"Champaign-Urbana, IL, USA"
 46.23824,-63.13107040000001,"Charlottetown, PE, Canada"
 40.2010241,-77.20027449999999,"Carlisle, PA, USA"
 49.3237408,-117.6593341,"Castlegar, BC, CA"
@@ -383,7 +380,6 @@ lat,lng,location
 45.5018869,-73.56739189999999,"Montreal, QC, Quebec"
 42.2808256,-83.7430378,"Ann Arbor, Michigan, USA"
 39.7392358,-104.990251,"Denver, CO, USA"
-40.1105875,-88.2072697,"Urbana - Champaign, IL, USA"
 42.7369792,-84.48386540000001,"East Lansing, MI, USA"
 38.403903,-96.1816626,"Emporia, KA, USA"
 36.0626579,-94.1605839,"Fayetteville, AK, USA"
@@ -407,7 +403,7 @@ lat,lng,location
 33.2148412,-97.1330683,"Denton, TX, USA"
 27.7676008,-82.64029149999999,"St. Petersburg, FL, USA"
 42.6430359,-95.2019399,"Storm Lake, IA, USA"
-40.1164204,-88.2433829,"Champaign, Illinois, USA"
+40.1164204,-88.2433829,"Champaign, IL, USA"
 42.73416,-90.4784621,"Platteville, WI, USA"
 43.4642578,-80.5204096,"Waterloo, ON, CA"
 39.109724,-95.0877465,"Tonganoxie, KS, USA"
@@ -515,6 +511,33 @@ lat,lng,location
 44.9428975,-123.0350963,"Salem, OR, USA"
 34.4208305,-119.6981901,"Santa Barbara, CA,  USA"
 37.2089572,-93.2922989,"Springfield, MO, USA"
+39.3292396,-82.1012554,"Athens, OH USA"
+32.6098566,-85.48078249999999,"Auburn, AL USA"
+36.8507689,-76.28587259999999,"Norfolk, VA, USA"
+35.3732921,-119.0187125,"Bakersfield, CA, USA"
+38.5925524,-90.3573389,"Webster Groves, MO,  USA"
+41.2459149,-75.88130749999999,"Wilkes-Barre, PA, USA"
+28.5999998,-81.33923519999999,"Winter Park, FL, USA"
+25.9017472,-97.4974838,"Brownsville, TX, USA"
+30.267153,-97.7430608,"Austin, Texas, USA"
+41.4730948,-87.0611412,"Valparaiso, IN, USA"
+41.4978306,-81.53734560000001,"University Heights, OH, USA"
+41.6528052,-83.5378674,"Toledo, Ohio, USA"
+33.4255104,-111.9400054,"Tempe, AZ, USA"
+42.82472930000001,-83.26522539999999,"Oxford, MI, USA"
+37.5565736,-79.0801084,"Sweet Briar, VA, USA"
+43.0481221,-76.14742439999999,"Syracuse, New York, USA"
+40.7127753,-74.0059728,"New York, NY, USA"
+43.4083637,-84.6066704,"St. Louis, MI, USA"
+46.8130816,-71.20745959999999,"Québec City, QC, Canada"
+42.09868669999999,-75.91797380000001,"Binghamton, NY, United States"
+42.09868669999999,-75.91797380000001,"Binghamton, NY USA"
+45.4765446,-75.7012723,"Gatineau, Quebec, Canada"
+42.3149367,-83.03636329999999,"Windsor, ON, Canada"
+42.9849233,-81.2452768,"London, ON, Canada"
+43.653226,-79.3831843,"Toronto, ON, Canada."
+43.653226,-79.3831843,"Toronto,ON, Canada"
+43.653226,-79.3831843,"Toronto, Ontario, Canada"
 38.9403808,-92.3277375,University of Missouri-Columbia
 38.9403808,-92.3277375,University of Missouri
 38.9403808,-92.3277375,University of Missouri Columbia
@@ -527,6 +550,7 @@ lat,lng,location
 33.7971368,-84.32224,Emory University
 40.19396769999999,-75.4563232,Ursinus College
 33.753068,-84.38528190000001,Georgia State University in Atlanta
+25.7173947,-80.2781262,University of Miami
 37.3192806,-122.0447919,De Anza College
 38.5382322,-121.7617125,University of California Davis
 43.3147914,-91.8052049,Luther College
@@ -662,6 +686,7 @@ lat,lng,location
 43.2103817,-77.95108309999999,SUNY Brockport
 37.72569,-122.4510797,City College of San Francisco
 49.2780937,-122.9198833,Simon Fraser University
+51.04473309999999,-114.0718831,University of Calgary
 35.9049122,-79.0469134,UNC-Chapel Hill
 36.21356280000001,-81.68432179999999,Appalachian State
 39.7296653,-121.8478871,California State University Chico
@@ -669,7 +694,7 @@ lat,lng,location
 38.5382322,-121.7617125,University of California at Davis
 38.5382322,-121.7617125,University of California-Davis
 42.3222599,-83.17631449999999,University of Michigan Dearborn
-35.1802684,-111.6540336,"NAU"
+35.1802684,-111.6540336,NAU
 40.736746,-73.8203195,Queens College
 26.4626967,-81.7800748,Florida Gulf Coast University
 36.1270236,-97.0737222,Oklahoma State University
@@ -773,6 +798,7 @@ lat,lng,location
 38.908422,-76.99238749999999,Gallaudet University
 38.9368811,-76.99869199999999,Catholic University of America
 41.8742327,-87.62483379999999,Columbia College Chicago
+53.7608608,-98.81387629999999,University of Manitoba
 46.8619309,-113.9845969,University of Montana
 34.0414348,-118.1501982,East Los Angeles College
 34.0555994,-117.819263,California State Polytechnic University Pomona
@@ -859,6 +885,7 @@ lat,lng,location
 29.9346582,-90.1209925,Loyola University New Orleans
 40.2390377,-74.96717900000002,Bucks County Community College
 40.691145,-73.9805528,Long Island University Brooklyn Campus
+41.8071104,-72.25235239999999,University of Connecticut
 39.9566127,-75.18994409999999,Drexel University
 40.7678398,-73.9645291,Hunter College
 40.8506041,-73.9297205,Yeshiva University
@@ -1078,9 +1105,11 @@ lat,lng,location
 41.8685636,-87.6484497,University of Illinois at Chicago campus
 41.9748871,-87.7108736,North Park University
 49.28458939999999,-123.11146,SFU’s Vancouver and Surrey campuses
+49.1865906,-122.8490733,all three of SFU’s campuses
 42.2930114,-71.26378199999999,Olin College of Engineering
 42.3811689,-71.11756679999999,Lesley University
 48.4634067,-123.3116935,the University of Victoria
+40.5008405,-74.44741739999999,Rutgers
 33.8823476,-117.8851033,California State University - Fullerton
 39.0804917,-108.5534074,Mesa State College
 39.9927652,-75.2941372,Haverford and Bryn Mawr Colleges
@@ -1163,3 +1192,55 @@ lat,lng,location
 36.3429724,-88.86433319999999,UTM
 33.1512505,-117.1821885,Palomar College
 37.2005546,-93.2806806,Missouri State University
+38.5529805,-121.4525906,University of California Davis School of Medicine
+45.5123906,-73.67180809999999,Cégep de St. Laurent
+33.7505746,-84.4118579,AUC schools
+33.7451953,-84.41143749999999,Spelman
+36.8853217,-76.3058786,Old Dominion University
+40.00758099999999,-105.2659417,University of Colorado Boulder
+35.0077519,-97.092877,Oklahoma
+40.7112562,-74.0051758,Pace University
+41.2449585,-75.8883633,Wilkes University
+28.5927153,-81.3485013,Rollins College
+26.3081983,-98.17401579999999,University of Texas Rio Grande Valley
+40.7664886,-73.9555127,Weill Cornell Medical College
+40.7354925,-73.9971361,New School in New York City
+45.5131547,-73.5602937,e Université du Québec à Montréal (UQAM)
+41.98675069999999,-87.8721602,Rosemont
+45.514669,-73.5663793,CEGEP du Vieux-Montréal
+25.8939072,-97.48691939999999,University of Texas at Brownsville
+30.211991,-92.019914,University of Louisiana at Lafayette
+29.7903032,-90.8028911,Nicholls State University
+30.5265222,-91.1929407,Southern University Baton Rouge
+39.4089481,-76.5926005,Goucher College
+39.3299013,-76.6205177,Johns Hopkins
+30.23218,-97.75833,St Edward's University
+43.076592,-89.4124875,University of Wisconsin - Madison
+41.4639394,-87.04388929999999,Valparaiso University
+41.4905602,-81.5297689,John Carroll University
+33.2951034,-111.7956814,Chandler-Gilbert Community College
+34.3647349,-89.5383818,Ole Miss
+29.3228413,-98.5465301,Palo Alto College
+39.9522188,-75.1932137,University of Pennsylvania
+39.9566127,-75.18994409999999,Drexel
+39.9522188,-75.1932137,Students from the University of Pennsylvania and Community College of Philadelphia marched alongside Temple students
+39.7099689,-75.1191932,"Lee teaches at Philadelphia University, the University of Pennsylvania and Rowan University in South Jersey in addition to Temple"
+35.2058936,-97.4457137,University of Oklahoma
+33.4242399,-111.9280527,ASU
+34.0522342,-118.2436849,Los Angeles campus
+37.5565736,-79.0801084,Sweet Briar
+41.8417288,-71.4627575,Rhode Island College
+34.2406756,-118.5300196,CSU Northridge
+37.8718992,-122.2585399,"UC Berkeley and UC Santa Cruz, Berkeley City College, San Francisco State University, City College of San Francisco, Laney College and Stanford University"
+38.2352198,-122.119899,Solano Community College
+37.7749295,-122.4194155,San Francisco
+36.9741171,-122.0307963,Santa Cruz
+38.3013039,-77.47447,University of Mary Washington
+42.2746179,-71.8068416,Worcester Polytechnic Institute
+43.676042700000004,-79.41072840000001,George Brown Colleg
+38.6487895,-90.31079620000001,Washington University
+37.0965278,-113.5684164,St. George
+54.283113,-0.399752,Scarborough
+43.6628917,-79.39565640000001,St George campus
+53.9614205,-1.0739108,York
+43.6628917,-79.39565640000001,UofT
