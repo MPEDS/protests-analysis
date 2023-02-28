@@ -74,16 +74,19 @@ list(
   # the `raw_coarse_filename` target is meant to be cleaned by hand (by me)
   tar_target(raw_coarse_filename, clean_mpeds_names(geocoded, ipeds, glued),
              format = "file"),
-  tar_target(uni_xwalk_filename,
+  tar_target(coarse_uni_match_filename,
              update_coarse_matches(raw_coarse_filename),
              format = "file"),
   # then passed off to coders in a readable format
   tar_target(postprocess_filename, postprocess_names(
-    geocoded, uni_xwalk_filename, glued, ipeds
+    geocoded, coarse_uni_match_filename, glued, ipeds
   ), format = "file"),
+  # And read in again after they've made their edits
+  tar_target(uni_xwalk,  readxl::read_excel(postprocess_filename) |> distinct()),
+
   # Export Canadian universities for additional manual data input
   tar_target(canadian_universities_filename, export_canada(
-    uni_xwalk_filename, glued
+    coarse_uni_match_filename, glued
   ), format = "file"),
 
   tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
@@ -92,7 +95,7 @@ list(
     geocoded,
     ipeds,
     glued,
-    readxl::read_excel(postprocess_filename),
+    uni_xwalk,
     county_covariates,
     ccc,
     canada_shapefiles = canada_shapefiles,

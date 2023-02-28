@@ -69,7 +69,7 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
     list(repl = " School")
   )
 
-  filename <- "tasks/university_covariates/hand/raw_uni_match.csv"
+  raw_coarse_filename <- "tasks/university_covariates/hand/raw_uni_match.csv"
   reduce(patterns, function(mpeds_iteration, matcher){
     mpeds_iteration |>
       mutate(alt_name = str_replace(
@@ -107,22 +107,29 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
     select(original_name = og_name,
            authoritative_name = name,
            uni_id, uni_data_source) |>
-    write_csv(filename)
+    distinct() |>
+    write_csv(raw_coarse_filename)
 
-  return(filename)
+  return(raw_coarse_filename)
 }
 
 #' updates to the matching method or underlying data will create
 #' changes to the raw coarse match file that have to be propagated
 #' to the cleaned coarse match file. For the first pass (catching the majority)
-#' that was done manually be me;
+#' that was done manually by me;
 #' This function propagates changes so that the undergrad RAs can catch
 #' future changes
 update_coarse_matches <- function(raw_coarse_filename){
   raw_coarse <- read_csv(raw_coarse_filename, show_col_types = FALSE)
   coarse_filename <- "tasks/university_covariates/hand/coarse_uni_match.csv"
-  cleaned_coarse <- read_csv(coarse_filename, show_col_types = FALSE) |>
-    full_join(raw_coarse, by = "original_name") |>
+  cleaned_coarse <- read_csv(coarse_filename, show_col_types = FALSE)  |>
+    # In case `raw_coarse` has updated names, for example from a refreshed
+    # DB pipeline run, add them here to the ones I manually corrected
+    # Not joining on uni_id, although that is needed to ambiguously identify
+    # the names, since `raw_coarse` may have it missing
+    full_join(raw_coarse, by = "original_name",
+              multiple = "all"
+              ) |>
     mutate(
       authoritative_name.x = ifelse(!is.na(authoritative_name.x),
                                     authoritative_name.x,
@@ -152,11 +159,13 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds)
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
   initial_keys <- geocoded |> select(key, university) |> unnest(university)
+  # Adding on "participating universities"
   keys <- geocoded |> select(key, participating_universities) |>
     unnest(participating_universities) |>
     rename(university = participating_universities) |>
     bind_rows(initial_keys) |>
-    mutate(university = str_remove_all(university, ",") |> str_trim())
+    mutate(university = str_remove_all(university, ",") |> str_trim()) |>
+    distinct()
 
   postprocess_filename <- "tasks/university_covariates/hand/university_names_verification.xlsx"
   MPEDS <- coarse_uni_match |>
@@ -164,7 +173,8 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds)
       !is.na(authoritative_name),
       authoritative_name,
       original_name)) |>
-    left_join(keys, by = c("original_name" = "university")) |>
+    left_join(keys, by = c("original_name" = "university"),
+              multiple = "all") |>
     select(original_name, authoritative_name, uni_id, uni_data_source,
            canonical_event_key = key) |>
     mutate(notes = "")

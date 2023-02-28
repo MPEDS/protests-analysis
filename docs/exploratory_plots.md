@@ -3,8 +3,8 @@ Exploratory Plots
 
 # Basic counts
 
-The initial import of the MPEDS db found 5220 unique canonical events,
-and after all cleaning steps we still have 5220 canonical events.
+The initial import of the MPEDS db found 6096 unique canonical events,
+and after all cleaning steps we still have 6096 canonical events.
 
 However, there’s still an issue regarding duplicate matches in IPEDS we
 can detect (there are likely also incorrect matches that we can’t detect
@@ -16,13 +16,13 @@ thus no further joins will be accurate unless the MPEDS-IPEDS join is
 accurate. As of Jan 30, 2023, we are in the middle of repairing this
 join.
 
-Of those events, there were 517 unique locations, 251 unique counties,
-and 557 unique universities. Surprisingly, all of the locations that
+Of those events, there were 540 unique locations, 314 unique counties,
+and 604 unique universities. Surprisingly, all of the locations that
 were not universities found geocoding matches, and hand-checking the
 most common ones indicates that there isn’t a strong pattern of missing
 value substitution, e.g. Google isn’t sending the majority of results to
 the centroid of America or to `(-1, -1)` or anything weird like that.
-Universities had a harder time, with 20 universities and 190 rows
+Universities had a harder time, with 21 universities and 101 rows
 (canonical events) not returning lon/lat coords for universities.
 
 That comes out to \~5% of universities not having coordinates, and
@@ -32,81 +32,82 @@ The top universities by appearances:
 
 | university                                  |   n |
 |:--------------------------------------------|----:|
-| University of California-Berkeley           | 184 |
-| McGill University                           | 154 |
-| Concordia University                        | 146 |
-| Harvard University                          | 145 |
-| University of Michigan-Ann Arbor            | 122 |
-| University of California-Los Angeles        |  86 |
-| University of Toronto                       |  69 |
+| University of California-Berkeley           | 228 |
+| McGill University                           | 191 |
+| Concordia University                        | 168 |
+| Harvard University                          | 140 |
+| University of Michigan-Ann Arbor            | 120 |
+| University of California-Los Angeles        | 106 |
+| University of Toronto                       |  90 |
+| Ryerson University                          |  81 |
+| Tufts University                            |  71 |
 | University of Chicago                       |  66 |
-| Ryerson University                          |  56 |
-| Columbia University in the City of New York |  49 |
-| Tufts University                            |  49 |
-| University of Wisconsin-Madison             |  49 |
-| Georgetown University                       |  48 |
-| The University of Texas at Austin           |  47 |
-| Cornell University                          |  46 |
+| York University                             |  66 |
+| Columbia University in the City of New York |  64 |
+| The University of Texas at Austin           |  55 |
+| Georgetown University                       |  52 |
+| University of Wisconsin-Madison             |  50 |
 
 And the top locations:
 
 | location               |   n |
 |:-----------------------|----:|
-| Montreal, QC, Canada   | 352 |
-| New York City, NY, USA | 172 |
-| Berkeley, CA, USA      | 170 |
-| Toronto, ON, Canada    | 157 |
-| Cambridge, MA, USA     | 139 |
-| Chicago, IL, USA       | 133 |
-| Los Angeles, CA, USA   | 121 |
-| Ann Arbor, MI, USA     | 113 |
-| San Diego, CA, USA     |  77 |
-| San Francisco, CA, USA |  76 |
-| Boston, MA, USA        |  61 |
-| Washington, D.C., USA  |  58 |
-| Madison, WI, USA       |  48 |
-| Davis, CA, USA         |  47 |
-| Ithaca, NY, USA        |  47 |
+| Montreal, QC, Canada   | 384 |
+| Toronto, ON, Canada    | 226 |
+| Berkeley, CA, USA      | 212 |
+| New York City, NY, USA | 189 |
+| Los Angeles, CA, USA   | 134 |
+| Cambridge, MA, USA     | 132 |
+| Chicago, IL, USA       | 125 |
+| Ann Arbor, MI, USA     | 111 |
+| San Francisco, CA, USA |  89 |
+| San Diego, CA, USA     |  85 |
+| Washington, D.C., USA  |  74 |
+| Boston, MA, USA        |  73 |
+| Vancouver, BC, Canada  |  54 |
+| Austin, TX, USA        |  53 |
+| Ottawa, ON, Canada     |  51 |
 
 Top states:
 
 |   n | state_name           |
 |----:|:---------------------|
-| 562 | California           |
-| 341 | Massachusetts        |
-| 228 | Illinois             |
-| 172 | Michigan             |
-| 163 | New York             |
-| 142 | Pennsylvania         |
-| 113 | District of Columbia |
-| 111 | Virginia             |
-| 108 | Florida              |
-| 103 | Texas                |
-|  96 | Connecticut          |
-|  79 | Wisconsin            |
-|  77 | Ohio                 |
-|  72 | North Carolina       |
-|  59 | Washington           |
+| 900 | California           |
+| 375 | Massachusetts        |
+| 358 | New York             |
+| 275 | Illinois             |
+| 187 | Pennsylvania         |
+| 170 | Michigan             |
+| 161 | Texas                |
+| 137 | Ohio                 |
+| 128 | District of Columbia |
+| 120 | Virginia             |
+| 110 | North Carolina       |
+| 107 | Florida              |
+| 106 | Indiana              |
+| 102 | Missouri             |
+|  93 | Connecticut          |
 
 And finally the top counties:
 
 |   n | county_name                                |
 |----:|:-------------------------------------------|
-| 238 | Middlesex County, Massachusetts            |
-| 188 | Alameda County, California                 |
-| 128 | Cook County, Illinois                      |
-| 126 | Washtenaw County, Michigan                 |
-| 113 | District of Columbia, District of Columbia |
-|  80 | Los Angeles County, California             |
-|  63 | New York County, New York                  |
-|  59 | San Diego County, California               |
-|  56 | San Francisco County, California           |
-|  49 | Dane County, Wisconsin                     |
-|  48 | Boone County, Missouri                     |
-|  48 | Tompkins County, New York                  |
-|  47 | Santa Clara County, California             |
-|  47 | Travis County, Texas                       |
-|  42 | Hampshire County, Massachusetts            |
+| 239 | Middlesex County, Massachusetts            |
+| 237 | Alameda County, California                 |
+| 209 | Los Angeles County, California             |
+| 195 | New York County, New York                  |
+| 149 | Cook County, Illinois                      |
+| 128 | District of Columbia, District of Columbia |
+| 117 | Washtenaw County, Michigan                 |
+| 101 | San Diego County, California               |
+|  90 | San Francisco County, California           |
+|  75 | Suffolk County, Massachusetts              |
+|  59 | Santa Clara County, California             |
+|  56 | Travis County, Texas                       |
+|  50 | Yolo County, California                    |
+|  50 | Dane County, Wisconsin                     |
+|  46 | Boulder County, Colorado                   |
+|  46 | Tompkins County, New York                  |
 
 These glimpses seem mostly in line with what we should expect, with a
 strong caveat that the Missouri protests are not making a leading
@@ -119,122 +120,117 @@ Missouri FIPS code, and the Boone county FIPS code:
 | location                |   n |
 |:------------------------|----:|
 | Cape Girardeau, MO, USA |   1 |
-| Chicago, IL, USA        |   3 |
-| Columbia, MO, USA       |  35 |
-| Iowa City, IA, USA      |   2 |
-| Jefferson City, MO, USA |   2 |
+| Columbia, MO, USA       |  36 |
+| Jefferson City, MO, USA |   7 |
+| Kansas City, MO, USA    |   4 |
 | Maryville, MO, USA      |   1 |
-| New York City, NY, USA  |   5 |
-| Salt Lake City, UT, USA |   1 |
-| St. Louis, MO, USA      |   3 |
-| Webster Groves, MO, USA |   2 |
-| NA                      |   1 |
+| Springfield, MO, USA    |   1 |
+| St. Charles, MO, USA    |   1 |
+| St. Joseph, MO, USA     |   3 |
+| St. Louis, MO, USA      |  42 |
+| Webster Groves, MO, USA |   1 |
+| Webster Groves, MO, USA |   5 |
 
-| location                |   n |
-|:------------------------|----:|
-| Chicago, IL, USA        |   3 |
-| Columbia, MO, USA       |  35 |
-| Iowa City, IA, USA      |   2 |
-| Jefferson City, MO, USA |   2 |
-| New York City, NY, USA  |   5 |
-| NA                      |   1 |
+| location          |   n |
+|:------------------|----:|
+| Columbia, MO, USA |  36 |
 
 Ah, that’s not good. It seems there are non-MO locations being
 recognized as happening in Missouri. See Google Doc for details
 
 | police_presence_and_size |    n |
 |:-------------------------|-----:|
-| NA                       | 4815 |
-| NA/Unclear               |  381 |
-| Substantial              |  276 |
-| Small/0 to 5 officers    |   77 |
-| Heavily Policed          |   29 |
-| Motorized Presence       |   19 |
+| NA                       | 5331 |
+| NA/Unclear               |  410 |
+| Substantial              |  295 |
+| Small/0 to 5 officers    |   88 |
+| Heavily Policed          |   32 |
+| Motorized Presence       |   17 |
 
 | police_activities            |    n |
 |:-----------------------------|-----:|
-| NA                           | 4748 |
-| Monitor/Present              |  379 |
-| Arrest or Attempted          |  159 |
-| Constrain                    |  154 |
-| Instruct/Warn                |  152 |
-| Formal Accusation            |  102 |
-| Remove Individual Protesters |   62 |
-| Force: Vague/Body            |   57 |
-| End Protest                  |   51 |
-| “Breaking the Rules”         |   42 |
-| Detain                       |   41 |
+| NA                           | 5233 |
+| Monitor/Present              |  420 |
+| Instruct/Warn                |  176 |
+| Arrest or Attempted          |  166 |
+| Constrain                    |  162 |
+| Formal Accusation            |  111 |
+| Remove Individual Protesters |   63 |
+| Force: Vague/Body            |   61 |
+| End Protest                  |   58 |
+| “Breaking the Rules”         |   51 |
+| Detain                       |   46 |
 | NA/Unclear                   |   33 |
-| Force: Weapon                |   27 |
-| Force: 2+ Weapon Types       |   24 |
-| Arrest- Large Scale          |   20 |
-| Present                      |   15 |
-| Cooperate/Coordinate         |   12 |
-| Participate                  |    4 |
-| Disputed Actions             |    3 |
+| Force: Weapon                |   32 |
+| Force: 2+ Weapon Types       |   28 |
+| Arrest- Large Scale          |   27 |
+| Present                      |   18 |
+| Cooperate/Coordinate         |   14 |
+| Disputed Actions             |    5 |
+| Participate                  |    5 |
 | “We’re Responsive”           |    1 |
 
 | type_of_police        |    n |
 |:----------------------|-----:|
-| NA                    | 4742 |
-| Univ police           |  406 |
-| Govt police           |  284 |
-| Univ police - assumed |  143 |
-| Govt police - assumed |  124 |
-| “Riot police”         |   68 |
+| NA                    | 5225 |
+| Univ police           |  455 |
+| Govt police           |  306 |
+| Univ police - assumed |  156 |
+| Govt police - assumed |  139 |
+| “Riot police”         |   69 |
 | Private Security      |   27 |
 | NA/Unclear            |    9 |
-| Secret Service        |    3 |
+| Secret Service        |    2 |
 
 | university_action_on_issue |    n |
 |:---------------------------|-----:|
-| NA                         | 5242 |
-| NA/Unclear                 |  166 |
-| Action in Process          |   84 |
-| Reject Demand              |   54 |
-| Contrary Action/Refuse     |   19 |
-| Fulfill Demand             |   15 |
-| No Cancellation            |   14 |
-| Compromised Action         |   12 |
-| Structural Change          |   10 |
-| Hold Forum                 |    8 |
-| Cancel Speaker/Event       |    7 |
-| Resign/Fire                |    3 |
+| NA                         | 5655 |
+| NA/Unclear                 |  236 |
+| Action in Process          |  134 |
+| Reject Demand              |   90 |
+| Structural Change          |   27 |
+| Fulfill Demand             |   25 |
+| Compromised Action         |   19 |
+| Contrary Action/Refuse     |   16 |
+| No Cancellation            |   16 |
+| Hold Forum                 |   11 |
+| Cancel Speaker/Event       |    8 |
+| Resign/Fire                |    4 |
+| Short Term Services        |    4 |
 | Sanction                   |    2 |
-| Short Term Services        |    2 |
 
 | university_discourse_on_issue   |    n |
 |:--------------------------------|-----:|
-| NA                              | 5226 |
-| NA/Unclear                      |  137 |
-| Explain Bureaucracy/Law         |  102 |
-| Express Contrary Position       |   85 |
-| Express Agreement               |   50 |
-| Affirm Diversity                |   10 |
+| NA                              | 5622 |
+| NA/Unclear                      |  176 |
+| Explain Bureaucracy/Law         |  165 |
+| Express Contrary Position       |  141 |
+| Express Agreement               |   90 |
+| Affirm Diversity                |   19 |
+| Emotional Appeal                |   17 |
+| Affirm Free Speech when Bigotry |   14 |
 | Affirm BIPOC Students           |    8 |
-| Affirm Free Speech when Bigotry |    7 |
-| Emotional Appeal                |    6 |
+| Affirm Marginalized Students    |    8 |
 | Oppose Oppression               |    6 |
-| Affirm Marginalized Students    |    5 |
-| Oppose Racism                   |    3 |
-| Apology/Responsibility          |    2 |
+| Oppose Racism                   |    6 |
+| Apology/Responsibility          |    4 |
 
 | university_reactions_to_protest |    n |
 |:--------------------------------|-----:|
-| NA                              | 5236 |
-| NA/Unclear                      |  122 |
-| Monitor/Present                 |   58 |
-| Get Confronted                  |   54 |
-| Instruct/Warn                   |   54 |
-| Direct Communications           |   48 |
-| Meet                            |   44 |
-| No Intervention                 |   31 |
-| Participate/Aid                 |   26 |
-| Penalize                        |   20 |
-| End Protest                     |    7 |
-| Revisit Protest P&P             |    6 |
-| Avoid Penalizing                |    5 |
-| Refuse to Meet                  |    5 |
+| NA                              | 5640 |
+| NA/Unclear                      |  187 |
+| Monitor/Present                 |   98 |
+| Meet                            |   78 |
+| Get Confronted                  |   77 |
+| Instruct/Warn                   |   65 |
+| Direct Communications           |   62 |
+| Participate/Aid                 |   42 |
+| Penalize                        |   25 |
+| No Intervention                 |   23 |
+| End Protest                     |    9 |
+| Revisit Protest P&P             |    9 |
+| Avoid Penalizing                |    7 |
+| Refuse to Meet                  |    7 |
 
 # Counts over time
 
@@ -249,25 +245,43 @@ categories, so I’ve only shown the universities over time for now:
 
 ![](exploratory_plots_files/figure-gfm/unis_over_time-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/unis_over_time-2.png)<!-- -->
 
+    ## Scale for x is already present.
+    ## Adding another scale for x, which will replace the existing scale.
+
     ## Warning: Removed 1 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-1.png)<!-- -->
 
-    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
+    ## Scale for x is already present.
+    ## Adding another scale for x, which will replace the existing scale.
+
+    ## Warning: Removed 7 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-2.png)<!-- -->
+
+    ## Scale for x is already present.
+    ## Adding another scale for x, which will replace the existing scale.
 
     ## Warning: Removed 3 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-3.png)<!-- -->
 
+    ## Scale for x is already present.
+    ## Adding another scale for x, which will replace the existing scale.
+
     ## Warning: Removed 4 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-4.png)<!-- -->
 
+    ## Scale for x is already present.
+    ## Adding another scale for x, which will replace the existing scale.
+
     ## Warning: Removed 3 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-5.png)<!-- -->
+
+    ## Scale for x is already present.
+    ## Adding another scale for x, which will replace the existing scale.
 
     ## Warning: Removed 1 rows containing missing values (`position_stack()`).
 
@@ -275,73 +289,74 @@ categories, so I’ve only shown the universities over time for now:
 
 | issue                                                        |    n |
 |:-------------------------------------------------------------|-----:|
-| University governance, admin, policies, programs, curriculum | 1526 |
-| Labor and work                                               |  885 |
-| Trump and/or his administration (Against)                    |  639 |
-| Tuition, fees, financial aid                                 |  562 |
-| \_Other Issue                                                |  475 |
-| Environmental                                                |  398 |
-| Sexual assault/violence                                      |  298 |
-| Feminism/women’s issues                                      |  296 |
-| Economy/inequality                                           |  275 |
-| Faith-based discrimination                                   |  242 |
-| Public funding for higher education                          |  215 |
-| Far Right/Alt Right (Against)                                |  130 |
-| Hate speech                                                  |  117 |
-| LGB+/Sexual orientation (For)                                |  105 |
-| Abortion access                                              |  102 |
+| University governance, admin, policies, programs, curriculum | 1728 |
+| Labor and work                                               |  975 |
+| Tuition, fees, financial aid                                 |  615 |
+| Trump and/or his administration (Against)                    |  581 |
+| \_Other Issue                                                |  533 |
+| Environmental                                                |  425 |
+| Sexual assault/violence                                      |  337 |
+| Economy/inequality                                           |  327 |
+| Feminism/women’s issues                                      |  302 |
+| Faith-based discrimination                                   |  257 |
+| Public funding for higher education                          |  256 |
+| Far Right/Alt Right (Against)                                |  121 |
+| Abortion access                                              |  113 |
+| LGB+/Sexual orientation                                      |  111 |
+| Hate speech                                                  |  110 |
+| LGB+/Sexual orientation (For)                                |  109 |
 | Gun control                                                  |  100 |
-| LGB+/Sexual orientation                                      |   98 |
-| Police violence/anti-law enforcement/criminal justice        |   87 |
-| Transgender issues (For)                                     |   80 |
-| Abortion (Against)/Pro-life                                  |   78 |
-| Free speech                                                  |   71 |
-| Pro-Palestine/BDS                                            |   67 |
-| Transgender issues                                           |   66 |
-| Anti-war/peace                                               |   58 |
+| Police violence/anti-law enforcement/criminal justice        |   99 |
+| Abortion (Against)/Pro-life                                  |   86 |
+| Free speech                                                  |   84 |
+| Transgender issues (For)                                     |   81 |
+| Pro-Palestine/BDS                                            |   72 |
+| Transgender issues                                           |   68 |
+| Anti-war/peace                                               |   63 |
+| Social services and welfare                                  |   59 |
 | Trump and/or his administration (For)                        |   52 |
-| Social services and welfare                                  |   42 |
-| Human rights                                                 |   40 |
-| LGB+/Sexual orientation (Against)                            |   39 |
-| Far Right/Alt Right (For)                                    |   33 |
-| Domestic foreign policy                                      |   28 |
-| Hate crimes/Anti-minority violence                           |   28 |
-| Anti-colonial/political independence                         |   24 |
-| Accessibility                                                |   22 |
-| Animal rights                                                |   21 |
-| Political corruption/malfeasance                             |   18 |
+| Human rights                                                 |   45 |
+| LGB+/Sexual orientation (Against)                            |   45 |
+| Far Right/Alt Right (For)                                    |   36 |
+| Domestic foreign policy                                      |   34 |
+| Hate crimes/Anti-minority violence                           |   32 |
+| Accessibility                                                |   27 |
+| Animal rights                                                |   23 |
+| Anti-colonial/political independence                         |   22 |
+| Political corruption/malfeasance                             |   19 |
+| Pro-Israel/Zionism                                           |   17 |
 | Transgender issues (Against)                                 |   16 |
-| Pro-Israel/Zionism                                           |   13 |
-| Gun owner rights                                             |   12 |
+| Gun owner rights                                             |   13 |
+| Pro-law enforcement                                          |    7 |
 | Traditional marriage/family                                  |    6 |
-| Pro-law enforcement                                          |    4 |
 | Men’s rights                                                 |    2 |
+|                                                              |    1 |
 
 | racial_issue                                                 |   n |
 |:-------------------------------------------------------------|----:|
-| Anti-racism                                                  | 825 |
-| University governance, admin, policies, programs, curriculum | 524 |
-| Immigration (For)                                            | 497 |
-| Campus climate                                               | 426 |
-| Police violence                                              | 400 |
-| White supremacy (Against)                                    | 162 |
+| Anti-racism                                                  | 872 |
+| Police violence                                              | 576 |
+| University governance, admin, policies, programs, curriculum | 532 |
+| Immigration (For)                                            | 480 |
+| Campus climate                                               | 442 |
 | Indigenous issues                                            | 159 |
-| \_Other Issue                                                | 134 |
-| Hate speech                                                  | 100 |
-| Racist/racialized symbols                                    |  84 |
+| White supremacy (Against)                                    | 154 |
+| \_Other Issue                                                | 132 |
+| Hate speech                                                  |  99 |
+| Racist/racialized symbols                                    |  86 |
 | Hate crimes/Anti-minority violence                           |  74 |
-| Prison/mass incarceration                                    |  37 |
-| Memorials & anniversaries                                    |  34 |
-| Affirmative action (For)                                     |  31 |
-| Immigration (Against)                                        |  21 |
+| Prison/mass incarceration                                    |  48 |
+| Memorials & anniversaries                                    |  39 |
+| Affirmative action (For)                                     |  33 |
+| Immigration (Against)                                        |  20 |
 | White supremacy (For)                                        |  20 |
-| Cultural appropriation                                       |  19 |
-| Indigenous Issues                                            |  11 |
+| Cultural appropriation                                       |  18 |
+| Indigenous Issues                                            |  14 |
 | Racial/ethnic pride - white                                  |   7 |
+| All Lives Matter                                             |   6 |
+| Pro-police                                                   |   5 |
 | Reparations                                                  |   5 |
 | Affirmative action (Against)                                 |   4 |
-| All Lives Matter                                             |   4 |
-| Pro-police                                                   |   2 |
 |                                                              |   1 |
 | K-12 education                                               |   1 |
 | Racial/ethnic pride - minority                               |   1 |
@@ -352,11 +367,11 @@ categories, so I’ve only shown the universities over time for now:
     ## ℹ In argument: `issue = fct_relevel(as.factor(issue),
     ##   c(issues_count$issue[1:4], racial_issue_count$racial_issue[1:4]))`.
     ## Caused by warning:
-    ## ! 3 unknown levels in `f`: Anti-racism, Immigration (For), and Campus climate
+    ## ! 3 unknown levels in `f`: Anti-racism, Police violence, and Immigration (For)
 
 ![](exploratory_plots_files/figure-gfm/issues_over_time-2.png)<!-- -->
 
-    ## Warning: Removed 7 rows containing missing values (`geom_line()`).
+    ## Warning: Removed 7 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/issues_over_time-3.png)<!-- -->
 
@@ -365,25 +380,25 @@ categories, so I’ve only shown the universities over time for now:
 | name                    | type    |      mean |        sd |
 |:------------------------|:--------|----------:|----------:|
 | bachelors_granting      | boolean |     1.000 |        NA |
-| campaign                | boolean |     0.248 |        NA |
-| counterprotest          | boolean |     0.042 |        NA |
-| hbcu                    | boolean |     0.010 |        NA |
-| inaccurate_date         | boolean |     0.008 |        NA |
+| campaign                | boolean |     0.244 |        NA |
+| counterprotest          | boolean |     0.043 |        NA |
+| hbcu                    | boolean |     0.011 |        NA |
+| inaccurate_date         | boolean |     0.009 |        NA |
 | masters_granting        | boolean |     1.000 |        NA |
-| multiple_cities         | boolean |     0.027 |        NA |
-| off_campus              | boolean |     0.067 |        NA |
-| on_campus_no_student    | boolean |     0.071 |        NA |
+| multiple_cities         | boolean |     0.024 |        NA |
+| off_campus              | boolean |     0.072 |        NA |
+| on_campus_no_student    | boolean |     0.070 |        NA |
 | phd_granting            | boolean |     1.000 |        NA |
-| private                 | boolean |     0.125 |        NA |
-| quotes                  | boolean |     0.645 |        NA |
-| ritual                  | boolean |     0.032 |        NA |
-| tribal                  | boolean |     0.001 |        NA |
-| enrollment_count        | numeric | 36583.172 |  9991.500 |
-| eviction_filing_rate    | numeric |     4.029 |     5.174 |
-| eviction_judgement_rate | numeric |     1.579 |     1.585 |
-| median_household_income | numeric | 65260.556 | 17706.571 |
-| republican_vote_prop    | numeric |     0.311 |     0.150 |
-| unemp                   | numeric |     4.680 |     1.466 |
+| private                 | boolean |     0.053 |        NA |
+| quotes                  | boolean |     0.631 |        NA |
+| ritual                  | boolean |     0.030 |        NA |
+| tribal                  | boolean |     0.000 |        NA |
+| enrollment_count        | numeric | 43568.548 | 10014.084 |
+| eviction_filing_rate    | numeric |     4.006 |     5.561 |
+| eviction_judgement_rate | numeric |     1.543 |     1.573 |
+| median_household_income | numeric | 64121.256 | 16573.401 |
+| republican_vote_prop    | numeric |     0.315 |     0.152 |
+| unemp                   | numeric |     4.866 |     1.572 |
 
 For boolean variables, “mean” is the proportion that they are TRUE. Many
 of the variables recorded in MPEDS allowed for the input of multiple
@@ -425,16 +440,16 @@ The following chunk gives a glimpse at total number of matches:
 
 | source    | date_offset | recent_protests | match_percentage |
 |:----------|------------:|----------------:|-----------------:|
-| CCC       |           0 |             636 |        36.890951 |
-| CCC       |           1 |             281 |        16.299304 |
-| CCC       |           3 |             551 |        31.960557 |
-| CCC       |           5 |             710 |        41.183295 |
-| CCC       |           7 |             841 |        48.781903 |
-| Elephrame |           0 |             265 |         6.022727 |
-| Elephrame |           1 |             100 |         2.272727 |
-| Elephrame |           3 |             205 |         4.659091 |
-| Elephrame |           5 |             337 |         7.659091 |
-| Elephrame |           7 |             422 |         9.590909 |
+| CCC       |           0 |             768 |        45.551601 |
+| CCC       |           1 |             328 |        19.454330 |
+| CCC       |           3 |             626 |        37.129300 |
+| CCC       |           5 |             786 |        46.619217 |
+| CCC       |           7 |             914 |        54.211151 |
+| Elephrame |           0 |             327 |         6.696703 |
+| Elephrame |           1 |             123 |         2.518943 |
+| Elephrame |           3 |             241 |         4.935491 |
+| Elephrame |           5 |             378 |         7.741143 |
+| Elephrame |           7 |             476 |         9.748106 |
 
 Here, the `match_percentage` column indicates how many canonical events
 saw another protest occur in the same county within `diff` days,

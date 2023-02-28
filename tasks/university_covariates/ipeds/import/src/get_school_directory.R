@@ -21,11 +21,6 @@ get_school_directory <- function(dummy_url){
       return(directory)
   }) |>
     mutate(
-      fips = case_when(
-        nchar(COUNTYCD) == 4 ~ paste0("0", COUNTYCD),
-        nchar(COUNTYCD) == 5 ~ as.character(COUNTYCD),
-        TRUE ~ NA_character_
-        ),
       hbcu = case_when(
         HBCU == 1 ~ TRUE,
         HBCU == 2 ~ FALSE,
@@ -38,7 +33,7 @@ get_school_directory <- function(dummy_url){
         ),
     ) |>
     select(id = UNITID, uni_name = INSTNM,
-           fips, size_category = INSTSIZE,
+           size_category = INSTSIZE,
            hbcu, tribal, year) |>
     mutate(id = as.character(id))
 
