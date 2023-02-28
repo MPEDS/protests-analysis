@@ -232,6 +232,401 @@ recognized as happening in Missouri. See Google Doc for details
 | Avoid Penalizing                |    7 |
 | Refuse to Meet                  |    7 |
 
+# Crosstabs by issue and reactions to protes
+
+Showing top 7 issues by total count, by various subgroups:
+
+| issue                                                        | police_presence_and_size |   n |
+|:-------------------------------------------------------------|:-------------------------|----:|
+| Environmental                                                | Heavily Policed          |   4 |
+| Environmental                                                | Motorized Presence       |   1 |
+| Environmental                                                | NA/Unclear               |  24 |
+| Environmental                                                | Small/0 to 5 officers    |   7 |
+| Environmental                                                | Substantial              |  17 |
+| Labor and work                                               | Heavily Policed          |   1 |
+| Labor and work                                               | Motorized Presence       |   2 |
+| Labor and work                                               | NA/Unclear               |  62 |
+| Labor and work                                               | Small/0 to 5 officers    |  11 |
+| Labor and work                                               | Substantial              |  25 |
+| Trump and/or his administration (Against)                    | Heavily Policed          |   4 |
+| Trump and/or his administration (Against)                    | NA/Unclear               |  44 |
+| Trump and/or his administration (Against)                    | Small/0 to 5 officers    |   7 |
+| Trump and/or his administration (Against)                    | Substantial              |  31 |
+| Tuition, fees, financial aid                                 | Heavily Policed          |   7 |
+| Tuition, fees, financial aid                                 | Motorized Presence       |   8 |
+| Tuition, fees, financial aid                                 | NA/Unclear               |  50 |
+| Tuition, fees, financial aid                                 | Small/0 to 5 officers    |  10 |
+| Tuition, fees, financial aid                                 | Substantial              |  82 |
+| University governance, admin, policies, programs, curriculum | Heavily Policed          |   7 |
+| University governance, admin, policies, programs, curriculum | Motorized Presence       |   1 |
+| University governance, admin, policies, programs, curriculum | NA/Unclear               | 125 |
+| University governance, admin, policies, programs, curriculum | Small/0 to 5 officers    |  34 |
+| University governance, admin, policies, programs, curriculum | Substantial              |  55 |
+| \_Not relevant                                               | Heavily Policed          |   2 |
+| \_Not relevant                                               | Motorized Presence       |   2 |
+| \_Not relevant                                               | NA/Unclear               |  78 |
+| \_Not relevant                                               | Small/0 to 5 officers    |  16 |
+| \_Not relevant                                               | Substantial              |  31 |
+| \_Other Issue                                                | Heavily Policed          |   1 |
+| \_Other Issue                                                | Motorized Presence       |   1 |
+| \_Other Issue                                                | NA/Unclear               |  46 |
+| \_Other Issue                                                | Small/0 to 5 officers    |   6 |
+| \_Other Issue                                                | Substantial              |  41 |
+
+| issue                                                        | police_activities            |   n |
+|:-------------------------------------------------------------|:-----------------------------|----:|
+| Environmental                                                | “Breaking the Rules”         |   6 |
+| Environmental                                                | Arrest or Attempted          |  15 |
+| Environmental                                                | Arrest- Large Scale          |   4 |
+| Environmental                                                | Constrain                    |   7 |
+| Environmental                                                | Cooperate/Coordinate         |   1 |
+| Environmental                                                | Detain                       |   1 |
+| Environmental                                                | Disputed Actions             |   2 |
+| Environmental                                                | End Protest                  |   4 |
+| Environmental                                                | Force: 2+ Weapon Types       |   1 |
+| Environmental                                                | Force: Vague/Body            |   3 |
+| Environmental                                                | Formal Accusation            |  10 |
+| Environmental                                                | Instruct/Warn                |  21 |
+| Environmental                                                | Monitor/Present              |  28 |
+| Environmental                                                | NA/Unclear                   |   1 |
+| Environmental                                                | Remove Individual Protesters |   5 |
+| Labor and work                                               | “Breaking the Rules”         |   1 |
+| Labor and work                                               | Arrest or Attempted          |  20 |
+| Labor and work                                               | Arrest- Large Scale          |   5 |
+| Labor and work                                               | Constrain                    |  21 |
+| Labor and work                                               | Cooperate/Coordinate         |   2 |
+| Labor and work                                               | Detain                       |   3 |
+| Labor and work                                               | End Protest                  |   7 |
+| Labor and work                                               | Force: 2+ Weapon Types       |   3 |
+| Labor and work                                               | Force: Vague/Body            |   7 |
+| Labor and work                                               | Force: Weapon                |   1 |
+| Labor and work                                               | Formal Accusation            |  11 |
+| Labor and work                                               | Instruct/Warn                |  17 |
+| Labor and work                                               | Monitor/Present              |  50 |
+| Labor and work                                               | NA/Unclear                   |   2 |
+| Labor and work                                               | Present                      |   3 |
+| Labor and work                                               | Remove Individual Protesters |   5 |
+| Trump and/or his administration (Against)                    | “Breaking the Rules”         |   2 |
+| Trump and/or his administration (Against)                    | Arrest or Attempted          |  12 |
+| Trump and/or his administration (Against)                    | Arrest- Large Scale          |   1 |
+| Trump and/or his administration (Against)                    | Constrain                    |  16 |
+| Trump and/or his administration (Against)                    | Cooperate/Coordinate         |   3 |
+| Trump and/or his administration (Against)                    | Detain                       |   6 |
+| Trump and/or his administration (Against)                    | End Protest                  |   5 |
+| Trump and/or his administration (Against)                    | Force: 2+ Weapon Types       |   2 |
+| Trump and/or his administration (Against)                    | Force: Vague/Body            |   2 |
+| Trump and/or his administration (Against)                    | Force: Weapon                |   2 |
+| Trump and/or his administration (Against)                    | Formal Accusation            |   5 |
+| Trump and/or his administration (Against)                    | Instruct/Warn                |  11 |
+| Trump and/or his administration (Against)                    | Monitor/Present              |  48 |
+| Trump and/or his administration (Against)                    | NA/Unclear                   |   3 |
+| Trump and/or his administration (Against)                    | Participate                  |   1 |
+| Trump and/or his administration (Against)                    | Present                      |   2 |
+| Trump and/or his administration (Against)                    | Remove Individual Protesters |   7 |
+| Tuition, fees, financial aid                                 | “Breaking the Rules”         |  21 |
+| Tuition, fees, financial aid                                 | Arrest or Attempted          |  43 |
+| Tuition, fees, financial aid                                 | Arrest- Large Scale          |  14 |
+| Tuition, fees, financial aid                                 | Constrain                    |  48 |
+| Tuition, fees, financial aid                                 | Cooperate/Coordinate         |   1 |
+| Tuition, fees, financial aid                                 | Detain                       |  12 |
+| Tuition, fees, financial aid                                 | Disputed Actions             |   1 |
+| Tuition, fees, financial aid                                 | End Protest                  |  17 |
+| Tuition, fees, financial aid                                 | Force: 2+ Weapon Types       |  16 |
+| Tuition, fees, financial aid                                 | Force: Vague/Body            |  26 |
+| Tuition, fees, financial aid                                 | Force: Weapon                |  13 |
+| Tuition, fees, financial aid                                 | Formal Accusation            |  28 |
+| Tuition, fees, financial aid                                 | Instruct/Warn                |  43 |
+| Tuition, fees, financial aid                                 | Monitor/Present              |  53 |
+| Tuition, fees, financial aid                                 | NA/Unclear                   |   1 |
+| Tuition, fees, financial aid                                 | Present                      |   2 |
+| Tuition, fees, financial aid                                 | Remove Individual Protesters |   6 |
+| University governance, admin, policies, programs, curriculum | “Breaking the Rules”         |  12 |
+| University governance, admin, policies, programs, curriculum | Arrest or Attempted          |  39 |
+| University governance, admin, policies, programs, curriculum | Arrest- Large Scale          |   4 |
+| University governance, admin, policies, programs, curriculum | Constrain                    |  49 |
+| University governance, admin, policies, programs, curriculum | Cooperate/Coordinate         |   2 |
+| University governance, admin, policies, programs, curriculum | Detain                       |  10 |
+| University governance, admin, policies, programs, curriculum | Disputed Actions             |   1 |
+| University governance, admin, policies, programs, curriculum | End Protest                  |  22 |
+| University governance, admin, policies, programs, curriculum | Force: 2+ Weapon Types       |   4 |
+| University governance, admin, policies, programs, curriculum | Force: Vague/Body            |  11 |
+| University governance, admin, policies, programs, curriculum | Force: Weapon                |   4 |
+| University governance, admin, policies, programs, curriculum | Formal Accusation            |  30 |
+| University governance, admin, policies, programs, curriculum | Instruct/Warn                |  61 |
+| University governance, admin, policies, programs, curriculum | Monitor/Present              | 115 |
+| University governance, admin, policies, programs, curriculum | NA/Unclear                   |  11 |
+| University governance, admin, policies, programs, curriculum | Participate                  |   1 |
+| University governance, admin, policies, programs, curriculum | Present                      |   7 |
+| University governance, admin, policies, programs, curriculum | Remove Individual Protesters |  16 |
+| \_Not relevant                                               | “Breaking the Rules”         |   2 |
+| \_Not relevant                                               | Arrest or Attempted          |  16 |
+| \_Not relevant                                               | Arrest- Large Scale          |   1 |
+| \_Not relevant                                               | Constrain                    |  11 |
+| \_Not relevant                                               | Cooperate/Coordinate         |   6 |
+| \_Not relevant                                               | Detain                       |   6 |
+| \_Not relevant                                               | End Protest                  |   3 |
+| \_Not relevant                                               | Force: Vague/Body            |   5 |
+| \_Not relevant                                               | Force: Weapon                |   1 |
+| \_Not relevant                                               | Formal Accusation            |  16 |
+| \_Not relevant                                               | Instruct/Warn                |  16 |
+| \_Not relevant                                               | Monitor/Present              |  86 |
+| \_Not relevant                                               | NA/Unclear                   |   5 |
+| \_Not relevant                                               | Participate                  |   2 |
+| \_Not relevant                                               | Present                      |   2 |
+| \_Not relevant                                               | Remove Individual Protesters |   8 |
+| \_Other Issue                                                | “Breaking the Rules”         |   7 |
+| \_Other Issue                                                | “We’re Responsive”           |   1 |
+| \_Other Issue                                                | Arrest or Attempted          |  22 |
+| \_Other Issue                                                | Arrest- Large Scale          |   3 |
+| \_Other Issue                                                | Constrain                    |  15 |
+| \_Other Issue                                                | Cooperate/Coordinate         |   4 |
+| \_Other Issue                                                | Detain                       |   7 |
+| \_Other Issue                                                | Disputed Actions             |   1 |
+| \_Other Issue                                                | End Protest                  |   3 |
+| \_Other Issue                                                | Force: 2+ Weapon Types       |   2 |
+| \_Other Issue                                                | Force: Vague/Body            |   3 |
+| \_Other Issue                                                | Force: Weapon                |   4 |
+| \_Other Issue                                                | Formal Accusation            |  13 |
+| \_Other Issue                                                | Instruct/Warn                |  19 |
+| \_Other Issue                                                | Monitor/Present              |  44 |
+| \_Other Issue                                                | NA/Unclear                   |   6 |
+| \_Other Issue                                                | Remove Individual Protesters |   9 |
+
+| issue                                                        | type_of_police        |   n |
+|:-------------------------------------------------------------|:----------------------|----:|
+| Environmental                                                | “Riot police”         |   2 |
+| Environmental                                                | Govt police           |  16 |
+| Environmental                                                | Govt police - assumed |  12 |
+| Environmental                                                | Univ police           |  33 |
+| Environmental                                                | Univ police - assumed |  13 |
+| Labor and work                                               | “Riot police”         |   4 |
+| Labor and work                                               | Govt police           |  29 |
+| Labor and work                                               | Govt police - assumed |  16 |
+| Labor and work                                               | Private Security      |   4 |
+| Labor and work                                               | Univ police           |  46 |
+| Labor and work                                               | Univ police - assumed |  27 |
+| Trump and/or his administration (Against)                    | “Riot police”         |   7 |
+| Trump and/or his administration (Against)                    | Govt police           |  36 |
+| Trump and/or his administration (Against)                    | Govt police - assumed |  17 |
+| Trump and/or his administration (Against)                    | NA/Unclear            |   2 |
+| Trump and/or his administration (Against)                    | Private Security      |   2 |
+| Trump and/or his administration (Against)                    | Secret Service        |   2 |
+| Trump and/or his administration (Against)                    | Univ police           |  37 |
+| Trump and/or his administration (Against)                    | Univ police - assumed |  17 |
+| Tuition, fees, financial aid                                 | “Riot police”         |  37 |
+| Tuition, fees, financial aid                                 | Govt police           |  63 |
+| Tuition, fees, financial aid                                 | Govt police - assumed |  41 |
+| Tuition, fees, financial aid                                 | NA/Unclear            |   1 |
+| Tuition, fees, financial aid                                 | Private Security      |   8 |
+| Tuition, fees, financial aid                                 | Univ police           |  41 |
+| Tuition, fees, financial aid                                 | Univ police - assumed |  21 |
+| University governance, admin, policies, programs, curriculum | “Riot police”         |   3 |
+| University governance, admin, policies, programs, curriculum | Govt police           |  56 |
+| University governance, admin, policies, programs, curriculum | Govt police - assumed |  26 |
+| University governance, admin, policies, programs, curriculum | Private Security      |  10 |
+| University governance, admin, policies, programs, curriculum | Secret Service        |   1 |
+| University governance, admin, policies, programs, curriculum | Univ police           | 151 |
+| University governance, admin, policies, programs, curriculum | Univ police - assumed |  62 |
+| \_Not relevant                                               | “Riot police”         |   2 |
+| \_Not relevant                                               | Govt police           |  58 |
+| \_Not relevant                                               | Govt police - assumed |  14 |
+| \_Not relevant                                               | NA/Unclear            |   6 |
+| \_Not relevant                                               | Univ police           |  69 |
+| \_Not relevant                                               | Univ police - assumed |  26 |
+| \_Other Issue                                                | “Riot police”         |  10 |
+| \_Other Issue                                                | Govt police           |  36 |
+| \_Other Issue                                                | Govt police - assumed |  17 |
+| \_Other Issue                                                | Private Security      |   6 |
+| \_Other Issue                                                | Univ police           |  48 |
+| \_Other Issue                                                | Univ police - assumed |  11 |
+
+| issue                                                        | university_action_on_issue |   n |
+|:-------------------------------------------------------------|:---------------------------|----:|
+| Environmental                                                | Action in Process          |  10 |
+| Environmental                                                | Compromised Action         |   2 |
+| Environmental                                                | Fulfill Demand             |   1 |
+| Environmental                                                | Hold Forum                 |   1 |
+| Environmental                                                | NA/Unclear                 |  13 |
+| Environmental                                                | Reject Demand              |  19 |
+| Environmental                                                | Structural Change          |   2 |
+| Labor and work                                               | Action in Process          |  65 |
+| Labor and work                                               | Compromised Action         |   3 |
+| Labor and work                                               | Contrary Action/Refuse     |  10 |
+| Labor and work                                               | Fulfill Demand             |   9 |
+| Labor and work                                               | Hold Forum                 |   1 |
+| Labor and work                                               | NA/Unclear                 |  38 |
+| Labor and work                                               | Reject Demand              |  25 |
+| Labor and work                                               | Structural Change          |   5 |
+| Trump and/or his administration (Against)                    | Action in Process          |   2 |
+| Trump and/or his administration (Against)                    | NA/Unclear                 |   1 |
+| Trump and/or his administration (Against)                    | Structural Change          |   2 |
+| Tuition, fees, financial aid                                 | Action in Process          |  16 |
+| Tuition, fees, financial aid                                 | Cancel Speaker/Event       |   1 |
+| Tuition, fees, financial aid                                 | Compromised Action         |   4 |
+| Tuition, fees, financial aid                                 | Contrary Action/Refuse     |   2 |
+| Tuition, fees, financial aid                                 | Fulfill Demand             |   1 |
+| Tuition, fees, financial aid                                 | Hold Forum                 |   2 |
+| Tuition, fees, financial aid                                 | NA/Unclear                 |  51 |
+| Tuition, fees, financial aid                                 | Reject Demand              |  22 |
+| Tuition, fees, financial aid                                 | Structural Change          |   1 |
+| University governance, admin, policies, programs, curriculum | Action in Process          |  95 |
+| University governance, admin, policies, programs, curriculum | Cancel Speaker/Event       |   5 |
+| University governance, admin, policies, programs, curriculum | Compromised Action         |  15 |
+| University governance, admin, policies, programs, curriculum | Contrary Action/Refuse     |  14 |
+| University governance, admin, policies, programs, curriculum | Fulfill Demand             |  13 |
+| University governance, admin, policies, programs, curriculum | Hold Forum                 |   8 |
+| University governance, admin, policies, programs, curriculum | NA/Unclear                 |  92 |
+| University governance, admin, policies, programs, curriculum | No Cancellation            |  12 |
+| University governance, admin, policies, programs, curriculum | Reject Demand              |  68 |
+| University governance, admin, policies, programs, curriculum | Resign/Fire                |   2 |
+| University governance, admin, policies, programs, curriculum | Sanction                   |   1 |
+| University governance, admin, policies, programs, curriculum | Short Term Services        |   1 |
+| University governance, admin, policies, programs, curriculum | Structural Change          |  19 |
+| \_Not relevant                                               | Action in Process          |  14 |
+| \_Not relevant                                               | Fulfill Demand             |   7 |
+| \_Not relevant                                               | Hold Forum                 |   2 |
+| \_Not relevant                                               | NA/Unclear                 |  41 |
+| \_Not relevant                                               | No Cancellation            |   1 |
+| \_Not relevant                                               | Reject Demand              |   3 |
+| \_Not relevant                                               | Short Term Services        |   3 |
+| \_Not relevant                                               | Structural Change          |   7 |
+| \_Other Issue                                                | Action in Process          |   5 |
+| \_Other Issue                                                | Fulfill Demand             |   2 |
+| \_Other Issue                                                | NA/Unclear                 |  17 |
+| \_Other Issue                                                | No Cancellation            |   3 |
+| \_Other Issue                                                | Reject Demand              |   6 |
+| \_Other Issue                                                | Resign/Fire                |   1 |
+| \_Other Issue                                                | Structural Change          |   3 |
+
+| issue                                                        | university_discourse_on_issue   |   n |
+|:-------------------------------------------------------------|:--------------------------------|----:|
+| Environmental                                                | Affirm Diversity                |   2 |
+| Environmental                                                | Affirm Free Speech when Bigotry |   1 |
+| Environmental                                                | Explain Bureaucracy/Law         |  14 |
+| Environmental                                                | Express Agreement               |   6 |
+| Environmental                                                | Express Contrary Position       |  26 |
+| Environmental                                                | NA/Unclear                      |   9 |
+| Labor and work                                               | Affirm Diversity                |   3 |
+| Labor and work                                               | Emotional Appeal                |   3 |
+| Labor and work                                               | Explain Bureaucracy/Law         |  46 |
+| Labor and work                                               | Express Agreement               |  10 |
+| Labor and work                                               | Express Contrary Position       |  53 |
+| Labor and work                                               | NA/Unclear                      |  44 |
+| Trump and/or his administration (Against)                    | Affirm Marginalized Students    |   1 |
+| Trump and/or his administration (Against)                    | Express Agreement               |   2 |
+| Trump and/or his administration (Against)                    | NA/Unclear                      |   1 |
+| Tuition, fees, financial aid                                 | Affirm BIPOC Students           |   1 |
+| Tuition, fees, financial aid                                 | Affirm Diversity                |   3 |
+| Tuition, fees, financial aid                                 | Apology/Responsibility          |   1 |
+| Tuition, fees, financial aid                                 | Emotional Appeal                |   2 |
+| Tuition, fees, financial aid                                 | Explain Bureaucracy/Law         |  33 |
+| Tuition, fees, financial aid                                 | Express Agreement               |  12 |
+| Tuition, fees, financial aid                                 | Express Contrary Position       |  26 |
+| Tuition, fees, financial aid                                 | NA/Unclear                      |  41 |
+| Tuition, fees, financial aid                                 | Oppose Oppression               |   1 |
+| Tuition, fees, financial aid                                 | Oppose Racism                   |   1 |
+| University governance, admin, policies, programs, curriculum | Affirm BIPOC Students           |   3 |
+| University governance, admin, policies, programs, curriculum | Affirm Diversity                |   8 |
+| University governance, admin, policies, programs, curriculum | Affirm Free Speech when Bigotry |   8 |
+| University governance, admin, policies, programs, curriculum | Affirm Marginalized Students    |   2 |
+| University governance, admin, policies, programs, curriculum | Apology/Responsibility          |   3 |
+| University governance, admin, policies, programs, curriculum | Emotional Appeal                |  10 |
+| University governance, admin, policies, programs, curriculum | Explain Bureaucracy/Law         |  98 |
+| University governance, admin, policies, programs, curriculum | Express Agreement               |  35 |
+| University governance, admin, policies, programs, curriculum | Express Contrary Position       | 105 |
+| University governance, admin, policies, programs, curriculum | NA/Unclear                      |  83 |
+| University governance, admin, policies, programs, curriculum | Oppose Oppression               |   2 |
+| University governance, admin, policies, programs, curriculum | Oppose Racism                   |   1 |
+| \_Not relevant                                               | Affirm BIPOC Students           |   5 |
+| \_Not relevant                                               | Affirm Diversity                |   6 |
+| \_Not relevant                                               | Affirm Free Speech when Bigotry |   3 |
+| \_Not relevant                                               | Affirm Marginalized Students    |   3 |
+| \_Not relevant                                               | Apology/Responsibility          |   1 |
+| \_Not relevant                                               | Emotional Appeal                |   3 |
+| \_Not relevant                                               | Explain Bureaucracy/Law         |  12 |
+| \_Not relevant                                               | Express Agreement               |  33 |
+| \_Not relevant                                               | Express Contrary Position       |   3 |
+| \_Not relevant                                               | NA/Unclear                      |  21 |
+| \_Not relevant                                               | Oppose Oppression               |   3 |
+| \_Not relevant                                               | Oppose Racism                   |   4 |
+| \_Other Issue                                                | Affirm Diversity                |   1 |
+| \_Other Issue                                                | Affirm Free Speech when Bigotry |   2 |
+| \_Other Issue                                                | Explain Bureaucracy/Law         |  10 |
+| \_Other Issue                                                | Express Agreement               |   4 |
+| \_Other Issue                                                | Express Contrary Position       |   5 |
+| \_Other Issue                                                | NA/Unclear                      |  13 |
+
+| issue                                                        | university_reactions_to_protest |   n |
+|:-------------------------------------------------------------|:--------------------------------|----:|
+| Environmental                                                | Avoid Penalizing                |   1 |
+| Environmental                                                | Direct Communications           |   1 |
+| Environmental                                                | Get Confronted                  |  16 |
+| Environmental                                                | Instruct/Warn                   |   8 |
+| Environmental                                                | Meet                            |   7 |
+| Environmental                                                | Monitor/Present                 |   8 |
+| Environmental                                                | NA/Unclear                      |  15 |
+| Environmental                                                | Participate/Aid                 |   2 |
+| Environmental                                                | Penalize                        |   2 |
+| Labor and work                                               | Direct Communications           |  12 |
+| Labor and work                                               | Get Confronted                  |  12 |
+| Labor and work                                               | Instruct/Warn                   |  16 |
+| Labor and work                                               | Meet                            |  22 |
+| Labor and work                                               | Monitor/Present                 |  11 |
+| Labor and work                                               | NA/Unclear                      |  63 |
+| Labor and work                                               | No Intervention                 |   5 |
+| Labor and work                                               | Participate/Aid                 |   1 |
+| Labor and work                                               | Penalize                        |   2 |
+| Labor and work                                               | Refuse to Meet                  |   2 |
+| Trump and/or his administration (Against)                    | Direct Communications           |   3 |
+| Trump and/or his administration (Against)                    | Meet                            |   1 |
+| Trump and/or his administration (Against)                    | Monitor/Present                 |   3 |
+| Trump and/or his administration (Against)                    | Participate/Aid                 |   2 |
+| Tuition, fees, financial aid                                 | Avoid Penalizing                |   4 |
+| Tuition, fees, financial aid                                 | Direct Communications           |  22 |
+| Tuition, fees, financial aid                                 | End Protest                     |   2 |
+| Tuition, fees, financial aid                                 | Get Confronted                  |  20 |
+| Tuition, fees, financial aid                                 | Instruct/Warn                   |  20 |
+| Tuition, fees, financial aid                                 | Meet                            |  11 |
+| Tuition, fees, financial aid                                 | Monitor/Present                 |  19 |
+| Tuition, fees, financial aid                                 | NA/Unclear                      |  19 |
+| Tuition, fees, financial aid                                 | No Intervention                 |  20 |
+| Tuition, fees, financial aid                                 | Participate/Aid                 |   3 |
+| Tuition, fees, financial aid                                 | Penalize                        |   7 |
+| Tuition, fees, financial aid                                 | Refuse to Meet                  |   3 |
+| Tuition, fees, financial aid                                 | Revisit Protest P&P             |   1 |
+| University governance, admin, policies, programs, curriculum | Avoid Penalizing                |   1 |
+| University governance, admin, policies, programs, curriculum | Direct Communications           |  23 |
+| University governance, admin, policies, programs, curriculum | End Protest                     |   5 |
+| University governance, admin, policies, programs, curriculum | Get Confronted                  |  59 |
+| University governance, admin, policies, programs, curriculum | Instruct/Warn                   |  32 |
+| University governance, admin, policies, programs, curriculum | Meet                            |  57 |
+| University governance, admin, policies, programs, curriculum | Monitor/Present                 |  55 |
+| University governance, admin, policies, programs, curriculum | NA/Unclear                      | 100 |
+| University governance, admin, policies, programs, curriculum | No Intervention                 |   8 |
+| University governance, admin, policies, programs, curriculum | Participate/Aid                 |   8 |
+| University governance, admin, policies, programs, curriculum | Penalize                        |  11 |
+| University governance, admin, policies, programs, curriculum | Refuse to Meet                  |   6 |
+| University governance, admin, policies, programs, curriculum | Revisit Protest P&P             |   7 |
+| \_Not relevant                                               | Avoid Penalizing                |   2 |
+| \_Not relevant                                               | Direct Communications           |  14 |
+| \_Not relevant                                               | End Protest                     |   2 |
+| \_Not relevant                                               | Get Confronted                  |   8 |
+| \_Not relevant                                               | Instruct/Warn                   |   2 |
+| \_Not relevant                                               | Meet                            |  13 |
+| \_Not relevant                                               | Monitor/Present                 |  22 |
+| \_Not relevant                                               | NA/Unclear                      |  14 |
+| \_Not relevant                                               | Participate/Aid                 |  20 |
+| \_Not relevant                                               | Penalize                        |   2 |
+| \_Other Issue                                                | Avoid Penalizing                |   1 |
+| \_Other Issue                                                | Direct Communications           |   2 |
+| \_Other Issue                                                | Instruct/Warn                   |   4 |
+| \_Other Issue                                                | Meet                            |   3 |
+| \_Other Issue                                                | Monitor/Present                 |   4 |
+| \_Other Issue                                                | NA/Unclear                      |  15 |
+| \_Other Issue                                                | Participate/Aid                 |   3 |
+| \_Other Issue                                                | Penalize                        |   1 |
+| \_Other Issue                                                | Revisit Protest P&P             |   1 |
+
 # Counts over time
 
 ![](exploratory_plots_files/figure-gfm/basic_counts_over_time-1.png)<!-- -->
@@ -374,6 +769,32 @@ categories, so I’ve only shown the universities over time for now:
     ## Warning: Removed 7 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/issues_over_time-3.png)<!-- -->
+
+# Issue crosstabs over time
+
+    ## Warning: Removed 4 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
+    ## Warning: Removed 5 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-3-2.png)<!-- -->
+
+    ## Warning: Removed 6 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-3-3.png)<!-- -->
+
+    ## Warning: Removed 7 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-3-4.png)<!-- -->
+
+    ## Warning: Removed 6 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-3-5.png)<!-- -->
+
+    ## Warning: Removed 5 rows containing missing values (`position_stack()`).
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-3-6.png)<!-- -->
 
 # Basic summary plots by variable
 

@@ -217,6 +217,36 @@ glimpse_counts(university_discourse_on_issue)
 glimpse_counts(university_reactions_to_protest)
 ```
 
+# Crosstabs by issue and reactions to protes
+
+Showing top 7 issues by total count, by various subgroups:
+
+```{r}
+top_issues <- mpeds |> 
+  select(issue) |> 
+  unnest(issue) |> 
+  count(issue) |> 
+  arrange(desc(n)) |> 
+  slice_head(n = 7) |> 
+  pull(issue) 
+issue_crosstab <- function(colname){
+  mpeds |> 
+    select({{colname}}, issue) |> 
+    unnest(issue) |> 
+    unnest({{colname}}) |> 
+    filter(issue %in% top_issues) |> 
+    group_by(issue, {{colname}}) |> 
+    count() |> 
+    kable()
+}
+
+issue_crosstab(police_presence_and_size)
+issue_crosstab(police_activities)
+issue_crosstab(type_of_police)
+issue_crosstab(university_action_on_issue)
+issue_crosstab(university_discourse_on_issue)
+issue_crosstab(university_reactions_to_protest)
+```
 
 # Counts over time
 
@@ -544,6 +574,40 @@ issues |>
     caption = "Bars don't add up to 1.00 because I selected the top issues for display.
     42 issues in total is difficult to present."
   )
+```
+
+# Issue crosstabs over time
+
+```{r, fig.width = 14, fig.height = 10}
+issue_crosstab_over_time <- function(colname){
+  agg <- mpeds |> 
+    select({{colname}}, start_date, issue) |> 
+    mutate(date = floor_date(start_date, "months")) |> 
+    unnest(issue) |> 
+    unnest({{colname}}) |> 
+    filter(issue %in% top_issues) |> 
+    group_by(date, issue, {{colname}}) |> 
+    count()
+  
+  name_string <- rlang::as_name(enquo(colname)) |> 
+    str_replace_all("_", " ") |> 
+    str_to_sentence() 
+  
+  ggplot(agg, aes(x = date, y = n, fill = {{colname}})) + 
+    geom_bar(stat = "identity") + 
+    facet_wrap(~issue) + 
+    labs(x = "Date (floored to months",
+         y = "Count of appearances",
+         title = paste0(name_string, " by top issues over time.")) + 
+    theme(text = element_text(size = 16))
+}
+
+issue_crosstab_over_time(police_presence_and_size)
+issue_crosstab_over_time(police_activities)
+issue_crosstab_over_time(type_of_police)
+issue_crosstab_over_time(university_action_on_issue)
+issue_crosstab_over_time(university_discourse_on_issue)
+issue_crosstab_over_time(university_reactions_to_protest)
 ```
 
 
