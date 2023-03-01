@@ -217,37 +217,6 @@ glimpse_counts(university_discourse_on_issue)
 glimpse_counts(university_reactions_to_protest)
 ```
 
-# Crosstabs by issue and reactions to protes
-
-Showing top 7 issues by total count, by various subgroups:
-
-```{r}
-top_issues <- mpeds |> 
-  select(issue) |> 
-  unnest(issue) |> 
-  count(issue) |> 
-  arrange(desc(n)) |> 
-  slice_head(n = 7) |> 
-  pull(issue) 
-issue_crosstab <- function(colname){
-  mpeds |> 
-    select({{colname}}, issue) |> 
-    unnest(issue) |> 
-    unnest({{colname}}) |> 
-    filter(issue %in% top_issues) |> 
-    group_by(issue, {{colname}}) |> 
-    count() |> 
-    kable()
-}
-
-issue_crosstab(police_presence_and_size)
-issue_crosstab(police_activities)
-issue_crosstab(type_of_police)
-issue_crosstab(university_action_on_issue)
-issue_crosstab(university_discourse_on_issue)
-issue_crosstab(university_reactions_to_protest)
-```
-
 # Counts over time
 
 ```{r basic_counts_over_time}

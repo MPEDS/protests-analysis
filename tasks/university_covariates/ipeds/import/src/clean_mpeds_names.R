@@ -154,13 +154,19 @@ update_coarse_matches <- function(raw_coarse_filename){
 
 #' After the coarse clean by name only, add in canonical event keys and
 #' format the match spreadsheet so coders can clean it easily
-postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds){
+postprocess_names <- function(geocoded, coarse_uni_match_filename,
+                              glued, ipeds,
+                              canonical_event_relationship){
   coarse_uni_match <- read_csv(coarse_uni_match_filename, show_col_types = FALSE)
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
-  initial_keys <- geocoded |> select(key, university) |> unnest(university)
+  initial_keys <- geocoded |>
+    select(key, university, description) |>
+    unnest(university)
+
   # Adding on "participating universities"
-  keys <- geocoded |> select(key, participating_universities) |>
+  keys <- geocoded |>
+    select(key, participating_universities, description) |>
     unnest(participating_universities) |>
     rename(university = participating_universities) |>
     bind_rows(initial_keys) |>
@@ -168,16 +174,31 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename, glued, ipeds)
     distinct()
 
   postprocess_filename <- "tasks/university_covariates/hand/university_names_verification.xlsx"
+  umbrella_ids <- canonical_event_relationship |>
+    filter(relationship_type == "campaign") |>
+    pull(canonical_id2) |>
+    unique()
+  umbrella_keys <- geocoded |>
+    filter(canonical_id %in% umbrella_ids) |>
+    pull(key) |>
+    unique()
+
   MPEDS <- coarse_uni_match |>
     mutate(authoritative_name = ifelse(
       !is.na(authoritative_name),
       authoritative_name,
-      original_name)) |>
+      original_name
+      ),
+      original_name = str_remove_all(original_name, ",") |> str_trim()) |>
     left_join(keys, by = c("original_name" = "university"),
               multiple = "all") |>
+    filter(!is.na(original_name),
+           !is.na(key),
+           !(key %in% umbrella_keys)) |>
     select(original_name, authoritative_name, uni_id, uni_data_source,
-           canonical_event_key = key) |>
-    mutate(notes = "")
+           canonical_event_key = key, description) |>
+    mutate(notes = "") |>
+    arrange(canonical_event_key)
 
   writexl::write_xlsx(
     list(

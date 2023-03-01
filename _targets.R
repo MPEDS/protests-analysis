@@ -79,7 +79,8 @@ list(
              format = "file"),
   # then passed off to coders in a readable format
   tar_target(postprocess_filename, postprocess_names(
-    geocoded, coarse_uni_match_filename, glued, ipeds
+    geocoded, coarse_uni_match_filename, glued, ipeds,
+    canonical_event_relationship
   ), format = "file"),
   # And read in again after they've made their edits
   tar_target(uni_xwalk,  readxl::read_excel(postprocess_filename) |> distinct()),
