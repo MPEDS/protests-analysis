@@ -1,0 +1,117 @@
+---
+title: "text-mining"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(targets)
+library(knitr)
+library(sf)
+library(showtext)
+library(tigris)
+library(tidyverse)
+library(GGally)
+library(tidytext)
+library(RColorBrewer)
+
+opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+opts_chunk$set(echo = TRUE, fig.width = 10, fig.height = 7)
+
+font_add_google("Lato")
+showtext_auto()
+
+custom_theme <- function(...){
+  theme_bw() + 
+    theme(
+      text = element_text(family = "Lato", size = 14),
+      ...
+    )
+}
+
+theme_set(custom_theme())
+```
+
+```{r}
+# See notes about interactive use and loading in exploratory document
+mpeds <- tar_read(integrated) |>
+  st_drop_geometry() 
+
+mpeds_text <- mpeds |> 
+  select(key, issues, actors, movement_organizations) |> 
+  pivot_longer(c(issues, actors, movement_organizations),
+              names_to = "variable", values_to = "text") |> 
+  unnest(text) |> 
+  group_by(key) |> 
+  mutate(document_id = paste(key, variable, sep = "_")) |> 
+  ungroup() |> 
+  unnest_tokens(word, text)
+```
+
+# `tf-idf` 
+
+Focusing solely on the text-selects from issues, actors, and movement organizations:
+
+```{r tf_idf}
+tfidf_by_subgroup <- function(subgroup){
+  mpeds_tf <- mpeds_text |> 
+    filter(variable == subgroup) |> 
+    group_by(document_id) |> 
+    mutate(n_document = n()) |> # how many words in entire document
+    group_by(key, document_id, word) |> 
+    summarize(n_word = n(), # how many times a particular term appears in document
+              .groups = "drop") |> 
+    bind_tf_idf(word, document_id, n_word) |> 
+    arrange(desc(tf_idf))
+  
+  head(mpeds_tf, 15) |> 
+    select('Event Key' = key, 
+           word, tf, idf, tf_idf) |> 
+    kable(caption = paste0("tf-idf for ", str_replace(subgroup, "_", " ")))
+}
+
+tfidf_by_subgroup("issues")
+tfidf_by_subgroup("actors")
+tfidf_by_subgroup("movement_organizations")
+```
+
+Hm, that went alright, if the purpose is to identify movement-specific keywords
+that can be used to query twitter. There are some issues, though:
+
+1. Text selects sometimes capture non-English words, that are given undue weight
+  due to the majority of our documents being English-only
+2. "Documents" are very short, often a single phrase or sentence, or even just a few words
+3. tf-idf seems really good at finding proper nouns, like "iceoutofca". Hopefully these
+  can be used for Twitter search, but I'm worried they're too specific for the 
+  kinds of scraping we want to do.
+4. This is a single-token analysis, not an n-gram analysis -- that's in the works,
+  though it's hard to tell what `n` should be exactly
+
+Here's one on the entire corpus that are linked to canonical events (an article
+was linked to a row in `coder_event_creator`, and that row was used for a
+canonical event).
+
+```{r}
+articles <- tar_read(articles) |> 
+  drop_na(canonical_key) |> 
+  select(-title) |> 
+  mutate(article_id = 1:n()) |> 
+  unnest_tokens(word, text)
+
+articles_tfidf <- articles |> 
+  group_by(canonical_key, article_id, word) |> 
+  summarize(n_word = n(), .groups = "drop") |> 
+  bind_tf_idf(word, article_id, n_word) |> 
+  arrange(desc(tf_idf))
+  
+head(articles_tfidf, 15) |> 
+  select('Event Key' = canonical_key, 
+         word, tf, idf, tf_idf) |> 
+  kable(caption = "tf-idf for entire article corpus")
+
+```
+
+`slideshowgallery2419` and `clarkphoto` are included only because the article
+texts in the database contain extra information within HTML tags that cannot 
+be filtered out programmatically (there is no structural separation between
+those kinds of information and the article text itself).
+

@@ -22,6 +22,7 @@ list(
             )
      ),
   tar_target(canonical_event_relationship, get_canonical_event_relationship()),
+  tar_target(articles, get_articles()),
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
