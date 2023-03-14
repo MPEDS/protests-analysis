@@ -44,7 +44,6 @@
               libmysqlclient.dev
               udunits
               pkg-config
-              protobuf
               /* Needed for basic R setup */ 
               R
               rPackages.renv

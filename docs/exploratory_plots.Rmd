@@ -65,6 +65,44 @@ n_missing_uni_rows <- nrow(missing_unis)
 n_missing_unis <- missing_unis$location |>
   unique() |> 
   length()
+
+n_has_police <- mpeds |> 
+  filter(!map_lgl(police_presence_and_size, is.null),
+         !map_lgl(police_presence_and_size, ~all(. == "NA/Unclear"))
+         ) |> 
+  nrow()
+
+n_has_police_activity <- mpeds |> 
+  filter(!map_lgl(police_activities, is.null),
+         !map_lgl(police_activities, ~all(. == "NA/Unclear"))
+         ) |> 
+  nrow()
+
+n_any_police_field <- mpeds |> 
+  filter(if_any(c(
+    police_presence_and_size,
+    police_activities,
+    police_actions
+  ), ~!is.null(.))) |> 
+  filter(if_any(c(
+    police_presence_and_size, 
+    police_activities,
+    police_actions
+  ), ~map_lgl(., \(x){any(x != "NA/Unclear")}))) |> 
+  nrow()
+tribble(
+  ~Statistic, ~Value,
+  "Total imported events", mpeds_raw_ids,
+  "Total events after cleaning", mpeds_ids,
+  "Unique locations", n_locations,
+  "US counties", n_fips,
+  "Universities", n_universities,
+  "Missing universities", n_missing_unis,
+  "CEs with missing universities", n_missing_uni_rows,
+  "# of events with police presence recorded", n_has_police,
+  "# of events with police activity recorded", n_has_police_activity,
+  "# of events with any police field recorded", n_any_police_field,
+)
 ```
 
 The initial import of the MPEDS db found `r mpeds_raw_ids` 
@@ -198,7 +236,7 @@ glimpse_counts <- function(colname){
       if(is.null(item)){
         return(NA)
       }
-      return(item)
+      return(str_replace_all(item, "\n", " "))
       })) |>
     select({{colname}}) |> 
     unnest(cols = {{colname}}) |> 
@@ -217,6 +255,58 @@ glimpse_counts(type_of_police)
 glimpse_counts(university_action_on_issue)
 glimpse_counts(university_discourse_on_issue)
 glimpse_counts(university_reactions_to_protest)
+```
+
+"NA" marks canonical events where issues were not assigned at all, or where
+text-selects were used but not one of the preset issue categories. "_Not relevant"
+*should* be marked when a racial issue was selected instead, per the codebook.
+"_Other issue" marks issues not within the preset options; the codebook gives the
+examples of:
+
+- protestors who use hateful speech, e.g. anti-LGBTQ preachers
+- (objection to?) corporate practices
+- access to higher education (?)
+- science (?)
+- Armenian genocide (?)
+
+Hm. 
+
+## Counts by issue
+
+```{r}
+glimpse_counts(issue)
+```
+
+## Counts by racial issue:
+
+```{r}
+glimpse_counts(racial_issue)
+```
+
+# Percentages of all protest with given preset
+
+```{r}
+get_percent <- function(colname){
+  n_total <- length(unique(mpeds$canonical_id))
+  mpeds |>
+    mutate("{{ colname }}" := map({{ colname }}, \(item){
+      if(is.null(item)){
+        return(NA)
+      }
+      return(str_replace_all(item, "\n", " "))
+      })) |>
+    select({{colname}}) |> 
+    unnest(cols = {{colname}}) |> 
+    group_by({{ colname }}) |> 
+    count({{ colname }}) |> 
+    mutate(pct = round(100 * n / n_total, 2)) |> 
+    select(-n) |> 
+    arrange(desc(pct)) |> 
+    kable()
+}
+
+get_percent(issue)
+get_percent(racial_issue)
 ```
 
 # Counts over time
@@ -307,6 +397,8 @@ protests_region_plot <- ggplot(protests_by_region,
     y = "Number of associated canonical events", 
     color = "U.S. Census region,\nor Canadian province"
   ) 
+
+protests_region_plot
 
 ```
 
@@ -549,9 +641,6 @@ racial_issue <- mpeds |>
 issues_count <- issues |> 
   count(issue) |> 
   arrange(desc(n)) 
-issues_count |>
-  mutate(issue = str_replace_all(issue, "\n", ' ')) |> 
-  kable()
 
 racial_issue_count <- racial_issue |> 
   count(racial_issue = issue) |> 
@@ -648,39 +737,72 @@ issues |>
   )
 ```
 
-# Issue crosstabs over time
+## Racial and "nonracial" issues over time (collapsed)
 
-```{r, fig.width = 14, fig.height = 10}
-issue_crosstab_over_time <- function(colname){
-  agg <- mpeds |> 
-    select({{colname}}, start_date, issue) |> 
-    mutate(date = floor_date(start_date, "months")) |> 
-    unnest(issue) |> 
-    unnest({{colname}}) |> 
-    filter(issue %in% top_issues) |> 
-    group_by(date, issue, {{colname}}) |> 
-    count()
-  
-  name_string <- rlang::as_name(enquo(colname)) |> 
-    str_replace_all("_", " ") |> 
-    str_to_sentence() 
-  
-  ggplot(agg, aes(x = date, y = n, fill = {{colname}})) + 
-    geom_bar(stat = "identity") + 
-    facet_wrap(~issue) + 
-    labs(x = "Date (floored to months",
-         y = "Count of appearances",
-         title = paste0(name_string, " by top issues over time.")) + 
-    theme(text = element_text(size = 16))
+```{r}
+
+# Separate cases required because of the way R checks for types and length
+has_issue <- function(list_item){
+  if(length(list_item) == 1){
+    return(list_item != "_Not relevant") 
+  } else {
+    return(TRUE)
+  }
 }
 
-issue_crosstab_over_time(police_presence_and_size)
-issue_crosstab_over_time(police_activities)
-issue_crosstab_over_time(type_of_police)
-issue_crosstab_over_time(university_action_on_issue)
-issue_crosstab_over_time(university_discourse_on_issue)
-issue_crosstab_over_time(university_reactions_to_protest)
+# Assembling issues and racial issues into one plot
+mpeds |> 
+  filter(!map_lgl(racial_issue, is.null),
+         !map_lgl(issue, is.null)) |> 
+  mutate(`Racial issue` = map_lgl(racial_issue, has_issue),
+         `Nonracial issue` = map_lgl(issue, has_issue),
+         date = floor_date(start_date, "1 month"))  |> 
+  select(`Nonracial issue`, `Racial issue`, date) |> 
+  pivot_longer(cols = c(`Nonracial issue`, `Racial issue`),
+               names_to = "type") |> 
+  filter(value) |>
+  group_by(date, type) |> 
+  count() |> 
+  ggplot(aes(x = date, y = n, fill = type)) + 
+  geom_bar(stat = "identity") +
+  labs(
+    y = "Number of associated canonical events",
+    x = "Date (floored to months)",
+    title = "Racial and `non-racial` issues over time"
+  ) + 
+  scale_fill_brewer(type = "qual", palette = "Set1") 
+
+mpeds |> 
+  filter(!map_lgl(racial_issue, is.null),
+         !map_lgl(issue, is.null)) |> 
+  mutate(`Racial issue` = map_lgl(racial_issue, has_issue),
+         `Nonracial issue` = map_lgl(issue, has_issue),
+         date = floor_date(start_date, "1 month"))  |> 
+  select(`Nonracial issue`, `Racial issue`, date) |> 
+  pivot_longer(cols = c(`Nonracial issue`, `Racial issue`),
+               names_to = "type") |> 
+  filter(value) |>
+  group_by(date, type) |> 
+  count() |> 
+  group_by(date) |> 
+  mutate(pct = n / sum(n)) |> 
+  ggplot(aes(x = date, y = pct, fill = type)) + 
+  geom_bar(stat = "identity") +
+  labs(
+    y = "Share of canonical events during given month",
+    x = "Date (floored to months)",
+    title = "Proportion of racial and `non-racial` issues over time"
+  ) +
+  scale_fill_brewer(type = "qual", palette = "Set1") 
+  
 ```
+
+groI've collapsed both types of issues here to show racial and nonracial issues 
+alongside each other. Racial issue counts here are taken at a maximum of one per 
+canonical event, so that events that relate to many issues do not outweight others
+and we have a clearer understanding of the weight of protest occurrence.
+The same goes for nonracial issues. However, this does mean that if a protest
+has both nonracial and racial issues, it will be counted twice in this chart.
 
 
 # Basic summary plots by variable
@@ -973,6 +1095,9 @@ mizzou_events |>
 ```
 
 ```{r quebec}
+tar_load(canada_province_shapes)
+tar_load(canada_cma_shapes)
+
 quebec_events <- canonical_event_relationship |> 
   filter(canonical_id2 %in% c(5558, 2939, 6396, 2551)) 
   
@@ -987,30 +1112,27 @@ tribble(~stat, ~n,
   rename("Statistics for Quebec protests" = stat)
 
 quebec_sf <- quebec_events |> 
-  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
-  group_by(fips) |> 
+  left_join(mpeds_sf, by = c("canonical_id1" = "canonical_id")) |> 
+  st_as_sf() |> 
+  left_join(county_labels, by = "fips") |> 
+  mutate(place = ifelse(!is.na(canada_metropolitan_area), 
+                        canada_metropolitan_area,
+                        name)) |> 
+  group_by(place) |> 
   count() |> 
-  ungroup() |> 
-  left_join(county_sf, by = "fips") |> 
-  mutate(geometry = st_centroid(geometry)) |> 
-  st_as_sf(crs = st_crs(us_sf)) 
+  ungroup() 
 
 top_quebec <- quebec_sf |> 
   drop_na() |> 
   arrange(desc(n)) |> 
-  slice_head(n = 5) |> 
-  left_join(county_labels, by = "fips")
+  slice_head(n = 5) 
 
-ggplot(mizzou_sf) +
+ggplot(quebec_sf) +
   geom_sf(data = us_sf) +
-  geom_sf(data = state_sf, color = "gray") +
+  geom_sf(data = canada_province_shapes) +
   geom_sf(aes(size = n), alpha = 0.5) + 
-  geom_sf_label(data = top_mizzou,
-          aes(label = name),
-          nudge_x = -3,
-          nudge_y = 3) +
   labs(
-    title = "Spread of events within the Mizzou umbrella",
+    title = "Spread of Quebec solidarity events",
   ) + 
   scale_size(range = c(2, 8)) + 
   theme(
@@ -1018,23 +1140,28 @@ ggplot(mizzou_sf) +
     axis.ticks = element_blank(),
   )
 
-mizzou_events |> 
+quebec_events |> 
   left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
-  mutate(date = start_date) |> 
+  mutate(date = floor_date(start_date, "1 week")) |> 
   group_by(date) |> 
   count() |> 
   ggplot(aes(x = date, y = n)) + 
-  geom_line() + 
-  geom_vline(xintercept = as.Date("2015-08-26"), color = "red") +
-  annotate(geom = "text", label = "Mizzou grad student\nstrike start date",
-           color = "red", x = as.Date("2015-09-12"), y = 10) + 
-  scale_x_date(date_labels = "%b %y", date_breaks = "1 month") + 
+  geom_bar(stat = "identity") + 
+  scale_x_date(date_labels = "%b %y", date_breaks = "5 months") + 
   labs(
     x = "Date",
     y = "Number of canonical events starting on date",
-    title = "Mizzou solidarity protest occurrences over time"
+    title = "Quebec protest occurrences over time"
   )
   
 
 
 ```
+
+Top locations under the Quebec umbrella of events: 
+
+```{r}
+kable(st_drop_geometry(top_quebec))
+```
+
+Not very useful to map this one, I fear.

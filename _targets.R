@@ -54,7 +54,7 @@ list(
              "tasks/county_covariates/hand/us-regions.csv"),
   tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
   tar_target(canada_cma_shapes, get_canada_cma_shapes()),
-  # tar_target(canada_province_shapes, get_canada_province_shapes()),
+  tar_target(canada_province_shapes, get_canada_province_shapes()),
 
   # This queries the ACS, and doesn't depend on a URL,
   # so it will only be run once by the targets pipeline
