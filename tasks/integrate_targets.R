@@ -6,12 +6,20 @@ integrate_targets <- function(
     uni_xwalk,
     county_covariates = list(),
     ccc,
-    canada_shapefiles,
+    canada_cma_shapes,
     us_regions
 ){
   us_counties <- counties(keep_zipped_shapefile = TRUE) |>
     select(fips = GEOID, county_name = NAMELSAD) |>
     st_transform(4326)
+
+  # For now, duplicates exist within the university crosswalk
+  # because there are multiple possible options for a given school's true
+  # name. The RAs will correct this, so for now I'm just taking the first one
+  uni_xwalk <- uni_xwalk |>
+    group_by(original_name, canonical_event_key) |>
+    slice_head(n = 1) |>
+    ungroup()
 
   # for now convert "university" to simple column and match on that
   with_university_covariates <- geocoded |>
@@ -54,7 +62,7 @@ integrate_targets <- function(
   # Performing a spatial join with the canada shapefiles and (regular) join
   # with US regions
   with_regions <- with_county_covariates |>
-    st_join(canada_shapefiles, st_within) |>
+    st_join(canada_cma_shapes, st_within) |>
     mutate(state = str_sub(fips, 1, 2)) |>
     left_join(us_regions, by = "state")
 

@@ -12,6 +12,8 @@ library(tigris)
 library(tidyverse)
 library(GGally)
 library(RColorBrewer)
+library(gridExtra)
+library(cowplot)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 7)
@@ -242,6 +244,37 @@ mpeds |>
   ) 
 ```
 
+```{r basic_counts_time_redux, fig.height = 10, fig.width = 7}
+
+plots <- map(2012:2018, function(yr){
+  mpeds |> 
+    mutate(date = floor_date(start_date, "month")) |> 
+    filter(lubridate::year(date) == yr) |> 
+    group_by(date) |> 
+    count() |> 
+    drop_na() |> 
+    ggplot(aes(x = date, y = n)) + 
+    geom_line() + 
+    labs(y = NULL, x = NULL, title = yr) + 
+    scale_y_continuous(limits = c(0, 400)) +
+    scale_x_date(date_labels = "%b", date_breaks = "2 months") + 
+    theme(
+      plot.title = element_text(size = 11),
+      axis.text.x = if(yr == 2018){element_text()}else {element_blank()}
+      )
+})
+title_grob <- ggdraw() + 
+  draw_label("Counts of canonical events over time",
+             x = 0.05, 
+             hjust = 0, 
+             fontfamily = "Lato",
+             fontface = "bold"
+            ) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+plot_grid(title_grob, plotlist = plots, ncol = 1)
+
+```
+
 
 ```{r regions_over_time}
 protests_by_region <- mpeds |> 
@@ -257,7 +290,7 @@ protests_by_region <- mpeds |>
   count() |> 
   drop_na() 
 
-ggplot(protests_by_region,
+protests_region_plot <- ggplot(protests_by_region,
        aes(fill = region, x = date, y = n)) + 
   geom_bar(stat = "identity") + 
   scale_x_date(breaks = "4 months",
@@ -274,8 +307,78 @@ ggplot(protests_by_region,
     y = "Number of associated canonical events", 
     color = "U.S. Census region,\nor Canadian province"
   ) 
+
 ```
 
+```{r regions_time_vert, fig.height = 10, fig.width = 8}
+
+plots <- map(2012:2018, function(yr){
+  protests_by_region |> 
+    filter(lubridate::year(date) == yr) |> 
+    ggplot(aes(fill = region, x = date, y = n)) + 
+    geom_bar(stat = "identity") + 
+    labs(y = NULL, x = NULL, title = yr) + 
+    scale_y_continuous(limits = c(0, 400)) +
+    scale_x_date(date_labels = "%b", date_breaks = "2 months") + 
+    scale_fill_brewer(type = "qual", palette = "Set1") + 
+    theme(
+      legend.position = "none",
+      plot.title = element_text(size = 11),
+      axis.text.x = if(yr == 2018){element_text()}else {element_blank()}
+      )
+})
+
+get_legend<-function(gg){
+  tmp <- ggplot_gtable(ggplot_build(gg))
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box")
+  legend <- tmp$grobs[[leg]]
+  return(legend)
+}
+
+legend_grob <- get_legend(protests_region_plot +
+                            labs(fill = NULL) + 
+                            theme(legend.position = "bottom")
+                          )
+
+title_grob <- ggdraw() + 
+  draw_label("Counts of canonical events over time by region",
+             x = 0.05, 
+             hjust = 0, 
+             fontfamily = "Lato",
+             fontface = "bold"
+            ) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "cm"))
+
+plot_grid(title_grob, plotlist = plots, legend_grob, ncol = 1)
+
+```
+
+```{r over_time_country}
+
+protests_by_country <- mpeds |> 
+  mutate(
+    country = ifelse(
+      is.na(canada_metropolitan_area), "Canada", "United States"
+    )
+    ) |> 
+  mutate(date = floor_date(start_date, "month")) |> 
+  group_by(country, date) |> 
+  count() |> 
+  drop_na() 
+
+ggplot(protests_by_country, aes(fill = country, x = date, y = n)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
+  scale_x_date(date_breaks = "6 months",
+               date_labels = "%b %y",
+               guide = guide_axis(n.dodge = 2)) + 
+  labs(
+    y = "Number of associated canonical events",
+    x = "Date (floored to months)",
+    fill = "Country",
+    title = "Canonical events by country"
+  ) 
+```
 
 We can also begin to look at the top universities, counties, locations, or states
 over time. This inevitably produces more complex summaries, and it can
@@ -357,8 +460,8 @@ uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, fill = g
   ) 
 
 uni_grouped_plot
-
 ```
+
 
 ```{r responses_over_time}
 plot_response_over_time <- function(colname){
@@ -748,11 +851,13 @@ differences mean we can't pretend we have complete data.
 ```{r maps, message = FALSE, warning = FALSE}
 county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) |> 
   select(fips = GEOID)
-us_sf <- states(progress_bar = FALSE) |> 
+state_sf <- states(progress_bar = FALSE) |> 
   filter(!(NAME %in% c("Hawaii", "Puerto Rico", "American Samoa", 
                        "United States Virgin Islands", 
                        "Commonwealth of the Northern Mariana Islands",
                        "Alaska", "Guam"))) |> 
+  select(state_fips = GEOID)
+us_sf <- state_sf |> 
   st_union()
 ```
 
@@ -780,7 +885,6 @@ mpeds_sf |>
 
 # Investigating specific movements: Mizzou and Quebec solidarity protests
 
-The Mizzou umbrella was linked 104 times, with 98 unique canonical events inside.
 
 ```{r mizzou, warning = FALSE}
 tar_load(canonical_event_relationship)
@@ -790,28 +894,66 @@ mizzou_umbrella_id <- mpeds |>
   pull(canonical_id)
 
 mizzou_events <- canonical_event_relationship |> 
-  filter(canonical_id2 == mizzou_umbrella_id) |> 
-  group_by(canonical_id1) |> 
-  slice_head(n = 1) |> 
-  left_join(mpeds_sf, by = c("canonical_id1" = "canonical_id"))  |> 
-  st_as_sf()
+  filter(canonical_id2 == mizzou_umbrella_id) 
+  
+mizzou_by_type <- mizzou_events |> 
+  mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
+  count(stat = relationship_type) 
+  
+tribble(~stat, ~n,
+        "Total number of links", nrow(mizzou_events),
+        "Unique events", length(unique(mizzou_events$canonical_id1))) |> 
+  bind_rows(mizzou_by_type) |> 
+  rename("Statistics for Mizzou protests" = stat)
+```
+The discrepancy between the total number of links from the original Mizzou event to the 
+total number of unique events comes from some events being both campaign events and 
+counterprotest events, or campaign events and solidarity events. 
 
-mizzou_events |> 
-  mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
-  ggplot() +
+```{r mizzou_map}
+
+mizzou_sf <- mizzou_events |> 
+  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
+  # Some events have been marked as both campaign and counterprotest/solidarity,
+  # so they show up twice, but we only need one occurrence (and it doesn't
+  # matter which, for this viz)
+  group_by(fips) |> 
+  count() |> 
+  ungroup() |> 
+  left_join(county_sf, by = "fips") |> 
+  mutate(geometry = st_centroid(geometry)) |> 
+  st_as_sf(crs = st_crs(us_sf)) 
+
+county_labels <- fips_codes |> 
+  mutate(fips = paste0(state_code, county_code),
+         name = str_wrap(paste0(county, ", ", state_name), 20)) |> 
+  select(fips, name)
+
+top_mizzou <- mizzou_sf |> 
+  drop_na() |> 
+  arrange(desc(n)) |> 
+  slice_head(n = 5) |> 
+  left_join(county_labels, by = "fips")
+
+ggplot(mizzou_sf) +
   geom_sf(data = us_sf) +
-  geom_sf(aes(color = relationship_type), alpha = 0.5, size = 1) + 
+  geom_sf(data = state_sf, color = "gray") +
+  geom_sf(aes(size = n), alpha = 0.5) + 
+  geom_sf_label(data = top_mizzou,
+          aes(label = name),
+          nudge_x = -3,
+          nudge_y = 3) +
   labs(
     title = "Spread of events within the Mizzou umbrella",
-    color = "Relationship type",
-    caption = "Jittered slightly to illustrate density"
   ) + 
+  scale_size(range = c(2, 8)) + 
   theme(
     axis.text = element_blank(),
     axis.ticks = element_blank(),
   )
 
 mizzou_events |> 
+  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
   mutate(date = start_date) |> 
   group_by(date) |> 
   count() |> 
@@ -827,5 +969,72 @@ mizzou_events |>
     title = "Mizzou solidarity protest occurrences over time"
   )
   
+
+```
+
+```{r quebec}
+quebec_events <- canonical_event_relationship |> 
+  filter(canonical_id2 %in% c(5558, 2939, 6396, 2551)) 
+  
+quebec_by_type  <- quebec_events |> 
+  mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
+  count(stat = relationship_type) 
+  
+tribble(~stat, ~n,
+        "Total number of links", nrow(quebec_events),
+        "Unique events", length(unique(quebec_events$canonical_id1))) |> 
+  bind_rows(quebec_by_type) |> 
+  rename("Statistics for Quebec protests" = stat)
+
+quebec_sf <- quebec_events |> 
+  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
+  group_by(fips) |> 
+  count() |> 
+  ungroup() |> 
+  left_join(county_sf, by = "fips") |> 
+  mutate(geometry = st_centroid(geometry)) |> 
+  st_as_sf(crs = st_crs(us_sf)) 
+
+top_quebec <- quebec_sf |> 
+  drop_na() |> 
+  arrange(desc(n)) |> 
+  slice_head(n = 5) |> 
+  left_join(county_labels, by = "fips")
+
+ggplot(mizzou_sf) +
+  geom_sf(data = us_sf) +
+  geom_sf(data = state_sf, color = "gray") +
+  geom_sf(aes(size = n), alpha = 0.5) + 
+  geom_sf_label(data = top_mizzou,
+          aes(label = name),
+          nudge_x = -3,
+          nudge_y = 3) +
+  labs(
+    title = "Spread of events within the Mizzou umbrella",
+  ) + 
+  scale_size(range = c(2, 8)) + 
+  theme(
+    axis.text = element_blank(),
+    axis.ticks = element_blank(),
+  )
+
+mizzou_events |> 
+  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
+  mutate(date = start_date) |> 
+  group_by(date) |> 
+  count() |> 
+  ggplot(aes(x = date, y = n)) + 
+  geom_line() + 
+  geom_vline(xintercept = as.Date("2015-08-26"), color = "red") +
+  annotate(geom = "text", label = "Mizzou grad student\nstrike start date",
+           color = "red", x = as.Date("2015-09-12"), y = 10) + 
+  scale_x_date(date_labels = "%b %y", date_breaks = "1 month") + 
+  labs(
+    x = "Date",
+    y = "Number of canonical events starting on date",
+    title = "Mizzou solidarity protest occurrences over time"
+  )
+  
+
 
 ```

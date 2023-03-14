@@ -798,7 +798,7 @@ lat,lng,location
 38.908422,-76.99238749999999,Gallaudet University
 38.9368811,-76.99869199999999,Catholic University of America
 41.8742327,-87.62483379999999,Columbia College Chicago
-53.7608608,-98.81387629999999,University of Manitoba
+53.7608608,-98.8138763,University of Manitoba
 46.8619309,-113.9845969,University of Montana
 34.0414348,-118.1501982,East Los Angeles College
 34.0555994,-117.819263,California State Polytechnic University Pomona
@@ -1202,13 +1202,13 @@ lat,lng,location
 40.7112562,-74.0051758,Pace University
 41.2449585,-75.8883633,Wilkes University
 28.5927153,-81.3485013,Rollins College
-26.3081983,-98.17401579999999,University of Texas Rio Grande Valley
+26.3081983,-98.1740158,University of Texas Rio Grande Valley
 40.7664886,-73.9555127,Weill Cornell Medical College
 40.7354925,-73.9971361,New School in New York City
 45.5131547,-73.5602937,e Université du Québec à Montréal (UQAM)
 41.98675069999999,-87.8721602,Rosemont
 45.514669,-73.5663793,CEGEP du Vieux-Montréal
-25.8939072,-97.48691939999999,University of Texas at Brownsville
+25.8939072,-97.4869194,University of Texas at Brownsville
 30.211991,-92.019914,University of Louisiana at Lafayette
 29.7903032,-90.8028911,Nicholls State University
 30.5265222,-91.1929407,Southern University Baton Rouge
@@ -1238,7 +1238,9 @@ lat,lng,location
 38.3013039,-77.47447,University of Mary Washington
 42.2746179,-71.8068416,Worcester Polytechnic Institute
 43.676042700000004,-79.41072840000001,George Brown Colleg
-38.6487895,-90.31079620000001,Washington University
+38.6487895,-90.3107962,Washington University
+43.79602939999999,-79.3485918,Seneca College
+43.6628917,-79.39565640000001,the St George campus
 37.0965278,-113.5684164,St. George
 54.283113,-0.399752,Scarborough
 43.6628917,-79.39565640000001,St George campus

@@ -21,7 +21,7 @@ list(
               )
             )
      ),
-  tar_target(canonical_event_relationship, get_canonical_event_relationship()),
+  tar_target(canonical_event_relationship, get_canonical_event_relationship(canonical_events)),
   tar_target(articles, get_articles()),
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
@@ -53,7 +53,8 @@ list(
   tar_target(us_regions_filename, format = "file",
              "tasks/county_covariates/hand/us-regions.csv"),
   tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
-  tar_target(canada_shapefiles, get_canada_shapefiles()),
+  tar_target(canada_cma_shapes, get_canada_cma_shapes()),
+  # tar_target(canada_province_shapes, get_canada_province_shapes()),
 
   # This queries the ACS, and doesn't depend on a URL,
   # so it will only be run once by the targets pipeline
@@ -100,7 +101,7 @@ list(
     uni_xwalk,
     county_covariates,
     ccc,
-    canada_shapefiles = canada_shapefiles,
+    canada_cma_shapes = canada_cma_shapes,
     us_regions = us_regions
     )),
 

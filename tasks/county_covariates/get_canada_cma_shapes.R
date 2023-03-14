@@ -1,9 +1,9 @@
-#' Gets Census subdivisions from Statistics Canada
+#' Gets Census metropolitan areas for Canada from Statistics Canada
 #' Cannot use tar_target(..., format = "url") because the URL performs a redirect
 #' when queried for its headers only, which targets asks for in order to determine
 #' whether to fetch or not. A shame because this is one of our largest sources
 #' in bytes and can take a while to download
-get_canada_shapefiles <- function(){
+get_canada_cma_shapes <- function(){
   download_location <- tempfile()
   download.file(
     "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcma000b21a_e.zip",
@@ -43,7 +43,7 @@ get_canada_shapefiles <- function(){
     "6", "Territories"
   )
 
-  canada_shapefiles <- read_sf(paste0(tempdir(), "/canada-shapefiles")) |>
+  canada_cma_shapes <- read_sf(paste0(tempdir(), "/canada-shapefiles")) |>
     mutate(province_code = str_sub(CMAPUID, 1, 2),
            region_code = str_sub(CMAPUID, 1, 1)) |>
     left_join(provinces, by = c("province_code" = "code")) |>
@@ -54,5 +54,5 @@ get_canada_shapefiles <- function(){
     st_transform(4326) |>
     st_make_valid()
 
-  return(canada_shapefiles)
+  return(canada_cma_shapes)
 }
