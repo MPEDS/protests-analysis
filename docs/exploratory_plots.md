@@ -3,19 +3,20 @@ Exploratory Plots
 
 # Basic counts
 
-    ## # A tibble: 10 × 2
-    ##    Statistic                                  Value
-    ##    <chr>                                      <int>
-    ##  1 Total imported events                       6097
-    ##  2 Total events after cleaning                 6097
-    ##  3 Unique locations                             540
-    ##  4 US counties                                  314
-    ##  5 Universities                                 605
-    ##  6 Missing universities                          19
-    ##  7 CEs with missing universities                 87
-    ##  8 # of events with police presence recorded    410
-    ##  9 # of events with police activity recorded    868
-    ## 10 # of events with any police field recorded   925
+| Statistic                                   | Value |
+|:--------------------------------------------|------:|
+| Total imported events                       |  6097 |
+| Total events after cleaning                 |  6097 |
+| Unique locations                            |   540 |
+| US counties                                 |   314 |
+| Universities                                |   605 |
+| Missing universities                        |    19 |
+| CEs with missing universities               |    87 |
+| \# of events with police presence recorded  |   410 |
+| \# of events with police activity recorded  |   868 |
+| \# of events with any police field recorded |   925 |
+| \# of events with university police only    |   909 |
+| \# of events with government police only    |   230 |
 
 The initial import of the MPEDS db found 6097 unique canonical events,
 and after all cleaning steps we still have 6097 canonical events.
@@ -253,11 +254,11 @@ where text-selects were used but not one of the preset issue categories.
 instead, per the codebook. “\_Other issue” marks issues not within the
 preset options; the codebook gives the examples of:
 
--   protestors who use hateful speech, e.g. anti-LGBTQ preachers
--   (objection to?) corporate practices
--   access to higher education (?)
--   science (?)
--   Armenian genocide (?)
+- protestors who use hateful speech, e.g. anti-LGBTQ preachers
+- (objection to?) corporate practices
+- access to higher education (?)
+- science (?)
+- Armenian genocide (?)
 
 Hm.
 
@@ -427,90 +428,6 @@ Hm.
 
 ![](exploratory_plots_files/figure-gfm/basic_counts_over_time-1.png)<!-- -->
 
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
-    ## Warning in grid.Call(C_stringMetric, as.graphicsAnnot(x$label)): font family
-    ## 'Lato' not found in PostScript font database
-
 ![](exploratory_plots_files/figure-gfm/basic_counts_time_redux-1.png)<!-- -->
 
 ![](exploratory_plots_files/figure-gfm/regions_over_time-1.png)<!-- -->
@@ -529,42 +446,30 @@ categories, so I’ve only shown the universities over time for now:
     ## Scale for x is already present.
     ## Adding another scale for x, which will replace the existing scale.
 
-    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
-
 ![](exploratory_plots_files/figure-gfm/responses_over_time-1.png)<!-- -->
 
     ## Scale for x is already present.
     ## Adding another scale for x, which will replace the existing scale.
-
-    ## Warning: Removed 7 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-2.png)<!-- -->
 
     ## Scale for x is already present.
     ## Adding another scale for x, which will replace the existing scale.
 
-    ## Warning: Removed 2 rows containing missing values (`position_stack()`).
-
 ![](exploratory_plots_files/figure-gfm/responses_over_time-3.png)<!-- -->
 
     ## Scale for x is already present.
     ## Adding another scale for x, which will replace the existing scale.
-
-    ## Warning: Removed 4 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-4.png)<!-- -->
 
     ## Scale for x is already present.
     ## Adding another scale for x, which will replace the existing scale.
 
-    ## Warning: Removed 3 rows containing missing values (`position_stack()`).
-
 ![](exploratory_plots_files/figure-gfm/responses_over_time-5.png)<!-- -->
 
     ## Scale for x is already present.
     ## Adding another scale for x, which will replace the existing scale.
-
-    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-6.png)<!-- -->
 
@@ -597,29 +502,11 @@ categories, so I’ve only shown the universities over time for now:
 | K-12 education                                               |   1 |
 | Racial/ethnic pride - minority                               |   1 |
 
-![](exploratory_plots_files/figure-gfm/issues_over_time-1.png)<!-- -->
-
-    ## Warning: There was 1 warning in `mutate()`.
-    ## ℹ In argument: `issue = fct_relevel(as.factor(issue),
-    ##   c(issues_count$issue[1:4], racial_issue_count$racial_issue[1:4]))`.
-    ## Caused by warning:
-    ## ! 3 unknown levels in `f`: Anti-racism, Police violence, and Immigration (For)
-
-![](exploratory_plots_files/figure-gfm/issues_over_time-2.png)<!-- -->
-
-    ## Warning: Removed 7 rows containing missing values (`position_stack()`).
-
-![](exploratory_plots_files/figure-gfm/issues_over_time-3.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/issues_over_time-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/issues_over_time-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/issues_over_time-3.png)<!-- -->
 
 ## Racial and “nonracial” issues over time (collapsed)
 
-    ## Warning: Removed 2 rows containing missing values (`position_stack()`).
-
-![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-    ## Warning: Removed 2 rows containing missing values (`position_stack()`).
-
-![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
 
 groI’ve collapsed both types of issues here to show racial and nonracial
 issues alongside each other. Racial issue counts here are taken at a
@@ -679,16 +566,16 @@ another covariate.
 
 We discussed two solutions to this problem to avoid deduplication:
 
--   Join so that CCC protests occurring one, three, five, or seven days
-    before the MPEDS protest date are matched; the CCC variable then
-    conceptually becomes “was there a recent protest in the same
-    county.” Thus protests won’t find a match only because of duplicates
--   Join only after filtering the CCC dataset so that rows with keywords
-    related to universities are kicked out – things like teachers,
-    faculty, students, colleges, universities. This is less ideal than
-    the above strategy because it is so nonspecific, potentially missing
-    many university matches and kicking out protests related to primary
-    and secondary schools.
+- Join so that CCC protests occurring one, three, five, or seven days
+  before the MPEDS protest date are matched; the CCC variable then
+  conceptually becomes “was there a recent protest in the same county.”
+  Thus protests won’t find a match only because of duplicates
+- Join only after filtering the CCC dataset so that rows with keywords
+  related to universities are kicked out – things like teachers,
+  faculty, students, colleges, universities. This is less ideal than the
+  above strategy because it is so nonspecific, potentially missing many
+  university matches and kicking out protests related to primary and
+  secondary schools.
 
 The following chunk gives a glimpse at total number of matches:
 
@@ -730,28 +617,20 @@ we have complete data.
 
 # Investigating specific movements: Mizzou and Quebec solidarity protests
 
-    ## # A tibble: 5 × 2
-    ##   `Statistics for Mizzou protests`     n
-    ##   <chr>                            <int>
-    ## 1 Total number of links              104
-    ## 2 Unique events                       98
-    ## 3 Campaign events only                13
-    ## 4 Counterprotest events only           7
-    ## 5 Solidarity events only              84
+| Statistics for Mizzou protests |   n |
+|:-------------------------------|----:|
+| Total number of links          | 104 |
+| Unique events                  |  98 |
+| Campaign events only           |  13 |
+| Counterprotest events only     |   7 |
+| Solidarity events only         |  84 |
 
 The discrepancy between the total number of links from the original
 Mizzou event to the total number of unique events comes from some events
 being both campaign events and counterprotest events, or campaign events
 and solidarity events.
 
-    ## Warning in st_point_on_surface.sfc(sf::st_zm(x)): st_point_on_surface may not
-    ## give correct results for longitude/latitude data
-
-![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->
-
-    ## Warning: Removed 1 row containing missing values (`geom_line()`).
-
-![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
 
     ## # A tibble: 6 × 2
     ##   `Statistics for Quebec protests`     n
@@ -763,11 +642,7 @@ and solidarity events.
     ## 5 Counterprotest events only           1
     ## 6 Solidarity events only              15
 
-![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->
-
-    ## Warning: Removed 1 rows containing missing values (`position_stack()`).
-
-![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
 
 Top locations under the Quebec umbrella of events:
 
