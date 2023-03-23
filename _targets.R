@@ -45,6 +45,7 @@ list(
              command = get_mhi_urls()[1]
              ),
   tar_target(mhi, get_mhi(mhi_url)),
+  tar_target(canada_mhi, get_canada_mhi(canada_cma_shapes)),
 
   tar_target(bls, get_bls()),
   tar_target(canada_unemployment, get_canada_unemployment(cma_shapes)),
