@@ -26,8 +26,14 @@ list(
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
-
   tar_target(geocoded, get_protest_coords(events_wide)),
+
+  # Geographic information
+  tar_target(us_regions_filename, format = "file",
+             "tasks/county_covariates/hand/us-regions.csv"),
+  tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
+  tar_target(canada_cma_shapes, get_canada_cma_shapes()),
+  tar_target(canada_province_shapes, get_canada_province_shapes()),
 
   tar_target(ccc_url, format = "url",
              command = "https://github.com/nonviolent-action-lab/crowd-counting-consortium/raw/master/ccc_compiled.csv"
@@ -41,20 +47,14 @@ list(
   tar_target(mhi, get_mhi(mhi_url)),
 
   tar_target(bls, get_bls()),
-  tar_target(elephrame_blm, get_elephrame_blm()),
+  tar_target(canada_unemployment, get_canada_unemployment(cma_shapes)),
 
+  tar_target(elephrame_blm, get_elephrame_blm()),
   tar_target(eviction_url, format = "url",
              command = "https://eviction-lab-data-downloads.s3.amazonaws.com/estimating-eviction-prevalance-across-us/county_proprietary_2000_2018.csv"
              ),
   tar_target(evictions, get_evictions(eviction_url)),
   tar_target(mit_elections, get_mit_elections()),
-
-  # Geographic information
-  tar_target(us_regions_filename, format = "file",
-             "tasks/county_covariates/hand/us-regions.csv"),
-  tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
-  tar_target(canada_cma_shapes, get_canada_cma_shapes()),
-  tar_target(canada_province_shapes, get_canada_province_shapes()),
 
   # This queries the ACS, and doesn't depend on a URL,
   # so it will only be run once by the targets pipeline
@@ -93,6 +93,7 @@ list(
   ), format = "file"),
 
   tar_target(county_covariates, list(mhi, bls, evictions, mit_elections)),
+  tar_target(canada_covariates, list(canada_mhi, canada_unemployment))
 
   tar_target(integrated, integrate_targets(
     geocoded,

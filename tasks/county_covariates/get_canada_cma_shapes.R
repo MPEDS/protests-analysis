@@ -48,7 +48,11 @@ get_canada_cma_shapes <- function(){
            region_code = str_sub(CMAPUID, 1, 1)) |>
     left_join(provinces, by = c("province_code" = "code")) |>
     left_join(regions, by = c("region_code" = "code")) |>
-    select(canada_metropolitan_area = CMANAME,
+    # See https://www150.statcan.gc.ca/n1/pub/92f0138m/92f0138m2019001-eng.htm
+    # for DGUID logic
+    mutate(canada_geouid = str_sub(DGUID, 10, -1)) |>
+    select(canada_geouid,
+           canada_metropolitan_area = CMANAME,
            canada_province_name = province_name,
            canada_region_name = region_name) |>
     st_transform(4326) |>
