@@ -9,8 +9,5 @@ get_us_localities <- function(){
     select(geoid, locality_name) |>
     left_join(xwalk, by = "geoid")
 
-    select(geoid, locality_name = CMANAME,
-           area_name, region_name) |>
-
   return(us_localities)
 }

@@ -15,7 +15,7 @@ Exploratory Plots
 | \# of events with police presence recorded  |   410 |
 | \# of events with police activity recorded  |   868 |
 | \# of events with any police field recorded |   925 |
-| \# of events with university police only    |   909 |
+| \# of events with university police only    |   450 |
 | \# of events with government police only    |   230 |
 
 The initial import of the MPEDS db found 6097 unique canonical events,

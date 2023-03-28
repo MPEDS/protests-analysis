@@ -16,7 +16,7 @@ library(gridExtra)
 library(cowplot)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
-opts_chunk$set(echo = FALSE, fig.width = 10, fig.height = 7)
+opts_chunk$set(echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 7)
 
 font_add_google("Lato")
 showtext_auto()
@@ -78,18 +78,59 @@ n_has_police_activity <- mpeds |>
          ) |> 
   nrow()
 
-n_any_police_field <- mpeds |> 
+police_only <- mpeds |> 
   filter(if_any(c(
     police_presence_and_size,
     police_activities,
-    police_actions
-  ), ~!is.null(.))) |> 
+    police_actions,
+    type_of_police
+  ), ~!map_lgl(.,\(x){is.null(x)}))) |>
   filter(if_any(c(
     police_presence_and_size, 
     police_activities,
-    police_actions
+    police_actions,
+    type_of_police
+  ), ~map_lgl(., \(x){any(x != "NA/Unclear")}))) 
+
+n_any_police_field <- police_only |> 
+  nrow()
+
+n_both_pa_ur <- police_only |> 
+  filter(if_any(c(
+    university_action_on_issue,
+    university_responses,
+    university_reactions_to_protest,
+    university_discourse_on_protest,
+    university_discourse_on_issue
+  ), ~!map_lgl(., function(x){
+    is.null(x)
+  }))) |> filter(if_any(c(
+    university_action_on_issue,
+    university_responses,
+    university_reactions_to_protest,
+    university_discourse_on_protest,
+    university_discourse_on_issue
   ), ~map_lgl(., \(x){any(x != "NA/Unclear")}))) |> 
   nrow()
+
+# only PA (any PA field)
+# only UR (any UR field)
+# no response (no recorded PA or UR field)
+
+n_uni_police_only <- mpeds |> 
+  filter(!map_lgl(type_of_police, is.null)) |> 
+  filter(map_lgl(type_of_police, function(x){
+    all(x %in% c("Univ police", "Univ police - assumed"))
+  })) |> 
+  nrow()
+
+n_govt_police_only <- mpeds |> 
+  filter(!map_lgl(type_of_police, is.null)) |> 
+  filter(map_lgl(type_of_police, function(x){
+    all(x %in% c("Govt police", "Govt police - assumed"))
+  })) |> 
+  nrow()
+
 tribble(
   ~Statistic, ~Value,
   "Total imported events", mpeds_raw_ids,
@@ -102,8 +143,12 @@ tribble(
   "# of events with police presence recorded", n_has_police,
   "# of events with police activity recorded", n_has_police_activity,
   "# of events with any police field recorded", n_any_police_field,
+  "# of events with university police only", n_uni_police_only,
+  "# of events with government police only", n_govt_police_only
 ) |> 
   kable()
+
+
 ```
 
 The initial import of the MPEDS db found `r mpeds_raw_ids` 
@@ -411,7 +456,7 @@ plots <- map(2012:2018, function(yr){
     ggplot(aes(fill = region, x = date, y = n)) + 
     geom_bar(stat = "identity") + 
     labs(y = NULL, x = NULL, title = yr) + 
-    scale_y_continuous(limits = c(0, 400)) +
+    # scale_y_continuous(limits = c(0, 400)) +
     scale_x_date(date_labels = "%b", date_breaks = "2 months") + 
     scale_fill_brewer(type = "qual", palette = "Set1") + 
     theme(
@@ -451,7 +496,7 @@ plot_grid(title_grob, plotlist = plots, legend_grob, ncol = 1)
 protests_by_country <- mpeds |> 
   mutate(
     country = ifelse(
-      is.na(canada_metropolitan_area), "Canada", "United States"
+      is.na(canada_metropolitan_area), "United States", "Canada"
     )
     ) |> 
   mutate(date = floor_date(start_date, "month")) |> 
@@ -1017,8 +1062,7 @@ mizzou_umbrella_id <- mpeds |>
   pull(canonical_id)
 
 mizzou_events <- canonical_event_relationship |> 
-  filter(canonical_id2 == mizzou_umbrella_id,
-         relationship_type == "solidarity") 
+  filter(canonical_id2 == mizzou_umbrella_id) 
   
 mizzou_by_type <- mizzou_events |> 
   mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
@@ -1028,24 +1072,40 @@ tribble(~stat, ~n,
         "Total number of links", nrow(mizzou_events),
         "Unique events", length(unique(mizzou_events$canonical_id1))) |> 
   bind_rows(mizzou_by_type) |> 
-  rename("Statistics for Mizzou protests" = stat)
+  rename("Statistics for Mizzou protests" = stat) |> 
+  kable()
 ```
 The discrepancy between the total number of links from the original Mizzou event to the 
 total number of unique events comes from some events being both campaign events and 
 counterprotest events, or campaign events and solidarity events. 
 
 ```{r mizzou_map}
+tar_load(canada_province_shapes)
+tar_load(canada_cma_shapes)
+
+canada_cma_shapes <- st_set_crs(canada_cma_shapes, st_crs(county_sf)) |> 
+  select(locality_name)
 
 mizzou_sf <- mizzou_events |> 
-  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) 
+  # joining on `mpeds` and not `mpeds_sf` because we want coords of counties/CMAs,
+  # not exactly where protests occurred (which is more granular)
+  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
   # Some events have been marked as both campaign and counterprotest/solidarity,
   # so they show up twice, but we only need one occurrence (and it doesn't
   # matter which, for this viz)
-  group_by(fips) |> 
+  group_by(canonical_id1) |> 
+  slice_head(n = 1) |> 
+  group_by(fips, canada_metropolitan_area) |> 
   count() |> 
   ungroup() |> 
   left_join(county_sf, by = "fips") |> 
-  mutate(geometry = st_centroid(geometry)) |> 
+  mutate(county_geo = st_centroid(geometry)) |> 
+  select(-geometry) |> 
+  left_join(canada_cma_shapes, by = c("canada_metropolitan_area" = "locality_name")) |> 
+  mutate(geometry = ifelse(is.na(canada_metropolitan_area),
+                           county_geo,
+                           st_centroid(geometry))) |> 
+  select(-county_geo) |> 
   st_as_sf(crs = st_crs(us_sf)) 
 
 county_labels <- fips_codes |> 
@@ -1053,20 +1113,16 @@ county_labels <- fips_codes |>
          name = str_wrap(paste0(county, ", ", state_name), 20)) |> 
   select(fips, name)
 
-top_mizzou <- mizzou_sf |> 
-  drop_na() |> 
-  arrange(desc(n)) |> 
-  slice_head(n = 5) |> 
-  left_join(county_labels, by = "fips")
-
 ggplot(mizzou_sf) +
   geom_sf(data = us_sf) +
-  geom_sf(data = state_sf, color = "gray") +
+  geom_sf(data = canada_province_shapes) +
   geom_sf(aes(size = n), alpha = 0.5) + 
   labs(
     title = "Spread of events within the Mizzou umbrella",
   ) + 
-  scale_size(range = c(2, 8)) + 
+  scale_size(range = c(2, 8)) +
+  scale_y_continuous(limits = c(24, 50)) + 
+  scale_x_continuous(limits = c(-130, -60)) + 
   theme(
     axis.text = element_blank(),
     axis.ticks = element_blank(),
@@ -1093,9 +1149,6 @@ mizzou_events |>
 ```
 
 ```{r quebec}
-tar_load(canada_province_shapes)
-tar_load(canada_cma_shapes)
-
 quebec_events <- canonical_event_relationship |> 
   filter(canonical_id2 %in% c(5558, 2939, 6396, 2551)) 
   

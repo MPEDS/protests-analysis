@@ -11,7 +11,7 @@ get_us_rentburden <- function(){
       mutate(year = year,
              rent_burden = (rent_30E + rent_35E + rent_40E + rent_50E)/rent_totalE
              ) |>
-      select(year, rent_burden, fips = GEOID)
+      select(year, rent_burden, geoid = GEOID)
     })
 
   return(rent_burden)

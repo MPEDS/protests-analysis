@@ -44,6 +44,7 @@ list(
   # County+year-level covariates ---
   tar_target(canada_covariates, get_canada_covariates(canada_localities)),
   tar_target(us_covariates, get_us_covariates()),
+  tar_target(covariates, bind_rows(us_covariates, canada_covariates)),
 
   tar_target(elephrame_blm, get_elephrame_blm()),
 
@@ -78,8 +79,7 @@ list(
     ipeds,
     glued,
     uni_xwalk,
-    us_covariates,
-    canada_covariates,
+    covariates,
     ccc,
     us_regions = us_regions
     )),

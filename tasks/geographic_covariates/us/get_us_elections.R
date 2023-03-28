@@ -15,7 +15,7 @@ get_us_elections <- function(){
            party == "REPUBLICAN"
           ) |>
     mutate(republican_vote_prop = candidatevotes / totalvotes) |>
-    select(year, fips = county_fips, republican_vote_prop) |>
+    select(year, geoid = county_fips, republican_vote_prop) |>
     drop_na()
 
   return(elections)

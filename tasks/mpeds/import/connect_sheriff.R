@@ -1,3 +1,9 @@
+#' Connects, in a very hacky way, to the MySQL database on the server.
+#' Please make sure you have port 3306 open, i.e. are not serving a local
+#' MySQL or MariaDB instance.
+#' @returns A database connection that can be used in calls to `tbl()` to
+#' pull specific tables, and which can be readily manipulated using
+#' conventional dplyr syntax.
 connect_sheriff <- function(){
   user <- Sys.getenv("SSH_USERNAME")
   if(user == ""){
