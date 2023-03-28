@@ -7,7 +7,7 @@
 # they want explicit human interaction
 # But I'm sure it's fine, plus I did fill out the form
 # manually a few times
-get_mit_elections <- function(){
+get_us_elections <- function(){
   # No ETag or Last-Modified header, so cannot track for changes in targets
   url <- "https://dataverse.harvard.edu/api/access/datafile/6104822?format=original&gbrecs=true"
   elections <- read_csv(url, show_col_types = FALSE) |>

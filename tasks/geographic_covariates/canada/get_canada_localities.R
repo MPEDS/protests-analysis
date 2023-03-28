@@ -3,7 +3,7 @@
 #' when queried for its headers only, which targets asks for in order to determine
 #' whether to fetch or not. A shame because this is one of our largest sources
 #' in bytes and can take a while to download
-get_canada_cma_shapes <- function(){
+get_canada_localities <- function(){
   download_location <- tempfile()
   download.file(
     "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcma000b21a_e.zip",
@@ -18,7 +18,7 @@ get_canada_cma_shapes <- function(){
   # See info here, esp. table B
   # https://www.statcan.gc.ca/en/subjects/standard/sgc/2021/introduction
   provinces <- tribble(
-    ~code, ~province_name,
+    ~code, ~area_name,
     "10", "Newfoundland and Labrador",
     "11", "Prince Edward Island",
     "12", "Nova Scotia",
@@ -33,6 +33,7 @@ get_canada_cma_shapes <- function(){
     "61", "Northwest Territories",
     "62", "Nunavut"
   )
+
   regions <- tribble(
     ~code, ~region_name,
     "1", "Atlantic",
@@ -50,11 +51,18 @@ get_canada_cma_shapes <- function(){
     left_join(regions, by = c("region_code" = "code")) |>
     # See https://www150.statcan.gc.ca/n1/pub/92f0138m/92f0138m2019001-eng.htm
     # for DGUID logic
-    mutate(canada_geouid = str_sub(DGUID, 10, -1)) |>
-    select(canada_geouid,
-           canada_metropolitan_area = CMANAME,
-           canada_province_name = province_name,
-           canada_region_name = region_name) |>
+    mutate(geoid = str_sub(DGUID, 10, -1)) |>
+    select(geoid, locality_name = CMANAME,
+           area_name, region_name) |>
+    # Several CMAs lie across multiple provinces
+    # But most of our other variables have uniquely one CMA per row
+    # Preserving that is important and preserving the specifics of which
+    # province a protest lies in is not as important, so dropping all but first
+    group_by(geoid) |>
+    slice_head(n = 1) |>
+    filter(
+      !(geoid == 505 & locality_name == "Ottawa - Gatineau (partie du Québec / Quebec part)")
+    ) |>
     st_transform(4326) |>
     st_make_valid()
 

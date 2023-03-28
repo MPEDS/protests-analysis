@@ -2,8 +2,7 @@
 #' Since the ACS isn't expected to update the 2012-2018
 #' entries, I will leave this function as dependency-less; it
 #' will only run once.
-get_acs_indicators <- function(){
-
+get_us_nonwhite <- function(){
   variables <- c(
     "white" = "B01001A_001",
     "total" = "B01001_001"
@@ -19,6 +18,6 @@ get_acs_indicators <- function(){
     return(result)
   }) |>
     mutate(white_prop = whiteE / totalE) |>
-    select(fips = GEOID, white_prop, year)
+    select(geoid = GEOID, white_prop, year)
 }
 

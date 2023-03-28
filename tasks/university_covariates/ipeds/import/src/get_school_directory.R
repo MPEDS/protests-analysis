@@ -6,9 +6,7 @@ get_directory_url <- function(year){
   return(full_url)
 }
 
-#' @param dummy_url is a placeholder and ignored; it's there
-#' so that `targets` can send an update signal as a dependency
-get_school_directory <- function(dummy_url){
+get_school_directory <- function(){
   years <- 2012:2018
   directory_aggregated <- map_dfr(
     years, function(year){

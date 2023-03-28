@@ -13,12 +13,9 @@ get_mhi_urls <- function(){
 #' and Poverty Estimates (SAIPE) Program.
 #' See https://www.census.gov/programs-surveys/saipe/technical-documentation.html
 #' for documentation.
-#' @param dummy_url is ignored in the function; it's present
-#' as a forced dependency to get `targets` to run the function
-#' in case the dependent url changed
-get_mhi <- function(dummy_url){
+get_us_income <- function(){
   urls <- get_mhi_urls()
-  mhi <- map_dfr(urls, function(url){
+  income <- map_dfr(urls, function(url){
     year <- as.numeric(str_extract(url, "([0-9]){4}"))
     #different years start on different rows in their spreadsheets
     rows_to_skip <- case_when(year < 2005 ~ 1,
@@ -47,18 +44,18 @@ get_mhi <- function(dummy_url){
              cfips = case_when(nchar(cfips) == 1 ~ paste0("00", cfips),
                                nchar(cfips) == 2 ~ paste0("0", cfips),
                                nchar(cfips) == 3 ~ as.character(cfips))) |>
-      unite("fips", sfips, cfips, sep = "") |>
+      unite("geoid", sfips, cfips, sep = "") |>
       mutate(year = year,
              median_household_income = suppressWarnings(
                as.numeric(`Median Household Income`))
              ) |>
-      select(fips, year, median_household_income)
+      select(geoid, year, median_household_income)
 
     return(data)
   }) |>
-    filter(nchar(fips) == 5)
+    filter(nchar(geoid) == 5)
   #some metadata collected as regular data in the loop;
   # this last line throws it out
 
-  return(mhi)
+  return(income)
 }

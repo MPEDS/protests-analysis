@@ -4,7 +4,7 @@ get_tuition_url <- function(year){
   return(full_url)
 }
 
-get_tuition <- function(dummy_url){
+get_tuition <- function(){
   years <- 2012:2018
 
   tuition_aggregated <- map_dfr(

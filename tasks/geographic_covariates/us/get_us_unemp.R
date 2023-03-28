@@ -1,4 +1,4 @@
-get_bls <- function(){
+get_us_unemp <- function(){
   years <- 2012:2018
   unemp <- map_dfr(years, function(year){
     url <- paste0("https://www.bls.gov/lau/laucnty", str_sub(year, 3, 4),
@@ -9,9 +9,9 @@ get_bls <- function(){
                                  col_names = c("x", "fips1", "fips2", "name",
                                  "year", "na", "na2", "na3", "na4",
                                  "unemp")) |>
-      unite("fips", fips1, fips2, sep = "") |>
-      select(fips, year, unemp) |>
-      mutate(year = as.numeric(year)) |> filter(fips != "NANA")
+      unite("geoid", fips1, fips2, sep = "") |>
+      select(geoid, year, unemp) |>
+      mutate(year = as.numeric(year)) |> filter(geoid != "NANA")
     return(dataset)
   })
 

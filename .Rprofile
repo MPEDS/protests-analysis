@@ -1,5 +1,9 @@
 source("renv/activate.R")
 
+options(tigris_use_cache = TRUE,
+        timeout = 1000 # for large download.file requests on slow internet speeds
+        )
+
 # convenience functions meant for quick interactive debugging
 # they should NEVER be used in a target
 

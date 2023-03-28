@@ -4,7 +4,8 @@ integrate_targets <- function(
     geocoded,
     ipeds, glued,
     uni_xwalk,
-    county_covariates = list(),
+    us_covariates,
+    canada_covariates,
     ccc,
     canada_cma_shapes,
     us_regions
@@ -50,14 +51,16 @@ integrate_targets <- function(
     st_as_sf(coords = c("location_lng", "location_lat"),
              crs = st_crs(4326),
              na.fail = FALSE) |>
-    st_join(us_counties)
+    st_join(us_counties) |>
+    mutate()
 
-  # can't figure out how to normally append a tibble as the first item of
-  # the list lol so instead I'll do it this way
-  with_county_covariates <- list(list(with_fips),
-                                 county_covariates) |>
-    flatten() |>
+  # Same for Canadian covariates
+
+  with_contextual_covariates <- list(with_fips, us_covariates) |>
     reduce(left_join, by = c("fips", "year"))
+    # list() |>
+    # list(canada_covariates) |>
+    # flatten()
 
   # Performing a spatial join with the canada shapefiles and (regular) join
   # with US regions
