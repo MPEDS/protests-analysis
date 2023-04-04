@@ -234,7 +234,6 @@ Top states:
 
 ```{r state_counts}
 
-
 state_counts <- mpeds |> 
   group_by(area_name) |> 
   count() |> 
@@ -326,6 +325,59 @@ glimpse_counts(issue)
 ```{r}
 glimpse_counts(racial_issue)
 ```
+
+# Police involvement by issue
+
+We're interested in describing police involvement by issue -- what issues attract
+the heaviest police presence and response? 
+
+I filtered our dataset to include only rows that had at least one non-missing value
+for type of police, police actions, police activities, and police presence and size,
+and tabulated the issues reported in the remaining dataset. The table can 
+thus be read as the most popular issues among police-involved protests.
+
+In the table below, counts may be inflated given each canonical event could have
+multiple issues. 
+
+This table should be compared to the table of percentages of issues across all events
+to be meaningful for the questions we'd like to answer. For example, university
+governance makes a strong appearance here, but that could be just because it is 
+a popular issue at large, not because protests around the issue attract police.
+On the other hand, tuition and fees makes a solid jump here from having 10% 
+prevalence across all events but with 16% prevalence across police-involved events.
+This makes sense given our knowledge that the Quebec tuition strike protests
+were heavily policed.
+
+```{r police_involvement_by_issue}
+police_involvement <- mpeds |> 
+  filter(
+    if_any(c(type_of_police, police_actions,
+          police_activities, police_presence_and_size),
+        ~map_lgl(., \(x){!is.null(x)})),
+    if_any(c(type_of_police, police_actions,
+          police_activities, police_presence_and_size),
+        ~map_lgl(., \(x){any(x != "NA/Unclear")})),
+    ) 
+police_involvement |> 
+  select(issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(cols = value) |> 
+  mutate(value = ifelse(
+    name == "racial_issue", paste(value, "(racial)"), value)
+    ) |> 
+  select(-name) |> 
+  group_by(value) |> 
+  count() |> 
+  ungroup() |> 
+  mutate(n = round(100 * n/length(unique(police_involvement$canonical_id)), 2)) |> 
+  arrange(desc(n)) |> 
+  rename(
+    "Percent of events with given issue" = n
+  ) |> 
+  kable()
+
+```
+
 
 # Percentages of all protest with given preset
 
@@ -1203,5 +1255,4 @@ quebec_events |>
     title = "Quebec protest occurrences over time"
   )
   
-
 ```

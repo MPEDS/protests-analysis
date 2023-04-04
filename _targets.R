@@ -33,7 +33,8 @@ list(
   tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
   tar_target(us_geo, get_us_geo(us_regions)),
   tar_target(canada_geo, get_canada_geo()),
-    # needed for plotting
+
+  # needed for plotting
   tar_target(canada_province_shapes, get_canada_provinces()),
   tar_target(geo, bind_rows(us_geo, canada_geo)),
 
@@ -42,7 +43,6 @@ list(
              command = "https://github.com/nonviolent-action-lab/crowd-counting-consortium/raw/master/ccc_compiled.csv"
              ),
   tar_target(ccc, get_ccc(ccc_url)),
-
 
   # County+year-level covariates ---
   tar_target(canada_covariates, get_canada_covariates(canada_geo)),
