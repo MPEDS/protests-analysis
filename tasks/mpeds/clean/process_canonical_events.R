@@ -26,7 +26,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
     ) |>
     select(-text)
 
-  wide <-  canonical_events |>
+  wide <- canonical_events |>
     distinct() |>
     mutate(variable = str_replace_all(variable, '-', '_') |>
              str_remove_all("_text")) |>
