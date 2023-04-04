@@ -31,8 +31,9 @@ list(
   tar_target(us_regions_filename, format = "file",
              "tasks/geographic_covariates/us/us-regions.csv"),
   tar_target(us_regions, read_csv(us_regions_filename, show_col_types = FALSE)),
-  tar_target(us_localities, get_us_localities()),
-  tar_target(canada_localities, get_canada_localities()),
+  tar_target(us_geo, get_us_geo(us_regions)),
+  tar_target(canada_geo, get_canada_geo()),
+  tar_target(geo, bind_rows(us_geo, canada_geo)),
 
   # Using format = url here because it's updated regularly (weekly)
   tar_target(ccc_url, format = "url",
@@ -42,7 +43,7 @@ list(
 
 
   # County+year-level covariates ---
-  tar_target(canada_covariates, get_canada_covariates(canada_localities)),
+  tar_target(canada_covariates, get_canada_covariates(canada_geo)),
   tar_target(us_covariates, get_us_covariates()),
   tar_target(covariates, bind_rows(us_covariates, canada_covariates)),
 
@@ -80,8 +81,7 @@ list(
     glued,
     uni_xwalk,
     covariates,
-    ccc,
-    us_regions = us_regions
+    geo
     )),
 
   # Plotting and other exploratory analysis ---

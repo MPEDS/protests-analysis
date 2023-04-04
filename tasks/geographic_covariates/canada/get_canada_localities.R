@@ -3,7 +3,7 @@
 #' when queried for its headers only, which targets asks for in order to determine
 #' whether to fetch or not. A shame because this is one of our largest sources
 #' in bytes and can take a while to download
-get_canada_localities <- function(){
+get_canada_geo <- function(){
   download_location <- tempfile()
   download.file(
     "https://www12.statcan.gc.ca/census-recensement/2021/geo/sip-pis/boundary-limites/files-fichiers/lcma000b21a_e.zip",
@@ -44,7 +44,7 @@ get_canada_localities <- function(){
     "6", "Territories"
   )
 
-  canada_cma_shapes <- read_sf(paste0(tempdir(), "/canada-shapefiles")) |>
+  canada_geo <- read_sf(paste0(tempdir(), "/canada-shapefiles")) |>
     mutate(province_code = str_sub(CMAPUID, 1, 2),
            region_code = str_sub(CMAPUID, 1, 1)) |>
     left_join(provinces, by = c("province_code" = "code")) |>
@@ -54,17 +54,8 @@ get_canada_localities <- function(){
     mutate(geoid = str_sub(DGUID, 10, -1)) |>
     select(geoid, locality_name = CMANAME,
            area_name, region_name) |>
-    # Several CMAs lie across multiple provinces
-    # But most of our other variables have uniquely one CMA per row
-    # Preserving that is important and preserving the specifics of which
-    # province a protest lies in is not as important, so dropping all but first
-    group_by(geoid) |>
-    slice_head(n = 1) |>
-    filter(
-      !(geoid == 505 & locality_name == "Ottawa - Gatineau (partie du Québec / Quebec part)")
-    ) |>
     st_transform(4326) |>
     st_make_valid()
 
-  return(canada_cma_shapes)
+  return(canada_geo)
 }

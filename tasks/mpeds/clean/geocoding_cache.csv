@@ -818,6 +818,7 @@ lat,lng,location
 38.3013039,-77.47447,Mary Washington
 42.4532365,-79.340746,SUNY at Fredonia
 45.50478469999999,-73.5771511,McGill University
+45.5131547,-73.5602937,UQÀM
 42.2762537,-83.7412441,University of Michigan
 45.50478469999999,-73.5771511,McGill
 42.9269528,-85.58897189999999,Calvin College
@@ -899,6 +900,7 @@ lat,lng,location
 35.3050053,-120.6624942,Cal Poly San Luis Obispo
 41.06597319999999,-73.7891834,Westchester Community College
 29.888411,-97.938351,Texas State University
+26.3081983,-98.17401579999999,University of Texas Pan American
 37.4274745,-122.169719,Stanford
 30.0954974,-95.9907076,Prairie View A&M University
 44.0081076,-73.1760412,Middlebury College
@@ -1123,6 +1125,7 @@ lat,lng,location
 37.3351874,-121.8810715,San Jose State University
 46.4918881,-84.36387739999999,Lake Superior State University
 42.255425,-72.5728843,Mount Holyoke
+34.068921,-118.4451811,the UC system at almost every campus
 45.5056156,-73.61375919999999,Université de Montréal’s (UdeM)
 45.514669,-73.5663793,Cégep du Vieux Montréal
 45.55086130000001,-73.5532995,Collège de Maisonneuve
@@ -1243,6 +1246,7 @@ lat,lng,location
 43.6628917,-79.39565640000001,the St George campus
 37.0965278,-113.5684164,St. George
 54.283113,-0.399752,Scarborough
+51.253775,-85.3232139,Ontario Institute for Student Education
 43.6628917,-79.39565640000001,St George campus
 53.9614205,-1.0739108,York
 43.6628917,-79.39565640000001,UofT

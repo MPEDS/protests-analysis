@@ -1150,7 +1150,7 @@ mizzou_events |>
 
 ```{r quebec}
 quebec_events <- canonical_event_relationship |> 
-  filter(canonical_id2 %in% c(5558, 2939, 6396, 2551)) 
+  filter(canonical_id2 %in% c(2939, 2551)) 
   
 quebec_by_type  <- quebec_events |> 
   mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
@@ -1160,7 +1160,8 @@ tribble(~stat, ~n,
         "Total number of links", nrow(quebec_events),
         "Unique events", length(unique(quebec_events$canonical_id1))) |> 
   bind_rows(quebec_by_type) |> 
-  rename("Statistics for Quebec protests" = stat)
+  rename("Statistics for Quebec protests" = stat) |> 
+  kable()
 
 quebec_sf <- quebec_events |> 
   left_join(mpeds_sf, by = c("canonical_id1" = "canonical_id")) |> 

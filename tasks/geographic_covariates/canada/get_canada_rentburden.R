@@ -1,8 +1,6 @@
 #' For some reason a ridiculously large file with way too much detail than one
 #' would think this kind of table would be released with
-get_canada_rentburden <- function(localities){
-  keys <- select(localities, geoid) |>
-    st_drop_geometry()
+get_canada_rentburden <- function(locality_keys){
   url <- "https://www150.statcan.gc.ca/n1/en/tbl/csv/98100328-eng.zip"
 
   download_location <- tempfile()
@@ -22,6 +20,6 @@ get_canada_rentburden <- function(localities){
       rent_burden = `Core housing need (3):In core need[2]` / `Core housing need (3):Total - Household examined for core housing need[1]`,
       geoid = str_sub(DGUID, 10, -1)
       ) |>
-    right_join(keys, by = "geoid") |>
+    right_join(locality_keys, by = "geoid") |>
     select(geoid, rent_burden)
 }
