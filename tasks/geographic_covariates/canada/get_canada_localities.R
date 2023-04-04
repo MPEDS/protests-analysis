@@ -51,7 +51,7 @@ get_canada_geo <- function(){
     left_join(regions, by = c("region_code" = "code")) |>
     # See https://www150.statcan.gc.ca/n1/pub/92f0138m/92f0138m2019001-eng.htm
     # for DGUID logic
-    mutate(geoid = str_sub(DGUID, 10, -1)) |>
+    mutate(geoid = paste0("canada_", str_sub(DGUID, 10, -1))) |>
     select(geoid, locality_name = CMANAME,
            area_name, region_name) |>
     st_transform(4326) |>

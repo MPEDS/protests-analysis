@@ -118,18 +118,32 @@ n_both_pa_ur <- police_only |>
 # no response (no recorded PA or UR field)
 
 n_uni_police_only <- mpeds |> 
-  filter(!map_lgl(type_of_police, is.null)) |> 
-  filter(map_lgl(type_of_police, function(x){
+  filter(!map_lgl(type_of_police, is.null),
+         map_lgl(type_of_police, function(x){
     all(x %in% c("Univ police", "Univ police - assumed"))
   })) |> 
   nrow()
 
 n_govt_police_only <- mpeds |> 
-  filter(!map_lgl(type_of_police, is.null)) |> 
-  filter(map_lgl(type_of_police, function(x){
-    all(x %in% c("Govt police", "Govt police - assumed"))
+  filter(!map_lgl(type_of_police, is.null),
+         map_lgl(type_of_police, function(x){
+    all(x %in% c("Govt police", "Govt police - assumed", '"Riot police"'))
   })) |> 
   nrow()
+
+n_uni_and_govt_police <- mpeds |> 
+  filter(!map_lgl(type_of_police, is.null),
+         map_lgl(type_of_police, function(x){
+    any(x %in% c("Univ police", "Univ police - assumed"))
+         }),
+         map_lgl(type_of_police, function(x){
+    any(x %in% c("Govt police", "Govt police - assumed", '"Riot police"'))
+         })
+    ) |> 
+  nrow()
+
+  
+  
 
 tribble(
   ~Statistic, ~Value,
@@ -140,11 +154,11 @@ tribble(
   "Universities", n_universities,
   "Missing universities", n_missing_unis,
   "CEs with missing universities", n_missing_uni_rows,
-  "# of events with police presence recorded", n_has_police,
   "# of events with police activity recorded", n_has_police_activity,
   "# of events with any police field recorded", n_any_police_field,
   "# of events with university police only", n_uni_police_only,
-  "# of events with government police only", n_govt_police_only
+  "# of events with government police only", n_govt_police_only,
+  "# of events with both types of police", n_uni_and_govt_police 
 ) |> 
   kable()
 
@@ -210,19 +224,13 @@ Top states:
 
 ```{r state_counts}
 
-state_fips <- fips_codes |> 
-  select(state_code, state_name) |> 
-  distinct()
 
 state_counts <- mpeds |> 
-  mutate(state_code = str_sub(fips, 1, 2)) |> 
-  group_by(state_code) |> 
+  group_by(area_name) |> 
   count() |> 
   ungroup() |> 
   drop_na() |> 
-  slice_max(order_by = n, n = 15) |> 
-  left_join(state_fips, by = "state_code") |> 
-  select(-state_code)
+  slice_max(order_by = n, n = 15) 
   
 kable(state_counts)
 
@@ -238,13 +246,11 @@ county_fips <- fips_codes |>
   select(fips, county_name)
 
 county_counts <- mpeds |> 
-  group_by(fips) |> 
+  group_by(locality_name) |> 
   count() |> 
   ungroup() |> 
   drop_na() |> 
-  slice_max(order_by = n, n = 15) |> 
-  left_join(county_fips, by = "fips") |> 
-  select(-fips)
+  slice_max(order_by = n, n = 15) 
   
 kable(county_counts)
 
@@ -253,26 +259,8 @@ kable(county_counts)
 These glimpses seem mostly in line with what we should expect, with a strong
 caveat that the Missouri protests are not making a leading appearance in the 
 counts by location, but there do seem to be a fair number in Missouri when we
-take a look by state. What's going on there?
-
-Associated semantic locations with canonical events assigned the Missouri FIPS 
-code, and the Boone county FIPS code:
-
-```{r missouri_locations}
-mpeds |> 
-  filter(state == "29") |> 
-  count(location) |> 
-  kable()
-
-mpeds |>
-  filter(fips == "29019") |>
-  count(location) |> 
-  kable()
-
-```
-
-Ah, that's not good. It seems there are non-MO locations being recognized as happening in Missouri.
-See Google Doc for details
+take a look by state. It seems there are non-MO locations being recognized as
+happening in Missouri. See our 1:1 notes Google Doc for details.
 
 ```{r police_counts}
 # God that was hard
@@ -334,6 +322,9 @@ glimpse_counts(racial_issue)
 ```{r}
 get_percent <- function(colname){
   n_total <- length(unique(mpeds$canonical_id))
+  pct_any <- mpeds |> 
+    filter(!({{colname}} %in% c("_Not relevant", "")),
+           map_lgl({{colname}}, ~!is.null(.)))
   mpeds |>
     mutate("{{ colname }}" := map({{ colname }}, \(item){
       if(is.null(item)){
@@ -347,6 +338,8 @@ get_percent <- function(colname){
     count({{ colname }}) |> 
     mutate(pct = round(100 * n / n_total, 2)) |> 
     select(-n) |> 
+    bind_rows(tibble({{colname}} := "Percent of events with any value",
+                     pct = round(100 * nrow(pct_any) / n_total, 2))) |> 
     arrange(desc(pct)) |> 
     kable()
 }
@@ -415,13 +408,13 @@ plot_grid(title_grob, plotlist = plots, ncol = 1)
 ```{r regions_over_time}
 protests_by_region <- mpeds |> 
   mutate(region = case_when(
-    !is.na(canada_metropolitan_area) ~ paste0(canada_region_name, " (CA)"),
-    is.na(region) ~ NA_character_,
-    TRUE ~ region)
+    str_detect(geoid, "^canada_") ~ paste(region_name, "(CA)"),
+    is.na(region_name) ~ NA_character_,
+    TRUE ~ region_name)
     ) |> 
   mutate(date = floor_date(start_date, "month"),
          region = as_factor(region) |> 
-           fct_reorder(ifelse(is.na(canada_metropolitan_area), 0, 1))) |> 
+           fct_reorder(ifelse(!str_detect(geoid, "^canada_"), 0, 1))) |> 
   group_by(region, date) |> 
   count() |> 
   drop_na() 
@@ -496,7 +489,7 @@ plot_grid(title_grob, plotlist = plots, legend_grob, ncol = 1)
 protests_by_country <- mpeds |> 
   mutate(
     country = ifelse(
-      is.na(canada_metropolitan_area), "United States", "Canada"
+      str_detect(geoid, "us_"), "United States", "Canada"
     )
     ) |> 
   mutate(date = floor_date(start_date, "month")) |> 
@@ -806,6 +799,9 @@ mpeds |>
   select(`Nonracial issue`, `Racial issue`, date) |> 
   pivot_longer(cols = c(`Nonracial issue`, `Racial issue`),
                names_to = "type") |> 
+  mutate(type = fct_relevel(
+    type, "Racial issue", "Nonracial issue"
+    )) |> 
   filter(value) |>
   group_by(date, type) |> 
   count() |> 
@@ -827,6 +823,10 @@ mpeds |>
   select(`Nonracial issue`, `Racial issue`, date) |> 
   pivot_longer(cols = c(`Nonracial issue`, `Racial issue`),
                names_to = "type") |> 
+  mutate(type = fct_relevel(
+    type, "Racial issue", "Nonracial issue"
+    )) |> 
+  filter(value) |>
   filter(value) |>
   group_by(date, type) |> 
   count() |> 
@@ -955,7 +955,7 @@ test_date_diffs <- function(protests){
     group_by(fips) |> 
     summarize(recent_protest_dates_lst = list(protest_date))
   matched_mpeds <- mpeds |> 
-    left_join(protest_dates, by = "fips") 
+    left_join(protest_dates, by = c("geoid" = "fips"))
   
   # return a TRUE value if any protests in `vec` occurred between 
   # a given date and `diff` days after that date
@@ -1080,11 +1080,8 @@ total number of unique events comes from some events being both campaign events 
 counterprotest events, or campaign events and solidarity events. 
 
 ```{r mizzou_map}
+tar_load(geo)
 tar_load(canada_province_shapes)
-tar_load(canada_cma_shapes)
-
-canada_cma_shapes <- st_set_crs(canada_cma_shapes, st_crs(county_sf)) |> 
-  select(locality_name)
 
 mizzou_sf <- mizzou_events |> 
   # joining on `mpeds` and not `mpeds_sf` because we want coords of counties/CMAs,
@@ -1095,18 +1092,12 @@ mizzou_sf <- mizzou_events |>
   # matter which, for this viz)
   group_by(canonical_id1) |> 
   slice_head(n = 1) |> 
-  group_by(fips, canada_metropolitan_area) |> 
+  group_by(geoid) |> 
   count() |> 
   ungroup() |> 
-  left_join(county_sf, by = "fips") |> 
-  mutate(county_geo = st_centroid(geometry)) |> 
-  select(-geometry) |> 
-  left_join(canada_cma_shapes, by = c("canada_metropolitan_area" = "locality_name")) |> 
-  mutate(geometry = ifelse(is.na(canada_metropolitan_area),
-                           county_geo,
-                           st_centroid(geometry))) |> 
-  select(-county_geo) |> 
-  st_as_sf(crs = st_crs(us_sf)) 
+  left_join(geo, by = "geoid") |> 
+  mutate(geometry = st_centroid(geometry)) |> 
+  st_as_sf(crs = st_crs(geo)) 
 
 county_labels <- fips_codes |> 
   mutate(fips = paste0(state_code, county_code),
@@ -1166,11 +1157,7 @@ tribble(~stat, ~n,
 quebec_sf <- quebec_events |> 
   left_join(mpeds_sf, by = c("canonical_id1" = "canonical_id")) |> 
   st_as_sf() |> 
-  left_join(county_labels, by = "fips") |> 
-  mutate(place = ifelse(!is.na(canada_metropolitan_area), 
-                        canada_metropolitan_area,
-                        name)) |> 
-  group_by(place) |> 
+  group_by(geoid) |> 
   count() |> 
   ungroup() 
 
@@ -1207,13 +1194,4 @@ quebec_events |>
   )
   
 
-
 ```
-
-Top locations under the Quebec umbrella of events: 
-
-```{r}
-kable(st_drop_geometry(top_quebec))
-```
-
-Not very useful to map this one, I fear.

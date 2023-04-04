@@ -6,7 +6,8 @@ get_canada_covariates <- function(localities){
   # This dedups them
   locality_keys <- select(localities, geoid) |>
     st_drop_geometry() |>
-    distinct()
+    distinct() |>
+    mutate(geoid = str_remove_all(geoid, "^canada_"))
 
   year_covariates <- list(
     get_canada_unemp(locality_keys),

@@ -8,15 +8,15 @@ Exploratory Plots
 | Total imported events                       |  6097 |
 | Total events after cleaning                 |  6097 |
 | Unique locations                            |   540 |
-| US counties                                 |   314 |
+| US counties                                 |     0 |
 | Universities                                |   605 |
-| Missing universities                        |    19 |
-| CEs with missing universities               |    87 |
-| \# of events with police presence recorded  |   410 |
+| Missing universities                        |    15 |
+| CEs with missing universities               |    73 |
 | \# of events with police activity recorded  |   868 |
 | \# of events with any police field recorded |   925 |
 | \# of events with university police only    |   450 |
-| \# of events with government police only    |   230 |
+| \# of events with government police only    |   284 |
+| \# of events with both types of police      |   146 |
 
 The initial import of the MPEDS db found 6097 unique canonical events,
 and after all cleaning steps we still have 6097 canonical events.
@@ -31,13 +31,13 @@ thus no further joins will be accurate unless the MPEDS-IPEDS join is
 accurate. As of Jan 30, 2023, we are in the middle of repairing this
 join.
 
-Of those events, there were 540 unique locations, 314 unique counties,
-and 605 unique universities. Surprisingly, all of the locations that
-were not universities found geocoding matches, and hand-checking the
-most common ones indicates that there isn’t a strong pattern of missing
-value substitution, e.g. Google isn’t sending the majority of results to
-the centroid of America or to `(-1, -1)` or anything weird like that.
-Universities had a harder time, with 19 universities and 87 rows
+Of those events, there were 540 unique locations, 0 unique counties, and
+605 unique universities. Surprisingly, all of the locations that were
+not universities found geocoding matches, and hand-checking the most
+common ones indicates that there isn’t a strong pattern of missing value
+substitution, e.g. Google isn’t sending the majority of results to the
+centroid of America or to `(-1, -1)` or anything weird like that.
+Universities had a harder time, with 15 universities and 73 rows
 (canonical events) not returning lon/lat coords for universities.
 
 That comes out to \~5% of universities not having coordinates, and
@@ -85,73 +85,50 @@ And the top locations:
 
 Top states:
 
-|   n | state_name           |
-|----:|:---------------------|
-| 890 | California           |
-| 375 | Massachusetts        |
-| 336 | New York             |
-| 262 | Illinois             |
-| 187 | Pennsylvania         |
-| 170 | Michigan             |
-| 161 | Texas                |
-| 137 | Ohio                 |
-| 128 | District of Columbia |
-| 120 | Virginia             |
-| 110 | North Carolina       |
-| 107 | Florida              |
-| 106 | Indiana              |
-|  98 | Missouri             |
-|  93 | Connecticut          |
+| area_name            |   n |
+|:---------------------|----:|
+| California           | 890 |
+| Quebec               | 427 |
+| Massachusetts        | 375 |
+| Ontario              | 339 |
+| New York             | 336 |
+| Illinois             | 262 |
+| Pennsylvania         | 187 |
+| Michigan             | 170 |
+| Texas                | 161 |
+| Ohio                 | 137 |
+| District of Columbia | 128 |
+| Virginia             | 120 |
+| British Col          | 118 |
+| North Carolina       | 110 |
+| Florida              | 107 |
 
 And finally the top counties:
 
-|   n | county_name                                |
-|----:|:-------------------------------------------|
-| 239 | Middlesex County, Massachusetts            |
-| 236 | Alameda County, California                 |
-| 206 | Los Angeles County, California             |
-| 179 | New York County, New York                  |
-| 137 | Cook County, Illinois                      |
-| 128 | District of Columbia, District of Columbia |
-| 117 | Washtenaw County, Michigan                 |
-|  99 | San Diego County, California               |
-|  86 | San Francisco County, California           |
-|  75 | Suffolk County, Massachusetts              |
-|  59 | Santa Clara County, California             |
-|  56 | Travis County, Texas                       |
-|  50 | Yolo County, California                    |
-|  50 | Dane County, Wisconsin                     |
-|  46 | Boulder County, Colorado                   |
-|  46 | Tompkins County, New York                  |
+| locality_name        |   n |
+|:---------------------|----:|
+| Montréal             | 395 |
+| Middlesex            | 296 |
+| Toronto              | 248 |
+| Alameda              | 236 |
+| Los Angeles          | 206 |
+| New York             | 179 |
+| Cook                 | 137 |
+| District of Columbia | 128 |
+| Washtenaw            | 117 |
+| San Diego            |  99 |
+| San Francisco        |  86 |
+| Vancouver            |  86 |
+| Suffolk              |  75 |
+| Santa Clara          |  59 |
+| Travis               |  56 |
 
 These glimpses seem mostly in line with what we should expect, with a
 strong caveat that the Missouri protests are not making a leading
 appearance in the counts by location, but there do seem to be a fair
-number in Missouri when we take a look by state. What’s going on there?
-
-Associated semantic locations with canonical events assigned the
-Missouri FIPS code, and the Boone county FIPS code:
-
-| location                |   n |
-|:------------------------|----:|
-| Cape Girardeau, MO, USA |   1 |
-| Columbia, MO, USA       |  36 |
-| Jefferson City, MO, USA |   3 |
-| Kansas City, MO, USA    |   4 |
-| Maryville, MO, USA      |   1 |
-| Springfield, MO, USA    |   1 |
-| St. Charles, MO, USA    |   1 |
-| St. Joseph, MO, USA     |   3 |
-| St. Louis, MO, USA      |  42 |
-| Webster Groves, MO, USA |   1 |
-| Webster Groves, MO, USA |   5 |
-
-| location          |   n |
-|:------------------|----:|
-| Columbia, MO, USA |  36 |
-
-Ah, that’s not good. It seems there are non-MO locations being
-recognized as happening in Missouri. See Google Doc for details
+number in Missouri when we take a look by state. It seems there are
+non-MO locations being recognized as happening in Missouri. See our 1:1
+notes Google Doc for details.
 
 | police_presence_and_size |    n |
 |:-------------------------|-----:|
@@ -348,6 +325,7 @@ Hm.
 
 | issue                                                        |   pct |
 |:-------------------------------------------------------------|------:|
+| Percent of events with any value                             | 73.89 |
 | University governance, admin, policies, programs, curriculum | 28.13 |
 | \_Not relevant                                               | 16.58 |
 | Labor and work                                               | 15.68 |
@@ -396,6 +374,7 @@ Hm.
 | racial_issue                                                 |   pct |
 |:-------------------------------------------------------------|------:|
 | \_Not relevant                                               | 54.95 |
+| Percent of events with any value                             | 34.53 |
 | Anti-racism                                                  | 14.12 |
 | NA                                                           | 10.66 |
 | Police violence                                              |  9.41 |
@@ -518,28 +497,28 @@ issues, it will be counted twice in this chart.
 
 # Basic summary plots by variable
 
-| name                    | type    |      mean |        sd |
-|:------------------------|:--------|----------:|----------:|
-| bachelors_granting      | boolean |     1.000 |        NA |
-| campaign                | boolean |     0.243 |        NA |
-| counterprotest          | boolean |     0.044 |        NA |
-| hbcu                    | boolean |     0.011 |        NA |
-| inaccurate_date         | boolean |     0.009 |        NA |
-| masters_granting        | boolean |     1.000 |        NA |
-| multiple_cities         | boolean |     0.024 |        NA |
-| off_campus              | boolean |     0.072 |        NA |
-| on_campus_no_student    | boolean |     0.070 |        NA |
-| phd_granting            | boolean |     1.000 |        NA |
-| private                 | boolean |     0.053 |        NA |
-| quotes                  | boolean |     0.630 |        NA |
-| ritual                  | boolean |     0.029 |        NA |
-| tribal                  | boolean |     0.000 |        NA |
-| enrollment_count        | numeric | 43568.548 | 10014.084 |
-| eviction_filing_rate    | numeric |     4.018 |     5.590 |
-| eviction_judgement_rate | numeric |     1.550 |     1.580 |
-| median_household_income | numeric | 64063.576 | 16601.374 |
-| republican_vote_prop    | numeric |     0.315 |     0.152 |
-| unemp                   | numeric |     4.864 |     1.576 |
+| name                 | type    |      mean |        sd |
+|:---------------------|:--------|----------:|----------:|
+| bachelors_granting   | boolean |     1.000 |        NA |
+| campaign             | boolean |     0.243 |        NA |
+| counterprotest       | boolean |     0.044 |        NA |
+| hbcu                 | boolean |     0.011 |        NA |
+| inaccurate_date      | boolean |     0.009 |        NA |
+| masters_granting     | boolean |     1.000 |        NA |
+| multiple_cities      | boolean |     0.024 |        NA |
+| off_campus           | boolean |     0.072 |        NA |
+| on_campus_no_student | boolean |     0.070 |        NA |
+| phd_granting         | boolean |     1.000 |        NA |
+| private              | boolean |     0.053 |        NA |
+| quotes               | boolean |     0.630 |        NA |
+| ritual               | boolean |     0.029 |        NA |
+| tribal               | boolean |     0.000 |        NA |
+| enrollment_count     | numeric | 43568.548 | 10014.084 |
+| mhi                  | numeric | 67565.793 | 16808.029 |
+| rent_burden          | numeric |     0.517 |     0.082 |
+| republican_vote_prop | numeric |     0.317 |     0.153 |
+| unemp                | numeric |     5.131 |     1.661 |
+| white_prop           | numeric |     0.693 |     0.166 |
 
 For boolean variables, “mean” is the proportion that they are TRUE. Many
 of the variables recorded in MPEDS allowed for the input of multiple
@@ -581,16 +560,16 @@ The following chunk gives a glimpse at total number of matches:
 
 | source    | date_offset | recent_protests | match_percentage |
 |:----------|------------:|----------------:|-----------------:|
-| CCC       |           0 |             758 |        45.307830 |
-| CCC       |           1 |             324 |        19.366408 |
-| CCC       |           3 |             618 |        36.939629 |
-| CCC       |           5 |             776 |        46.383742 |
-| CCC       |           7 |             903 |        53.974895 |
-| Elephrame |           0 |             314 |         6.502381 |
-| Elephrame |           1 |             114 |         2.360737 |
-| Elephrame |           3 |             232 |         4.804307 |
-| Elephrame |           5 |             368 |         7.620625 |
-| Elephrame |           7 |             465 |         9.629323 |
+| CCC       |           0 |               5 |        0.2988643 |
+| CCC       |           1 |               1 |        0.0597729 |
+| CCC       |           3 |               4 |        0.2390915 |
+| CCC       |           5 |               8 |        0.4781829 |
+| CCC       |           7 |              10 |        0.5977286 |
+| Elephrame |           0 |              10 |        0.2070822 |
+| Elephrame |           1 |               7 |        0.1449575 |
+| Elephrame |           3 |              10 |        0.2070822 |
+| Elephrame |           5 |              16 |        0.3313315 |
+| Elephrame |           7 |              18 |        0.3727480 |
 
 Here, the `match_percentage` column indicates how many canonical events
 saw another protest occur in the same county within `diff` days,
@@ -632,27 +611,11 @@ and solidarity events.
 
 ![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
 
-    ## # A tibble: 6 × 2
-    ##   `Statistics for Quebec protests`     n
-    ##   <chr>                            <int>
-    ## 1 Total number of links               86
-    ## 2 Unique events                       86
-    ## 3 Campaign events only                65
-    ## 4 Coinciding events only               5
-    ## 5 Counterprotest events only           1
-    ## 6 Solidarity events only              15
+| Statistics for Quebec protests |   n |
+|:-------------------------------|----:|
+| Total number of links          |  86 |
+| Unique events                  |  86 |
+| Campaign events only           |  79 |
+| Solidarity events only         |   7 |
 
 ![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
-
-Top locations under the Quebec umbrella of events:
-
-| place                |   n |
-|:---------------------|----:|
-| Montréal             |  59 |
-| Toronto              |  21 |
-| Calgary              |   1 |
-| Hamilton             |   1 |
-| New York County, New |     |
-| York                 |   1 |
-
-Not very useful to map this one, I fear.
