@@ -55,7 +55,16 @@ mpeds <- mpeds_sf |> st_drop_geometry()
 mpeds_raw_ids <- length(unique(mpeds_raw$canonical_id))
 mpeds_ids <- length(unique(mpeds$canonical_id))
 n_locations <- length(unique(mpeds$location))
-n_fips <- length(unique(mpeds$fips))
+n_counties <- mpeds |> 
+  filter(str_detect(geoid, "^us_")) |> 
+  pull(geoid) |> 
+  unique() |> 
+  length()
+n_cmas <- mpeds |> 
+  filter(str_detect(geoid, "^canada_")) |> 
+  pull(geoid) |> 
+  unique() |> 
+  length()
 n_universities <- length(unique(mpeds$university))
 
 missing_unis <- mpeds$university_locations |>
@@ -150,7 +159,8 @@ tribble(
   "Total imported events", mpeds_raw_ids,
   "Total events after cleaning", mpeds_ids,
   "Unique locations", n_locations,
-  "US counties", n_fips,
+  "US counties", n_counties,
+  "Canadian CMAs", n_cmas,
   "Universities", n_universities,
   "Missing universities", n_missing_unis,
   "CEs with missing universities", n_missing_uni_rows,
@@ -180,7 +190,7 @@ join is accurate. As of Jan 30, 2023, we are in the middle of repairing
 this join. 
 
 Of those events, there were `r n_locations` unique locations, 
-`r n_fips` unique counties, and `r n_universities` unique universities.
+`r n_counties` unique counties, `r n_cmas` unique Canadian CMAs, and `r n_universities` unique universities.
 Surprisingly, all of the locations that were not universities 
 found geocoding matches, and hand-checking the most common ones indicates that
 there isn't a strong pattern of missing value substitution, e.g. Google isn't

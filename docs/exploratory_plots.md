@@ -8,7 +8,8 @@ Exploratory Plots
 | Total imported events                       |  6097 |
 | Total events after cleaning                 |  6097 |
 | Unique locations                            |   540 |
-| US counties                                 |     0 |
+| US counties                                 |   313 |
+| Canadian CMAs                               |    32 |
 | Universities                                |   605 |
 | Missing universities                        |    15 |
 | CEs with missing universities               |    73 |
@@ -31,14 +32,15 @@ thus no further joins will be accurate unless the MPEDS-IPEDS join is
 accurate. As of Jan 30, 2023, we are in the middle of repairing this
 join.
 
-Of those events, there were 540 unique locations, 0 unique counties, and
-605 unique universities. Surprisingly, all of the locations that were
-not universities found geocoding matches, and hand-checking the most
-common ones indicates that there isn’t a strong pattern of missing value
-substitution, e.g. Google isn’t sending the majority of results to the
-centroid of America or to `(-1, -1)` or anything weird like that.
-Universities had a harder time, with 15 universities and 73 rows
-(canonical events) not returning lon/lat coords for universities.
+Of those events, there were 540 unique locations, 313 unique counties,
+32 unique Canadian CMAs, and 605 unique universities. Surprisingly, all
+of the locations that were not universities found geocoding matches, and
+hand-checking the most common ones indicates that there isn’t a strong
+pattern of missing value substitution, e.g. Google isn’t sending the
+majority of results to the centroid of America or to `(-1, -1)` or
+anything weird like that. Universities had a harder time, with 15
+universities and 73 rows (canonical events) not returning lon/lat coords
+for universities.
 
 That comes out to \~5% of universities not having coordinates, and
 \~2.5% of canonical events not having universities with coordinates.
