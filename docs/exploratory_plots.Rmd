@@ -1113,18 +1113,36 @@ mpeds_sf |>
         plot.title = element_text(size = 20))
 ```
 
-# Investigating specific movements: Mizzou and Quebec solidarity protests
+# Investigating specific movements
 
+## 2015 Mizzou protests
 
 ```{r mizzou, warning = FALSE}
 tar_load(canonical_event_relationship)
-
-mizzou_umbrella_id <- mpeds |>
+# the `canonical_event_relationship` data.frame doesn't expose at first glance
+# children-of-children, so we have to loop through the dataset until 
+# we know we've found all of the sub-campaign events
+mizzou_ids <- mpeds |>
   filter(key == "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov") |> 
   pull(canonical_id)
 
+new_ids <- mizzou_ids
+should_find_events <- TRUE
+while(should_find_events){
+  new_events <- tibble(canonical_id2 = new_ids) |> 
+    inner_join(canonical_event_relationship, by = c("canonical_id2"))
+  message(nrow(new_events))
+  new_ids <- new_events$canonical_id1
+  mizzou_ids <- c(mizzou_ids, new_ids)
+  if(length(new_ids) == 0){
+    should_find_events <- FALSE
+  }
+}
+mizzou_ids <- unique(mizzou_ids)
+
 mizzou_events <- canonical_event_relationship |> 
-  filter(canonical_id2 == mizzou_umbrella_id) 
+  filter(canonical_id2 %in% mizzou_ids | 
+         canonical_id1 %in% mizzou_ids) 
   
 mizzou_by_type <- mizzou_events |> 
   mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
@@ -1137,6 +1155,7 @@ tribble(~stat, ~n,
   rename("Statistics for Mizzou protests" = stat) |> 
   kable()
 ```
+
 The discrepancy between the total number of links from the original Mizzou event to the 
 total number of unique events comes from some events being both campaign events and 
 counterprotest events, or campaign events and solidarity events. 
@@ -1145,14 +1164,14 @@ counterprotest events, or campaign events and solidarity events.
 tar_load(geo)
 tar_load(canada_province_shapes)
 
-mizzou_sf <- mizzou_events |> 
+mizzou_sf <- tibble(canonical_id = mizzou_ids) |> 
   # joining on `mpeds` and not `mpeds_sf` because we want coords of counties/CMAs,
   # not exactly where protests occurred (which is more granular)
-  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
+  left_join(mpeds, by = "canonical_id") |> 
   # Some events have been marked as both campaign and counterprotest/solidarity,
   # so they show up twice, but we only need one occurrence (and it doesn't
   # matter which, for this viz)
-  group_by(canonical_id1) |> 
+  group_by(canonical_id) |> 
   slice_head(n = 1) |> 
   group_by(geoid) |> 
   count() |> 
@@ -1181,8 +1200,8 @@ ggplot(mizzou_sf) +
     axis.ticks = element_blank(),
   )
 
-mizzou_events |> 
-  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
+tibble(canonical_id = mizzou_ids) |> 
+  left_join(mpeds, by = "canonical_id") |> 
   mutate(date = start_date) |> 
   group_by(date) |> 
   count() |> 
@@ -1197,27 +1216,86 @@ mizzou_events |>
     y = "Number of canonical events starting on date",
     title = "Mizzou solidarity protest occurrences over time"
   )
-  
 
 ```
 
-```{r quebec}
-quebec_events <- canonical_event_relationship |> 
-  filter(canonical_id2 %in% c(2939, 2551)) 
+### Counts of university responses to Mizzou protest waves
+
+```{r mizzou_responses}
+
+get_mizzou_responses <- function(colname){
+  n_total_with_response <- mpeds |> 
+    filter(canonical_id %in% mizzou_ids,
+           map_lgl({{colname}}, ~!is.null(.) &&
+                     any(. != "NA/Unclear"))
+           ) |> 
+    nrow()
+    
+  name_string <- rlang::as_name(enquo(colname)) |> 
+    str_replace_all("_", " ") |> 
+    str_to_sentence() 
   
+  mpeds |> 
+    filter(canonical_id %in% mizzou_ids) |> 
+    select({{colname}}) |> 
+    unnest({{colname}}) |> 
+    count({{colname}}) |> 
+    bind_rows(tibble(
+      category = "Total with valid response",
+      n = n_total_with_response
+    ) |> rename({{colname}} := category)) |> 
+    arrange(desc(n)) |> 
+    rename({{name_string}} := {{colname}},
+           "Number of associated canonical events" = n)
+}
+
+get_mizzou_responses(university_discourse_on_issue)
+get_mizzou_responses(university_discourse_on_protest)
+get_mizzou_responses(university_action_on_issue)
+get_mizzou_responses(university_reactions_to_protest)
+  
+```
+
+## 2012 Quebec protest wave
+
+```{r quebec}
+# the `canonical_event_relationship` data.frame doesn't expose at first glance
+# children-of-children, so we have to loop through the dataset until 
+# we know we've found all of the sub-campaign events
+quebec_ids <- c(2939, 2551)
+new_ids <- quebec_ids
+should_find_events <- TRUE
+while(should_find_events){
+  new_events <- tibble(canonical_id2 = new_ids) |> 
+    inner_join(canonical_event_relationship, by = c("canonical_id2"))
+  message(nrow(new_events))
+  new_ids <- new_events$canonical_id1
+  quebec_ids <- c(quebec_ids, new_ids)
+  if(length(new_ids) == 0){
+    should_find_events <- FALSE
+  }
+}
+
+quebec_ids <- unique(quebec_ids)
+
+quebec_events <- canonical_event_relationship |> 
+  filter(canonical_id1 %in% quebec_ids | canonical_id2 %in% quebec_ids) 
+
 quebec_by_type  <- quebec_events |> 
   mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
   count(stat = relationship_type) 
   
 tribble(~stat, ~n,
         "Total number of links", nrow(quebec_events),
-        "Unique events", length(unique(quebec_events$canonical_id1))) |> 
+        "Unique events", length(unique(c(
+          quebec_events$canonical_id1, quebec_events$canonical_id2
+          )))) |> 
   bind_rows(quebec_by_type) |> 
   rename("Statistics for Quebec protests" = stat) |> 
   kable()
 
-quebec_sf <- quebec_events |> 
-  left_join(mpeds_sf, by = c("canonical_id1" = "canonical_id")) |> 
+quebec_sf <- tibble(canonical_id = quebec_ids) |> 
+  left_join(mpeds_sf, by = "canonical_id") |> 
   st_as_sf() |> 
   group_by(geoid) |> 
   count() |> 
@@ -1241,18 +1319,141 @@ ggplot(quebec_sf) +
     axis.ticks = element_blank(),
   )
 
-quebec_events |> 
-  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
+tibble(canonical_id = quebec_ids) |> 
+  left_join(mpeds, by = "canonical_id") |> 
   mutate(date = floor_date(start_date, "1 week")) |> 
   group_by(date) |> 
   count() |> 
   ggplot(aes(x = date, y = n)) + 
   geom_bar(stat = "identity") + 
-  scale_x_date(date_labels = "%b %y", date_breaks = "5 months") + 
+  scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") + 
   labs(
     x = "Date",
     y = "Number of canonical events starting on date",
     title = "Quebec protest occurrences over time"
   )
+  
+```
+
+For the solidarity paper, we're interested in a frequency graph of Quebec-related
+protests stratified by police presence, activities, and type. It's hard to do 
+this on a single graph because there are many categories involved, so instead 
+I've made three separate graphs. I can also make a single image composed of 
+three sub-plots for presence, activities, and type.
+
+```{r quebec_police}
+plot_quebec_by_police <- function(colname){
+  name_string <- rlang::as_name(enquo(colname)) |> 
+    str_replace_all("_", " ") |> 
+    str_to_sentence() 
+  
+  tibble(canonical_id = quebec_ids) |> 
+    left_join(mpeds, by = "canonical_id") |> 
+    mutate(date = floor_date(start_date, "1 week")) |> 
+    select(date, {{colname}}) |> 
+    unnest(cols = {{colname}}) |> 
+    group_by(date, {{colname}}) |> 
+    count() |> 
+    ggplot(aes(x = date, y = n, fill = {{colname}})) + 
+    geom_bar(stat = "identity") +
+    scale_x_date(date_breaks = "1 month", 
+                 date_labels = "%B") +
+    scale_fill_brewer(type = "qual", palette = "Set1") +
+    labs(
+      x = NULL,
+      y = "Number of events associated with category",
+      title = paste0(name_string, " during 2012 Quebec Tuition Strike"),
+      fill = name_string
+    )
+}
+
+plot_quebec_by_police(police_presence_and_size) 
+plot_quebec_by_police(police_activities) 
+plot_quebec_by_police(type_of_police) 
+```
+
+Brainstorming a breakdown for activity recategorization:
+
+- Constrain: Arrest or Attempted, Arrest- Large Scale, Constrain, Detain,   
+  Remove Individual Protestors
+- Passive: Cooperate/Coordinate, Monitor/Present
+- Verbal: Instruct/Warn, "Breaking the Rules"
+- Force (all force mentions)
+- NA/Unclear
+
+## Trump-related protests
+
+Unlike the above two protest wave profiles, I'm searching for these protests based on 
+issues, not by canonical event relationships.
+
+```{r trump_events}
+
+trump <- mpeds |> 
+  filter(map_lgl(issue, ~any(. != "_Not relevant")),
+         map_lgl(issue, ~any(str_detect(., "Trump")))) |> 
+  mutate(date = floor_date(start_date, "1 week"),
+         issue = ifelse(
+           str_detect(issue, "Against"), "Anti-Trump", "Pro-Trump")
+         ) 
+
+trump |> 
+  count(date, issue) |> 
+  ggplot(aes(x = date, y = n, fill = issue)) + 
+  geom_bar(stat = "identity") +
+  annotate(geom = "text",
+           x = seq.Date(
+             from = as.Date("2016-05-01"), 
+             to = as.Date("2018-05-01"), 
+             by = "1 year"),
+           y = -10,
+           label = 2016:2018,
+           size = 4) + 
+  scale_fill_manual(values = c("Pro-Trump" = "#E41A1C", 
+                               "Anti-Trump" = "#377EB8")) + 
+  scale_y_continuous(breaks = seq(0, 150, by = 25)) + 
+  scale_x_date(date_labels = "%b", date_breaks = "3 months") + 
+  coord_cartesian(ylim = c(0, 140), expand = FALSE, clip = "off") +
+  labs(
+    x = NULL,
+    y = "Number of events associated with given issue",
+    title = "Counts of Trump-related protests over time",
+    fill = NULL
+  )  + 
+  theme(plot.margin = unit(c(1,1,4,1), "lines"),
+        axis.text = element_text(size = 12))
+```
+
+```{r trump_map}
+tar_load(geo)
+
+trump <- trump |> 
+  group_by(geoid, issue) |> 
+  count() |> 
+  left_join(geo, by = "geoid") |> 
+  mutate(geometry = st_centroid(geometry)) |> 
+  st_as_sf(crs = st_crs(geo))
+  
+map(c("Pro-Trump", "Anti-Trump"), function(category){
+  trump |> 
+    filter(issue == category) |> 
+    ggplot() + 
+    geom_sf(data = canada_province_shapes, color = NA) + 
+    geom_sf(data = us_sf) + 
+    geom_sf(aes(size = n), 
+            color = ifelse(category == "Pro-Trump", "#E41A1C", "#377EB8")) + 
+    lims(
+      x = c(-125, -65), 
+      y = c(24, 50)
+    ) + 
+    labs(
+      size = "Number of events",
+      title = paste0("Geographic spread of ", category, " protests")
+    ) +
+    theme(text = element_text(family = "Lato"),
+          axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          plot.title = element_text(size = 20))
+})
+     
   
 ```

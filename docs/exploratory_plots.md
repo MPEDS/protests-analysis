@@ -323,6 +323,94 @@ Hm.
 | K-12 education                                               |    1 |
 | Racial/ethnic pride - minority                               |    1 |
 
+# Police involvement by issue
+
+We’re interested in describing police involvement by issue – what issues
+attract the heaviest police presence and response?
+
+I filtered our dataset to include only rows that had at least one
+non-missing value for type of police, police actions, police activities,
+and police presence and size, and tabulated the issues reported in the
+remaining dataset. The table can thus be read as the most popular issues
+among police-involved protests.
+
+In the table below, counts may be inflated given each canonical event
+could have multiple issues.
+
+This table should be compared to the table of percentages of issues
+across all events to be meaningful for the questions we’d like to
+answer. For example, university governance makes a strong appearance
+here, but that could be just because it is a popular issue at large, not
+because protests around the issue attract police. On the other hand,
+tuition and fees makes a solid jump here from having 10% prevalence
+across all events but with 16% prevalence across police-involved events.
+This makes sense given our knowledge that the Quebec tuition strike
+protests were heavily policed.
+
+| value                                                                 | Percent of events with given issue |
+|:----------------------------------------------------------------------|-----------------------------------:|
+| \_Not relevant (racial)                                               |                              62.16 |
+| University governance, admin, policies, programs, curriculum          |                              28.65 |
+| Tuition, fees, financial aid                                          |                              16.97 |
+| Anti-racism (racial)                                                  |                              14.92 |
+| \_Not relevant                                                        |                              14.70 |
+| Labor and work                                                        |                              12.43 |
+| Police violence (racial)                                              |                              11.35 |
+| \_Other Issue                                                         |                              11.03 |
+| Trump and/or his administration (Against)                             |                               9.95 |
+| Economy/inequality                                                    |                               8.32 |
+| Environmental                                                         |                               6.81 |
+| University governance, admin, policies, programs, curriculum (racial) |                               6.81 |
+| Campus climate (racial)                                               |                               6.16 |
+| Immigration (For) (racial)                                            |                               5.51 |
+| Public funding for higher education                                   |                               5.51 |
+| Far Right/Alt Right (Against)                                         |                               5.30 |
+| Feminism/women’s issues                                               |                               5.19 |
+| White supremacy (Against) (racial)                                    |                               5.19 |
+| Faith-based discrimination                                            |                               4.43 |
+| Sexual assault/violence                                               |                               4.32 |
+| Police violence/anti-law enforcement/criminal justice                 |                               3.35 |
+| Hate speech                                                           |                               3.14 |
+| Abortion access                                                       |                               3.03 |
+| LGB+/Sexual orientation (For)                                         |                               3.03 |
+| LGB+/Sexual orientation                                               |                               2.59 |
+| Abortion (Against)/Pro-life                                           |                               2.49 |
+| Transgender issues (For)                                              |                               2.38 |
+| Free speech                                                           |                               2.27 |
+| Hate speech (racial)                                                  |                               2.27 |
+| Social services and welfare                                           |                               2.27 |
+| Far Right/Alt Right (For)                                             |                               2.16 |
+| \_Other Issue (racial)                                                |                               2.16 |
+| Indigenous issues (racial)                                            |                               1.95 |
+| Anti-war/peace                                                        |                               1.84 |
+| Racist/racialized symbols (racial)                                    |                               1.73 |
+| LGB+/Sexual orientation (Against)                                     |                               1.62 |
+| Pro-Palestine/BDS                                                     |                               1.62 |
+| White supremacy (For) (racial)                                        |                               1.62 |
+| Transgender issues                                                    |                               1.51 |
+| Trump and/or his administration (For)                                 |                               0.97 |
+| Domestic foreign policy                                               |                               0.86 |
+| Hate crimes/Anti-minority violence (racial)                           |                               0.86 |
+| Prison/mass incarceration (racial)                                    |                               0.86 |
+| Transgender issues (Against)                                          |                               0.86 |
+| Gun control                                                           |                               0.76 |
+| Accessibility                                                         |                               0.65 |
+| Animal rights                                                         |                               0.54 |
+| Anti-colonial/political independence                                  |                               0.43 |
+| Human rights                                                          |                               0.43 |
+| Political corruption/malfeasance                                      |                               0.43 |
+| Pro-Israel/Zionism                                                    |                               0.43 |
+| All Lives Matter (racial)                                             |                               0.32 |
+| Hate crimes/Anti-minority violence                                    |                               0.32 |
+| Immigration (Against) (racial)                                        |                               0.32 |
+| Racial/ethnic pride - white (racial)                                  |                               0.32 |
+| Affirmative action (For) (racial)                                     |                               0.22 |
+| Gun owner rights                                                      |                               0.22 |
+| Indigenous Issues (racial)                                            |                               0.22 |
+| Memorials & anniversaries (racial)                                    |                               0.22 |
+| Traditional marriage/family                                           |                               0.22 |
+| Men’s rights                                                          |                               0.11 |
+
 # Percentages of all protest with given preset
 
 | issue                                                        |   pct |
@@ -596,15 +684,24 @@ we have complete data.
 
 ![](exploratory_plots_files/figure-gfm/mpeds_map-1.png)<!-- -->
 
-# Investigating specific movements: Mizzou and Quebec solidarity protests
+# Investigating specific movements
+
+## 2015 Mizzou protests
+
+    ## 104
+
+    ## 11
+
+    ## 0
 
 | Statistics for Mizzou protests |   n |
 |:-------------------------------|----:|
-| Total number of links          | 104 |
-| Unique events                  |  98 |
-| Campaign events only           |  13 |
-| Counterprotest events only     |   7 |
-| Solidarity events only         |  84 |
+| Total number of links          | 146 |
+| Unique events                  | 104 |
+| Campaign events only           |  19 |
+| Coinciding events only         |   9 |
+| Counterprotest events only     |  11 |
+| Solidarity events only         | 107 |
 
 The discrepancy between the total number of links from the original
 Mizzou event to the total number of unique events comes from some events
@@ -613,11 +710,112 @@ and solidarity events.
 
 ![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
 
+### Counts of university responses to Mizzou protest waves
+
+    ## # A tibble: 12 × 2
+    ##    `University discourse on issue` `Number of associated canonical events`
+    ##    <chr>                                                             <int>
+    ##  1 NA/Unclear                                                           15
+    ##  2 Total with valid response                                            14
+    ##  3 Express Agreement                                                     9
+    ##  4 Affirm Diversity                                                      5
+    ##  5 Apology/Responsibility                                                3
+    ##  6 Emotional Appeal                                                      3
+    ##  7 Explain Bureaucracy/Law                                               3
+    ##  8 Oppose Racism                                                         3
+    ##  9 Affirm BIPOC Students                                                 2
+    ## 10 Affirm Marginalized Students                                          1
+    ## 11 Express Contrary Position                                             1
+    ## 12 Oppose Oppression                                                     1
+
+    ## # A tibble: 9 × 2
+    ##   `University discourse on protest` `Number of associated canonical events`
+    ##   <chr>                                                               <int>
+    ## 1 "Total with valid response"                                            21
+    ## 2 "\"Listen/Dialogue\""                                                  12
+    ## 3 "Protest: Positive"                                                    11
+    ## 4 "NA/Unclear"                                                            8
+    ## 5 "Protest: Exercising Speech"                                            3
+    ## 6 "\"Work w/ Protestors\""                                                2
+    ## 7 "Protest: Illegitimate"                                                 2
+    ## 8 "\"Safety\""                                                            1
+    ## 9 "Protest: Other Prob/Negative"                                          1
+
+    ## # A tibble: 9 × 2
+    ##   `University action on issue` `Number of associated canonical events`
+    ##   <chr>                                                          <int>
+    ## 1 NA/Unclear                                                        16
+    ## 2 Total with valid response                                         13
+    ## 3 Action in Process                                                  8
+    ## 4 Fulfill Demand                                                     4
+    ## 5 Resign/Fire                                                        3
+    ## 6 Structural Change                                                  3
+    ## 7 Correct Racist History                                             1
+    ## 8 Hold Forum                                                         1
+    ## 9 Reject Demand                                                      1
+
+    ## # A tibble: 8 × 2
+    ##   `University reactions to protest` `Number of associated canonical events`
+    ##   <chr>                                                               <int>
+    ## 1 Total with valid response                                              20
+    ## 2 Monitor/Present                                                         9
+    ## 3 NA/Unclear                                                              9
+    ## 4 Participate/Aid                                                         8
+    ## 5 Direct Communications                                                   7
+    ## 6 Meet                                                                    6
+    ## 7 Get Confronted                                                          3
+    ## 8 Refuse to Meet                                                          1
+
+## 2012 Quebec protest wave
+
+    ## 86
+
+    ## 94
+
+    ## 19
+
+    ## 0
+
 | Statistics for Quebec protests |   n |
 |:-------------------------------|----:|
-| Total number of links          |  86 |
-| Unique events                  |  86 |
-| Campaign events only           |  79 |
+| Total number of links          | 165 |
+| Unique events                  | 166 |
+| Campaign events only           | 158 |
 | Solidarity events only         |   7 |
 
 ![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
+
+For the solidarity paper, we’re interested in a frequency graph of
+Quebec-related protests stratified by police presence, activities, and
+type. It’s hard to do this on a single graph because there are many
+categories involved, so instead I’ve made three separate graphs. I can
+also make a single image composed of three sub-plots for presence,
+activities, and type.
+
+![](exploratory_plots_files/figure-gfm/quebec_police-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-3.png)<!-- -->
+
+Brainstorming a breakdown for activity recategorization:
+
+- Constrain: Arrest or Attempted, Arrest- Large Scale, Constrain,
+  Detain,  
+  Remove Individual Protestors
+- Passive: Cooperate/Coordinate, Monitor/Present
+- Verbal: Instruct/Warn, “Breaking the Rules”
+- Force (all force mentions)
+- NA/Unclear
+
+## Trump-related protests
+
+Unlike the above two protest wave profiles, I’m searching for these
+protests based on issues, not by canonical event relationships.
+
+![](exploratory_plots_files/figure-gfm/trump_events-1.png)<!-- -->
+
+    ## [[1]]
+
+![](exploratory_plots_files/figure-gfm/trump_map-1.png)<!-- -->
+
+    ## 
+    ## [[2]]
+
+![](exploratory_plots_files/figure-gfm/trump_map-2.png)<!-- -->
