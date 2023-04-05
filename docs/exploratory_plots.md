@@ -688,12 +688,6 @@ we have complete data.
 
 ## 2015 Mizzou protests
 
-    ## 104
-
-    ## 11
-
-    ## 0
-
 | Statistics for Mizzou protests |   n |
 |:-------------------------------|----:|
 | Total number of links          | 146 |
@@ -712,69 +706,57 @@ and solidarity events.
 
 ### Counts of university responses to Mizzou protest waves
 
-    ## # A tibble: 12 × 2
-    ##    `University discourse on issue` `Number of associated canonical events`
-    ##    <chr>                                                             <int>
-    ##  1 NA/Unclear                                                           15
-    ##  2 Total with valid response                                            14
-    ##  3 Express Agreement                                                     9
-    ##  4 Affirm Diversity                                                      5
-    ##  5 Apology/Responsibility                                                3
-    ##  6 Emotional Appeal                                                      3
-    ##  7 Explain Bureaucracy/Law                                               3
-    ##  8 Oppose Racism                                                         3
-    ##  9 Affirm BIPOC Students                                                 2
-    ## 10 Affirm Marginalized Students                                          1
-    ## 11 Express Contrary Position                                             1
-    ## 12 Oppose Oppression                                                     1
+| University discourse on issue | Number of associated canonical events |
+|:------------------------------|--------------------------------------:|
+| NA/Unclear                    |                                    15 |
+| Total with valid response     |                                    14 |
+| Express Agreement             |                                     9 |
+| Affirm Diversity              |                                     5 |
+| Apology/Responsibility        |                                     3 |
+| Emotional Appeal              |                                     3 |
+| Explain Bureaucracy/Law       |                                     3 |
+| Oppose Racism                 |                                     3 |
+| Affirm BIPOC Students         |                                     2 |
+| Affirm Marginalized Students  |                                     1 |
+| Express Contrary Position     |                                     1 |
+| Oppose Oppression             |                                     1 |
 
-    ## # A tibble: 9 × 2
-    ##   `University discourse on protest` `Number of associated canonical events`
-    ##   <chr>                                                               <int>
-    ## 1 "Total with valid response"                                            21
-    ## 2 "\"Listen/Dialogue\""                                                  12
-    ## 3 "Protest: Positive"                                                    11
-    ## 4 "NA/Unclear"                                                            8
-    ## 5 "Protest: Exercising Speech"                                            3
-    ## 6 "\"Work w/ Protestors\""                                                2
-    ## 7 "Protest: Illegitimate"                                                 2
-    ## 8 "\"Safety\""                                                            1
-    ## 9 "Protest: Other Prob/Negative"                                          1
+| University discourse on protest | Number of associated canonical events |
+|:--------------------------------|--------------------------------------:|
+| Total with valid response       |                                    21 |
+| “Listen/Dialogue”               |                                    12 |
+| Protest: Positive               |                                    11 |
+| NA/Unclear                      |                                     8 |
+| Protest: Exercising Speech      |                                     3 |
+| “Work w/ Protestors”            |                                     2 |
+| Protest: Illegitimate           |                                     2 |
+| “Safety”                        |                                     1 |
+| Protest: Other Prob/Negative    |                                     1 |
 
-    ## # A tibble: 9 × 2
-    ##   `University action on issue` `Number of associated canonical events`
-    ##   <chr>                                                          <int>
-    ## 1 NA/Unclear                                                        16
-    ## 2 Total with valid response                                         13
-    ## 3 Action in Process                                                  8
-    ## 4 Fulfill Demand                                                     4
-    ## 5 Resign/Fire                                                        3
-    ## 6 Structural Change                                                  3
-    ## 7 Correct Racist History                                             1
-    ## 8 Hold Forum                                                         1
-    ## 9 Reject Demand                                                      1
+| University action on issue | Number of associated canonical events |
+|:---------------------------|--------------------------------------:|
+| NA/Unclear                 |                                    16 |
+| Total with valid response  |                                    13 |
+| Action in Process          |                                     8 |
+| Fulfill Demand             |                                     4 |
+| Resign/Fire                |                                     3 |
+| Structural Change          |                                     3 |
+| Correct Racist History     |                                     1 |
+| Hold Forum                 |                                     1 |
+| Reject Demand              |                                     1 |
 
-    ## # A tibble: 8 × 2
-    ##   `University reactions to protest` `Number of associated canonical events`
-    ##   <chr>                                                               <int>
-    ## 1 Total with valid response                                              20
-    ## 2 Monitor/Present                                                         9
-    ## 3 NA/Unclear                                                              9
-    ## 4 Participate/Aid                                                         8
-    ## 5 Direct Communications                                                   7
-    ## 6 Meet                                                                    6
-    ## 7 Get Confronted                                                          3
-    ## 8 Refuse to Meet                                                          1
+| University reactions to protest | Number of associated canonical events |
+|:--------------------------------|--------------------------------------:|
+| Total with valid response       |                                    20 |
+| Monitor/Present                 |                                     9 |
+| NA/Unclear                      |                                     9 |
+| Participate/Aid                 |                                     8 |
+| Direct Communications           |                                     7 |
+| Meet                            |                                     6 |
+| Get Confronted                  |                                     3 |
+| Refuse to Meet                  |                                     1 |
 
 ## 2012 Quebec protest wave
-
-    ## 86
-
-    ## 94
-
-    ## 19
-
-    ## 0
 
 | Statistics for Quebec protests |   n |
 |:-------------------------------|----:|
@@ -784,6 +766,8 @@ and solidarity events.
 | Solidarity events only         |   7 |
 
 ![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
+
+### Quebec events frequency stratified by police fields
 
 For the solidarity paper, we’re interested in a frequency graph of
 Quebec-related protests stratified by police presence, activities, and

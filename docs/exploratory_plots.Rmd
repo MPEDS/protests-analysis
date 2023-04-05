@@ -1131,7 +1131,6 @@ should_find_events <- TRUE
 while(should_find_events){
   new_events <- tibble(canonical_id2 = new_ids) |> 
     inner_join(canonical_event_relationship, by = c("canonical_id2"))
-  message(nrow(new_events))
   new_ids <- new_events$canonical_id1
   mizzou_ids <- c(mizzou_ids, new_ids)
   if(length(new_ids) == 0){
@@ -1246,7 +1245,8 @@ get_mizzou_responses <- function(colname){
     ) |> rename({{colname}} := category)) |> 
     arrange(desc(n)) |> 
     rename({{name_string}} := {{colname}},
-           "Number of associated canonical events" = n)
+           "Number of associated canonical events" = n) |> 
+    kable()
 }
 
 get_mizzou_responses(university_discourse_on_issue)
@@ -1268,7 +1268,6 @@ should_find_events <- TRUE
 while(should_find_events){
   new_events <- tibble(canonical_id2 = new_ids) |> 
     inner_join(canonical_event_relationship, by = c("canonical_id2"))
-  message(nrow(new_events))
   new_ids <- new_events$canonical_id1
   quebec_ids <- c(quebec_ids, new_ids)
   if(length(new_ids) == 0){
@@ -1334,6 +1333,8 @@ tibble(canonical_id = quebec_ids) |>
   )
   
 ```
+
+### Quebec events frequency stratified by police fields
 
 For the solidarity paper, we're interested in a frequency graph of Quebec-related
 protests stratified by police presence, activities, and type. It's hard to do 
