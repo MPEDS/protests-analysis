@@ -6,7 +6,7 @@
 #' `targets` for now, because it 1) relies on code not managed by it and 2)
 #' relies on non-manageable human inputs
 export_size <- function(canonical_events, blm){
-  articles <- get_articles()
+  articles <- get_articles(canonical_events)
   articles <- articles |>
     select(article_id = id, event_id, title, full_text = text) |>
     filter(!is.na(event_id))

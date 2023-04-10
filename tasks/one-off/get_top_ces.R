@@ -1,10 +1,11 @@
 get_top_ces <- function(){
-  ces <- tar_read(canonical_events) |>
+  canonical_events <- tar_read(canonical_events)
+  ces <- canonical_events |>
     filter(variable == "university-responses-text") |>
     select(key) |>
     distinct()
 
-  articles <- get_articles()
+  articles <- get_articles(canonical_events)
 
   articles |>
     drop_na(canonical_key) |>

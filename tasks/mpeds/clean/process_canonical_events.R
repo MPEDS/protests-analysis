@@ -9,7 +9,7 @@
 process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
   uni_pub_xwalk <- read_csv(uni_pub_xwalk_file, show_col_types = FALSE)
 
-  canonical_events <- canonical_events |>
+  wide <- canonical_events |>
     select(-event_id, -cec_id) |>
     mutate(
       across(where(is.character), str_trim),
@@ -24,9 +24,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
     filter(!(key == "20130918_AnnArbor_Demonstration_ProChoice" &
                value == "Ann Arbor, Michigan, USA")
     ) |>
-    select(-text)
-
-  wide <- canonical_events |>
+    select(-text) |>
     distinct() |>
     mutate(variable = str_replace_all(variable, '-', '_') |>
              str_remove_all("_text")) |>
@@ -83,7 +81,17 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
                             return(publication_uni)
                           }
                           })) |>
-    select(-uni, -pub_uni, -university_names)
+    select(-uni, -pub_uni, -university_names) |>
+    # Some issues have strange presets
+    mutate(racial_issue = map(racial_issue, \(issue_list){
+      issue_list |>
+        str_trim() |>
+        str_replace_all("Indigenous Issues", "Indigenous issues") |>
+        unique()
+    }))
+
+  # Attach number of articles
+  articles <- get_articles(canonical_events)
 
   # converting yes/no columns to lgl
   is_yesno <- function(col){

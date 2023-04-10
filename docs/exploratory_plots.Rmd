@@ -1,6 +1,8 @@
 ---
 title: "Exploratory Plots"
-output: github_document
+output:
+  github_document: 
+    toc: true
 ---
 
 ```{r setup, include=FALSE, message=FALSE}
@@ -48,6 +50,8 @@ mpeds_raw <- tar_read(canonical_events)
 mpeds_sf <- tar_read(integrated) 
 mpeds <- mpeds_sf |> st_drop_geometry()
 ```
+
+
 
 # Basic counts
 
@@ -844,6 +848,9 @@ issues |>
 
 # Separate cases required because of the way R checks for types and length
 has_issue <- function(list_item){
+  if(is.null(list_item)){
+    return(FALSE)
+  }
   if(length(list_item) == 1){
     return(list_item != "_Not relevant") 
   } else {
@@ -877,6 +884,30 @@ mpeds |>
   scale_fill_brewer(type = "qual", palette = "Set1") 
 
 mpeds |> 
+  mutate(
+    has_racial = map_lgl(racial_issue, has_issue),
+    has_issue = map_lgl(issue, has_issue),
+    category = case_when(
+      has_issue & has_racial ~ "Has both",
+      has_issue ~ "Non-racial issue",
+      has_racial ~ "Racial issue",
+      TRUE ~ "No issue assigned"
+    ),
+    category = fct_relevel(category, "Racial issue", 
+                           "Non-racial issue", "Has both",
+                           "No issue assigned"),
+    date = floor_date(start_date, "1 month"))  |> 
+  ggplot(aes(x = date, fill = category)) + 
+  geom_bar() + 
+  labs(
+    x = NULL,
+    fill = NULL,
+    y = "Number of associated canonical events",
+    title = "Protest counts by type of issue over time",
+  ) +
+  scale_fill_brewer(type = "qual", palette = "Set1") 
+
+mpeds |>   
   filter(!map_lgl(racial_issue, is.null),
          !map_lgl(issue, is.null)) |> 
   mutate(`Racial issue` = map_lgl(racial_issue, has_issue),
@@ -888,7 +919,6 @@ mpeds |>
   mutate(type = fct_relevel(
     type, "Racial issue", "Nonracial issue"
     )) |> 
-  filter(value) |>
   filter(value) |>
   group_by(date, type) |> 
   count() |> 
@@ -905,13 +935,11 @@ mpeds |>
   
 ```
 
-groI've collapsed both types of issues here to show racial and nonracial issues 
+I've collapsed both types of issues here to show racial and nonracial issues 
 alongside each other. Racial issue counts here are taken at a maximum of one per 
 canonical event, so that events that relate to many issues do not outweight others
 and we have a clearer understanding of the weight of protest occurrence.
-The same goes for nonracial issues. However, this does mean that if a protest
-has both nonracial and racial issues, it will be counted twice in this chart.
-
+The same goes for nonracial issues. 
 
 # Basic summary plots by variable
 
@@ -1458,3 +1486,87 @@ map(c("Pro-Trump", "Anti-Trump"), function(category){
      
   
 ```
+
+###  Issue composition November 9th and 17th protests
+
+In our notes document, Dr. Berrey noted that she was surprised to see most of the
+November 17th protests were non-racial, and did not have to do with sanctuary cities.
+I wanted to offer some more context on that, as well as on her next comment on the
+heterogeneity of Trump-related protests, so I made some tables on this point.
+
+The day with the highest number of protests in our dataset was November 9th, 2016, holding 73 protests, 
+followed by November 12th, 2015 November 16th, 2016. I've included tables for the 2016
+dates showing the issue breakdown on all of these dates and also for the 
+November 17th protests in case it offers any additional clarity.
+
+It seems that "Immigration (For)", which is the issue closest to the 
+topic of sanctuary cities that you thought would be at the heart of these protests,
+does make a strong appearance for these days, but the general 
+category of Trump-related protests still far outnumber it. Because the general Trump 
+category is coded as a non-racial issue, the chart above showing racial and 
+nonracial issues over time shows more nonracial issues than racial issues for November
+2016.
+
+```{r}
+
+mpeds |> 
+  count(start_date) |> 
+  drop_na() |> 
+  arrange(desc(n)) |> 
+  head() |> 
+  rename("Top dates by protest occurrence" = start_date,
+         "# of events" = n) |> 
+  kable()
+
+mpeds |> 
+  filter(map_lgl(racial_issue, ~("Immigration (For)" %in% .))) |> 
+  count(start_date) |> 
+  arrange(desc(n)) |> 
+  head() |> 
+  rename("Top dates for immigration-related protests" = start_date)
+  
+mpeds_issues <- mpeds |> 
+  select(start_date, issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(cols = value) |> 
+  filter(value != "_Not relevant") |> 
+  mutate(value = ifelse(name == "racial_issue",
+                        paste(value, "(racial)"), value)) |> 
+  select(-name, start_date, issue = value) |> 
+  group_by(start_date, issue) |> 
+  count() |> 
+  ungroup() |> 
+  arrange(desc(n))
+
+mpeds_issues |> 
+  filter(start_date == as.Date("2016-11-09")) |> 
+  select(-start_date) |> 
+  rename("Issue counts for November 9th, 2016" = issue) |> 
+  kable()
+
+mpeds_issues |> 
+  filter(start_date == as.Date("2016-11-16")) |> 
+  select(-start_date) |> 
+  rename("Issue counts for November 16th, 2016" = issue) |> 
+  kable()
+
+mpeds_issues |> 
+  filter(start_date == as.Date("2016-11-17")) |> 
+  select(-start_date) |> 
+  rename("Issue counts for November 17th, 2016" = issue) |> 
+  kable()
+
+
+```
+
+# Investigating reporting measures
+
+- Graph of articles per event vs size of protest
+  - if reporting perfect, articles should increase linearly with size of protest
+  - obv will not -- what kinds of events attract lots of coverage despite being 
+    
+
+```{r}
+
+```
+

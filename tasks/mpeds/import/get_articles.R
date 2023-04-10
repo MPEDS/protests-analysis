@@ -1,11 +1,11 @@
-get_articles <- function(){
+get_articles <- function(canonical_events){
   con <- connect_sheriff()
 
   articles_db <- tbl(con, "article_metadata")
   coder_event_creator <- tbl(con, "coder_event_creator") |>
     select(article_id, event_id) |>
     distinct()
-  canonical_events <- tar_read(canonical_events) |>
+  canonical_events <- canonical_events |>
     select(event_id, canonical_key = key) |>
     distinct()
 
