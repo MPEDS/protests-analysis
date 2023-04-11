@@ -87,6 +87,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
       issue_list |>
         str_trim() |>
         str_replace_all("Indigenous Issues", "Indigenous issues") |>
+        str_replace_all("LGB+/Sexual orientation$", "LGB+/Sexual orientation (For)") |>
         unique()
     }))
 

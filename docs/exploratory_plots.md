@@ -1,6 +1,31 @@
 Exploratory Plots
 ================
 
+- [Basic counts](#basic-counts)
+  - [Counts by issue](#counts-by-issue)
+  - [Counts by racial issue:](#counts-by-racial-issue)
+- [Police involvement by issue](#police-involvement-by-issue)
+- [Percentages of all protest with given
+  preset](#percentages-of-all-protest-with-given-preset)
+- [Counts over time](#counts-over-time)
+  - [Racial and “nonracial” issues over time
+    (collapsed)](#racial-and-nonracial-issues-over-time-collapsed)
+- [Basic summary plots by variable](#basic-summary-plots-by-variable)
+- [Trying out joins with protest
+  data](#trying-out-joins-with-protest-data)
+- [Maps and related things](#maps-and-related-things)
+- [Investigating specific movements](#investigating-specific-movements)
+  - [2015 Mizzou protests](#2015-mizzou-protests)
+    - [Counts of university responses to Mizzou protest
+      waves](#counts-of-university-responses-to-mizzou-protest-waves)
+  - [2012 Quebec protest wave](#2012-quebec-protest-wave)
+    - [Quebec events frequency stratified by police
+      fields](#quebec-events-frequency-stratified-by-police-fields)
+  - [Trump-related protests](#trump-related-protests)
+    - [Issue composition November 9th and 17th
+      protests](#issue-composition-november-9th-and-17th-protests)
+- [Investigating reporting measures](#investigating-reporting-measures)
+
 # Basic counts
 
 | Statistic                                   | Value |
@@ -42,8 +67,8 @@ anything weird like that. Universities had a harder time, with 15
 universities and 73 rows (canonical events) not returning lon/lat coords
 for universities.
 
-That comes out to \~5% of universities not having coordinates, and
-\~2.5% of canonical events not having universities with coordinates.
+That comes out to ~5% of universities not having coordinates, and ~2.5%
+of canonical events not having universities with coordinates.
 
 The top universities by appearances:
 
@@ -296,12 +321,11 @@ Hm.
 |:-------------------------------------------------------------|-----:|
 | \_Not relevant                                               | 3350 |
 | Anti-racism                                                  |  861 |
-| NA                                                           |  650 |
 | Police violence                                              |  574 |
 | University governance, admin, policies, programs, curriculum |  531 |
 | Immigration (For)                                            |  475 |
 | Campus climate                                               |  433 |
-| Indigenous issues                                            |  159 |
+| Indigenous issues                                            |  173 |
 | White supremacy (Against)                                    |  154 |
 | \_Other Issue                                                |  132 |
 | Hate speech                                                  |   99 |
@@ -313,7 +337,6 @@ Hm.
 | Immigration (Against)                                        |   20 |
 | White supremacy (For)                                        |   20 |
 | Cultural appropriation                                       |   18 |
-| Indigenous Issues                                            |   14 |
 | Racial/ethnic pride - white                                  |    7 |
 | All Lives Matter                                             |    6 |
 | Pro-police                                                   |    5 |
@@ -349,11 +372,9 @@ protests were heavily policed.
 
 | value                                                                 | Percent of events with given issue |
 |:----------------------------------------------------------------------|-----------------------------------:|
-| \_Not relevant (racial)                                               |                              62.16 |
 | University governance, admin, policies, programs, curriculum          |                              28.65 |
 | Tuition, fees, financial aid                                          |                              16.97 |
 | Anti-racism (racial)                                                  |                              14.92 |
-| \_Not relevant                                                        |                              14.70 |
 | Labor and work                                                        |                              12.43 |
 | Police violence (racial)                                              |                              11.35 |
 | \_Other Issue                                                         |                              11.03 |
@@ -380,8 +401,8 @@ protests were heavily policed.
 | Hate speech (racial)                                                  |                               2.27 |
 | Social services and welfare                                           |                               2.27 |
 | Far Right/Alt Right (For)                                             |                               2.16 |
+| Indigenous issues (racial)                                            |                               2.16 |
 | \_Other Issue (racial)                                                |                               2.16 |
-| Indigenous issues (racial)                                            |                               1.95 |
 | Anti-war/peace                                                        |                               1.84 |
 | Racist/racialized symbols (racial)                                    |                               1.73 |
 | LGB+/Sexual orientation (Against)                                     |                               1.62 |
@@ -406,10 +427,11 @@ protests were heavily policed.
 | Racial/ethnic pride - white (racial)                                  |                               0.32 |
 | Affirmative action (For) (racial)                                     |                               0.22 |
 | Gun owner rights                                                      |                               0.22 |
-| Indigenous Issues (racial)                                            |                               0.22 |
 | Memorials & anniversaries (racial)                                    |                               0.22 |
 | Traditional marriage/family                                           |                               0.22 |
 | Men’s rights                                                          |                               0.11 |
+
+![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-1.png)<!-- -->
 
 # Percentages of all protest with given preset
 
@@ -464,14 +486,13 @@ protests were heavily policed.
 | racial_issue                                                 |   pct |
 |:-------------------------------------------------------------|------:|
 | \_Not relevant                                               | 54.95 |
-| Percent of events with any value                             | 34.53 |
+| Percent of events with any value                             | 45.19 |
 | Anti-racism                                                  | 14.12 |
-| NA                                                           | 10.66 |
 | Police violence                                              |  9.41 |
 | University governance, admin, policies, programs, curriculum |  8.71 |
 | Immigration (For)                                            |  7.79 |
 | Campus climate                                               |  7.10 |
-| Indigenous issues                                            |  2.61 |
+| Indigenous issues                                            |  2.84 |
 | White supremacy (Against)                                    |  2.53 |
 | \_Other Issue                                                |  2.16 |
 | Hate speech                                                  |  1.62 |
@@ -483,7 +504,6 @@ protests were heavily policed.
 | Immigration (Against)                                        |  0.33 |
 | White supremacy (For)                                        |  0.33 |
 | Cultural appropriation                                       |  0.30 |
-| Indigenous Issues                                            |  0.23 |
 | Racial/ethnic pride - white                                  |  0.11 |
 | All Lives Matter                                             |  0.10 |
 | Pro-police                                                   |  0.08 |
@@ -549,7 +569,7 @@ categories, so I’ve only shown the universities over time for now:
 | University governance, admin, policies, programs, curriculum | 531 |
 | Immigration (For)                                            | 475 |
 | Campus climate                                               | 433 |
-| Indigenous issues                                            | 159 |
+| Indigenous issues                                            | 173 |
 | White supremacy (Against)                                    | 154 |
 | \_Other Issue                                                | 132 |
 | Hate speech                                                  |  99 |
@@ -561,7 +581,6 @@ categories, so I’ve only shown the universities over time for now:
 | Immigration (Against)                                        |  20 |
 | White supremacy (For)                                        |  20 |
 | Cultural appropriation                                       |  18 |
-| Indigenous Issues                                            |  14 |
 | Racial/ethnic pride - white                                  |   7 |
 | All Lives Matter                                             |   6 |
 | Pro-police                                                   |   5 |
@@ -575,15 +594,13 @@ categories, so I’ve only shown the universities over time for now:
 
 ## Racial and “nonracial” issues over time (collapsed)
 
-![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/unnamed-chunk-5-3.png)<!-- -->
 
-groI’ve collapsed both types of issues here to show racial and nonracial
+I’ve collapsed both types of issues here to show racial and nonracial
 issues alongside each other. Racial issue counts here are taken at a
 maximum of one per canonical event, so that events that relate to many
 issues do not outweight others and we have a clearer understanding of
 the weight of protest occurrence. The same goes for nonracial issues.
-However, this does mean that if a protest has both nonracial and racial
-issues, it will be counted twice in this chart.
 
 # Basic summary plots by variable
 
@@ -803,3 +820,125 @@ protests based on issues, not by canonical event relationships.
     ## [[2]]
 
 ![](exploratory_plots_files/figure-gfm/trump_map-2.png)<!-- -->
+
+### Issue composition November 9th and 17th protests
+
+In our notes document, Dr. Berrey noted that she was surprised to see
+most of the November 17th protests were non-racial, and did not have to
+do with sanctuary cities. I wanted to offer some more context on that,
+as well as on her next comment on the heterogeneity of Trump-related
+protests, so I made some tables on this point.
+
+The day with the highest number of protests in our dataset was November
+9th, 2016, holding 73 protests, followed by November 12th, 2015 November
+16th, 2016. I’ve included tables for the 2016 dates showing the issue
+breakdown on all of these dates and also for the November 17th protests
+in case it offers any additional clarity.
+
+It seems that “Immigration (For)”, which is the issue closest to the
+topic of sanctuary cities that you thought would be at the heart of
+these protests, does make a strong appearance for these days, but the
+general category of Trump-related protests still far outnumber it.
+Because the general Trump category is coded as a non-racial issue, the
+chart above showing racial and nonracial issues over time shows more
+nonracial issues than racial issues for November 2016.
+
+| Top dates by protest occurrence | \# of events |
+|:--------------------------------|-------------:|
+| 2016-11-09                      |           73 |
+| 2015-11-12                      |           52 |
+| 2016-11-16                      |           48 |
+| 2018-03-14                      |           47 |
+| 2014-12-01                      |           39 |
+| 2014-11-25                      |           38 |
+
+    ## # A tibble: 6 × 2
+    ##   `Top dates for immigration-related protests`     n
+    ##   <date>                                       <int>
+    ## 1 2016-11-16                                      22
+    ## 2 2017-05-01                                      16
+    ## 3 2017-02-01                                      14
+    ## 4 2017-02-09                                      14
+    ## 5 2017-01-31                                      13
+    ## 6 2017-01-29                                      12
+
+| Issue counts for November 9th, 2016                                   |   n |
+|:----------------------------------------------------------------------|----:|
+| Trump and/or his administration (Against)                             |  61 |
+| Immigration (For) (racial)                                            |  10 |
+| Anti-racism (racial)                                                  |   8 |
+| University governance, admin, policies, programs, curriculum (racial) |   7 |
+| Feminism/women’s issues                                               |   4 |
+| Trump and/or his administration (For)                                 |   4 |
+| Faith-based discrimination                                            |   3 |
+| Hate speech                                                           |   3 |
+| LGB+/Sexual orientation (For)                                         |   3 |
+| Sexual assault/violence                                               |   3 |
+| White supremacy (Against) (racial)                                    |   3 |
+| Campus climate (racial)                                               |   2 |
+| Hate speech (racial)                                                  |   2 |
+| LGB+/Sexual orientation                                               |   2 |
+| Transgender issues                                                    |   2 |
+| Accessibility                                                         |   1 |
+| Far Right/Alt Right (Against)                                         |   1 |
+| Hate crimes/Anti-minority violence                                    |   1 |
+| Immigration (Against) (racial)                                        |   1 |
+| Pro-Palestine/BDS                                                     |   1 |
+| Transgender issues (For)                                              |   1 |
+| University governance, admin, policies, programs, curriculum          |   1 |
+| \_Other Issue                                                         |   1 |
+
+| Issue counts for November 16th, 2016                                  |   n |
+|:----------------------------------------------------------------------|----:|
+| Trump and/or his administration (Against)                             |  30 |
+| Immigration (For) (racial)                                            |  22 |
+| University governance, admin, policies, programs, curriculum (racial) |  18 |
+| University governance, admin, policies, programs, curriculum          |  10 |
+| Anti-racism (racial)                                                  |   9 |
+| Campus climate (racial)                                               |   6 |
+| Faith-based discrimination                                            |   5 |
+| Hate crimes/Anti-minority violence (racial)                           |   5 |
+| \_Other Issue (racial)                                                |   4 |
+| Environmental                                                         |   3 |
+| Feminism/women’s issues                                               |   3 |
+| Hate crimes/Anti-minority violence                                    |   3 |
+| Indigenous issues (racial)                                            |   3 |
+| White supremacy (Against) (racial)                                    |   3 |
+| LGB+/Sexual orientation                                               |   2 |
+| Transgender issues (For)                                              |   2 |
+| \_Other Issue                                                         |   2 |
+| Abortion (Against)/Pro-life                                           |   1 |
+| Abortion access                                                       |   1 |
+| Accessibility                                                         |   1 |
+| Far Right/Alt Right (Against)                                         |   1 |
+| Hate speech                                                           |   1 |
+| LGB+/Sexual orientation (For)                                         |   1 |
+| Labor and work                                                        |   1 |
+| Transgender issues                                                    |   1 |
+| Trump and/or his administration (For)                                 |   1 |
+| Tuition, fees, financial aid                                          |   1 |
+
+| Issue counts for November 17th, 2016                                  |   n |
+|:----------------------------------------------------------------------|----:|
+| Trump and/or his administration (Against)                             |   4 |
+| University governance, admin, policies, programs, curriculum          |   4 |
+| Immigration (For) (racial)                                            |   3 |
+| Anti-racism (racial)                                                  |   2 |
+| Economy/inequality                                                    |   2 |
+| Environmental                                                         |   2 |
+| Indigenous issues (racial)                                            |   2 |
+| Tuition, fees, financial aid                                          |   2 |
+| University governance, admin, policies, programs, curriculum (racial) |   2 |
+| Hate crimes/Anti-minority violence                                    |   1 |
+| Hate speech                                                           |   1 |
+| Racist/racialized symbols (racial)                                    |   1 |
+| White supremacy (Against) (racial)                                    |   1 |
+| \_Other Issue (racial)                                                |   1 |
+
+# Investigating reporting measures
+
+- Graph of articles per event vs size of protest
+  - if reporting perfect, articles should increase linearly with size of
+    protest
+  - obv will not – what kinds of events attract lots of coverage despite
+    being

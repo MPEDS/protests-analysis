@@ -362,10 +362,12 @@ police_involvement <- mpeds |>
           police_activities, police_presence_and_size),
         ~map_lgl(., \(x){any(x != "NA/Unclear")})),
     ) 
-police_involvement |> 
+
+police_involvement_issue <- police_involvement |> 
   select(issue, racial_issue) |> 
   pivot_longer(cols = c(issue, racial_issue)) |> 
   unnest(cols = value) |> 
+  filter(value != "_Not relevant") |> 
   mutate(value = ifelse(
     name == "racial_issue", paste(value, "(racial)"), value)
     ) |> 
@@ -374,13 +376,51 @@ police_involvement |>
   count() |> 
   ungroup() |> 
   mutate(n = round(100 * n/length(unique(police_involvement$canonical_id)), 2)) |> 
-  arrange(desc(n)) |> 
+  arrange(desc(n)) 
+
+police_involvement_issue |> 
   rename(
     "Percent of events with given issue" = n
   ) |> 
   kable()
 
+top_police_issues <- police_involvement_issue |> 
+  slice_max(order_by = n, n = 7)
+
+mpeds_police_issue <- mpeds |> 
+  select(issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(cols = value) |> 
+  mutate(value = ifelse(
+    name == "racial_issue", paste(value, "(racial)"), value)
+    ) |> 
+  filter(value %in% top_police_issues$value) |> 
+  select(-name) |> 
+  group_by(value) |> 
+  count() |> 
+  ungroup() |> 
+  mutate(n = round(100 * n/length(unique(mpeds$canonical_id)), 2)) 
+
+list("All protests" = mpeds_police_issue,
+     "Police-involved protests" = top_police_issues) |> 
+  bind_rows(.id = "type") |> 
+  mutate(value = str_wrap(value, 12),
+         value = factor(value, levels = str_wrap(top_police_issues$value, 12))) |> 
+  ggplot(aes(x = value, fill = value, y = n)) + 
+  geom_bar(stat = "identity") + 
+  facet_wrap(~type, nrow = 2) + 
+  labs(
+    title = "Top issue occurrences in police-involved and general protests",
+    y = "Percentage of protests associated with issues",
+    x = NULL,
+    caption = "Top issues are defined as the seven most common issues for police-involved protests."
+  ) + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
+  scale_y_continuous(breaks = seq(0, 30, by = 5)) + 
+  theme(legend.position = "none")
+  
 ```
+  
 
 
 # Percentages of all protest with given preset
@@ -1523,7 +1563,8 @@ mpeds |>
   count(start_date) |> 
   arrange(desc(n)) |> 
   head() |> 
-  rename("Top dates for immigration-related protests" = start_date)
+  rename("Top dates for immigration-related protests" = start_date) |> 
+  kable()
   
 mpeds_issues <- mpeds |> 
   select(start_date, issue, racial_issue) |> 
@@ -1541,19 +1582,22 @@ mpeds_issues <- mpeds |>
 mpeds_issues |> 
   filter(start_date == as.Date("2016-11-09")) |> 
   select(-start_date) |> 
-  rename("Issue counts for November 9th, 2016" = issue) |> 
+  rename("Top ten issues for November 9th, 2016" = issue) |> 
+  slice_head(n = 10) |> 
   kable()
 
 mpeds_issues |> 
   filter(start_date == as.Date("2016-11-16")) |> 
   select(-start_date) |> 
-  rename("Issue counts for November 16th, 2016" = issue) |> 
+  rename("Top ten issues for November 16th, 2016" = issue) |> 
+  slice_head(n = 10) |> 
   kable()
 
 mpeds_issues |> 
   filter(start_date == as.Date("2016-11-17")) |> 
   select(-start_date) |> 
-  rename("Issue counts for November 17th, 2016" = issue) |> 
+  rename("Top ten issues for November 17th, 2016" = issue) |> 
+  slice_head(n = 10) |> 
   kable()
 
 
