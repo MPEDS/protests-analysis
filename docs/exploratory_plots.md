@@ -370,7 +370,7 @@ across all events but with 16% prevalence across police-involved events.
 This makes sense given our knowledge that the Quebec tuition strike
 protests were heavily policed.
 
-| value                                                                 | Percent of events with given issue |
+| Issue                                                                 | Percent of events with given issue |
 |:----------------------------------------------------------------------|-----------------------------------:|
 | University governance, admin, policies, programs, curriculum          |                              28.65 |
 | Tuition, fees, financial aid                                          |                              16.97 |
@@ -431,7 +431,7 @@ protests were heavily policed.
 | Traditional marriage/family                                           |                               0.22 |
 | Men’s rights                                                          |                               0.11 |
 
-![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-1.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-2.png)<!-- -->
 
 # Percentages of all protest with given preset
 
@@ -797,12 +797,12 @@ activities, and type.
 
 Brainstorming a breakdown for activity recategorization:
 
-- Constrain: Arrest or Attempted, Arrest- Large Scale, Constrain,
-  Detain,  
+- Active Constraint: Arrest or Attempted, Arrest- Large Scale,
+  Constrain, Detain,  
   Remove Individual Protestors
-- Passive: Cooperate/Coordinate, Monitor/Present
-- Verbal: Instruct/Warn, “Breaking the Rules”
-- Force (all force mentions)
+- Passive Control: Cooperate/Coordinate, Monitor/Present
+- Verbal Communication: Instruct/Warn, “Breaking the Rules”
+- Use of Force (all force mentions)
 - NA/Unclear
 
 ## Trump-related protests
@@ -852,17 +852,16 @@ nonracial issues than racial issues for November 2016.
 | 2014-12-01                      |           39 |
 | 2014-11-25                      |           38 |
 
-    ## # A tibble: 6 × 2
-    ##   `Top dates for immigration-related protests`     n
-    ##   <date>                                       <int>
-    ## 1 2016-11-16                                      22
-    ## 2 2017-05-01                                      16
-    ## 3 2017-02-01                                      14
-    ## 4 2017-02-09                                      14
-    ## 5 2017-01-31                                      13
-    ## 6 2017-01-29                                      12
+| Top dates for immigration-related protests |   n |
+|:-------------------------------------------|----:|
+| 2016-11-16                                 |  22 |
+| 2017-05-01                                 |  16 |
+| 2017-02-01                                 |  14 |
+| 2017-02-09                                 |  14 |
+| 2017-01-31                                 |  13 |
+| 2017-01-29                                 |  12 |
 
-| Issue counts for November 9th, 2016                                   |   n |
+| Top ten issues for November 9th, 2016                                 |   n |
 |:----------------------------------------------------------------------|----:|
 | Trump and/or his administration (Against)                             |  61 |
 | Immigration (For) (racial)                                            |  10 |
@@ -874,21 +873,8 @@ nonracial issues than racial issues for November 2016.
 | Hate speech                                                           |   3 |
 | LGB+/Sexual orientation (For)                                         |   3 |
 | Sexual assault/violence                                               |   3 |
-| White supremacy (Against) (racial)                                    |   3 |
-| Campus climate (racial)                                               |   2 |
-| Hate speech (racial)                                                  |   2 |
-| LGB+/Sexual orientation                                               |   2 |
-| Transgender issues                                                    |   2 |
-| Accessibility                                                         |   1 |
-| Far Right/Alt Right (Against)                                         |   1 |
-| Hate crimes/Anti-minority violence                                    |   1 |
-| Immigration (Against) (racial)                                        |   1 |
-| Pro-Palestine/BDS                                                     |   1 |
-| Transgender issues (For)                                              |   1 |
-| University governance, admin, policies, programs, curriculum          |   1 |
-| \_Other Issue                                                         |   1 |
 
-| Issue counts for November 16th, 2016                                  |   n |
+| Top ten issues for November 16th, 2016                                |   n |
 |:----------------------------------------------------------------------|----:|
 | Trump and/or his administration (Against)                             |  30 |
 | Immigration (For) (racial)                                            |  22 |
@@ -900,25 +886,8 @@ nonracial issues than racial issues for November 2016.
 | Hate crimes/Anti-minority violence (racial)                           |   5 |
 | \_Other Issue (racial)                                                |   4 |
 | Environmental                                                         |   3 |
-| Feminism/women’s issues                                               |   3 |
-| Hate crimes/Anti-minority violence                                    |   3 |
-| Indigenous issues (racial)                                            |   3 |
-| White supremacy (Against) (racial)                                    |   3 |
-| LGB+/Sexual orientation                                               |   2 |
-| Transgender issues (For)                                              |   2 |
-| \_Other Issue                                                         |   2 |
-| Abortion (Against)/Pro-life                                           |   1 |
-| Abortion access                                                       |   1 |
-| Accessibility                                                         |   1 |
-| Far Right/Alt Right (Against)                                         |   1 |
-| Hate speech                                                           |   1 |
-| LGB+/Sexual orientation (For)                                         |   1 |
-| Labor and work                                                        |   1 |
-| Transgender issues                                                    |   1 |
-| Trump and/or his administration (For)                                 |   1 |
-| Tuition, fees, financial aid                                          |   1 |
 
-| Issue counts for November 17th, 2016                                  |   n |
+| Top ten issues for November 17th, 2016                                |   n |
 |:----------------------------------------------------------------------|----:|
 | Trump and/or his administration (Against)                             |   4 |
 | University governance, admin, policies, programs, curriculum          |   4 |
@@ -930,10 +899,6 @@ nonracial issues than racial issues for November 2016.
 | Tuition, fees, financial aid                                          |   2 |
 | University governance, admin, policies, programs, curriculum (racial) |   2 |
 | Hate crimes/Anti-minority violence                                    |   1 |
-| Hate speech                                                           |   1 |
-| Racist/racialized symbols (racial)                                    |   1 |
-| White supremacy (Against) (racial)                                    |   1 |
-| \_Other Issue (racial)                                                |   1 |
 
 # Investigating reporting measures
 

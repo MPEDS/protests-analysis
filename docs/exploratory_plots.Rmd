@@ -363,62 +363,89 @@ police_involvement <- mpeds |>
         ~map_lgl(., \(x){any(x != "NA/Unclear")})),
     ) 
 
-police_involvement_issue <- police_involvement |> 
-  select(issue, racial_issue) |> 
-  pivot_longer(cols = c(issue, racial_issue)) |> 
-  unnest(cols = value) |> 
-  filter(value != "_Not relevant") |> 
-  mutate(value = ifelse(
-    name == "racial_issue", paste(value, "(racial)"), value)
-    ) |> 
-  select(-name) |> 
-  group_by(value) |> 
-  count() |> 
-  ungroup() |> 
-  mutate(n = round(100 * n/length(unique(police_involvement$canonical_id)), 2)) |> 
-  arrange(desc(n)) 
+get_issue <- function(dta){
+  dta |> 
+    select(issue, racial_issue) |> 
+    pivot_longer(cols = c(issue, racial_issue)) |> 
+    unnest(cols = value) |> 
+    filter(value != "_Not relevant") |> 
+    drop_na() |> 
+    mutate(value = ifelse(
+      name == "racial_issue", paste(value, "(racial)"), value)
+      ) |> 
+    select(-name) |> 
+    group_by(value) |> 
+    count() |> 
+    ungroup() |> 
+    mutate(n = round(100 * n/length(unique(dta$canonical_id)), 2)) |> 
+    arrange(desc(n)) 
+}
 
+police_involvement_issue <- get_issue(police_involvement)
 police_involvement_issue |> 
   rename(
+    "Issue" = value,
     "Percent of events with given issue" = n
   ) |> 
   kable()
-
 top_police_issues <- police_involvement_issue |> 
   slice_max(order_by = n, n = 7)
 
-mpeds_police_issue <- mpeds |> 
-  select(issue, racial_issue) |> 
-  pivot_longer(cols = c(issue, racial_issue)) |> 
-  unnest(cols = value) |> 
-  mutate(value = ifelse(
-    name == "racial_issue", paste(value, "(racial)"), value)
-    ) |> 
-  filter(value %in% top_police_issues$value) |> 
-  select(-name) |> 
-  group_by(value) |> 
-  count() |> 
-  ungroup() |> 
-  mutate(n = round(100 * n/length(unique(mpeds$canonical_id)), 2)) 
+extreme_police_issue <- mpeds |> 
+  filter(map_lgl(police_activities, 
+                 ~any(c("Arrest- Large Scale", "Force: 2+ Weapon Types") %in%
+                       .)) | 
+           map_lgl(police_presence_and_size,
+                   ~any(c("Heavily Policed", "Motorized Presence", 
+                          "Substantial") %in% .)) | 
+           map_lgl(type_of_police, 
+                   ~('"Riot police"' %in% .))) |> 
+  get_issue()
+top_extreme_police_issue <- extreme_police_issue |> 
+  slice_max(order_by = n, n = 7)
 
-list("All protests" = mpeds_police_issue,
-     "Police-involved protests" = top_police_issues) |> 
-  bind_rows(.id = "type") |> 
-  mutate(value = str_wrap(value, 12),
-         value = factor(value, levels = str_wrap(top_police_issues$value, 12))) |> 
-  ggplot(aes(x = value, fill = value, y = n)) + 
-  geom_bar(stat = "identity") + 
-  facet_wrap(~type, nrow = 2) + 
-  labs(
-    title = "Top issue occurrences in police-involved and general protests",
-    y = "Percentage of protests associated with issues",
-    x = NULL,
-    caption = "Top issues are defined as the seven most common issues for police-involved protests."
-  ) + 
-  scale_fill_brewer(type = "qual", palette = "Set1") + 
-  scale_y_continuous(breaks = seq(0, 30, by = 5)) + 
-  theme(legend.position = "none")
+mpeds_police_issue <- get_issue(mpeds)
+
+plot_comparison <- function(dta, name){
+  dta <- list("All protests" = mpeds_police_issue,
+       "category" = dta) |> 
+    bind_rows(.id = "type") |> 
+    mutate(type = ifelse(type == "category",
+                         str_to_sentence(name),
+                         type)) |> 
+    filter(value %in% dta$value) |> 
+    mutate(value = str_wrap(value, 15),
+           value = factor(value, levels = str_wrap(dta$value, 15))) 
   
+  diffs <- dta |> 
+    group_by(value) |> 
+    mutate(diff = round(2*n - sum(n), 2),
+           diff = ifelse(type == "All protests", NA, diff),
+           diff = ifelse(diff > 0, paste0("+", diff), paste0("-", diff))) |> 
+    select(type, value, diff)
+  
+  dta |> 
+    left_join(diffs, by = c("value", "type")) |> 
+    ggplot(aes(x = value, fill = value, y = n)) + 
+    geom_bar(stat = "identity") + 
+    geom_text(aes(label = diff), vjust = -0.5) +
+    facet_wrap(~type, nrow = 2) + 
+    labs(
+      title = paste0("Top issue occurrences in ", name, " and general protests"),
+      y = "Percentage of protests associated with issues",
+      x = NULL,
+      caption = str_wrap(paste0(
+        "Top issues are defined as the seven most common issues for ", 
+        name, ". Difference from corresponding measure for all protests are labeled for ",
+        name, "."), 110)
+    ) + 
+    scale_fill_brewer(type = "qual", palette = "Set1") + 
+    scale_y_continuous(breaks = seq(0, 35, by = 5), limits = c(0, 33)) + 
+    theme(legend.position = "none")
+}
+
+plot_comparison(top_police_issues, "police-involved protests")
+plot_comparison(top_extreme_police_issue, "protests with extreme policing")
 ```
   
 
@@ -1410,20 +1437,58 @@ this on a single graph because there are many categories involved, so instead
 I've made three separate graphs. I can also make a single image composed of 
 three sub-plots for presence, activities, and type.
 
-```{r quebec_police}
-plot_quebec_by_police <- function(colname){
-  name_string <- rlang::as_name(enquo(colname)) |> 
+```{r quebec_police, warning = FALSE, message = FALSE}
+police_activity_xwalk <- list(
+  "Active Constraint" = c(
+    "Remove Individual Protesters", 
+    "Arrest or Attempted",
+    "Constrain", "Arrest- Large Scale",
+    "Detain", "End Protest"
+  ),
+  "Passive Control" = c(
+    "Cooperate/Coordinate", "Monitor/Present"
+  ),
+  "Verbal Communication" = c(
+    "Instruct/Warn", '"Breaking the Rules"', "Formal Accusation"
+  ),
+  "Use of Force" = c(
+    "Force: Vague/Body", "Force: Weapon", "Force: 2+ Weapon Types"
+  ),
+  "NA/Unclear" = "NA/Unclear"
+) |> 
+  # im incredibly obtuse
+  lmap(\(list_item){
+    name <- names(list_item)
+    return(tibble(umbrella = name, categories = unlist(list_item)))
+  }) |> 
+  reduce(bind_rows)
+
+police_type_xwalk <- tribble(
+  ~umbrella, ~categories,
+  "Municipal police", "Govt police",
+  "Municipal police", "Govt police - assumed",
+  "Campus police", "Univ police",
+  "Campus police", "Univ police - assumed",
+)
+  
+plot_quebec_by_police <- function(colname,
+                                  xwalk = tibble(umbrella = character(),
+                                                 categories = character())){
+  name_string <- rlang::as_name(enquo(colname))
+  name_string_formatted <- name_string |> 
     str_replace_all("_", " ") |> 
     str_to_sentence() 
   
   tibble(canonical_id = quebec_ids) |> 
-    left_join(mpeds, by = "canonical_id") |> 
+    left_join(mpeds, by = "canonical_id") |>
     mutate(date = floor_date(start_date, "1 week")) |> 
-    select(date, {{colname}}) |> 
-    unnest(cols = {{colname}}) |> 
-    group_by(date, {{colname}}) |> 
+    select(date, categories = {{colname}}) |> 
+    unnest(cols = categories) |> 
+    group_by(date, categories) |> 
     count() |> 
-    ggplot(aes(x = date, y = n, fill = {{colname}})) + 
+    left_join(xwalk, by = "categories") |> 
+    mutate(umbrella = ifelse(is.na(umbrella), categories, umbrella)) |> 
+    ggplot(aes(x = date, y = n, fill = umbrella)) + 
     geom_bar(stat = "identity") +
     scale_x_date(date_breaks = "1 month", 
                  date_labels = "%B") +
@@ -1431,23 +1496,29 @@ plot_quebec_by_police <- function(colname){
     labs(
       x = NULL,
       y = "Number of events associated with category",
-      title = paste0(name_string, " during 2012 Quebec Tuition Strike"),
-      fill = name_string
+      title = paste0(name_string_formatted, " during 2012 Quebec Tuition Strike"),
+      fill = name_string_formatted
     )
 }
 
 plot_quebec_by_police(police_presence_and_size) 
-plot_quebec_by_police(police_activities) 
-plot_quebec_by_police(type_of_police) 
+plot_quebec_by_police(police_activities, police_activity_xwalk) 
+plot_quebec_by_police(type_of_police, police_type_xwalk) +
+  scale_fill_manual(values = c(
+    "Campus police" = "#377EB8",
+    "Municipal police" = "#E41A1C",
+    "Private Security" = "#984EA3",
+    '"Riot police"' = "orange"
+  ))
 ```
 
 Brainstorming a breakdown for activity recategorization:
 
-- Constrain: Arrest or Attempted, Arrest- Large Scale, Constrain, Detain,   
+- Active Constraint: Arrest or Attempted, Arrest- Large Scale, Constrain, Detain,   
   Remove Individual Protestors
-- Passive: Cooperate/Coordinate, Monitor/Present
-- Verbal: Instruct/Warn, "Breaking the Rules"
-- Force (all force mentions)
+- Passive Control: Cooperate/Coordinate, Monitor/Present
+- Verbal Communication: Instruct/Warn, "Breaking the Rules"
+- Use of Force (all force mentions)
 - NA/Unclear
 
 ## Trump-related protests
