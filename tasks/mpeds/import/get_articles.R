@@ -13,15 +13,9 @@ get_articles <- function(canonical_events){
     left_join(coder_event_creator, by = c("id" = "article_id")) |>
     collect() |>
     drop_na(event_id) |>
-    # The canonical keys are just going to be used as reference when
-    # glancing over tf-idf results, not for substantive grouping, so
-    # it's fine to throw out multiple matches for now (so that analysis is still
-    # run on each article only once)
-    group_by(event_id) |>
-    slice_head(n = 1) |>
-    ungroup() |>
     left_join(canonical_events, by = "event_id") |>
-    select(canonical_key, title, text) |>
+    drop_na(canonical_key) |>
+    select(canonical_key, title, article_id = id, publication, text) |>
     distinct()
 
   return(articles)

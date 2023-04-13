@@ -17,7 +17,7 @@ list(
             # this lets us toggle the download on and off without changes to
             # source-control tracked files
             cue = tar_cue(mode = ifelse(
-              Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'), 'always', 'always'
+              Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'), 'never', 'always'
               )
             )
      ),
@@ -26,6 +26,7 @@ list(
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
   tar_target(geocoded, get_protest_coords(events_wide)),
+  tar_target(articles, get_articles(canonical_events)),
 
   # Geographic information
   tar_target(us_regions_filename, format = "file",

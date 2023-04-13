@@ -91,9 +91,6 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
         unique()
     }))
 
-  # Attach number of articles
-  articles <- get_articles(canonical_events)
-
   # converting yes/no columns to lgl
   is_yesno <- function(col){
     if(!is.character(col)) return(FALSE)

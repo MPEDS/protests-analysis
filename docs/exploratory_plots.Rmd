@@ -1373,7 +1373,7 @@ ggplot(mizzou_sf) +
   geom_sf(data = canada_province_shapes) +
   geom_sf(aes(size = n, shape = type), alpha = 0.5) + 
   labs(
-    title = "Spread of events within the Mizzou umbrella",
+    title = "Spread of Mizzou anti-racism protests and solidarity protests, fall 2015- spring 2016"
   ) + 
   scale_y_continuous(limits = c(24, 50)) + 
   scale_x_continuous(limits = c(-130, -60)) + 
@@ -1406,6 +1406,38 @@ tibble(canonical_id = mizzou_ids) |>
     y = "Number of canonical events starting on date",
     title = "Mizzou solidarity protest occurrences over time"
   )
+
+```
+
+### Newspaper coverage for Mizzou umbrella
+
+```{r mizzou_articles}
+events <- c(
+  "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov",
+  "20151001_Columbia_March_AntiRacism",
+  "20151006_Columbia_Sit-in_AntiRacism",
+  "20151010_Columbia_Blockade_UniversityGovernance",
+  "20151021_Columbia_OtherForm_UniversityGovernance",
+  "20151102_Columbia_HungerStrike_UniversityGovernance",
+  "20151102_Columbia_Occupation_UniversityGovernance",
+  "20151107_Columbia_Boycott_UniversityGovernance",
+  "20151107_Columbia_Demonstration_CampusClimate",
+  "20151109_Columbia_Rally_CampusClimate",
+  "20151109_Columbia_OtherForm_FreeSpeech",
+  "20151110_Columbia_FacultyWalkout_UniversityGovernance"
+)
+
+articles <- tar_read(articles)
+articles |> 
+  mutate(canonical_key = str_trim(canonical_key)) |> 
+  filter(canonical_key %in% events) |> 
+  group_by(canonical_key) |> 
+  summarize(
+    `Article Mentions` = length(unique(article_id)),
+    `Newspaper Mentions` = length(unique(publication)),
+  ) |> 
+  arrange(desc(`Article Mentions`)) |> 
+  kable()
 
 ```
 

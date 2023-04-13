@@ -16,6 +16,8 @@ Exploratory Plots
 - [Maps and related things](#maps-and-related-things)
 - [Investigating specific movements](#investigating-specific-movements)
   - [2015 Mizzou protests](#2015-mizzou-protests)
+    - [Newspaper coverage for Mizzou
+      umbrella](#newspaper-coverage-for-mizzou-umbrella)
   - [2012 Quebec protest wave](#2012-quebec-protest-wave)
     - [Quebec events frequency stratified by police
       fields](#quebec-events-frequency-stratified-by-police-fields)
@@ -36,7 +38,7 @@ Exploratory Plots
 
 | Statistic                                   |   Value |
 |:--------------------------------------------|--------:|
-| Total imported events                       | 6100.00 |
+| Total imported events                       | 6099.00 |
 | Total events after cleaning                 | 6100.00 |
 | Unique locations                            |  540.00 |
 | US counties                                 |  313.00 |
@@ -54,7 +56,7 @@ Exploratory Plots
 | mean of issue counts                        |    2.12 |
 | \# of events with just one issue            | 2048.00 |
 
-The initial import of the MPEDS db found 6100 unique canonical events,
+The initial import of the MPEDS db found 6099 unique canonical events,
 and after all cleaning steps we still have 6100 canonical events.
 
 However, there’s still an issue regarding duplicate matches in IPEDS we
@@ -730,6 +732,23 @@ being both campaign events and counterprotest events, or campaign events
 and solidarity events.
 
 ![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
+
+### Newspaper coverage for Mizzou umbrella
+
+| canonical_key                                         | Article Mentions | Newspaper Mentions |
+|:------------------------------------------------------|-----------------:|-------------------:|
+| 20151102_Columbia_HungerStrike_UniversityGovernance   |              107 |                 79 |
+| 20151010_Columbia_Blockade_UniversityGovernance       |               35 |                 27 |
+| Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov              |               19 |                 17 |
+| 20151109_Columbia_Rally_CampusClimate                 |               14 |                 13 |
+| 20151102_Columbia_Occupation_UniversityGovernance     |               11 |                  7 |
+| 20151110_Columbia_FacultyWalkout_UniversityGovernance |                4 |                  4 |
+| 20151001_Columbia_March_AntiRacism                    |                3 |                  2 |
+| 20151021_Columbia_OtherForm_UniversityGovernance      |                3 |                  3 |
+| 20151109_Columbia_OtherForm_FreeSpeech                |                2 |                  2 |
+| 20151006_Columbia_Sit-in_AntiRacism                   |                1 |                  1 |
+| 20151107_Columbia_Boycott_UniversityGovernance        |                1 |                  1 |
+| 20151107_Columbia_Demonstration_CampusClimate         |                1 |                  1 |
 
 ## 2012 Quebec protest wave
 
