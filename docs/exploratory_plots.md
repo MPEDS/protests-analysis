@@ -614,6 +614,13 @@ maximum of one per canonical event, so that events that relate to many
 issues do not outweight others and we have a clearer understanding of
 the weight of protest occurrence. The same goes for nonracial issues.
 
+We’re also interested in understanding if the biggest upticks in protest
+counts are driven by an uptick in racial issues. This is
+
+    ## `geom_smooth()` using method = 'loess' and formula = 'y ~ x'
+
+![](exploratory_plots_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/unnamed-chunk-6-2.png)<!-- -->
+
 # Basic summary plots by variable
 
 | name                 | type    |      mean |        sd |

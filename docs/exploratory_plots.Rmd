@@ -567,9 +567,9 @@ mpeds |>
            family = "Lato") + 
   
   geom_vline(linetype = "dashed", 
-             xintercept = as.Date("2015-08-01"), color = events_color) +
-  annotate(geom = "label", label = "Darren Wilson\nindictment",
-           color = events_color, x = as.Date("2015-02-15"), y = 275,
+             xintercept = as.Date("2014-11-01"), color = events_color) +
+  annotate(geom = "label", label = "Darren Wilson\nnon-indictment",
+           color = events_color, x = as.Date("2014-05-15"), y = 275,
            family = "Lato") + 
   
   geom_vline(linetype = "dashed",
@@ -593,8 +593,8 @@ mpeds |>
     y = "Number of associated events",
     caption = str_wrap("Dates are aggregated to months. Segments in red indicate summers.")
   ) 
-
 ```
+
 
 ```{r basic_counts_time_redux, fig.height = 10, fig.width = 7}
 
@@ -1097,6 +1097,46 @@ alongside each other. Racial issue counts here are taken at a maximum of one per
 canonical event, so that events that relate to many issues do not outweight others
 and we have a clearer understanding of the weight of protest occurrence.
 The same goes for nonracial issues. 
+
+We're also interested in understanding if the biggest upticks in protest counts
+are driven by an uptick in racial issues. This is
+
+```{r}
+
+# scatter plot of prop. racial vs total n of events
+mpeds_issue_time <- mpeds |> 
+  mutate(date = floor_date(start_date, "month"),
+         is_racial = map_lgl(racial_issue, has_issue),
+         is_issue = map_lgl(issue, has_issue)) |> 
+  group_by(date) |> 
+  summarize(
+    n_total = n(),
+    n_racial = sum(is_racial, na.rm = T),
+    n_issue = sum(is_issue, na.rm = T)
+  ) 
+
+mpeds_issue_time |> 
+  ggplot(aes(x = n_racial/n_total, y = n_total)) + 
+  geom_point(alpha = 0.5) + 
+  geom_smooth() +
+  labs(
+    y = "Total number of events in month",
+    x = "Proportion of events with racial issues",
+    title = "Are increases in event count driven by upticks in racial issues?",
+  )
+
+mpeds_issue_time |> 
+  ggplot(aes(x = date, y = n_total, fill = 100 * n_racial/n_total)) + 
+  geom_bar(stat = "identity") + 
+  labs(
+    title = "Are increases in event count driven by upticks in racial issues?",
+    y = "Total number of events",
+    x = NULL,
+    fill = "% of events\ncontaining racial issues"
+  ) + 
+  scale_fill_viridis_c(option = "magma")
+
+```
 
 # Basic summary plots by variable
 
