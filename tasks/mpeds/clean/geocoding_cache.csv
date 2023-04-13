@@ -612,6 +612,7 @@ lat,lng,location
 43.7734535,-79.50186839999999,York University
 43.6576585,-79.3788017,Ryerson University
 43.653226,-79.3831843,University of Toronto
+43.6576585,-79.3788017,Ryerson
 42.0564594,-87.67526699999999,Northwestern University
 36.1447034,-86.8026551,Vanderbilt University
 33.4551742,-88.79437659999999,Mississippi State University
@@ -1209,6 +1210,7 @@ lat,lng,location
 40.7664886,-73.9555127,Weill Cornell Medical College
 40.7354925,-73.9971361,New School in New York City
 45.5131547,-73.5602937,e Université du Québec à Montréal (UQAM)
+45.55086130000001,-73.5532995,Maisonneuve
 41.98675069999999,-87.8721602,Rosemont
 45.514669,-73.5663793,CEGEP du Vieux-Montréal
 25.8939072,-97.4869194,University of Texas at Brownsville

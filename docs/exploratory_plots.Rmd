@@ -1174,22 +1174,19 @@ differences mean we can't pretend we have complete data.
 # Maps and related things
 
 ```{r maps, message = FALSE, warning = FALSE}
-county_sf <- counties(keep_zipped_shapefile = TRUE, progress_bar = FALSE) |> 
-  select(fips = GEOID)
 state_sf <- states(progress_bar = FALSE) |> 
   filter(!(NAME %in% c("Hawaii", "Puerto Rico", "American Samoa", 
                        "United States Virgin Islands", 
                        "Commonwealth of the Northern Mariana Islands",
                        "Alaska", "Guam"))) |> 
   select(state_fips = GEOID)
-us_sf <- state_sf |> 
-  st_union()
+us_sf <- nation()
 ```
 
 ```{r mpeds_map}
 
 mpeds_sf |> 
-  st_transform(st_crs(county_sf)) |>
+  st_transform(st_crs(us_sf)) |>
   mutate(geometry = st_jitter(geometry, factor = 0.005)) |> 
   ggplot() + 
   geom_sf(data = us_sf, fill = "white", color = "gray") + 
@@ -1271,7 +1268,9 @@ mizzou_sf <- tibble(canonical_id = mizzou_ids) |>
   count() |> 
   ungroup() |> 
   left_join(geo, by = "geoid") |> 
-  mutate(geometry = st_centroid(geometry)) |> 
+  mutate(geometry = st_centroid(geometry),
+         type = ifelse(geoid == "us_29019", "University of Missouri-Columbia",
+                       "All other universities")) |> 
   st_as_sf(crs = st_crs(geo)) 
 
 county_labels <- fips_codes |> 
@@ -1282,17 +1281,24 @@ county_labels <- fips_codes |>
 ggplot(mizzou_sf) +
   geom_sf(data = us_sf) +
   geom_sf(data = canada_province_shapes) +
-  geom_sf(aes(size = n), alpha = 0.5) + 
+  geom_sf(aes(size = n, shape = type), alpha = 0.5) + 
   labs(
     title = "Spread of events within the Mizzou umbrella",
   ) + 
-  scale_size(range = c(2, 8)) +
   scale_y_continuous(limits = c(24, 50)) + 
   scale_x_continuous(limits = c(-130, -60)) + 
+  labs(size = NULL, shape = NULL) + 
   theme(
     axis.text = element_blank(),
     axis.ticks = element_blank(),
-  )
+  ) + 
+  scale_shape_manual(
+    values = c(
+      "University of Missouri-Columbia" = 18,
+      "All other universities" = 19
+    )
+  ) + 
+  scale_size_continuous(breaks = seq(1, 13, by = 3), range = c(2, 8))
 
 tibble(canonical_id = mizzou_ids) |> 
   left_join(mpeds, by = "canonical_id") |> 
@@ -1312,8 +1318,6 @@ tibble(canonical_id = mizzou_ids) |>
   )
 
 ```
-
-### Counts of university responses to Mizzou protest waves
 
 ```{r mizzou_responses}
 
@@ -1343,12 +1347,12 @@ get_mizzou_responses <- function(colname){
            "Number of associated canonical events" = n) |> 
     kable()
 }
-
-get_mizzou_responses(university_discourse_on_issue)
-get_mizzou_responses(university_discourse_on_protest)
-get_mizzou_responses(university_action_on_issue)
-get_mizzou_responses(university_reactions_to_protest)
-  
+# 
+# get_mizzou_responses(university_discourse_on_issue)
+# get_mizzou_responses(university_discourse_on_protest)
+# get_mizzou_responses(university_action_on_issue)
+# get_mizzou_responses(university_reactions_to_protest)
+#   
 ```
 
 ## 2012 Quebec protest wave

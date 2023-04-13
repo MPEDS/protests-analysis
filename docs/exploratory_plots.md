@@ -16,8 +16,6 @@ Exploratory Plots
 - [Maps and related things](#maps-and-related-things)
 - [Investigating specific movements](#investigating-specific-movements)
   - [2015 Mizzou protests](#2015-mizzou-protests)
-    - [Counts of university responses to Mizzou protest
-      waves](#counts-of-university-responses-to-mizzou-protest-waves)
   - [2012 Quebec protest wave](#2012-quebec-protest-wave)
     - [Quebec events frequency stratified by police
       fields](#quebec-events-frequency-stratified-by-police-fields)
@@ -30,22 +28,22 @@ Exploratory Plots
 
 | Statistic                                   | Value |
 |:--------------------------------------------|------:|
-| Total imported events                       |  6097 |
-| Total events after cleaning                 |  6097 |
+| Total imported events                       |  6100 |
+| Total events after cleaning                 |  6100 |
 | Unique locations                            |   540 |
 | US counties                                 |   313 |
 | Canadian CMAs                               |    32 |
 | Universities                                |   605 |
-| Missing universities                        |    15 |
-| CEs with missing universities               |    73 |
+| Missing universities                        |    13 |
+| CEs with missing universities               |    70 |
 | \# of events with police activity recorded  |   868 |
 | \# of events with any police field recorded |   925 |
 | \# of events with university police only    |   450 |
 | \# of events with government police only    |   284 |
 | \# of events with both types of police      |   146 |
 
-The initial import of the MPEDS db found 6097 unique canonical events,
-and after all cleaning steps we still have 6097 canonical events.
+The initial import of the MPEDS db found 6100 unique canonical events,
+and after all cleaning steps we still have 6100 canonical events.
 
 However, there’s still an issue regarding duplicate matches in IPEDS we
 can detect (there are likely also incorrect matches that we can’t detect
@@ -63,8 +61,8 @@ of the locations that were not universities found geocoding matches, and
 hand-checking the most common ones indicates that there isn’t a strong
 pattern of missing value substitution, e.g. Google isn’t sending the
 majority of results to the centroid of America or to `(-1, -1)` or
-anything weird like that. Universities had a harder time, with 15
-universities and 73 rows (canonical events) not returning lon/lat coords
+anything weird like that. Universities had a harder time, with 13
+universities and 70 rows (canonical events) not returning lon/lat coords
 for universities.
 
 That comes out to ~5% of universities not having coordinates, and ~2.5%
@@ -159,7 +157,7 @@ notes Google Doc for details.
 
 | police_presence_and_size |    n |
 |:-------------------------|-----:|
-| NA                       | 5294 |
+| NA                       | 5297 |
 | NA/Unclear               |  394 |
 | Substantial              |  292 |
 | Small/0 to 5 officers    |   86 |
@@ -168,7 +166,7 @@ notes Google Doc for details.
 
 | police_activities            |    n |
 |:-----------------------------|-----:|
-| NA                           | 5196 |
+| NA                           | 5199 |
 | Monitor/Present              |  410 |
 | Instruct/Warn                |  174 |
 | Arrest or Attempted          |  163 |
@@ -191,7 +189,7 @@ notes Google Doc for details.
 
 | type_of_police        |    n |
 |:----------------------|-----:|
-| NA                    | 5188 |
+| NA                    | 5191 |
 | Univ police           |  452 |
 | Govt police           |  300 |
 | Univ police - assumed |  152 |
@@ -203,7 +201,7 @@ notes Google Doc for details.
 
 | university_action_on_issue |    n |
 |:---------------------------|-----:|
-| NA                         | 4853 |
+| NA                         | 4856 |
 | NA/Unclear                 |  661 |
 | Action in Process          |  312 |
 | Reject Demand              |  160 |
@@ -221,7 +219,7 @@ notes Google Doc for details.
 
 | university_discourse_on_issue   |    n |
 |:--------------------------------|-----:|
-| NA                              | 4821 |
+| NA                              | 4824 |
 | NA/Unclear                      |  456 |
 | Explain Bureaucracy/Law         |  381 |
 | Express Contrary Position       |  276 |
@@ -237,7 +235,7 @@ notes Google Doc for details.
 
 | university_reactions_to_protest |    n |
 |:--------------------------------|-----:|
-| NA                              | 4835 |
+| NA                              | 4838 |
 | NA/Unclear                      |  604 |
 | Monitor/Present                 |  227 |
 | Get Confronted                  |  144 |
@@ -274,7 +272,7 @@ Hm.
 | \_Not relevant                                               | 1011 |
 | Labor and work                                               |  956 |
 | Tuition, fees, financial aid                                 |  606 |
-| NA                                                           |  590 |
+| NA                                                           |  593 |
 | Trump and/or his administration (Against)                    |  573 |
 | \_Other Issue                                                |  532 |
 | Environmental                                                |  424 |
@@ -437,14 +435,14 @@ protests were heavily policed.
 
 | issue                                                        |   pct |
 |:-------------------------------------------------------------|------:|
-| Percent of events with any value                             | 73.89 |
-| University governance, admin, policies, programs, curriculum | 28.13 |
-| \_Not relevant                                               | 16.58 |
-| Labor and work                                               | 15.68 |
-| Tuition, fees, financial aid                                 |  9.94 |
-| NA                                                           |  9.68 |
-| Trump and/or his administration (Against)                    |  9.40 |
-| \_Other Issue                                                |  8.73 |
+| Percent of events with any value                             | 73.85 |
+| University governance, admin, policies, programs, curriculum | 28.11 |
+| \_Not relevant                                               | 16.57 |
+| Labor and work                                               | 15.67 |
+| Tuition, fees, financial aid                                 |  9.93 |
+| NA                                                           |  9.72 |
+| Trump and/or his administration (Against)                    |  9.39 |
+| \_Other Issue                                                |  8.72 |
 | Environmental                                                |  6.95 |
 | Sexual assault/violence                                      |  5.43 |
 | Economy/inequality                                           |  5.28 |
@@ -462,7 +460,7 @@ protests were heavily policed.
 | Free speech                                                  |  1.38 |
 | Transgender issues (For)                                     |  1.33 |
 | Pro-Palestine/BDS                                            |  1.18 |
-| Transgender issues                                           |  1.12 |
+| Transgender issues                                           |  1.11 |
 | Anti-war/peace                                               |  1.03 |
 | Social services and welfare                                  |  0.97 |
 | Trump and/or his administration (For)                        |  0.85 |
@@ -485,15 +483,15 @@ protests were heavily policed.
 
 | racial_issue                                                 |   pct |
 |:-------------------------------------------------------------|------:|
-| \_Not relevant                                               | 54.95 |
-| Percent of events with any value                             | 45.19 |
-| Anti-racism                                                  | 14.12 |
+| \_Not relevant                                               | 54.92 |
+| Percent of events with any value                             | 45.21 |
+| Anti-racism                                                  | 14.11 |
 | Police violence                                              |  9.41 |
-| University governance, admin, policies, programs, curriculum |  8.71 |
+| University governance, admin, policies, programs, curriculum |  8.70 |
 | Immigration (For)                                            |  7.79 |
 | Campus climate                                               |  7.10 |
 | Indigenous issues                                            |  2.84 |
-| White supremacy (Against)                                    |  2.53 |
+| White supremacy (Against)                                    |  2.52 |
 | \_Other Issue                                                |  2.16 |
 | Hate speech                                                  |  1.62 |
 | Racist/racialized symbols                                    |  1.41 |
@@ -721,66 +719,14 @@ and solidarity events.
 
 ![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
 
-### Counts of university responses to Mizzou protest waves
-
-| University discourse on issue | Number of associated canonical events |
-|:------------------------------|--------------------------------------:|
-| NA/Unclear                    |                                    15 |
-| Total with valid response     |                                    14 |
-| Express Agreement             |                                     9 |
-| Affirm Diversity              |                                     5 |
-| Apology/Responsibility        |                                     3 |
-| Emotional Appeal              |                                     3 |
-| Explain Bureaucracy/Law       |                                     3 |
-| Oppose Racism                 |                                     3 |
-| Affirm BIPOC Students         |                                     2 |
-| Affirm Marginalized Students  |                                     1 |
-| Express Contrary Position     |                                     1 |
-| Oppose Oppression             |                                     1 |
-
-| University discourse on protest | Number of associated canonical events |
-|:--------------------------------|--------------------------------------:|
-| Total with valid response       |                                    21 |
-| “Listen/Dialogue”               |                                    12 |
-| Protest: Positive               |                                    11 |
-| NA/Unclear                      |                                     8 |
-| Protest: Exercising Speech      |                                     3 |
-| “Work w/ Protestors”            |                                     2 |
-| Protest: Illegitimate           |                                     2 |
-| “Safety”                        |                                     1 |
-| Protest: Other Prob/Negative    |                                     1 |
-
-| University action on issue | Number of associated canonical events |
-|:---------------------------|--------------------------------------:|
-| NA/Unclear                 |                                    16 |
-| Total with valid response  |                                    13 |
-| Action in Process          |                                     8 |
-| Fulfill Demand             |                                     4 |
-| Resign/Fire                |                                     3 |
-| Structural Change          |                                     3 |
-| Correct Racist History     |                                     1 |
-| Hold Forum                 |                                     1 |
-| Reject Demand              |                                     1 |
-
-| University reactions to protest | Number of associated canonical events |
-|:--------------------------------|--------------------------------------:|
-| Total with valid response       |                                    20 |
-| Monitor/Present                 |                                     9 |
-| NA/Unclear                      |                                     9 |
-| Participate/Aid                 |                                     8 |
-| Direct Communications           |                                     7 |
-| Meet                            |                                     6 |
-| Get Confronted                  |                                     3 |
-| Refuse to Meet                  |                                     1 |
-
 ## 2012 Quebec protest wave
 
 | Statistics for Quebec protests |   n |
 |:-------------------------------|----:|
-| Total number of links          | 165 |
-| Unique events                  | 166 |
-| Campaign events only           | 158 |
-| Solidarity events only         |   7 |
+| Total number of links          | 175 |
+| Unique events                  | 176 |
+| Campaign events only           | 167 |
+| Solidarity events only         |   8 |
 
 ![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
 

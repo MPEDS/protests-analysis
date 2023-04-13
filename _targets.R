@@ -17,7 +17,7 @@ list(
             # this lets us toggle the download on and off without changes to
             # source-control tracked files
             cue = tar_cue(mode = ifelse(
-              Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'), 'never', 'always'
+              Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'), 'always', 'always'
               )
             )
      ),
