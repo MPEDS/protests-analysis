@@ -1584,6 +1584,7 @@ plot_quebec_by_police <- function(colname,
     mutate(date = floor_date(start_date, "1 week")) |> 
     select(date, categories = {{colname}}) |> 
     unnest(cols = categories) |> 
+    filter(categories != "NA/Unclear") |> 
     group_by(date, categories) |> 
     count() |> 
     ungroup() |> 
@@ -1612,7 +1613,7 @@ plot_quebec_by_police(type_of_police, police_type_xwalk) +
   scale_fill_manual(values = c(
     "Campus police" = "#377EB8",
     "Municipal police" = "#E41A1C",
-    "Private Security" = "#984EA3",
+    "Private security" = "#984EA3",
     '"Riot police"' = "orange"
   ))
 
