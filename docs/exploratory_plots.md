@@ -26,21 +26,33 @@ Exploratory Plots
 
 # Basic counts
 
-| Statistic                                   | Value |
-|:--------------------------------------------|------:|
-| Total imported events                       |  6100 |
-| Total events after cleaning                 |  6100 |
-| Unique locations                            |   540 |
-| US counties                                 |   313 |
-| Canadian CMAs                               |    32 |
-| Universities                                |   605 |
-| Missing universities                        |    13 |
-| CEs with missing universities               |    70 |
-| \# of events with police activity recorded  |   868 |
-| \# of events with any police field recorded |   925 |
-| \# of events with university police only    |   450 |
-| \# of events with government police only    |   284 |
-| \# of events with both types of police      |   146 |
+| Events with many issues                  | Number of issues |
+|:-----------------------------------------|-----------------:|
+| 20160305_Toronto_March_Feminism          |               14 |
+| 20151112_Athens_Rally_Tuition            |               10 |
+| 20160928_Hempstead_Rally_Trump(Against)  |               10 |
+| 20161116_AnnArbor_Walkout_Trump(Against) |               10 |
+| 20180121_Vancouver_March_Feminism        |               10 |
+
+| Statistic                                   |   Value |
+|:--------------------------------------------|--------:|
+| Total imported events                       | 6100.00 |
+| Total events after cleaning                 | 6100.00 |
+| Unique locations                            |  540.00 |
+| US counties                                 |  313.00 |
+| Canadian CMAs                               |   32.00 |
+| Universities                                |  605.00 |
+| Missing universities                        |   13.00 |
+| CEs with missing universities               |   70.00 |
+| \# of events with police activity recorded  |  868.00 |
+| \# of events with any police field recorded |  925.00 |
+| \# of events with university police only    |  450.00 |
+| \# of events with government police only    |  284.00 |
+| \# of events with both types of police      |  146.00 |
+| \# of events with at least one issue        | 1067.00 |
+| mode of issue counts                        |    1.00 |
+| mean of issue counts                        |    2.12 |
+| \# of events with just one issue            | 2048.00 |
 
 The initial import of the MPEDS db found 6100 unique canonical events,
 and after all cleaning steps we still have 6100 canonical events.

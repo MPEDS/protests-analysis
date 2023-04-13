@@ -55,7 +55,7 @@ mpeds <- mpeds_sf |> st_drop_geometry()
 
 # Basic counts
 
-```{r, basic_counts}
+```{r, basic_counts, message = FALSE, warning = FALSE}
 mpeds_raw_ids <- length(unique(mpeds_raw$canonical_id))
 mpeds_ids <- length(unique(mpeds$canonical_id))
 n_locations <- length(unique(mpeds$location))
@@ -155,8 +155,54 @@ n_uni_and_govt_police <- mpeds |>
     ) |> 
   nrow()
 
+mpeds_issues <- mpeds |> 
+  select(key, issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(value) |> 
+  filter(value != "_Not relevant") |> 
+  group_by(key) |> 
+  count()
+
+# % with at least one issue, at least one racial issue
+n_one_both_issue <- mpeds |> 
+  select(key, issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(value) |> 
+  filter(value != "_Not relevant") |> 
+  select(key, name) |> 
+  distinct() |> 
+  count(key) |> 
+  filter(n >= 2) |> 
+  nrow()
+
+# mode of issues per protests
+# fun one code-wise
+mode_issues <- mpeds_issues |> 
+  group_by(n) |> 
+  count() |> 
+  ungroup() |> 
+  arrange(desc(nn)) |> 
+  slice_head(n = 1) |> 
+  pull(n)
+
+# mean of issues per protest
+mean_issues <- round(mean(mpeds_issues$n), 2)
+
+# % with only one issue
+n_only_one_issue <- mpeds_issues |> 
+  group_by(n) |> 
+  count() |> 
+  filter(n == 1) |> 
+  pull(nn)
   
-  
+# events with lots of issues
+mpeds_issues |> 
+  arrange(desc(n)) |> 
+  ungroup() |> 
+  slice_head(n = 5) |> 
+  rename("Events with many issues" = key,
+         "Number of issues" = n) |> 
+  kable()
 
 tribble(
   ~Statistic, ~Value,
@@ -172,7 +218,11 @@ tribble(
   "# of events with any police field recorded", n_any_police_field,
   "# of events with university police only", n_uni_police_only,
   "# of events with government police only", n_govt_police_only,
-  "# of events with both types of police", n_uni_and_govt_police 
+  "# of events with both types of police", n_uni_and_govt_police,
+  "# of events with at least one issue", n_one_both_issue,
+  "mode of issue counts", mode_issues,
+  "mean of issue counts", mean_issues,
+  "# of events with just one issue", n_only_one_issue, 
 ) |> 
   kable()
 
@@ -483,27 +533,62 @@ get_percent(racial_issue)
 
 # Counts over time
 
-```{r basic_counts_over_time}
+```{r basic_counts_over_time, width = 12, height = 8}
+
+summer_color <- "#ff4b3a"
+events_color <- "#2133ff"
+
+summers <- tibble(
+  x1 = seq(as.Date("2012-06-01"), as.Date("2018-06-01"), by = "1 year"),
+  x2 = seq(as.Date("2012-08-31"), as.Date("2018-08-31"), by = "1 year"),
+  y1 = -100,
+  y2 = 400
+)
 
 mpeds |> 
   mutate(date = floor_date(start_date, "month")) |> 
   group_by(date) |> 
   count() |> 
   drop_na() |> 
-  ggplot(aes(x = date, y = n)) + 
-  geom_line() +
-  scale_x_date(breaks = "4 months",
-               date_labels =  "%b",
-               sec.axis = dup_axis(
-                 breaks = seq(as.Date("2012-01-01"), as.Date("2018-01-01"), by = "year"),
-                 labels = scales::label_date("%Y"),
-               )
-               ) + 
+  ggplot() +
+  geom_rect(data = summers, aes(xmin = x1, xmax = x2, ymin = y1, ymax = y2), 
+            alpha = 0.1,
+            color = NA, fill = summer_color) +
+  geom_line(aes(x = date, y = n)) +
+  scale_y_continuous(breaks = seq(0, 400, by = 50),
+                     ) + 
+  scale_x_date(date_breaks = "6 months",
+               date_labels = "%b %y",
+               guide = guide_axis(n.dodge = 2)) + 
+  geom_vline(xintercept = as.Date("2012-02-01"), color = events_color) +
+  annotate(geom = "label", label = "Quebec\nprotests",
+           color = events_color, x = as.Date("2012-06-01"), y = 300,
+           family = "Lato") + 
+  
+  geom_vline(xintercept = as.Date("2015-08-01"), color = events_color) +
+  annotate(geom = "label", label = "Darren Wilson\nindictment",
+           color = events_color, x = as.Date("2015-02-01"), y = 275,
+           family = "Lato") + 
+  
+  geom_vline(xintercept = as.Date("2015-10-01"), color = events_color) +
+  annotate(geom = "label", label = "Mizzou\nprotests",
+           color = events_color, x = as.Date("2016-02-01"), y = 325,
+           family = "Lato") + 
+  
+  geom_vline(xintercept = as.Date("2017-02-01"), color = events_color) +
+  annotate(geom = "label", label = "Anti-Trump\nprotests",
+           color = events_color, x = as.Date("2017-07-01"), y = 300,
+           family = "Lato") + 
+           
+  coord_cartesian(expand = FALSE, ylim = c(0, 400),
+                  xlim = c(as.Date("2011-12-02"), as.Date("2018-12-31"))) + 
   labs(
-    title = "Basic counts of canonical events over time",
-    x = "Date (floored to months)",
-    y = "Number of associated canonical events"
+    title = "Counts of protest events over time",
+    x = NULL,
+    y = "Number of associated events",
+    caption = str_wrap("Dates are aggregated to months. Segments in red indicate summers.")
   ) 
+
 ```
 
 ```{r basic_counts_time_redux, fig.height = 10, fig.width = 7}
