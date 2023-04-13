@@ -1493,19 +1493,23 @@ top_quebec <- quebec_sf |>
   drop_na() |> 
   arrange(desc(n)) |> 
   slice_head(n = 5) 
-
-ggplot(quebec_sf) +
-  geom_sf(data = us_sf) +
-  geom_sf(data = canada_province_shapes) +
-  geom_sf(aes(size = n), alpha = 0.5) + 
-  labs(
-    title = "Spread of Quebec solidarity events",
-  ) + 
-  scale_size(range = c(2, 8)) + 
-  theme(
-    axis.text = element_blank(),
-    axis.ticks = element_blank(),
-  )
+# 
+# ggplot(quebec_sf) +
+#   geom_sf(data = us_sf) +
+#   geom_sf(data = canada_province_shapes) +
+#   geom_sf(aes(size = n), alpha = 0.5) + 
+#   labs(
+#     title = "Spread of Quebec solidarity events",
+#   ) + 
+#   scale_size(range = c(2, 8)) + 
+#   lims(
+#     x = c(-125, -65), 
+#     y = c(24, 60)
+#   ) + 
+#   theme(
+#     axis.text = element_blank(),
+#     axis.ticks = element_blank(),
+#   )
 
 tibble(canonical_id = quebec_ids) |> 
   left_join(mpeds, by = "canonical_id") |> 

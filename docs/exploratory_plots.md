@@ -740,7 +740,7 @@ and solidarity events.
 | Campaign events only           | 167 |
 | Solidarity events only         |   8 |
 
-![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/quebec-1.png)<!-- -->
 
 ### Quebec events frequency stratified by police fields
 
