@@ -560,24 +560,29 @@ mpeds |>
   scale_x_date(date_breaks = "6 months",
                date_labels = "%b %y",
                guide = guide_axis(n.dodge = 2)) + 
-  geom_vline(xintercept = as.Date("2012-02-01"), color = events_color) +
+  geom_vline(linetype = "dashed", 
+             xintercept = as.Date("2012-02-01"), color = events_color) +
   annotate(geom = "label", label = "Quebec\nprotests",
            color = events_color, x = as.Date("2012-06-01"), y = 300,
            family = "Lato") + 
   
-  geom_vline(xintercept = as.Date("2015-08-01"), color = events_color) +
+  geom_vline(linetype = "dashed", 
+             xintercept = as.Date("2015-08-01"), color = events_color) +
   annotate(geom = "label", label = "Darren Wilson\nindictment",
-           color = events_color, x = as.Date("2015-02-01"), y = 275,
+           color = events_color, x = as.Date("2015-02-15"), y = 275,
            family = "Lato") + 
   
-  geom_vline(xintercept = as.Date("2015-10-01"), color = events_color) +
+  geom_vline(linetype = "dashed",
+             xintercept = as.Date("2015-10-01"), color = events_color) +
   annotate(geom = "label", label = "Mizzou\nprotests",
-           color = events_color, x = as.Date("2016-02-01"), y = 325,
+           color = events_color, x = as.Date("2016-01-15"), y = 325,
            family = "Lato") + 
   
-  geom_vline(xintercept = as.Date("2017-02-01"), color = events_color) +
+  geom_vline(linetype = "dashed", 
+             xintercept = as.Date("2016-11-01"),
+             color = events_color) +
   annotate(geom = "label", label = "Anti-Trump\nprotests",
-           color = events_color, x = as.Date("2017-07-01"), y = 300,
+           color = events_color, x = as.Date("2017-04-01"), y = 300,
            family = "Lato") + 
            
   coord_cartesian(expand = FALSE, ylim = c(0, 400),
