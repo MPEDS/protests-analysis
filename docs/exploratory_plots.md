@@ -751,7 +751,7 @@ categories involved, so instead I’ve made three separate graphs. I can
 also make a single image composed of three sub-plots for presence,
 activities, and type.
 
-![](exploratory_plots_files/figure-gfm/quebec_police-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-3.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/quebec_police-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-3.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-4.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-5.png)<!-- -->
 
 Brainstorming a breakdown for activity recategorization:
 

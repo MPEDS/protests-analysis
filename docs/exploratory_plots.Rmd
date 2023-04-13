@@ -481,7 +481,7 @@ plot_comparison <- function(dta, name){
     geom_text(aes(label = diff), vjust = -0.5) +
     facet_wrap(~type, nrow = 2) + 
     labs(
-      title = paste0("Top issue occurrences in ", name, " and general protests"),
+      title = paste0("Top issue occurrences in general protests and ", name),
       y = "Percentage of protests associated with issues",
       x = NULL,
       caption = str_wrap(paste0(
@@ -1533,6 +1533,9 @@ three sub-plots for presence, activities, and type.
 
 ```{r quebec_police, warning = FALSE, message = FALSE}
 police_activity_xwalk <- list(
+  "Use of Force" = c(
+    "Force: Vague/Body", "Force: Weapon", "Force: 2+ Weapon Types"
+  ),
   "Active Constraint" = c(
     "Remove Individual Protesters", 
     "Arrest or Attempted",
@@ -1545,9 +1548,6 @@ police_activity_xwalk <- list(
   "Verbal Communication" = c(
     "Instruct/Warn", '"Breaking the Rules"', "Formal Accusation"
   ),
-  "Use of Force" = c(
-    "Force: Vague/Body", "Force: Weapon", "Force: 2+ Weapon Types"
-  ),
   "NA/Unclear" = "NA/Unclear"
 ) |> 
   # im incredibly obtuse
@@ -1559,10 +1559,12 @@ police_activity_xwalk <- list(
 
 police_type_xwalk <- tribble(
   ~umbrella, ~categories,
+  '"Riot police"', '"Riot police"',
   "Municipal police", "Govt police",
   "Municipal police", "Govt police - assumed",
   "Campus police", "Univ police",
   "Campus police", "Univ police - assumed",
+  "Private security", "Private Security",
 )
   
 plot_quebec_by_police <- function(colname,
@@ -1580,8 +1582,13 @@ plot_quebec_by_police <- function(colname,
     unnest(cols = categories) |> 
     group_by(date, categories) |> 
     count() |> 
+    ungroup() |> 
     left_join(xwalk, by = "categories") |> 
-    mutate(umbrella = ifelse(is.na(umbrella), categories, umbrella)) |> 
+    mutate(umbrella = ifelse(is.na(umbrella), categories, umbrella),
+           umbrella = case_when(
+             nrow(xwalk) > 0 ~ factor(umbrella, unique(xwalk$umbrella)),
+             TRUE ~ as.factor(umbrella)
+           )) |> 
     ggplot(aes(x = date, y = n, fill = umbrella)) + 
     geom_bar(stat = "identity") +
     scale_x_date(date_breaks = "1 month", 
@@ -1604,6 +1611,85 @@ plot_quebec_by_police(type_of_police, police_type_xwalk) +
     "Private Security" = "#984EA3",
     '"Riot police"' = "orange"
   ))
+
+# grouped bar graph: fill = non-extreme and extreme police involvement, group = quebec vs all events
+quebec_events <- tibble(canonical_id = quebec_ids) |> 
+  left_join(mpeds, by = "canonical_id")
+
+quebec_extreme_police <- lmap(list("Quebec" = quebec_events, "All" = mpeds), \(list_item){
+  denominator <- list_item[[1]] |> 
+    pull(key) |>
+    unique() |>
+    str_subset("^Umbrella", negate = TRUE) |> 
+    length()
+  counted <- list_item[[1]] |> 
+    mutate(`Extreme Police Involvement` = map_lgl(police_activities,
+                   ~any(c("Arrest- Large Scale", "Force: 2+ Weapon Types") %in%
+                       .)) | 
+           map_lgl(police_presence_and_size,
+                   ~any(c("Heavily Policed", "Motorized Presence", 
+                          "Substantial") %in% .)) | 
+           map_lgl(type_of_police, 
+                   ~('"Riot police"' %in% .)),
+           `Any Police Involvement` = if_any(c(type_of_police, police_actions,
+                                 police_activities, police_presence_and_size),
+                               ~map_lgl(., \(x){!is.null(x)})),
+           if_any(c(type_of_police, police_actions,
+                    police_activities, police_presence_and_size),
+                  ~map_lgl(., \(x){any(x != "NA/Unclear")})),
+    ) |> 
+    pivot_longer(cols = c(`Extreme Police Involvement`, `Any Police Involvement`)) |> 
+    mutate(date = floor_date(start_date, "week")) |> 
+    group_by(date, name) |> 
+    summarize(value = sum(value),
+              n = denominator)
+  list(counted) |> set_names(names(list_item))
+}) |> 
+  bind_rows(.id = "type")
+
+dates <- quebec_extreme_police |> 
+  filter(type == "Quebec") |> 
+  drop_na(date) |> 
+  pull(date)
+date_xwalk <- expand_grid(
+  date = seq(min(dates), max(dates), by = "1 week"),
+  type = "Quebec",
+  name = c("Any Police Involvement", "Extreme Police Involvement")
+)
+
+quebec_extreme_police |> 
+  filter(type == "Quebec") |> 
+  right_join(date_xwalk, by = c("date", "type", "name")) |> 
+  mutate(value = ifelse(is.na(value), 0, value),
+         type = ifelse(is.na(type), "Quebec", type)) |> 
+  drop_na(name) |> 
+  ggplot(aes(x = date, y = value, color = str_wrap(name, 15))) + 
+  geom_line(size = 0.6) + 
+  scale_x_date(date_breaks = "1 month",
+               date_labels = "%b") +
+  scale_color_brewer(type = "qual", palette = "Set1") +
+  labs(color = NULL, y = "Number of associated protest events",
+       x = NULL, title = "Quebec protests with general and extreme levels of police involvement") +
+  guides(color = guide_legend(byrow = TRUE)) 
+
+quebec_extreme_police |> 
+  group_by(type, name) |> 
+  summarize(value = 100 * sum(value) / n,
+            n = unique(n)) |> 
+  distinct() |> 
+  mutate(type = paste0(type, " (n=", n, ")")) |> 
+  ggplot(aes(x = type, fill = str_wrap(name, 15), y = value)) + 
+  geom_bar(position = position_dodge(), stat = "identity") +
+  scale_fill_brewer(type = "qual", palette = "Set1") +
+  labs(fill = NULL, x = NULL, y = "Percentage of all protests", 
+       title = "Police involvement in Quebec protests and all protests")  + 
+  geom_text(aes(label = paste0(round(value, 2), "%")),
+            family = "Lato",
+            vjust = -1, position = position_dodge(0.9)) +
+  scale_y_continuous(breaks = seq(0, 45, by = 5), limits = c(0, 42)) + 
+  guides(fill = guide_legend(byrow = TRUE)) + 
+  theme(legend.spacing.y = unit(1, "cm")) 
+ 
 ```
 
 Brainstorming a breakdown for activity recategorization:
