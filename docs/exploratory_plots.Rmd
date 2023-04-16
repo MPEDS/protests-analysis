@@ -1142,7 +1142,7 @@ mpeds |>
   ggplot(aes(x = date, y = pct, fill = type)) + 
   geom_bar(stat = "identity") +
   labs(
-    y = "Share of canonical events during given month",
+    y = "Share of protest events during given month",
     x = "Date (floored to months)",
     title = "Proportion of racial and `non-racial` issues over time"
   ) +
@@ -1247,7 +1247,7 @@ mpeds |>
   geom_histogram() + 
   facet_wrap(~name, scales = "free") + 
   labs(
-    title = "Glimpse of numeric covariates at the canonical event level",
+    title = "Glimpse of numeric covariates at the protest event level",
     y = "Number of occurrences",
     x = "Value of variable",
   )
