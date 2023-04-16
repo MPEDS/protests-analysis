@@ -882,6 +882,10 @@ plot_response_over_time(university_reactions_to_protest)
 
 ```
 
+### Police activities over time
+
+Regrouped to be interpretable according to the following crosswalk: 
+
 ```{r police_activities_over_time}
 police_activity_xwalk <- list(
   "Use of Force" = c(
@@ -1754,31 +1758,6 @@ I've made three separate graphs. I can also make a single image composed of
 three sub-plots for presence, activities, and type.
 
 ```{r quebec_police, warning = FALSE, message = FALSE}
-police_activity_xwalk <- list(
-  "Use of Force" = c(
-    "Force: Vague/Body", "Force: Weapon", "Force: 2+ Weapon Types"
-  ),
-  "Active Constraint" = c(
-    "Remove Individual Protesters", 
-    "Arrest or Attempted",
-    "Constrain", "Arrest- Large Scale",
-    "Detain", "End Protest"
-  ),
-  "Passive Control" = c(
-    "Cooperate/Coordinate", "Monitor/Present"
-  ),
-  "Verbal Communication" = c(
-    "Instruct/Warn", '"Breaking the Rules"', "Formal Accusation"
-  ),
-  "NA/Unclear" = "NA/Unclear"
-) |> 
-  # im incredibly obtuse
-  lmap(\(list_item){
-    name <- names(list_item)
-    return(tibble(umbrella = name, categories = unlist(list_item)))
-  }) |> 
-  reduce(bind_rows)
-
 police_type_xwalk <- tribble(
   ~umbrella, ~categories,
   '"Riot police"', '"Riot police"',

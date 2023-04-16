@@ -8,6 +8,7 @@ Exploratory Plots
 - [Percentages of all protest with given
   preset](#percentages-of-all-protest-with-given-preset)
 - [Counts over time](#counts-over-time)
+  - [Police activities over time](#police-activities-over-time)
   - [Racial and “nonracial” issues over time
     (collapsed)](#racial-and-nonracial-issues-over-time-collapsed)
 - [Basic summary plots by variable](#basic-summary-plots-by-variable)
@@ -575,6 +576,10 @@ categories, so I’ve only shown the universities over time for now:
     ## Adding another scale for x, which will replace the existing scale.
 
 ![](exploratory_plots_files/figure-gfm/responses_over_time-6.png)<!-- -->
+
+### Police activities over time
+
+Regrouped to be interpretable according to the following crosswalk:
 
 | New umbrella category | Existing police activity     |
 |:----------------------|:-----------------------------|
