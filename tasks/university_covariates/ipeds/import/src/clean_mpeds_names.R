@@ -36,10 +36,10 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
     distinct()
 
   mpeds_names <- geocoded |>
-    select(university, participating_universities) |>
-    unnest(participating_universities, keep_empty = TRUE) |>
+    select(university, participating_universities_text) |>
+    unnest(participating_universities_text, keep_empty = TRUE) |>
     unnest(university, keep_empty = TRUE) |>
-    pivot_longer(cols = c(university, participating_universities),
+    pivot_longer(cols = c(university, participating_universities_text),
                  values_to = "university"
                  ) |>
     select(-name) |>
@@ -166,9 +166,9 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename,
 
   # Adding on "participating universities"
   keys <- geocoded |>
-    select(key, participating_universities, description) |>
-    unnest(participating_universities) |>
-    rename(university = participating_universities) |>
+    select(key, participating_universities_text, description) |>
+    unnest(participating_universities_text) |>
+    rename(university = participating_universities_text) |>
     bind_rows(initial_keys) |>
     mutate(university = str_remove_all(university, ",") |> str_trim()) |>
     distinct()

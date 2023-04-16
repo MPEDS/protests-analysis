@@ -139,7 +139,6 @@ lat,lng,location
 35.612661,-77.3663538,"Greenville, NC, USA"
 44.8857087,-63.1005273,"Halifax, NS, Canada"
 33.4555279,-88.7903868,"Mississippi State, MS, United States"
-38.57670170000001,-92.1735164,"Jefferson City, MO, USA"
 36.313439700000004,-82.3534727,"Johnson City, TN, USA"
 35.2225668,-97.4394777,"Norman, OK, USA"
 36.0726354,-79.7919754,"Greensboro, NC, USA"
@@ -256,6 +255,7 @@ lat,lng,location
 33.6845673,-117.8265049,"Irvine, CA, USA"
 30.3321838,-81.65565099999999,"Jacksonville, FL, USA"
 30.3321838,-81.65565099999999,"Jacksonville, FL USA"
+38.57670170000001,-92.1735164,"Jefferson City, MO, USA"
 39.0997265,-94.5785667,"Kansas City, MO, USA"
 42.933692,-72.2781409,"Keene, NH, USA"
 41.48037910000001,-71.52255980000001,"Kingston, RI, USA"
@@ -706,7 +706,6 @@ lat,lng,location
 44.63658119999999,-63.59165549999999,Dalhousie University
 40.8075355,-73.9625727,Columbia University
 41.66270780000001,-91.5549771,University of Iowa
-38.0317977,-120.3885135,Columbia College
 36.3023954,-82.36985299999999,East Tennessee State University
 35.2058936,-97.4457137,University of Oklahoma Norman Campus
 36.0917841,-79.8887051,Guilford College
@@ -757,6 +756,7 @@ lat,lng,location
 43.1175731,-79.2476925,Brock University
 39.7596804,-94.7844794,Missouri Western State College
 41.7886079,-87.5987133,University of Chicago
+38.0317977,-120.3885135,Columbia College
 36.21356280000001,-81.68432179999999,Appalachian State University
 40.0142329,-105.2670571,Naropa University
 40.00758099999999,-105.2659417,University of Colorado at Boulder

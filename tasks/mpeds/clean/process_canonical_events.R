@@ -26,11 +26,24 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
     ) |>
     select(-text) |>
     distinct() |>
-    mutate(variable = str_replace_all(variable, '-', '_') |>
-             str_remove_all("_text")) |>
+    mutate(
+      # variable = case_when(
+      # str_detect(variable, "-text") &&
+      #   (str_remove_all(variable, "-text") %in% unique(.data$variable)) ~
+      #   str_replace_all(variable, "-text", "-select")
+      #   ),
+           variable = str_replace_all(variable, '-', '_')) |>  # |>
+             # str_remove_all("_text")) |>
     pivot_wider(names_from = variable,
                 values_from = value,
                 values_fn = list) |>
+    # This is a bit strange -- some rows have NAs in the `variable` column,
+    # which creates a column labeled `NA` after the pivot
+    # But we can't use `filter()` before the pivot to remove them as
+    # might be considered idiomatic, since that would remove
+    # many events completely and distort our counts of events. So I remove
+    # just the column after pivoting.
+    select(-`NA`) |>
     mutate(across(where(is_list), \(col){
       # remove NAs -- we want to drop NAs of the form c("Toledo, OH, USA", NA)
       col <- map(col, \(vec){
@@ -62,7 +75,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
              str_replace_all("([A-Za-z])(?=-)", "\\1 ") |>
              str_remove_all("-") |>
              str_replace("St Michael.*", "St Michael's College"),
-           university_names = map(university_names,
+           university_names_text = map(university_names_text,
                                   ~str_remove_all(., "(,|\\.|')$") |>
                                     str_trim())) |>
   # around 7k/35k don't match because they dont fit the above patterns,
@@ -73,7 +86,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
       # manual corrections I made
       university = ifelse(is.na(pub_uni), uni, pub_uni),
       # use university_names, which coders annotated, when available
-      university = map2(university_names, university,
+      university = map2(university_names_text, university,
                         function(annotated_uni, publication_uni){
                           if(length(annotated_uni) > 0){
                             return(annotated_uni)
@@ -81,7 +94,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
                             return(publication_uni)
                           }
                           })) |>
-    select(-uni, -pub_uni, -university_names) |>
+    select(-uni, -pub_uni, -university_names_text) |>
     # Some issues have strange presets
     mutate(racial_issue = map(racial_issue, \(issue_list){
       issue_list |>

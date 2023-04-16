@@ -95,13 +95,13 @@ police_only <- mpeds |>
   filter(if_any(c(
     police_presence_and_size,
     police_activities,
-    police_actions,
+    police_actions_text,
     type_of_police
   ), ~!map_lgl(.,\(x){is.null(x)}))) |>
   filter(if_any(c(
     police_presence_and_size, 
     police_activities,
-    police_actions,
+    police_actions_text,
     type_of_police
   ), ~map_lgl(., \(x){any(x != "NA/Unclear")}))) 
 
@@ -111,7 +111,7 @@ n_any_police_field <- police_only |>
 n_both_pa_ur <- police_only |> 
   filter(if_any(c(
     university_action_on_issue,
-    university_responses,
+    university_responses_text,
     university_reactions_to_protest,
     university_discourse_on_protest,
     university_discourse_on_issue
@@ -119,7 +119,7 @@ n_both_pa_ur <- police_only |>
     is.null(x)
   }))) |> filter(if_any(c(
     university_action_on_issue,
-    university_responses,
+    university_responses_text,
     university_reactions_to_protest,
     university_discourse_on_protest,
     university_discourse_on_issue
@@ -405,10 +405,10 @@ were heavily policed.
 ```{r police_involvement_by_issue}
 police_involvement <- mpeds |> 
   filter(
-    if_any(c(type_of_police, police_actions,
+    if_any(c(type_of_police, police_actions_text,
           police_activities, police_presence_and_size),
         ~map_lgl(., \(x){!is.null(x)})),
-    if_any(c(type_of_police, police_actions,
+    if_any(c(type_of_police, police_actions_text,
           police_activities, police_presence_and_size),
         ~map_lgl(., \(x){any(x != "NA/Unclear")})),
     ) 
@@ -616,7 +616,7 @@ plots <- map(2012:2018, function(yr){
       )
 })
 title_grob <- ggdraw() + 
-  draw_label("Counts of canonical events over time",
+  draw_label("Counts of protest events over time",
              x = 0.05, 
              hjust = 0, 
              fontfamily = "Lato",
@@ -656,7 +656,7 @@ protests_region_plot <- ggplot(protests_by_region,
   labs(
     title = "Events over time by region",
     x = "Date (floored to months)",
-    y = "Number of associated canonical events", 
+    y = "Number of associated protest events", 
     color = "U.S. Census region,\nor Canadian province"
   ) 
 
@@ -695,7 +695,7 @@ legend_grob <- get_legend(protests_region_plot +
                           )
 
 title_grob <- ggdraw() + 
-  draw_label("Counts of canonical events over time by region",
+  draw_label("Counts of protest events over time by region",
              x = 0.05, 
              hjust = 0, 
              fontfamily = "Lato",
@@ -727,10 +727,10 @@ ggplot(protests_by_country, aes(fill = country, x = date, y = n)) +
                date_labels = "%b %y",
                guide = guide_axis(n.dodge = 2)) + 
   labs(
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     x = "Date (floored to months)",
     fill = "Country",
-    title = "Canonical events by country"
+    title = "Protest events by country"
   ) 
 ```
 
@@ -770,7 +770,7 @@ uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, fill = university)) +
   scale_fill_brewer(type = "qual", palette = "Paired") + 
   labs(
     x = paste0("Time (months)"),
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     title = "Top universities by protest count over time",
     caption = paste("Universities displayed are top 10 overall universities
     by protest count, not a top university in a given year.", 
@@ -808,7 +808,7 @@ uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, fill = g
                ) + 
   labs(
     x = paste0("Time (floored to months)"),
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     title = "Top university groups by protest count over time",
     caption = paste("Dates are aggregated to the month unit.")
   ) 
@@ -862,7 +862,7 @@ plot_response_over_time <- function(colname){
                )
                ) + 
     labs(
-      title = paste(name_string, "over time"),
+      title = paste("Top 9 ", name_string, "categories over time"),
       y = "Number of occurrences",
       x = "Date (month)",
       fill = name_string
@@ -879,6 +879,64 @@ plot_response_over_time(type_of_police)
 plot_response_over_time(university_action_on_issue)
 plot_response_over_time(university_discourse_on_issue)
 plot_response_over_time(university_reactions_to_protest)
+
+```
+
+```{r police_activities_over_time}
+police_activity_xwalk <- list(
+  "Use of Force" = c(
+    "Force: Vague/Body", "Force: Weapon", "Force: 2+ Weapon Types"
+  ),
+  "Active Constraint" = c(
+    "Remove Individual Protesters", 
+    "Arrest or Attempted",
+    "Constrain", "Arrest- Large Scale",
+    "Detain", "End Protest"
+  ),
+  "Passive Control" = c(
+    "Cooperate/Coordinate", "Monitor/Present", "Participate", "Present"
+  ),
+  "Verbal Communication" = c(
+    "Instruct/Warn", '"Breaking the Rules"', "Formal Accusation",
+    "Disputed Actions", "\"We're Responsive\""
+  ),
+  "NA/Unclear" = "NA/Unclear"
+) |> 
+  # im incredibly obtuse
+  lmap(\(list_item){
+    name <- names(list_item)
+    return(tibble(umbrella = name, categories = unlist(set_names(list_item, NULL))))
+  }) |> 
+  reduce(bind_rows)
+
+police_activity_xwalk |> 
+  rename("New umbrella category" = umbrella,
+         "Existing police activity" = categories) |> 
+  kable()
+
+mpeds |> 
+  filter(start_date < "2018-06-01") |> 
+  mutate(date = floor_date(start_date, "month")) |> 
+  select(date, police_activities) |> 
+  unnest(police_activities) |> 
+  left_join(police_activity_xwalk, by = c("police_activities" = "categories")) |> 
+  count(date, umbrella) |> 
+  filter(umbrella != "NA/Unclear") |> 
+  ggplot() + 
+  geom_bar(aes(x = date, y = n, fill = umbrella),
+           stat = "identity") + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
+  scale_y_continuous(breaks = seq(10, 70, by = 10)) + 
+  scale_x_date(date_breaks = "6 months", 
+               date_labels = "%b %y",
+               guide = guide_axis(n.dodge = 2)) + 
+  labs(
+    y = "Number of associated events",
+    x = NULL,
+    title = "Police activities over time",
+    fill = "Type of police activity"
+  )
+
 ```
 
 ```{r issues_over_time}
@@ -935,7 +993,7 @@ issues |>
              ) + 
   labs(
     title = "Issue breakdown over time",
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     x = "Date (month)",
     caption = "Excludes racial issues."
   ) +
@@ -960,7 +1018,7 @@ issues |>
   scale_fill_brewer(type = "qual", palette = "Set1") + 
   labs(
     title = "Issue breakdown over time",
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     x = "Date (month)",
     caption = "Includes racial issues."
   ) +
@@ -1034,7 +1092,7 @@ mpeds |>
   ggplot(aes(x = date, y = n, fill = type)) + 
   geom_bar(stat = "identity") +
   labs(
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     x = "Date (floored to months)",
     title = "Racial and `non-racial` issues over time"
   ) + 
@@ -1059,7 +1117,7 @@ mpeds |>
   labs(
     x = NULL,
     fill = NULL,
-    y = "Number of associated canonical events",
+    y = "Number of associated protest events",
     title = "Protest counts by type of issue over time",
   ) +
   scale_fill_brewer(type = "qual", palette = "Set1") 
@@ -1113,7 +1171,8 @@ mpeds_issue_time <- mpeds |>
     n_total = n(),
     n_racial = sum(is_racial, na.rm = T),
     n_issue = sum(is_issue, na.rm = T)
-  ) 
+  ) |> 
+  drop_na()
 
 mpeds_issue_time |> 
   ggplot(aes(x = n_racial/n_total, y = n_total)) + 
@@ -1123,7 +1182,7 @@ mpeds_issue_time |>
     y = "Total number of events in month",
     x = "Proportion of events with racial issues",
     title = "Are increases in event count driven by upticks in racial issues?",
-  )
+  ) 
 
 mpeds_issue_time |> 
   ggplot(aes(x = date, y = n_total, fill = 100 * n_racial/n_total)) + 
@@ -1326,7 +1385,7 @@ mpeds_sf |>
     y = c(20, 55)
   ) +
   labs(
-    title = "Spread of canonical events and geocoded locations",
+    title = "Spread of protest events and geocoded locations",
     subtitle = "Locations jittered slightly, by 0.005*bounding box diagonal.",
     caption = "Alaska, Hawaii, a few other locations with only a\nfew protests excluded in this map only."
   ) + 
@@ -1443,11 +1502,98 @@ tibble(canonical_id = mizzou_ids) |>
   scale_x_date(date_labels = "%b %y", date_breaks = "1 month") + 
   labs(
     x = "Date",
-    y = "Number of canonical events starting on date",
+    y = "Number of protest events starting on date",
     title = "Mizzou solidarity protest occurrences over time"
   )
 
 ```
+
+### 2015 Antiracism protest profiles and comparison
+
+```{r}
+antiracism_issues <- c(
+  "Affirmative action (For)",
+  "Anti-racism",
+  "Campus climate",
+  "Cultural appropriation",
+  "Hate crimes/Anti-minority violence",
+  "Hate speech",
+  "Immigration (For)",
+  "Indigenous issues",
+  "Memorials & anniversaries",
+  "Racist/racialized symbols",
+  "Reparations",
+  "University governance, admin, policies, programs, curriculum",
+  "White supremacy (Against)"
+)
+
+antiracism_metadata <- mpeds |>
+  mutate(is_issue_unigovernance = map_lgl(racial_issue, ~any(
+           . == "University governance, admin, policies, programs, curriculum"
+         )),
+         is_issue_campusclimate = map_lgl(racial_issue, ~any(
+           . == "Campus climate"
+         )),
+         is_target_individual = map_lgl(target, ~("Individual" %in% .)),
+         is_target_university = map_lgl(target, ~("University/school" %in% .))) |>
+  filter(map_lgl(racial_issue, ~any(antiracism_issues %in% .))) |> 
+  select(start_date,
+         key, 
+         is_issue_unigovernance,
+         is_issue_campusclimate,
+         is_target_individual,
+         is_target_university) 
+
+# Below is used to manually inspect 2015 events
+antiracism_2015 <- antiracism_metadata |>
+  filter(floor_date(start_date, "month") == "2015-11-01") |> 
+  select(-start_date)
+
+# Produce a summary and compare it to other November protests
+antiracism_metadata |>
+  mutate(year = year(start_date)) |>
+  filter(month(start_date) == "11",
+         year != 2018) |>
+  drop_na() |>
+  group_by(year) |>
+  summarize(across(
+    c(is_issue_unigovernance,
+      is_issue_campusclimate,
+      is_target_individual,
+      is_target_university),
+    sum),
+    is_antiracism = n()) |> 
+  pivot_longer(cols = c(is_issue_unigovernance,
+      is_issue_campusclimate,
+      is_target_individual,
+      is_target_university
+      )) |> 
+  mutate(name = case_when(
+    name == "is_issue_unigovernance" ~ "Issue relates to university governance",
+    name == "is_issue_campusclimate" ~ "Issue relates to campus climate",
+    name == "is_target_individual" ~ "Target is individual",
+    name == "is_target_university" ~ "Target is university",
+    TRUE ~ name
+  ), name = str_wrap(name, 20)) |> 
+  ggplot(aes(x = year, y = value, fill = name)) + 
+  geom_bar(stat = "identity",
+           position = position_dodge()) + 
+  geom_text(aes(label = value),
+            position = position_dodge(width = 0.9),
+            vjust = -1) +
+  labs(
+    title = "Comparison of November Anti-racism Protests",
+    y = "Number of associated protest events",
+    x = NULL,
+    fill = NULL
+  )  + 
+  scale_fill_brewer(type = "qualitative",
+                    palette = "Set1") +
+  scale_x_continuous(breaks = 2012:2017) + 
+  guides(fill = guide_legend(byrow = TRUE))
+
+```
+
 
 ### Newspaper coverage for Mizzou umbrella
 
@@ -1506,7 +1652,7 @@ get_mizzou_responses <- function(colname){
     ) |> rename({{colname}} := category)) |> 
     arrange(desc(n)) |> 
     rename({{name_string}} := {{colname}},
-           "Number of associated canonical events" = n) |> 
+           "Number of associated protest events" = n) |> 
     kable()
 }
 # 
@@ -1593,7 +1739,7 @@ tibble(canonical_id = quebec_ids) |>
   scale_x_date(date_labels = "%b %Y", date_breaks = "1 month") + 
   labs(
     x = "Date",
-    y = "Number of canonical events starting on date",
+    y = "Number of protest events starting on date",
     title = "Quebec protest occurrences over time"
   )
   
@@ -1708,10 +1854,10 @@ quebec_extreme_police <- lmap(list("Quebec" = quebec_events, "All" = mpeds), \(l
                           "Substantial") %in% .)) | 
            map_lgl(type_of_police, 
                    ~('"Riot police"' %in% .)),
-           `Any Police Involvement` = if_any(c(type_of_police, police_actions,
+           `Any Police Involvement` = if_any(c(type_of_police, police_actions_text,
                                  police_activities, police_presence_and_size),
                                ~map_lgl(., \(x){!is.null(x)})),
-           if_any(c(type_of_police, police_actions,
+           if_any(c(type_of_police, police_actions_text,
                     police_activities, police_presence_and_size),
                   ~map_lgl(., \(x){any(x != "NA/Unclear")})),
     ) |> 
