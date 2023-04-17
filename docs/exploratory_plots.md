@@ -446,7 +446,7 @@ protests were heavily policed.
 | Traditional marriage/family                                           |                               0.22 |
 | Men’s rights                                                          |                               0.11 |
 
-![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-3.png)<!-- -->
 
 # Percentages of all protest with given preset
 
