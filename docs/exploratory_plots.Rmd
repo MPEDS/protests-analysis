@@ -402,7 +402,7 @@ prevalence across all events but with 16% prevalence across police-involved even
 This makes sense given our knowledge that the Quebec tuition strike protests
 were heavily policed.
 
-```{r police_involvement_by_issue}
+```{r police_involvement_by_issue, fig.height = 10, fig.width = 10}
 police_involvement <- mpeds |> 
   filter(
     if_any(c(type_of_police, police_actions_text,
@@ -441,16 +441,31 @@ police_involvement_issue |>
 top_police_issues <- police_involvement_issue |> 
   slice_max(order_by = n, n = 7)
 
+# GAH can't think of a neater way to do this
 extreme_police_issue <- mpeds |> 
-  filter(map_lgl(police_activities, 
-                 ~any(c("Arrest- Large Scale", "Force: 2+ Weapon Types") %in%
-                       .)) | 
-           map_lgl(police_presence_and_size,
-                   ~any(c("Heavily Policed", "Motorized Presence", 
-                          "Substantial") %in% .)) | 
-           map_lgl(type_of_police, 
-                   ~('"Riot police"' %in% .))) |> 
+  filter(
+    (map_lgl(police_activities, ~"Force: 2+ Weapon Types" %in% .) + 
+    map_lgl(police_activities, ~"Arrest- Large Scale" %in% .) + 
+    map_lgl(police_presence_and_size, ~"Heavily Policed" %in% .) +
+    map_lgl(police_presence_and_size, ~"Motorized Presence" %in% .) +
+    map_lgl(police_presence_and_size, ~"Substantial" %in% .) >= 2) |
+    map_lgl(type_of_police, ~'"Riot police"' %in% .)
+  ) |> 
   get_issue()
+
+# Scratch code for testing
+# x <- mpeds |> 
+#   mutate(
+#     is_weapon = map_lgl(police_activities, ~"Force: 2+ Weapon Types" %in% .),
+#     is_large = map_lgl(police_activities, ~"Arrest- Large Scale" %in% .),
+#     is_heavy = map_lgl(police_presence_and_size, ~"Heavily Policed" %in% .),
+#     is_motorized = map_lgl(police_presence_and_size, ~"Motorized Presence" %in% .),
+#     is_substantial = map_lgl(police_presence_and_size, ~"Substantial" %in% .),
+#     is_riot = map_lgl(type_of_police, ~'"Riot police"' %in% .)
+#   ) |> 
+# select(starts_with("is_")) |> 
+# summarize(across(everything(), sum))
+
 top_extreme_police_issue <- extreme_police_issue |> 
   slice_max(order_by = n, n = 7)
 
@@ -463,7 +478,7 @@ plot_comparison <- function(dta, name){
     mutate(type = ifelse(type == "category",
                          str_to_sentence(name),
                          type)) |> 
-    filter(value %in% dta$value) |> 
+    filter(value %in% dta$value) |> # value = issue name
     mutate(value = str_wrap(value, 15),
            value = factor(value, levels = str_wrap(dta$value, 15))) 
   
@@ -496,6 +511,46 @@ plot_comparison <- function(dta, name){
 
 plot_comparison(top_police_issues, "police-involved protests")
 plot_comparison(top_extreme_police_issue, "protests with extreme policing")
+
+# All, police-involved, extreme policing on one graph
+police_issue_combined <- list("All protests" = mpeds_police_issue,
+     "Police-involved protests" = police_involvement_issue,
+     "Protests with extreme policing" = top_extreme_police_issue) |> 
+  bind_rows(.id = "type") |> 
+  filter(value %in% top_extreme_police_issue$value) |> # value = issue name
+  mutate(value = str_wrap(value, 13, whitespace_only = FALSE),
+         value = factor(value, levels = str_wrap(top_extreme_police_issue$value, 13, 
+                                                 whitespace_only = FALSE))) 
+
+# ARGH
+police_issue_diffs <- police_issue_combined |> 
+  group_by(value) |> 
+  pivot_wider(names_from = type,
+               values_from = n) |> 
+  pivot_longer(cols = c("Police-involved protests", "Protests with extreme policing"),
+              values_to = "pct") |> 
+  mutate(diff = round(pct - `All protests`, 2),
+         diff = ifelse(diff > 0, paste0("+", diff), diff)) |> 
+  select(type = name, value, diff)
+
+police_issue_combined |> 
+  left_join(police_issue_diffs, by = c("value", "type")) |> 
+  ggplot(aes(x = value, fill = value, y = n)) + 
+  geom_bar(stat = "identity") + 
+  geom_text(aes(label = diff), vjust = -0.5) +
+  facet_wrap(~type, nrow = 3) + 
+  labs(
+    title = "Top issue occurrences in across police involvement levels",
+    y = "Percentage of protests associated with issue",
+    x = NULL,
+    caption = paste0(
+      "Top issues are defined as the seven most common issues for protests with extreme policing.\n",
+      "Difference from corresponding measure for all protests are labeled above bars."),
+  ) + 
+  scale_fill_brewer(type = "qual", palette = "Set1") + 
+  scale_y_continuous(breaks = seq(0, 50, by = 5), limits = c(0, 50)) + 
+  theme(legend.position = "none")
+
 ```
   
 
@@ -1542,7 +1597,8 @@ antiracism_metadata <- mpeds |>
          is_target_university = map_lgl(target, ~("University/school" %in% .))) |>
   filter(map_lgl(racial_issue, ~any(antiracism_issues %in% .))) |> 
   select(start_date,
-         key, 
+         key,
+         university,
          is_issue_unigovernance,
          is_issue_campusclimate,
          is_target_individual,
@@ -1824,18 +1880,18 @@ quebec_extreme_police <- lmap(list("Quebec" = quebec_events, "All" = mpeds), \(l
     unique() |>
     str_subset("^Umbrella", negate = TRUE) |> 
     length()
-  counted <- list_item[[1]] |> 
-    mutate(`Extreme Police Involvement` = map_lgl(police_activities,
-                   ~any(c("Arrest- Large Scale", "Force: 2+ Weapon Types") %in%
-                       .)) | 
-           map_lgl(police_presence_and_size,
-                   ~any(c("Heavily Policed", "Motorized Presence", 
-                          "Substantial") %in% .)) | 
-           map_lgl(type_of_police, 
-                   ~('"Riot police"' %in% .)),
-           `Any Police Involvement` = if_any(c(type_of_police, police_actions_text,
+  counted <- list_item[[1]] |>
+    mutate(
+      `Extreme Police Involvement` = (
+        map_lgl(police_activities, ~"Force: 2+ Weapon Types" %in% .) +
+          map_lgl(police_activities, ~"Arrest- Large Scale" %in% .) + 
+          map_lgl(police_presence_and_size, ~"Heavily Policed" %in% .) +
+          map_lgl(police_presence_and_size, ~"Motorized Presence" %in% .) +
+          map_lgl(police_presence_and_size, ~"Substantial" %in% .) >= 2) |
+        map_lgl(type_of_police, ~'"Riot police"' %in% .),
+      `Any Police Involvement` = if_any(c(type_of_police, police_actions_text,
                                  police_activities, police_presence_and_size),
-                               ~map_lgl(., \(x){!is.null(x)})),
+                               ~map_lgl(., \(x){!is.null(x)})) &
            if_any(c(type_of_police, police_actions_text,
                     police_activities, police_presence_and_size),
                   ~map_lgl(., \(x){any(x != "NA/Unclear")})),
