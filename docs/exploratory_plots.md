@@ -17,6 +17,7 @@ Exploratory Plots
 - [Maps and related things](#maps-and-related-things)
 - [Investigating specific movements](#investigating-specific-movements)
   - [2015 Mizzou protests](#2015-mizzou-protests)
+    - [Mizzou issues](#mizzou-issues)
     - [2015 Antiracism protest profiles and
       comparison](#2015-antiracism-protest-profiles-and-comparison)
     - [Newspaper coverage for Mizzou
@@ -448,6 +449,10 @@ protests were heavily policed.
 
 ![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_involvement_by_issue-3.png)<!-- -->
 
+![](exploratory_plots_files/figure-gfm/police_issue_separate-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/police_issue_separate-2.png)<!-- -->
+
+![](exploratory_plots_files/figure-gfm/police_issue_baseline-1.png)<!-- -->
+
 # Percentages of all protest with given preset
 
 | issue                                                        |   pct |
@@ -772,6 +777,39 @@ and solidarity events.
 
 ![](exploratory_plots_files/figure-gfm/mizzou_map-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/mizzou_map-2.png)<!-- -->
 
+### Mizzou issues
+
+| value                                                                 |   n |
+|:----------------------------------------------------------------------|----:|
+| Anti-racism (racial)                                                  |  93 |
+| Campus climate (racial)                                               |  75 |
+| University governance, admin, policies, programs, curriculum (racial) |  66 |
+| University governance, admin, policies, programs, curriculum          |  17 |
+| Hate speech (racial)                                                  |   9 |
+| Police violence (racial)                                              |   7 |
+| Racist/racialized symbols (racial)                                    |   7 |
+| Labor and work                                                        |   5 |
+| Tuition, fees, financial aid                                          |   5 |
+| Economy/inequality                                                    |   4 |
+| Hate crimes/Anti-minority violence (racial)                           |   4 |
+| \_Other Issue                                                         |   4 |
+| Transgender issues                                                    |   3 |
+| \_Other Issue (racial)                                                |   3 |
+| Affirmative action (For) (racial)                                     |   2 |
+| Cultural appropriation (racial)                                       |   2 |
+| Environmental                                                         |   2 |
+| Indigenous issues (racial)                                            |   2 |
+| LGB+/Sexual orientation                                               |   2 |
+| Pro-Palestine/BDS                                                     |   2 |
+| Public funding for higher education                                   |   2 |
+| Sexual assault/violence                                               |   2 |
+| Faith-based discrimination                                            |   1 |
+| Feminism/women’s issues                                               |   1 |
+| Free speech                                                           |   1 |
+| Immigration (For) (racial)                                            |   1 |
+| Prison/mass incarceration (racial)                                    |   1 |
+| Trump and/or his administration (Against)                             |   1 |
+
 ### 2015 Antiracism protest profiles and comparison
 
 ![](exploratory_plots_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
@@ -813,7 +851,19 @@ categories involved, so instead I’ve made three separate graphs. I can
 also make a single image composed of three sub-plots for presence,
 activities, and type.
 
-![](exploratory_plots_files/figure-gfm/quebec_police-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-3.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-4.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-5.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/quebec_police-1.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-2.png)<!-- -->![](exploratory_plots_files/figure-gfm/quebec_police-3.png)<!-- -->
+
+    ## `summarise()` has grouped output by 'date'. You can override using the
+    ## `.groups` argument.
+    ## `summarise()` has grouped output by 'date'. You can override using the
+    ## `.groups` argument.
+
+![](exploratory_plots_files/figure-gfm/quebec_extreme_police-1.png)<!-- -->
+
+    ## `summarise()` has grouped output by 'type', 'name'. You can override using the
+    ## `.groups` argument.
+
+![](exploratory_plots_files/figure-gfm/quebec_extreme_police-2.png)<!-- -->
 
 Brainstorming a breakdown for activity recategorization:
 
@@ -840,6 +890,7 @@ protests based on issues, not by canonical event relationships.
     ## [[2]]
 
 ![](exploratory_plots_files/figure-gfm/trump_map-2.png)<!-- -->
+![](exploratory_plots_files/figure-gfm/trump_map-3.png)<!-- -->
 
 ### Issue composition November 9th and 17th protests
 
