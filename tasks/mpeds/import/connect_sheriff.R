@@ -31,16 +31,16 @@ connect_sheriff <- function(){
   }
 
   # R-interfacing ssh session useful for downloading specific files
-  session <- ssh_connect(paste0(user, "@sheriff.ssc.wisc.edu"))
+  session <- ssh::ssh_connect(paste0(user, "@sheriff.ssc.wisc.edu"))
 
   # grab database auth info
-  invisible(scp_download(session,
+  invisible(ssh::scp_download(session,
                paste0("/home/", user, "/.my.cnf"),
                to = tempdir(),
                verbose = FALSE))
-  ssh_disconnect(session)
+  ssh::ssh_disconnect(session)
 
-  con <- dbConnect(MariaDB(),
+  con <- RMariaDB::dbConnect(RMariaDB::MariaDB(),
                    dbname = "campus_protest_staging",
                    default.file = paste0(tempdir(), "/.my.cnf"),
                    host = "127.0.0.1",
