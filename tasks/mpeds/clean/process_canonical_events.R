@@ -93,7 +93,11 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
                           } else {
                             return(publication_uni)
                           }
-                          })) |>
+                          }),
+      uni_name_source = map_chr(
+        university_names_text,
+        ~ifelse(length(.) > 0, "other univ where protest occurs", "publication")
+      )) |>
     select(-uni, -pub_uni, -university_names_text) |>
     # Some issues have strange presets
     mutate(racial_issue = map(racial_issue, \(issue_list){

@@ -1,13 +1,15 @@
-get_articles <- function(canonical_events){
+get_articles <- function(){
   con <- connect_sheriff()
 
   articles_db <- tbl(con, "article_metadata")
   coder_event_creator <- tbl(con, "coder_event_creator") |>
-    select(article_id, event_id) |>
+    select(cec_id = id, article_id, event_id, variable) |>
     distinct()
-  canonical_events <- canonical_events |>
-    select(event_id, canonical_key = key) |>
+  canonical_event_link <- tbl(con, "canonical_event_link") |>
+    select(canonical_id, cec_id) |>
     distinct()
+  canonical_events <- tbl(con, "canonical_event") |>
+    select(key, canonical_id = id)
 
   articles <- articles_db |>
     left_join(coder_event_creator, by = c("id" = "article_id")) |>

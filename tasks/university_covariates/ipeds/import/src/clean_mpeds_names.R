@@ -154,19 +154,29 @@ update_coarse_matches <- function(raw_coarse_filename){
 
 #' After the coarse clean by name only, add in canonical event keys and
 #' format the match spreadsheet so coders can clean it easily
-postprocess_names <- function(geocoded, coarse_uni_match_filename,
+postprocess_names <- function(geocoded, coarse_uni_match_filename, intermediate_pass_filename,
                               glued, ipeds,
                               canonical_event_relationship){
   coarse_uni_match <- read_csv(coarse_uni_match_filename, show_col_types = FALSE)
+  # The coders can make multiple passes as we revise the process; this integrates their changes into the new dataset
+  # produced
+  intermediate_pass <- read_csv(intermediate_pass_filename, show_col_types = FALSE) |>
+    filter(seen) |>
+    select(seen, original_name, canonical_event_key,
+           true_uni_id = uni_id, true_uni_data_source = uni_data_source,
+           true_name = authoritative_name) |>
+    distinct()
+
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
   initial_keys <- geocoded |>
-    select(key, university, description) |>
+    select(key, university, uni_name_source, description) |>
     unnest(university)
 
   # Adding on "participating universities"
   keys <- geocoded |>
     select(key, participating_universities_text, description) |>
+    mutate(uni_name_source = "participating-universities-text") |>
     unnest(participating_universities_text) |>
     rename(university = participating_universities_text) |>
     bind_rows(initial_keys) |>
@@ -183,22 +193,37 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename,
     pull(key) |>
     unique()
 
-  MPEDS <- coarse_uni_match |>
+  coarse_uni_match <- coarse_uni_match |>
     mutate(authoritative_name = ifelse(
       !is.na(authoritative_name),
       authoritative_name,
       original_name
       ),
       original_name = str_remove_all(original_name, ",") |> str_trim()) |>
-    left_join(keys, by = c("original_name" = "university"),
-              multiple = "all") |>
+    distinct()
+
+  MPEDS <- keys |>
+    rename(original_name = university) |>
+    # Multiple=first is fine because we don't want RAs to check same university-key twice
+    left_join(coarse_uni_match, by = "original_name", multiple = "first") |>
     filter(!is.na(original_name),
            !is.na(key),
            !(key %in% umbrella_keys)) |>
-    select(original_name, authoritative_name, uni_id, uni_data_source,
+    select(original_name, original_source = uni_name_source,
+           authoritative_name, authoritative_id = uni_id,
+           authoritative_source = uni_data_source,
            canonical_event_key = key, description) |>
-    mutate(notes = "") |>
-    arrange(canonical_event_key)
+    left_join(intermediate_pass, by = c("original_name", "canonical_event_key"),
+              multiple = "first") |>
+    mutate(
+      authoritative_id = ifelse(!is.na(true_uni_id), true_uni_id, authoritative_id),
+      authoritative_name = ifelse(!is.na(true_name), true_name, authoritative_name),
+      authoritative_source = ifelse(!is.na(true_uni_data_source), true_uni_data_source, authoritative_source),
+      notes = "",
+      authoritative_name = ifelse(is.na(authoritative_id), NA, authoritative_name)) |>
+    select(-true_uni_data_source, -true_uni_id, -true_name) |>
+    select(seen, everything()) |>
+    arrange(seen, canonical_event_key)
 
   writexl::write_xlsx(
     list(
