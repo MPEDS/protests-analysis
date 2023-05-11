@@ -7,7 +7,7 @@ fn_filenames <- list.files("tasks", full.names = TRUE,
                            recursive = TRUE)
 invisible(lapply(fn_filenames, source_safely))
 
-tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven",
+tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven", "testthat",
                             "httr", "curl", "sf", "tigris", "tidycensus"))
 
 list(
@@ -65,9 +65,12 @@ list(
   tar_target(coarse_uni_match_filename,
              update_coarse_matches(raw_coarse_filename),
              format = "file"),
+  tar_target(intermediate_pass_filename,
+             "tasks/university_covariates/hand/intermediate_pass.csv",
+             format = "file"),
   # then passed off to coders in a readable format
   tar_target(postprocess_filename, postprocess_names(
-    geocoded, coarse_uni_match_filename, glued, ipeds,
+    geocoded, coarse_uni_match_filename, intermediate_pass_filename, glued, ipeds,
     canonical_event_relationship
   ), format = "file"),
   # And read in again after they've made their edits
@@ -86,6 +89,8 @@ list(
     covariates,
     geo
     )),
+
+  tar_target(tests, lapply(list.files("tests", full.names = TRUE), source)),
 
   # Plotting and other exploratory analysis ---
   tar_render(exploratory, "docs/exploratory_plots.Rmd" )
