@@ -3,8 +3,7 @@ get_lgbt_issues <- function(){
     st_drop_geometry() |>
     select(key, issue) |>
     unnest(issue) |>
-    filter(issue %in% c("LGB+/Sexual orientation", "LGB+/Sexual orientation (For)")) |>
+    filter(str_detect(issue, "LGB")) |>
     mutate(value = TRUE) |>
     pivot_wider(names_from = issue)
-
 }
