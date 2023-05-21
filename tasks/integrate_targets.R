@@ -9,12 +9,17 @@ integrate_targets <- function(
 ){
   # For now, duplicates exist within the university crosswalk
   # because there are multiple possible options for a given school's true
-  # name. The RAs will correct this, so for now I'm just taking the first one
+  # name. The RAs have presumably ensured every row is correct, so I will
+  # arbitrarily take the first row
   uni_xwalk <- uni_xwalk |>
     group_by(original_name, canonical_event_key) |>
-    select(-description, -notes) |>
+    select(-description, -notes, -seen, ) |>
     slice_head(n = 1) |>
     ungroup()
+
+  # xwalk also must be separated
+  participating <- uni_xwalk |> filter(original_source == "participating-universities-text")
+  uni_xwalk <- uni_xwalk |> filter(original_source != "participating-universities-text")
 
   # for now convert "university" to simple column and match on that
   with_university_covariates <- geocoded |>
@@ -24,19 +29,19 @@ integrate_targets <- function(
     left_join(uni_xwalk,
               by = c(university = "original_name", key = "canonical_event_key"),
               multiple = "all") |>
+    rename(uni_id = authoritative_id) |>
     mutate(
       university = case_when(
         !is.na(authoritative_name) ~ authoritative_name,
         TRUE ~ university
-      )
-    ) |>
-    # get a clean year for the start date --
-    # only one currently that has two, have to debug
-    mutate(start_date = map_chr(start_date, ~ifelse(is.null(.), NA_character_, .[1])),
-           start_date = as.Date(start_date),
-           year = lubridate::year(start_date)) |>
+      ),
+      start_date = as.Date(start_date),
+      year = lubridate::year(start_date)) |>
     left_join(ipeds, by = c("uni_id" = "id", "year")) |>
-    left_join(glued, by = c("uni_id" = "glued_id", "year"))
+    mutate(university = ifelse(!is.na(uni_name), uni_name, university)) |>
+    select(-uni_name) |>
+    left_join(glued, by = c("uni_id" = "glued_id", "year")) |>
+    mutate(university = ifelse(!is.na(uni_name), uni_name, university))
 
   # Appending geographic identifiers via a spatial join
   # Geographic IDs follow a code of the form "us_{county fips code}" for US areas

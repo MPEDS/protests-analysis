@@ -26,7 +26,7 @@ list(
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
   tar_target(geocoded, get_protest_coords(events_wide)),
-  tar_target(articles, get_articles(canonical_events)),
+  tar_target(articles, get_articles()),
 
   # Geographic information
   tar_target(us_regions_filename, format = "file",
@@ -90,7 +90,9 @@ list(
     geo
     )),
 
-  tar_target(tests, lapply(list.files("tests", full.names = TRUE), source)),
+  # Can't figure out how to get targets loading to work with testthat working
+  # directory situation
+  tar_target(tests, \(x){lapply(list.files("tests", full.names = TRUE), source)}(integrated)),
 
   # Plotting and other exploratory analysis ---
   tar_render(exploratory, "docs/exploratory_plots.Rmd" )

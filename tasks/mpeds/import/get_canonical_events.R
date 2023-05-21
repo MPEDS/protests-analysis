@@ -32,7 +32,8 @@ get_canonical_events <- function(){
     select(-coder_id, -id) |>
     right_join(tbl(con, "canonical_event"),
                by = c("canonical_id" = "id")) |>
-    select(-last_updated, -coder_id, -timestamp) |>
+    select(-last_updated, -timestamp) |>
+    rename(adjudicator_id = coder_id) |>
     left_join(article_metadata, by = "canonical_id") |>
     collect()
 
