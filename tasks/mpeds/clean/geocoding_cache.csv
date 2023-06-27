@@ -1,7 +1,5 @@
 lat,lng,location
 38.9517053,-92.3340724,"Columbia, MO, USA"
-37.8715226,-122.273042,"Berkeley, CA, USA"
-37.8715226,-122.273042,"Berkeley, California, USA"
 42.3732216,-72.5198537,"Amherst, MA, USA"
 42.2808256,-83.7430378,"Ann Arbor, MI, USA"
 33.748752,-84.38768449999999,"Atlanta, GA, USA"
@@ -16,6 +14,7 @@ lat,lng,location
 44.5133188,-88.0132958,"Green Bay, WI, USA"
 34.0966764,-117.7197785,"Claremont, CA, USA"
 34.0966764,-117.7197785,"Claremont, California, USA"
+37.8715226,-122.273042,"Berkeley, CA, USA"
 39.6444898,-86.8647316,"Greencastle, IN, USA"
 42.3600825,-71.0588801,"Boston, MA, USA"
 43.7022451,-72.2895526,"Hanover, NH, USA"
@@ -499,7 +498,7 @@ lat,lng,location
 45.897903,-64.3682803,"Sackville, New Brunswick, Canada"
 32.7947731,-116.9625269,"El Cajon, CA, USA"
 37.9715592,-87.5710898,"Evansville, IN, USA"
-44.6365107,-123.1059282,"Albany, OR, USA"
+44.9428975,-123.0350963,"Salem, OR, USA"
 41.8791979,-87.8431155,"Maywood, IL, USA"
 41.6414438,-80.15144839999999,"Meadville, PA, USA"
 33.4555279,-88.7903868,"Mississippi State, MS, USA"
@@ -509,7 +508,6 @@ lat,lng,location
 34.5400242,-112.4685025,"Prescott, AZ, USA"
 44.100351,-70.21477639999999,"Lewiston, MA, USA"
 37.9357576,-122.3477486,"Richmond, CA, USA"
-44.9428975,-123.0350963,"Salem, OR, USA"
 34.4208305,-119.6981901,"Santa Barbara, CA,  USA"
 37.2089572,-93.2922989,"Springfield, MO, USA"
 39.3292396,-82.1012554,"Athens, OH USA"
@@ -543,7 +541,6 @@ lat,lng,location
 38.9403808,-92.3277375,University of Missouri
 38.9403808,-92.3277375,University of Missouri Columbia
 38.9403808,-92.3277375,University of Missouri-Columbia's campus
-37.8718992,-122.2585399,University of California Berkeley
 42.3709104,-72.5170028,Amherst College
 42.3867598,-72.5300515,University of Massachusetts Amherst
 42.2762537,-83.7412441,University of Michigan Ann Arbor
@@ -560,6 +557,7 @@ lat,lng,location
 44.5313196,-87.9210482,University of Wisconsin Green Bay
 34.1042832,-117.7050738,Pitzer College
 34.0977461,-117.711806,Pomona College
+37.8718992,-122.2585399,University of California Berkeley
 39.63942520000001,-86.8634933,Depauw University
 37.8718992,-122.2585399,"University of California, Berkeley"
 42.3504997,-71.1053991,Boston University
@@ -1233,7 +1231,6 @@ lat,lng,location
 39.9566127,-75.18994409999999,Drexel
 39.9522188,-75.1932137,Students from the University of Pennsylvania and Community College of Philadelphia marched alongside Temple students
 39.7099689,-75.1191932,"Lee teaches at Philadelphia University, the University of Pennsylvania and Rowan University in South Jersey in addition to Temple"
-35.2058936,-97.4457137,University of Oklahoma
 33.4242399,-111.9280527,ASU
 34.0522342,-118.2436849,Los Angeles campus
 37.5565736,-79.0801084,Sweet Briar
@@ -1243,6 +1240,7 @@ lat,lng,location
 38.2352198,-122.119899,Solano Community College
 37.7749295,-122.4194155,San Francisco
 36.9741171,-122.0307963,Santa Cruz
+32.8049085,-117.1675503,Mesa College
 38.3013039,-77.47447,University of Mary Washington
 42.2746179,-71.8068416,Worcester Polytechnic Institute
 43.676042700000004,-79.41072840000001,George Brown Colleg

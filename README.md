@@ -101,6 +101,18 @@ the following dependencies.
   - The switch is controlled through an environment variable so that the
   switch can be toggled without changes to version control-tracked files.
 
+- **GDAL, PROJ, libarrow, and possibly other dependencies**. R
+  does most of the work of building packages for you, and
+  especially so if you run MacOS or Windows, since prebuilt
+  binaries are available on CRAN. You still need, at minimum, 
+  GDAL, PROJ, and libarrow, in order for the `sf` package to
+  function correctly. You may receive additional warnings or
+  failed compilation messages (on Linux) when other
+  dependencies are not present; please look up how to install
+  them for your distribution and contact Nathan for any issues.
+  Please do not be discouraged if installing dependencies
+  becomes difficult.
+
 ### Quickstart
 
 In a terminal, first run:
@@ -114,12 +126,16 @@ Then I recommend opening the `campus-protests.Rproj` file through
 whatever IDE you use for R, which is probably RStudio but could be
 anything that respects the semantics of
 [R projects](https://support.rstudio.com/hc/en-us/articles/200526207-Using-RStudio-Projects).
-If the project is opened correctly, `renv` should begin the package
-loading process to create the environment needed for this data
-pipeline.[^2]
+If the project is opened correctly, `renv` should run a script 
+installing itself (if not present) and checking which
+dependencies must be installed along with the project. 
+[^2] You can then run `renv::restore()` to install all
+necessary dependencies. If the directions in the section above
+were followed, you should have no issue.
 
 Then, to run the data pipeline, run `targets::tar_make()` in an R
-console.
+console. You can run individual targets with
+`tar_make(NAME_OF_TARGET)`. 
 
 ### Data sources
 

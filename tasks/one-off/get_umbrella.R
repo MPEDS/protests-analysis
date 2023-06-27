@@ -7,7 +7,6 @@ get_umbrella <- function(){
   umbrella <- mpeds |>
     filter(str_detect(key, "^Umbrella"))
 
-
   canonical_event_relationship <- tar_read(canonical_event_relationship)
   canonical_event_relationship <- canonical_event_relationship |>
     mutate(relationship_type = paste0("Has as ", relationship_type)) |>

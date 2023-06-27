@@ -92,7 +92,11 @@ list(
 
   # Can't figure out how to get targets loading to work with testthat working
   # directory situation
-  tar_target(tests, \(x){lapply(list.files("tests", full.names = TRUE), source)}(integrated)),
+  tar_target(
+    tests,
+    \(x){lapply(list.files("tests", full.names = TRUE), source)}(integrated),
+    cue = tar_cue(mode = "always")
+    ),
 
   # Plotting and other exploratory analysis ---
   tar_render(exploratory, "docs/exploratory_plots.Rmd" )
