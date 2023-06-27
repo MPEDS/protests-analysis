@@ -1,7 +1,7 @@
 #' Integrates all targets into a single dataset. Should always be the
 #' last target formed before analysis.
 integrate_targets <- function(
-    geocoded,
+    cleaned_events,
     ipeds, glued,
     uni_xwalk,
     covariates,
@@ -22,7 +22,7 @@ integrate_targets <- function(
   uni_xwalk <- uni_xwalk |> filter(original_source != "participating-universities-text")
 
   # for now convert "university" to simple column and match on that
-  with_university_covariates <- geocoded |>
+  with_university_covariates <- cleaned_events |>
     mutate(
       university = map_chr(university, ~ifelse(is.null(.), NA_character_, .))
     ) |>

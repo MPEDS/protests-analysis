@@ -11,10 +11,10 @@
 # writing down corresponding IPEDS/GLUED names for each unmatched MPEDS name.
 
 #' First pass function- helps dedupe/correct names in MPEDS
-#' @param geocoded canonical events with geocoded names (the `geocoded` target)
+#' @param cleaned_events Canonical events otherwise post-processing
 #' @param ipeds the IPEDS initial import
 #' @param glued the initial GLUED import
-clean_mpeds_names <- function(geocoded, ipeds, glued){
+clean_mpeds_names <- function(cleaned_events, ipeds, glued){
   authoritative_uni_directory <- bind_rows(
     list(
       ipeds = ipeds |>
@@ -35,7 +35,7 @@ clean_mpeds_names <- function(geocoded, ipeds, glued){
     mutate(is_authoritative = TRUE) |>
     distinct()
 
-  mpeds_names <- geocoded |>
+  mpeds_names <- cleaned_events |>
     select(university, participating_universities_text) |>
     unnest(participating_universities_text, keep_empty = TRUE) |>
     unnest(university, keep_empty = TRUE) |>
@@ -154,7 +154,7 @@ update_coarse_matches <- function(raw_coarse_filename){
 
 #' After the coarse clean by name only, add in canonical event keys and
 #' format the match spreadsheet so coders can clean it easily
-postprocess_names <- function(geocoded, coarse_uni_match_filename, intermediate_pass_filename,
+postprocess_names <- function(cleaned_events, coarse_uni_match_filename, intermediate_pass_filename,
                               glued, ipeds,
                               canonical_event_relationship){
   coarse_uni_match <- read_csv(coarse_uni_match_filename, show_col_types = FALSE)
@@ -169,12 +169,12 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename, intermediate_
 
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
-  initial_keys <- geocoded |>
+  initial_keys <- cleaned_events |>
     select(key, university, uni_name_source, description) |>
     unnest(university)
 
   # Adding on "participating universities"
-  keys <- geocoded |>
+  keys <- cleaned_events |>
     select(key, participating_universities_text, description) |>
     mutate(uni_name_source = "participating-universities-text") |>
     unnest(participating_universities_text) |>
@@ -188,7 +188,7 @@ postprocess_names <- function(geocoded, coarse_uni_match_filename, intermediate_
     filter(relationship_type == "campaign") |>
     pull(canonical_id2) |>
     unique()
-  umbrella_keys <- geocoded |>
+  umbrella_keys <- cleaned_events |>
     filter(canonical_id %in% umbrella_ids) |>
     pull(key) |>
     unique()

@@ -26,6 +26,7 @@ list(
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
   tar_target(geocoded, get_protest_coords(events_wide)),
+  tar_target(cleaned_events, assign_issue_clusters(geocoded, n = 7)),
   tar_target(articles, get_articles()),
 
   # Geographic information
@@ -60,7 +61,7 @@ list(
   # Integration steps ---
   # IPEDS and MPEDS
   # the `raw_coarse_filename` target is meant to be cleaned by hand (by me)
-  tar_target(raw_coarse_filename, clean_mpeds_names(geocoded, ipeds, glued),
+  tar_target(raw_coarse_filename, clean_mpeds_names(cleaned_events, ipeds, glued),
              format = "file"),
   tar_target(coarse_uni_match_filename,
              update_coarse_matches(raw_coarse_filename),
@@ -70,7 +71,7 @@ list(
              format = "file"),
   # then passed off to coders in a readable format
   tar_target(postprocess_filename, postprocess_names(
-    geocoded, coarse_uni_match_filename, intermediate_pass_filename, glued, ipeds,
+    cleaned_events, coarse_uni_match_filename, intermediate_pass_filename, glued, ipeds,
     canonical_event_relationship
   ), format = "file"),
   # And read in again after they've made their edits
@@ -82,7 +83,7 @@ list(
   ), format = "file"),
 
   tar_target(integrated, integrate_targets(
-    geocoded,
+    cleaned_events,
     ipeds,
     glued,
     uni_xwalk,
