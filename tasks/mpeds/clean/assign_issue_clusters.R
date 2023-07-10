@@ -8,6 +8,8 @@
 # to a cluster.
 # This is a VERY inefficient algorithm. I never took an algo class 💀
 assign_issue_clusters <- function(geocoded, n){
+
+
   issue_long <- geocoded |>
     select(key, start_date, location, issue, racial_issue) |>
     pivot_longer(cols = c(issue, racial_issue)) |>
@@ -54,7 +56,7 @@ assign_issue_clusters <- function(geocoded, n){
         new_state <- list(
           available_events = out_cluster,
           cluster_assignments = bind_rows(cluster_assignments, tibble(
-            key = in_cluster_keys, cluster_id = paste0(group_index, "_", date)
+            key = in_cluster_keys, cluster_id = paste0(group_index, "_", best_day)
           ))
         )
         return(new_state)
