@@ -72,7 +72,7 @@ assign_clusters <- function(geocoded, canonical_event_relationship){
   # Select only columns that will be used for clustering
   # Just using issue and racial_issue for now for proof of concept/prototype run
   geometry <- geocoded |> select(key)
-  geocoded <- geocoded |>
+  geocoded <- geocoded[1:100,] |>
     st_drop_geometry() |>
     select(key, campaign_id, issue, racial_issue) |>
     unnest(issue) |>
