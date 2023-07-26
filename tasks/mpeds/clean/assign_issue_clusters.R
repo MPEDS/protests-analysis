@@ -65,11 +65,11 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
   test_ks <- c(50, 100, 250, 500, 750, 1000,
                1200, 1400, 1600, 1800, 2000)
 
-  cluster_metrics <- map_dfr(test_ks[1:2], function(test_k){
+  cluster_metrics <- map_dfr(test_ks, function(test_k){
     start <- Sys.time()
     clusters <- pam(distance_matrix, k = test_k, diss = TRUE)
     write_csv(tibble(clusters = clusters$clustering),
-              paste0(i, ".csv"))
+              paste0(test_k, ".csv"))
 
     return(tibble(
       k = test_k,
