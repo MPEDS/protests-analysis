@@ -8,6 +8,7 @@ fn_filenames <- list.files("tasks", full.names = TRUE,
 invisible(lapply(fn_filenames, source_safely))
 
 tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven", "testthat",
+                            "cluster",
                             "httr", "curl", "sf", "tigris", "tidycensus"))
 
 list(

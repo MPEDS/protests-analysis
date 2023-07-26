@@ -4,7 +4,7 @@
 # clusters empirically instead of by hand.
 # This is a VERY inefficient algorithm. I never took an algo class 💀
 
-assign_clusters <- function(geocoded, canonical_event_relationship){
+assign_issue_clusters <- function(geocoded, canonical_event_relationship){
   geocoded <- geocoded |>
     st_as_sf(coords = c("location_lng", "location_lat"), na.fail = FALSE) |>
     filter(!st_is_empty(geometry))
@@ -16,7 +16,7 @@ assign_clusters <- function(geocoded, canonical_event_relationship){
   cluster_inputs <- geocoded |>
     st_drop_geometry() |>
     select(key, start_date, issue, racial_issue) |>
-    mutate(start_date = as.numeric(as.Date(y) - as.Date("2012-01-01")),
+    mutate(start_date = as.numeric(as.Date(start_date) - as.Date("2012-01-01")),
            across(c(racial_issue, issue), ~ifelse(. == "", NA_character_, .))) |>
     unnest(issue) |>
     distinct() |>
