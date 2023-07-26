@@ -25,8 +25,8 @@ list(
   tar_target(uni_pub_xwalk_file, format = "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
-  tar_target(geocoded, get_protest_coords(events_wide)),
-  tar_target(cleaned_events, assign_issue_clusters(geocoded, n = 7)),
+  tar_target(cleaned_events, get_protest_coords(events_wide)),
+  tar_target(cluster_metrics, assign_issue_clusters(cleaned_events)),
   tar_target(articles, get_articles()),
 
   # Geographic information

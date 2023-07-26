@@ -13,15 +13,19 @@ assign_clusters <- function(geocoded, canonical_event_relationship){
   # Just using issue and racial_issue for now for proof of concept/prototype run
   geometries <- geocoded|>
     select(key)
-  cluster_inputs <- geocoded|>
+  cluster_inputs <- geocoded |>
     st_drop_geometry() |>
-    select(key, issue, racial_issue) |>
+    select(key, start_date, issue, racial_issue) |>
+    mutate(start_date = as.numeric(as.Date(y) - as.Date("2012-01-01")),
+           across(c(racial_issue, issue), ~ifelse(. == "", NA_character_, .))) |>
     unnest(issue) |>
     distinct() |>
+    filter(!is.na(issue), issue != "") |>
     mutate(dummy = TRUE, issue = paste0("issue__", issue)) |>
     pivot_wider(names_from = issue, values_from = dummy, values_fill = FALSE) |>
     unnest(racial_issue) |>
     distinct() |>
+    filter(!is.na(racial_issue), racial_issue != "") |>
     mutate(dummy = TRUE, racial_issue = paste0("racial_issue__", racial_issue)) |>
     pivot_wider(names_from = racial_issue, values_from = dummy,
                 values_fill = FALSE) |>
@@ -36,6 +40,7 @@ assign_clusters <- function(geocoded, canonical_event_relationship){
 
   base_weights <- c(
     issue = 1,
+    start_date = 1,
     racial_issue = 1
   )
   weights <- base_weights |>
@@ -50,37 +55,28 @@ assign_clusters <- function(geocoded, canonical_event_relationship){
   # distance (by gower) for the rest of the columns
   distance_matrix <- cluster_inputs |>
     daisy(metric = "gower",
-          weights = weights) |>
+          warnAsym = FALSE
+          ) |>
     as.matrix()
 
   # add in the geographic distances
   distance_matrix <- sum(weights)/(1+sum(weights)) + distance_matrix + 1/sum(weights) * geo_distances
 
-  start <- Sys.time()
-  clusters <- pam(distance_matrix, k = 200, diss = TRUE)
-  message(Sys.time() - start)
+  test_ks <- c(50, 100, 250, 500, 750, 1000,
+               1200, 1400, 1600, 1800, 2000)
 
-  sil_width <- NA
-  for(i in 2:10){
-    pam_fit <- pam(distance_matrix,
-                   diss = TRUE,
-                   k = i)
-    sil_width[i] <- pam_fit$silinfo$avg.width
+  cluster_metrics <- map_dfr(test_ks[1:2], function(test_k){
+    start <- Sys.time()
+    clusters <- pam(distance_matrix, k = test_k, diss = TRUE)
+    write_csv(tibble(clusters = clusters$clustering),
+              paste0(i, ".csv"))
 
-  }
-
-  # Plot sihouette width (higher is better)
-  plot(1:10, sil_width,
-       xlab = "Number of clusters",
-       ylab = "Silhouette Width")
-  lines(1:10, sil_width)
-
-  # pivot list-cols into one column each
-  # create weights list so that each original column has about equal weight
-
-  cluster_assignments <- cluster_assignments |>
-    group_by(key) |>
-    summarize(cluster_id = list(cluster_id))
-  geocoded |>
-    left_join(cluster_assignments, by = "key")
+    return(tibble(
+      k = test_k,
+      time = Sys.time() - start,
+      silhouette_width = clusters$silinfo$avg.width,
+      clusters = clusters$clustering,
+    ))
+  })
+  return(cluster_metrics)
 }

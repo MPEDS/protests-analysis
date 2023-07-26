@@ -53,6 +53,5 @@ get_unlinked_candidate_events <- function(){
     select(-password, -authlevel, -id) |>
     select(flag_coder = username, flag, event_id, everything())
 
-
   return(unlinked_events)
 }
