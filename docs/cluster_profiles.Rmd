@@ -1,0 +1,36 @@
+---
+title: "Cluster profiles"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+library(targets)
+library(knitr)
+library(sf)
+library(showtext)
+library(tigris)
+library(tidyverse)
+library(RColorBrewer)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE, fig.width = 10, fig.height = 7)
+opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
+font_add_google("Lato")
+showtext_auto()
+
+custom_theme <- function(...){
+  theme_bw() + 
+    theme(
+      text = element_text(family = "Lato", size = 14),
+      ...
+    )
+}
+
+theme_set(custom_theme())
+```
+
+```{r}
+
+
+```
+
