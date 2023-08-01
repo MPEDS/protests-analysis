@@ -78,14 +78,16 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
     unique() |>
     length()
 
-  test_ks <- c(n_campaigns, 500, 700, 1000, 1200, 1400, 1600, 1800, 2000, 2200)
+  test_ks <- c(seq(100, 500, by = 100),
+               n_campaigns,
+               seq(500, 2700, by = 200))
 
   cluster_metrics <- map_dfr(test_ks, function(test_k){
     start <- Sys.time()
     clusters <- pam(distance_matrix, k = test_k, diss = TRUE, variant = "faster")
     message(Sys.time() - start)
     write_csv(tibble(clusters = clusters$clustering),
-              paste0(test_k, ".csv"))
+              paste0("metrics/", test_k, ".csv"))
 
     return(tibble(
       k = test_k,
@@ -104,7 +106,7 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
     select(key, clusters = canonical_id2) |>
     drop_na()
 
-  campaign_cluster <- with_key |>
+  campaign_cluster_singletons <- with_key |>
     left_join(campaigns, by = "key") |>
     mutate(clusters = ifelse(is.na(clusters), key, as.character(clusters)),
            # necessary for type compatibility for clusters
@@ -118,16 +120,12 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
                     read_csv(filename, show_col_types = FALSE) |>
                       mutate(k = parse_number(filename))
                   }) |>
-    bind_rows(campaign_cluster) |>
-    group_split(k, is_campaign)
+    bind_rows(campaign_cluster_singletons) |>
+    group_by(is_campaign, k) |>
+    summarize(sil_width = summary(silhouette(clusters, distance_matrix))$avg.width)
 
-  ks <- map_int(clusterings, \(cluster){unique(cluster$k)})
-  sil_widths <- map_dbl(clusterings, \(cluster){
-    sil <- silhouette(cluster$clusters, distance_matrix)
-    summary(sil)$avg.width
-  })
-  tibble(ks, sil_widths) |>
-    ggplot(aes(x = ks, y = sil_widths)) +
+  clusterings |>
+    ggplot(aes(x = k, y = sil_width, color = is_campaign)) +
     geom_point() +
     labs(
       title = "More clusters doesn't imply better fit for us",
