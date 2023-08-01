@@ -80,7 +80,8 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
 
   test_ks <- c(seq(100, 500, by = 100),
                n_campaigns,
-               seq(500, 2700, by = 200))
+               seq(500, 2700, by = 200),
+               4300, 4500)
 
   cluster_metrics <- map_dfr(test_ks, function(test_k){
     start <- Sys.time()
