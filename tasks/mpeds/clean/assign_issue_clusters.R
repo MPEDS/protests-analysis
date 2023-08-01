@@ -77,7 +77,8 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
     pull(canonical_id2) |>
     unique() |>
     length()
-  test_ks <- c(n_campaigns, 500, 700, 1600, 1800, 2000)
+
+  test_ks <- c(n_campaigns, 500, 700, 1000, 1200, 1400, 1600, 1800, 2000, 2200)
 
   cluster_metrics <- map_dfr(test_ks, function(test_k){
     start <- Sys.time()
@@ -94,11 +95,32 @@ assign_issue_clusters <- function(geocoded, canonical_event_relationship){
     ))
   })
 
+  campaigns <- canonical_event_relationship |>
+    filter(relationship_type == "campaign") |>
+    group_by(canonical_id1) |>
+    slice_head(n = 1) |>
+    ungroup() |>
+    left_join(geocoded, by = c(canonical_id1 = "canonical_id")) |>
+    select(key, clusters = canonical_id2) |>
+    drop_na()
+
+  campaign_cluster <- with_key |>
+    left_join(campaigns, by = "key") |>
+    mutate(clusters = ifelse(is.na(clusters), key, as.character(clusters)),
+           # necessary for type compatibility for clusters
+           clusters = as.factor(clusters) |> as.numeric(),
+           k = length(unique(clusters)),
+           is_campaign = TRUE) |>
+    select(k, clusters, is_campaign)
+
   clusterings <- map(list.files("metrics", full.names = TRUE),
                   \(filename){
-                    read_csv(filename) |>
+                    read_csv(filename, show_col_types = FALSE) |>
                       mutate(k = parse_number(filename))
-                  })
+                  }) |>
+    bind_rows(campaign_cluster) |>
+    group_split(k, is_campaign)
+
   ks <- map_int(clusterings, \(cluster){unique(cluster$k)})
   sil_widths <- map_dbl(clusterings, \(cluster){
     sil <- silhouette(cluster$clusters, distance_matrix)
