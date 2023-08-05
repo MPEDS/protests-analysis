@@ -8,52 +8,32 @@ get_mizzou_solidarity <- function(){
     collect()
   mizzou_ids <- canonical_events |>
     filter(key == "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov") |>
-    pull(id)
+    select(canonical_id1 = id) |>
+    mutate(relationship_type = "Mizzou event")
   direct_links <- canonical_event_relationship |>
-    filter(canonical_id2 == mizzou_ids) |>
-    pull(canonical_id1) |>
-    unique()
-  new_ids <- mizzou_ids
+    filter(canonical_id2 %in% mizzou_ids$canonical_id1, relationship_type != "counterprotest") |>
+    distinct()
+  mizzou_ids <- bind_rows(mizzou_ids, direct_links)
+  new_events <- direct_links
   should_find_events <- TRUE
   while(should_find_events){
-    new_events <- tibble(canonical_id2 = new_ids) |>
-      inner_join(canonical_event_relationship, by = "canonical_id2")
-    new_ids <- new_events$canonical_id1 |> unique()
-    mizzou_ids <- c(mizzou_ids, new_ids) |> unique()
-    if(length(new_ids) == 0){
+    new_events <- new_events |>
+      select(canonical_id2 = canonical_id1) |>
+      inner_join(canonical_event_relationship, by = "canonical_id2",
+                 relationship = "many-to-many") |>
+      filter(relationship_type != "counterprotest")
+    mizzou_ids <- bind_rows(mizzou_ids, new_events) |> distinct()
+    if(nrow(new_events) == 0){
       should_find_events <- FALSE
     }
   }
 
-  mizzou_ids <- unique(mizzou_ids)
+  keys <- canonical_events |>
+    select(relationship_with =key, id) |>
+    distinct()
 
-  candidate_events <- tbl(con, "coder_event_creator") |>
-    collect()
-  canonical_event_link <- tbl(con, "canonical_event_link") |>
-    collect()
-
-  merged <- mpeds |>
-    filter(canonical_id %in% mizzou_ids,
-           !str_detect(key, "^Umbrella")
-           ) |>
-    select(canonical_id, key, university) |>
-    left_join(canonical_event_link, by = "canonical_id") |>
-    left_join(candidate_events, by = c("cec_id" = "id")) |>
-    st_drop_geometry() |>
-    mutate(direct_link = canonical_id %in% direct_links,
-           is_link = variable == "link") |>
-    select(key, university, event_id, is_link, article_id)
-  article_counts <- merged |>
-    group_by(key) |>
-    summarize(n_articles = length(unique(article_id)),
-              article_ids = paste0(unique(article_id), collapse = ", "))
-
-  merged |>
-    group_by(key, university, is_link) |>
-    summarize(candidate_ids = paste0(unique(event_id), collapse = ", ")) |>
-    pivot_wider(names_from = is_link, values_from = candidate_ids)  |>
-    rename(manually_linked_candidate_ids = `FALSE`,
-           variable_linked_candidate_ids = `TRUE`) |>
-    select(-`NA`) |>
-    left_join(article_counts, by = "key")
+  canonical_events |>
+    right_join(mizzou_ids, by = c("id" = "canonical_id1")) |>
+    left_join(keys, by = c("canonical_id2" = "id")) |>
+    select(-id, -coder_id, -notes, -last_updated)
 }
