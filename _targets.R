@@ -96,7 +96,7 @@ list(
   # directory situation
   tar_target(
     tests,
-    \(x){lapply(list.files("tests", full.names = TRUE), source)}(integrated),
+    lapply(list.files("tests", full.names = TRUE), source),
     cue = tar_cue(mode = "always")
     ),
 

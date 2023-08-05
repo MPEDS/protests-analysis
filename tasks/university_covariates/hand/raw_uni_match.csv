@@ -65,7 +65,6 @@ Claflin universities,Claflin universities,,
 Claremont Colleges,Claremont Colleges,,
 College of New Jersey,College of New Jersey,,
 College of Staten Island,College of Staten Island,,
-College the School of Public Health,College the School of Public Health,,
 Colleges of Applied Arts and Technology,Colleges of Applied Arts and Technology,,
 Collège Lionel-Groulx,Collège Lionel-Groulx,,
 Collège Montmorency,Collège Montmorency,,
@@ -76,7 +75,6 @@ Community College of Baltimore County Essex,Community College of Baltimore Count
 Concord College,Concord College,,
 Concordia Universities,Concordia Universities,,
 Connecticut State University,Connecticut State University,,
-Cornell University's School of Industrial and Labor Relations,Cornell University's School of Industrial and Labor Relations,,
 Creighton University The Creightonian,Creighton University The Creightonian,,
 CÉGEP St-Laurent,CÉGEP St-Laurent,,
 CÉGEP Vieux-Montreal,CÉGEP Vieux-Montreal,,
@@ -186,6 +184,7 @@ Native Education College,Native Education College,,
 New School,New School,,
 New School in New York City,New School in New York City,,
 Nicholls State John Folse culinary institute,Nicholls State John Folse culinary institute,,
+Nicholls University,Nicholls University,,
 North Carolina A-T State University,North Carolina A-T State University,,
 North Carolina State University,North Carolina State University,,
 North Carolina at Charlotte,North Carolina at Charlotte,,
@@ -253,7 +252,6 @@ St. George,St. George,,
 St. Louis Community College,St. Louis Community College,,
 St. Olaf,St. Olaf,,
 St. Paul College,St. Paul College,,
-St.Mary's College of Maryland,St.Mary's College of Maryland,,
 Students from the University of Pennsylvania and Community College of Philadelphia marched alongside Temple students,Students from the University of Pennsylvania and Community College of Philadelphia marched alongside Temple students,,
 Texas A &M University,Texas A &M University,,
 Texas A &M University Kingsville,Texas A &M University Kingsville,,
@@ -263,12 +261,10 @@ Texas A&M University in College Station,Texas A&M University in College Station,
 Texas Southern University.,Texas Southern University.,,
 Texas State University San Marcos,Texas State University San Marcos,,
 The Claremont Colleges,The Claremont Colleges,,
-The Massachusetts Institute of Technology,The Massachusetts Institute of Technology,,
 The University of San Diego,The University of San Diego,,
 Tulane,Tulane,,
 UBC Okanagan,UBC Okanagan,,
 UC Berkeley,UC Berkeley,,
-UC Berkeley and UC Santa Cruz Berkeley City College San Francisco State University City College of San Francisco Laney College and Stanford University,UC Berkeley and UC Santa Cruz Berkeley City College San Francisco State University City College of San Francisco Laney College and Stanford University,,
 UC Davis,UC Davis,,
 UC Irvine,UC Irvine,,
 UC Merced,UC Merced,,
@@ -339,7 +335,6 @@ University of Guelph,University of Guelph,,
 University of Hawai'i at Hilo,University of Hawai'i at Hilo,,
 University of Hawaii,University of Hawaii,,
 University of Hawaii Manoa,University of Hawaii Manoa,,
-University of Illinois,University of Illinois,,
 University of Illinois College of Medicine,University of Illinois College of Medicine,,
 University of Illinois Springfield,University of Illinois Springfield,,
 University of Illinois [at] Chicago,University of Illinois [at] Chicago,,
@@ -465,6 +460,7 @@ the Art Institute of Chicago,the Art Institute of Chicago,,
 the New School,the New School,,
 the St George campus,the St George campus,,
 the UC system at almost every campus,the UC system at almost every campus,,
+the University and Charlottesville communities,the University and Charlottesville communities,,
 the University of California San Diego,the University of California San Diego,,
 the University of Chicago,the University of Chicago,,
 the University of Minnesota's St. Paul campus,the University of Minnesota's St. Paul campus,,
@@ -770,6 +766,7 @@ Rowan University,Rowan University,184782,ipeds
 Ryerson,Ryerson University,IAU-014158-1,glued
 Ryerson University,Ryerson University,IAU-014158-1,glued
 SUNY College at Plattsburgh,SUNY College at Plattsburgh,196246,ipeds
+SUNY Cortland,SUNY Cortland,196149,ipeds
 SUNY at Albany,SUNY at Albany,196060,ipeds
 SUNY at Fredonia,SUNY at Fredonia,196158,ipeds
 Saginaw Valley State University,Saginaw Valley State University,172051,ipeds
@@ -871,6 +868,7 @@ University of Iowa,University of Iowa,153658,ipeds
 University of Kansas,University of Kansas,155317,ipeds
 University of Kentucky,University of Kentucky,157085,ipeds
 University of Louisiana at Lafayette,University of Louisiana at Lafayette,160658,ipeds
+University of Louisiana at Monroe,University of Louisiana at Monroe,159993,ipeds
 University of Louisville,University of Louisville,157289,ipeds
 University of Maine,University of Maine,161253,ipeds
 University of Mary Washington,University of Mary Washington,232681,ipeds
@@ -922,6 +920,7 @@ University of Wisconsin Stout,University of Wisconsin-Stout,240417,ipeds
 University of Wyoming,University of Wyoming,240727,ipeds
 University of the District of Columbia,University of the District of Columbia,131399,ipeds
 University of the Pacific,University of the Pacific,120883,ipeds
+Ursinus,Ursinus College,216524,ipeds
 Ursinus College,Ursinus College,216524,ipeds
 Utah State University,Utah State University,230728,ipeds
 Utah Valley University,Utah Valley University,230737,ipeds
@@ -936,7 +935,6 @@ Virginia State University,Virginia State University,234155,ipeds
 Virginia Union University,Virginia Union University,234164,ipeds
 Virginia University of Lynchburg,Virginia University of Lynchburg,234137,ipeds
 Wake Forest University,Wake Forest University,199847,ipeds
-Wartburg College,Wartburg College,154527,ipeds
 Washburn University,Washburn University,156082,ipeds
 Washington College,Washington College,164216,ipeds
 Washington State University,Washington State University,236939,ipeds

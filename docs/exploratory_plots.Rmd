@@ -57,6 +57,11 @@ mpeds <- mpeds_sf |> st_drop_geometry()
 
 ```{r, basic_counts, message = FALSE, warning = FALSE}
 mpeds_raw_ids <- length(unique(mpeds_raw$canonical_id))
+mpeds_nonumbrella <- mpeds |> 
+  filter(!str_detect(key, "^Umbrella")) |> 
+  select(key) |> 
+  distinct() |> 
+  nrow()
 mpeds_ids <- length(unique(mpeds$canonical_id))
 n_locations <- length(unique(mpeds$location))
 n_counties <- mpeds |> 
@@ -207,7 +212,7 @@ mpeds_issues |>
 tribble(
   ~Statistic, ~Value,
   "Total imported events", mpeds_raw_ids,
-  "Total events after cleaning", mpeds_ids,
+  "Total non-umbrella events", mpeds_nonumbrella,
   "Unique locations", n_locations,
   "US counties", n_counties,
   "Canadian CMAs", n_cmas,

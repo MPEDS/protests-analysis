@@ -2,8 +2,9 @@ Exploratory Plots
 ================
 
 - [Basic counts](#basic-counts)
-  - [Counts by issue](#counts-by-issue)
-  - [Counts by racial issue:](#counts-by-racial-issue)
+  - [Counts by (combined) issue](#counts-by-combined-issue)
+  - [Counts by (split) issue and racial
+    issue](#counts-by-split-issue-and-racial-issue)
 - [Police involvement by issue](#police-involvement-by-issue)
 - [Percentages of all protest with given
   preset](#percentages-of-all-protest-with-given-preset)
@@ -42,26 +43,26 @@ Exploratory Plots
 
 | Statistic                                   |   Value |
 |:--------------------------------------------|--------:|
-| Total imported events                       | 6101.00 |
-| Total events after cleaning                 | 6101.00 |
+| Total imported events                       | 6070.00 |
+| Total events after cleaning                 | 6070.00 |
 | Unique locations                            |  539.00 |
 | US counties                                 |  312.00 |
 | Canadian CMAs                               |   32.00 |
-| Universities                                |  690.00 |
-| Missing universities                        |   11.00 |
-| CEs with missing universities               |   63.00 |
+| Universities                                |  689.00 |
+| Missing universities                        |    9.00 |
+| CEs with missing universities               |   61.00 |
 | \# of events with police activity recorded  |  871.00 |
 | \# of events with any police field recorded |  927.00 |
 | \# of events with university police only    |  453.00 |
 | \# of events with government police only    |  284.00 |
 | \# of events with both types of police      |  146.00 |
-| \# of events with at least one issue        | 1077.00 |
+| \# of events with at least one issue        | 1075.00 |
 | mode of issue counts                        |    1.00 |
 | mean of issue counts                        |    2.12 |
-| \# of events with just one issue            | 2053.00 |
+| \# of events with just one issue            | 2050.00 |
 
-The initial import of the MPEDS db found 6101 unique canonical events,
-and after all cleaning steps we still have 6101 canonical events.
+The initial import of the MPEDS db found 6070 unique canonical events,
+and after all cleaning steps we still have 6070 canonical events.
 
 However, there’s still an issue regarding duplicate matches in IPEDS we
 can detect (there are likely also incorrect matches that we can’t detect
@@ -74,13 +75,13 @@ accurate. As of Jan 30, 2023, we are in the middle of repairing this
 join.
 
 Of those events, there were 539 unique locations, 312 unique counties,
-32 unique Canadian CMAs, and 690 unique universities. Surprisingly, all
+32 unique Canadian CMAs, and 689 unique universities. Surprisingly, all
 of the locations that were not universities found geocoding matches, and
 hand-checking the most common ones indicates that there isn’t a strong
 pattern of missing value substitution, e.g. Google isn’t sending the
 majority of results to the centroid of America or to `(-1, -1)` or
-anything weird like that. Universities had a harder time, with 11
-universities and 63 rows (canonical events) not returning lon/lat coords
+anything weird like that. Universities had a harder time, with 9
+universities and 61 rows (canonical events) not returning lon/lat coords
 for universities.
 
 That comes out to ~5% of universities not having coordinates, and ~2.5%
@@ -90,19 +91,19 @@ The top universities by appearances:
 
 | university                           |   n |
 |:-------------------------------------|----:|
-| University of California-Berkeley    | 224 |
-| Concordia University                 | 162 |
+| University of California-Berkeley    | 227 |
+| Concordia University                 | 163 |
 | Harvard University                   | 139 |
-| University of Michigan-Ann Arbor     | 118 |
+| University of Michigan-Ann Arbor     | 119 |
 | McGill University                    | 116 |
 | University of Toronto                |  89 |
 | Ryerson University                   |  80 |
-| University of California Los Angeles |  75 |
+| University of California Los Angeles |  77 |
 | Mcgill University                    |  72 |
-| Tufts University                     |  71 |
+| Tufts University                     |  72 |
 | York University                      |  67 |
 | University of Chicago                |  66 |
-| Columbia University                  |  63 |
+| Columbia University                  |  62 |
 | The University of Texas at Austin    |  54 |
 | University of Wisconsin-Madison      |  51 |
 
@@ -111,17 +112,17 @@ And the top locations:
 | location               |   n |
 |:-----------------------|----:|
 | Montreal, QC, Canada   | 377 |
-| Toronto, ON, Canada    | 226 |
-| Berkeley, CA, USA      | 224 |
-| New York City, NY, USA | 172 |
-| Los Angeles, CA, USA   | 134 |
+| Toronto, ON, Canada    | 227 |
+| Berkeley, CA, USA      | 225 |
+| New York City, NY, USA | 171 |
+| Los Angeles, CA, USA   | 136 |
 | Cambridge, MA, USA     | 132 |
-| Chicago, IL, USA       | 113 |
-| Ann Arbor, MI, USA     | 111 |
-| San Diego, CA, USA     |  85 |
+| Chicago, IL, USA       | 114 |
+| Ann Arbor, MI, USA     | 112 |
+| San Diego, CA, USA     |  91 |
 | San Francisco, CA, USA |  85 |
-| Washington, D.C., USA  |  74 |
-| Boston, MA, USA        |  73 |
+| Boston, MA, USA        |  74 |
+| Washington, D.C., USA  |  73 |
 | Vancouver, BC, Canada  |  54 |
 | Austin, TX, USA        |  53 |
 | Ottawa, ON, Canada     |  51 |
@@ -130,39 +131,40 @@ Top states:
 
 | area_name            |   n |
 |:---------------------|----:|
-| California           | 903 |
+| California           | 908 |
 | Quebec               | 427 |
-| Massachusetts        | 372 |
+| Massachusetts        | 374 |
 | Ontario              | 339 |
-| New York             | 337 |
+| New York             | 334 |
 | Illinois             | 262 |
 | Pennsylvania         | 187 |
-| Michigan             | 170 |
+| Michigan             | 171 |
 | Texas                | 161 |
-| Ohio                 | 140 |
-| District of Columbia | 128 |
+| Ohio                 | 141 |
+| District of Columbia | 127 |
 | Virginia             | 120 |
 | British Col          | 118 |
-| North Carolina       | 110 |
+| North Carolina       | 108 |
 | Florida              | 107 |
+| Indiana              | 107 |
 
 And finally the top counties:
 
 | locality_name        |   n |
 |:---------------------|----:|
 | Montréal             | 395 |
-| Middlesex            | 293 |
-| Alameda              | 248 |
+| Middlesex            | 294 |
+| Alameda              | 250 |
 | Toronto              | 248 |
-| Los Angeles          | 206 |
-| New York             | 178 |
-| Cook                 | 137 |
-| District of Columbia | 128 |
-| Washtenaw            | 117 |
+| Los Angeles          | 208 |
+| New York             | 177 |
+| Cook                 | 138 |
+| District of Columbia | 127 |
+| Washtenaw            | 118 |
 | San Diego            |  99 |
 | San Francisco        |  86 |
 | Vancouver            |  86 |
-| Suffolk              |  75 |
+| Suffolk              |  76 |
 | Santa Clara          |  59 |
 | Travis               |  56 |
 
@@ -173,101 +175,113 @@ number in Missouri when we take a look by state. It seems there are
 non-MO locations being recognized as happening in Missouri. See our 1:1
 notes Google Doc for details.
 
-| police_presence_and_size |    n |
-|:-------------------------|-----:|
-| NA                       | 5295 |
-| NA/Unclear               |  396 |
-| Substantial              |  292 |
-| Small/0 to 5 officers    |   87 |
-| Heavily Policed          |   32 |
-| Motorized Presence       |   17 |
+    ## # A tibble: 6 × 2
+    ## # Groups:   police_presence_and_size [6]
+    ##   police_presence_and_size     n
+    ##   <chr>                    <int>
+    ## 1 <NA>                      5263
+    ## 2 NA/Unclear                 398
+    ## 3 Substantial                291
+    ## 4 Small/0 to 5 officers       87
+    ## 5 Heavily Policed             32
+    ## 6 Motorized Presence          17
 
-| police_activities            |    n |
-|:-----------------------------|-----:|
-| NA                           | 5197 |
-| Monitor/Present              |  411 |
-| Instruct/Warn                |  175 |
-| Arrest or Attempted          |  163 |
-| Constrain                    |  161 |
-| Formal Accusation            |  105 |
-| Remove Individual Protesters |   63 |
-| End Protest                  |   57 |
-| Force: Vague/Body            |   57 |
-| “Breaking the Rules”         |   52 |
-| Detain                       |   47 |
-| NA/Unclear                   |   33 |
-| Force: Weapon                |   30 |
-| Arrest- Large Scale          |   27 |
-| Force: 2+ Weapon Types       |   27 |
-| Present                      |   18 |
-| Cooperate/Coordinate         |   14 |
-| Disputed Actions             |    5 |
-| Participate                  |    5 |
-| “We’re Responsive”           |    1 |
+    ## # A tibble: 20 × 2
+    ## # Groups:   police_activities [20]
+    ##    police_activities                  n
+    ##    <chr>                          <int>
+    ##  1  <NA>                           5166
+    ##  2 "Monitor/Present"                410
+    ##  3 "Instruct/Warn"                  175
+    ##  4 "Arrest or Attempted"            162
+    ##  5 "Constrain"                      161
+    ##  6 "Formal Accusation"              104
+    ##  7 "Remove Individual Protesters"    63
+    ##  8 "End Protest"                     57
+    ##  9 "Force: Vague/Body"               57
+    ## 10 "\"Breaking the Rules\""          52
+    ## 11 "Detain"                          47
+    ## 12 "NA/Unclear"                      33
+    ## 13 "Force: Weapon"                   30
+    ## 14 "Arrest- Large Scale"             27
+    ## 15 "Force: 2+ Weapon Types"          27
+    ## 16 "Present"                         19
+    ## 17 "Cooperate/Coordinate"            14
+    ## 18 "Participate"                      6
+    ## 19 "Disputed Actions"                 5
+    ## 20 "\"We're Responsive\""             1
 
-| type_of_police        |    n |
-|:----------------------|-----:|
-| NA                    | 5189 |
-| Univ police           |  455 |
-| Govt police           |  300 |
-| Univ police - assumed |  152 |
-| Govt police - assumed |  134 |
-| “Riot police”         |   68 |
-| Private Security      |   27 |
-| NA/Unclear            |    5 |
-| Secret Service        |    2 |
+    ## # A tibble: 9 × 2
+    ## # Groups:   type_of_police [9]
+    ##   type_of_police              n
+    ##   <chr>                   <int>
+    ## 1  <NA>                    5158
+    ## 2 "Univ police"             455
+    ## 3 "Govt police"             300
+    ## 4 "Univ police - assumed"   152
+    ## 5 "Govt police - assumed"   134
+    ## 6 "\"Riot police\""          68
+    ## 7 "Private Security"         27
+    ## 8 "NA/Unclear"                5
+    ## 9 "Secret Service"            2
 
-| university_action_on_issue |    n |
-|:---------------------------|-----:|
-| NA                         | 4592 |
-| NA/Unclear                 |  796 |
-| Action in Process          |  393 |
-| Reject Demand              |  189 |
-| Fulfill Demand             |  100 |
-| Structural Change          |   92 |
-| No Cancellation            |   61 |
-| Compromised Action         |   46 |
-| Hold Forum                 |   32 |
-| Contrary Action/Refuse     |   30 |
-| Cancel Speaker/Event       |   27 |
-| Resign/Fire                |   15 |
-| Short Term Services        |   11 |
-| Correct Racist History     |    6 |
-| Sanction                   |    3 |
+    ## # A tibble: 15 × 2
+    ## # Groups:   university_action_on_issue [15]
+    ##    university_action_on_issue     n
+    ##    <chr>                      <int>
+    ##  1 <NA>                        4554
+    ##  2 NA/Unclear                   802
+    ##  3 Action in Process            393
+    ##  4 Reject Demand                190
+    ##  5 Fulfill Demand               100
+    ##  6 Structural Change             93
+    ##  7 No Cancellation               61
+    ##  8 Compromised Action            46
+    ##  9 Hold Forum                    32
+    ## 10 Contrary Action/Refuse        30
+    ## 11 Cancel Speaker/Event          26
+    ## 12 Resign/Fire                   15
+    ## 13 Short Term Services           11
+    ## 14 Correct Racist History         6
+    ## 15 Sanction                       3
 
-| university_discourse_on_issue   |    n |
-|:--------------------------------|-----:|
-| NA                              | 4564 |
-| NA/Unclear                      |  535 |
-| Explain Bureaucracy/Law         |  487 |
-| Express Contrary Position       |  334 |
-| Express Agreement               |  331 |
-| Affirm Diversity                |   95 |
-| Affirm Free Speech when Bigotry |   75 |
-| Affirm Marginalized Students    |   61 |
-| Emotional Appeal                |   48 |
-| Oppose Racism                   |   28 |
-| Apology/Responsibility          |   27 |
-| Oppose Oppression               |   26 |
-| Affirm BIPOC Students           |   18 |
+    ## # A tibble: 13 × 2
+    ## # Groups:   university_discourse_on_issue [13]
+    ##    university_discourse_on_issue       n
+    ##    <chr>                           <int>
+    ##  1 <NA>                             4527
+    ##  2 NA/Unclear                        535
+    ##  3 Explain Bureaucracy/Law           488
+    ##  4 Express Contrary Position         341
+    ##  5 Express Agreement                 331
+    ##  6 Affirm Diversity                   95
+    ##  7 Affirm Free Speech when Bigotry    75
+    ##  8 Affirm Marginalized Students       61
+    ##  9 Emotional Appeal                   48
+    ## 10 Oppose Racism                      28
+    ## 11 Apology/Responsibility             27
+    ## 12 Oppose Oppression                  26
+    ## 13 Affirm BIPOC Students              18
 
-| university_reactions_to_protest |    n |
-|:--------------------------------|-----:|
-| NA                              | 4576 |
-| NA/Unclear                      |  715 |
-| Monitor/Present                 |  280 |
-| Meet                            |  180 |
-| Direct Communications           |  178 |
-| Get Confronted                  |  173 |
-| Instruct/Warn                   |  119 |
-| Participate/Aid                 |  117 |
-| Penalize                        |   49 |
-| Revisit Protest P&P             |   33 |
-| No Intervention                 |   29 |
-| Avoid Penalizing                |   26 |
-| Refuse to Meet                  |   21 |
-| End Protest                     |    9 |
-| Protest Elsewhere               |    3 |
+    ## # A tibble: 15 × 2
+    ## # Groups:   university_reactions_to_protest [15]
+    ##    university_reactions_to_protest     n
+    ##    <chr>                           <int>
+    ##  1 <NA>                             4538
+    ##  2 NA/Unclear                        719
+    ##  3 Monitor/Present                   281
+    ##  4 Meet                              180
+    ##  5 Direct Communications             178
+    ##  6 Get Confronted                    175
+    ##  7 Instruct/Warn                     120
+    ##  8 Participate/Aid                   118
+    ##  9 Penalize                           49
+    ## 10 Revisit Protest P&P                32
+    ## 11 No Intervention                    29
+    ## 12 Avoid Penalizing                   26
+    ## 13 Refuse to Meet                     21
+    ## 14 End Protest                         9
+    ## 15 Protest Elsewhere                   3
 
 “NA” marks canonical events where issues were not assigned at all, or
 where text-selects were used but not one of the preset issue categories.
@@ -283,84 +297,65 @@ preset options; the codebook gives the examples of:
 
 Hm.
 
-## Counts by issue
+## Counts by (combined) issue
 
-| issue                                                        |    n |
-|:-------------------------------------------------------------|-----:|
-| University governance, admin, policies, programs, curriculum | 1718 |
-| \_Not relevant                                               | 1011 |
-| Labor and work                                               |  959 |
-| Tuition, fees, financial aid                                 |  610 |
-| NA                                                           |  580 |
-| Trump and/or his administration (Against)                    |  573 |
-| \_Other Issue                                                |  535 |
-| Environmental                                                |  424 |
-| Sexual assault/violence                                      |  331 |
-| Economy/inequality                                           |  322 |
-| Feminism/women’s issues                                      |  300 |
-| Public funding for higher education                          |  260 |
-| Faith-based discrimination                                   |  256 |
-| LGB+/Sexual orientation (For)                                |  211 |
-| Far Right/Alt Right (Against)                                |  121 |
-| Abortion access                                              |  113 |
-| Hate speech                                                  |  110 |
-| Gun control                                                  |   99 |
-| Police violence/anti-law enforcement/criminal justice        |   99 |
-| Abortion (Against)/Pro-life                                  |   86 |
-| Free speech                                                  |   85 |
-| Transgender issues (For)                                     |   81 |
-| Pro-Palestine/BDS                                            |   72 |
-| Transgender issues                                           |   68 |
-| Anti-war/peace                                               |   63 |
-| Social services and welfare                                  |   59 |
-| Trump and/or his administration (For)                        |   52 |
-| LGB+/Sexual orientation (Against)                            |   50 |
-| Human rights                                                 |   45 |
-| Far Right/Alt Right (For)                                    |   37 |
-| Domestic foreign policy                                      |   34 |
-| Hate crimes/Anti-minority violence                           |   31 |
-| Accessibility                                                |   27 |
-| Animal rights                                                |   23 |
-| Anti-colonial/political independence                         |   22 |
-| Political corruption/malfeasance                             |   19 |
-| Pro-Israel/Zionism                                           |   17 |
-| Transgender issues (Against)                                 |   16 |
-| Gun owner rights                                             |   13 |
-| Pro-law enforcement                                          |    7 |
-| Traditional marriage/family                                  |    6 |
-| Men’s rights                                                 |    2 |
-|                                                              |    1 |
+Issue counts here were combined for each canonical event, such that no
+issue, racial issue, or some combination of the two is counted twice. If
+an event has “University governance” for both issue and racial issue, it
+is counted once.
 
-## Counts by racial issue:
+The table below thus represents the proportion of all events a given
+combined racial-nonracial issue was relevant to.
 
-| racial_issue                                                 |    n |
-|:-------------------------------------------------------------|-----:|
-| \_Not relevant                                               | 3356 |
-| Anti-racism                                                  |  860 |
-| Police violence                                              |  576 |
-| University governance, admin, policies, programs, curriculum |  532 |
-| Immigration (For)                                            |  482 |
-| Campus climate                                               |  431 |
-| Indigenous issues                                            |  173 |
-| White supremacy (Against)                                    |  154 |
-| \_Other Issue                                                |  134 |
-| Hate speech                                                  |   98 |
-| Racist/racialized symbols                                    |   86 |
-| Hate crimes/Anti-minority violence                           |   74 |
-| Prison/mass incarceration                                    |   48 |
-| Memorials & anniversaries                                    |   37 |
-| Affirmative action (For)                                     |   35 |
-| Immigration (Against)                                        |   20 |
-| White supremacy (For)                                        |   20 |
-| Cultural appropriation                                       |   18 |
-| Racial/ethnic pride - white                                  |    7 |
-| All Lives Matter                                             |    6 |
-| Pro-police                                                   |    5 |
-| Reparations                                                  |    5 |
-| Affirmative action (Against)                                 |    4 |
-|                                                              |    1 |
-| K-12 education                                               |    1 |
-| Racial/ethnic pride - minority                               |    1 |
+    ## # A tibble: 60 × 2
+    ## # Groups:   issue [60]
+    ##    issue                                                        n     
+    ##    <chr>                                                        <chr> 
+    ##  1 University governance, admin, policies, programs, curriculum 38.51%
+    ##  2 Labor and work                                               17.19%
+    ##  3 Anti-racism                                                  15.36%
+    ##  4 _Other Issue                                                 11.64%
+    ##  5 Tuition, fees, financial aid                                 10.94%
+    ##  6 Police violence                                              10.29%
+    ##  7 Trump and/or his administration (Against)                    10.24%
+    ##  8 Immigration (For)                                            8.61% 
+    ##  9 Campus climate                                               7.79% 
+    ## 10 Environmental                                                7.57% 
+    ## # ℹ 50 more rows
+
+## Counts by (split) issue and racial issue
+
+    ## # A tibble: 43 × 2
+    ## # Groups:   issue [43]
+    ##    issue                                                            n
+    ##    <chr>                                                        <int>
+    ##  1 University governance, admin, policies, programs, curriculum  1718
+    ##  2 _Not relevant                                                 1008
+    ##  3 Labor and work                                                 960
+    ##  4 Tuition, fees, financial aid                                   611
+    ##  5 Trump and/or his administration (Against)                      572
+    ##  6 <NA>                                                           556
+    ##  7 _Other Issue                                                   532
+    ##  8 Environmental                                                  423
+    ##  9 Sexual assault/violence                                        332
+    ## 10 Economy/inequality                                             322
+    ## # ℹ 33 more rows
+
+    ## # A tibble: 25 × 2
+    ## # Groups:   racial_issue [25]
+    ##    racial_issue                                                     n
+    ##    <chr>                                                        <int>
+    ##  1 _Not relevant                                                 3354
+    ##  2 Anti-racism                                                    858
+    ##  3 Police violence                                                575
+    ##  4 University governance, admin, policies, programs, curriculum   536
+    ##  5 Immigration (For)                                              481
+    ##  6 Campus climate                                                 435
+    ##  7 Indigenous issues                                              172
+    ##  8 White supremacy (Against)                                      153
+    ##  9 _Other Issue                                                   135
+    ## 10 Hate speech                                                     97
+    ## # ℹ 15 more rows
 
 # Police involvement by issue
 
@@ -388,20 +383,20 @@ protests were heavily policed.
 
 | Issue                                                                 | Percent of events with given issue |
 |:----------------------------------------------------------------------|-----------------------------------:|
-| University governance, admin, policies, programs, curriculum          |                              28.48 |
+| University governance, admin, policies, programs, curriculum          |                              28.37 |
 | Tuition, fees, financial aid                                          |                              17.04 |
 | Anti-racism (racial)                                                  |                              14.89 |
 | Labor and work                                                        |                              12.41 |
 | Police violence (racial)                                              |                              11.33 |
 | \_Other Issue                                                         |                              11.00 |
 | Trump and/or his administration (Against)                             |                               9.92 |
-| Economy/inequality                                                    |                               8.31 |
-| University governance, admin, policies, programs, curriculum (racial) |                               7.12 |
+| Economy/inequality                                                    |                               8.20 |
+| University governance, admin, policies, programs, curriculum (racial) |                               7.34 |
 | Environmental                                                         |                               6.80 |
 | Campus climate (racial)                                               |                               6.04 |
 | Immigration (For) (racial)                                            |                               5.61 |
-| Public funding for higher education                                   |                               5.61 |
 | LGB+/Sexual orientation (For)                                         |                               5.50 |
+| Public funding for higher education                                   |                               5.50 |
 | Far Right/Alt Right (Against)                                         |                               5.29 |
 | Feminism/women’s issues                                               |                               5.18 |
 | White supremacy (Against) (racial)                                    |                               5.18 |
@@ -456,34 +451,34 @@ protests were heavily policed.
 
 | issue                                                        |   pct |
 |:-------------------------------------------------------------|------:|
-| Percent of events with any value                             | 74.07 |
-| University governance, admin, policies, programs, curriculum | 28.16 |
-| \_Not relevant                                               | 16.57 |
-| Labor and work                                               | 15.72 |
-| Tuition, fees, financial aid                                 | 10.00 |
-| NA                                                           |  9.51 |
-| Trump and/or his administration (Against)                    |  9.39 |
-| \_Other Issue                                                |  8.77 |
-| Environmental                                                |  6.95 |
-| Sexual assault/violence                                      |  5.43 |
-| Economy/inequality                                           |  5.28 |
-| Feminism/women’s issues                                      |  4.92 |
-| Public funding for higher education                          |  4.26 |
+| Percent of events with any value                             | 74.37 |
+| University governance, admin, policies, programs, curriculum | 28.30 |
+| \_Not relevant                                               | 16.61 |
+| Labor and work                                               | 15.82 |
+| Tuition, fees, financial aid                                 | 10.07 |
+| Trump and/or his administration (Against)                    |  9.42 |
+| NA                                                           |  9.16 |
+| \_Other Issue                                                |  8.76 |
+| Environmental                                                |  6.97 |
+| Sexual assault/violence                                      |  5.47 |
+| Economy/inequality                                           |  5.30 |
+| Feminism/women’s issues                                      |  4.94 |
 | Faith-based discrimination                                   |  4.20 |
-| LGB+/Sexual orientation (For)                                |  3.46 |
+| Public funding for higher education                          |  4.20 |
+| LGB+/Sexual orientation (For)                                |  3.48 |
 | Far Right/Alt Right (Against)                                |  1.98 |
-| Abortion access                                              |  1.85 |
-| Hate speech                                                  |  1.80 |
-| Gun control                                                  |  1.62 |
-| Police violence/anti-law enforcement/criminal justice        |  1.62 |
-| Abortion (Against)/Pro-life                                  |  1.41 |
-| Free speech                                                  |  1.39 |
+| Abortion access                                              |  1.86 |
+| Hate speech                                                  |  1.78 |
+| Gun control                                                  |  1.63 |
+| Police violence/anti-law enforcement/criminal justice        |  1.63 |
+| Abortion (Against)/Pro-life                                  |  1.42 |
+| Free speech                                                  |  1.38 |
 | Transgender issues (For)                                     |  1.33 |
-| Pro-Palestine/BDS                                            |  1.18 |
-| Transgender issues                                           |  1.11 |
-| Anti-war/peace                                               |  1.03 |
+| Pro-Palestine/BDS                                            |  1.19 |
+| Transgender issues                                           |  1.12 |
+| Anti-war/peace                                               |  1.04 |
 | Social services and welfare                                  |  0.97 |
-| Trump and/or his administration (For)                        |  0.85 |
+| Trump and/or his administration (For)                        |  0.86 |
 | LGB+/Sexual orientation (Against)                            |  0.82 |
 | Human rights                                                 |  0.74 |
 | Far Right/Alt Right (For)                                    |  0.61 |
@@ -496,38 +491,37 @@ protests were heavily policed.
 | Pro-Israel/Zionism                                           |  0.28 |
 | Transgender issues (Against)                                 |  0.26 |
 | Gun owner rights                                             |  0.21 |
-| Pro-law enforcement                                          |  0.11 |
+| Pro-law enforcement                                          |  0.12 |
 | Traditional marriage/family                                  |  0.10 |
 | Men’s rights                                                 |  0.03 |
 |                                                              |  0.02 |
 
 | racial_issue                                                 |   pct |
 |:-------------------------------------------------------------|------:|
-| \_Not relevant                                               | 55.01 |
-| Percent of events with any value                             | 45.14 |
-| Anti-racism                                                  | 14.10 |
-| Police violence                                              |  9.44 |
-| University governance, admin, policies, programs, curriculum |  8.72 |
-| Immigration (For)                                            |  7.90 |
-| Campus climate                                               |  7.06 |
-| Indigenous issues                                            |  2.84 |
+| \_Not relevant                                               | 55.26 |
+| Percent of events with any value                             | 44.89 |
+| Anti-racism                                                  | 14.14 |
+| Police violence                                              |  9.47 |
+| University governance, admin, policies, programs, curriculum |  8.83 |
+| Immigration (For)                                            |  7.92 |
+| Campus climate                                               |  7.17 |
+| Indigenous issues                                            |  2.83 |
 | White supremacy (Against)                                    |  2.52 |
-| \_Other Issue                                                |  2.20 |
-| Hate speech                                                  |  1.61 |
-| Racist/racialized symbols                                    |  1.41 |
-| Hate crimes/Anti-minority violence                           |  1.21 |
+| \_Other Issue                                                |  2.22 |
+| Hate speech                                                  |  1.60 |
+| Racist/racialized symbols                                    |  1.42 |
+| Hate crimes/Anti-minority violence                           |  1.22 |
 | Prison/mass incarceration                                    |  0.79 |
 | Memorials & anniversaries                                    |  0.61 |
-| Affirmative action (For)                                     |  0.57 |
+| Affirmative action (For)                                     |  0.56 |
 | Immigration (Against)                                        |  0.33 |
 | White supremacy (For)                                        |  0.33 |
 | Cultural appropriation                                       |  0.30 |
-| Racial/ethnic pride - white                                  |  0.11 |
+| Racial/ethnic pride - white                                  |  0.12 |
 | All Lives Matter                                             |  0.10 |
 | Pro-police                                                   |  0.08 |
 | Reparations                                                  |  0.08 |
 | Affirmative action (Against)                                 |  0.07 |
-|                                                              |  0.02 |
 | K-12 education                                               |  0.02 |
 | Racial/ethnic pride - minority                               |  0.02 |
 
@@ -610,20 +604,20 @@ Regrouped to be interpretable according to the following crosswalk:
 
 | racial_issue                                                 |   n |
 |:-------------------------------------------------------------|----:|
-| Anti-racism                                                  | 860 |
-| Police violence                                              | 576 |
-| University governance, admin, policies, programs, curriculum | 532 |
-| Immigration (For)                                            | 482 |
-| Campus climate                                               | 431 |
-| Indigenous issues                                            | 173 |
-| White supremacy (Against)                                    | 154 |
-| \_Other Issue                                                | 134 |
-| Hate speech                                                  |  98 |
+| Anti-racism                                                  | 858 |
+| Police violence                                              | 575 |
+| University governance, admin, policies, programs, curriculum | 536 |
+| Immigration (For)                                            | 481 |
+| Campus climate                                               | 435 |
+| Indigenous issues                                            | 172 |
+| White supremacy (Against)                                    | 153 |
+| \_Other Issue                                                | 135 |
+| Hate speech                                                  |  97 |
 | Racist/racialized symbols                                    |  86 |
 | Hate crimes/Anti-minority violence                           |  74 |
 | Prison/mass incarceration                                    |  48 |
 | Memorials & anniversaries                                    |  37 |
-| Affirmative action (For)                                     |  35 |
+| Affirmative action (For)                                     |  34 |
 | Immigration (Against)                                        |  20 |
 | White supremacy (For)                                        |  20 |
 | Cultural appropriation                                       |  18 |
@@ -632,7 +626,6 @@ Regrouped to be interpretable according to the following crosswalk:
 | Pro-police                                                   |   5 |
 | Reparations                                                  |   5 |
 | Affirmative action (Against)                                 |   4 |
-|                                                              |   1 |
 | K-12 education                                               |   1 |
 | Racial/ethnic pride - minority                               |   1 |
 
@@ -660,27 +653,27 @@ counts are driven by an uptick in racial issues. This is
 | name                 | type    |      mean |        sd |
 |:---------------------|:--------|----------:|----------:|
 | bachelors_granting   | boolean |     1.000 |        NA |
-| campaign             | boolean |     0.243 |        NA |
+| campaign             | boolean |     0.245 |        NA |
 | counterprotest       | boolean |     0.044 |        NA |
-| hbcu                 | boolean |     0.010 |        NA |
+| hbcu                 | boolean |     0.011 |        NA |
 | inaccurate_date      | boolean |     0.009 |        NA |
 | masters_granting     | boolean |     1.000 |        NA |
 | multiple_cities      | boolean |     0.024 |        NA |
-| off_campus           | boolean |     0.072 |        NA |
-| on_campus_no_student | boolean |     0.070 |        NA |
+| off_campus           | boolean |     0.073 |        NA |
+| on_campus_no_student | boolean |     0.071 |        NA |
 | phd_granting         | boolean |     1.000 |        NA |
 | private              | boolean |     0.058 |        NA |
-| quotes               | boolean |     0.632 |        NA |
+| quotes               | boolean |     0.635 |        NA |
 | ritual               | boolean |     0.029 |        NA |
-| slogans              | boolean |     0.394 |        NA |
+| slogans              | boolean |     0.396 |        NA |
 | tribal               | boolean |     0.000 |        NA |
-| adjudicator_id       | numeric |    53.318 |     2.579 |
+| adjudicator_id       | numeric |    53.323 |     2.577 |
 | enrollment_count     | numeric | 42812.697 | 10169.299 |
-| mhi                  | numeric | 67552.092 | 16809.572 |
+| mhi                  | numeric | 67520.876 | 16814.225 |
 | rent_burden          | numeric |     0.517 |     0.082 |
 | republican_vote_prop | numeric |     0.317 |     0.153 |
-| unemp                | numeric |     5.133 |     1.661 |
-| white_prop           | numeric |     0.692 |     0.166 |
+| unemp                | numeric |     5.135 |     1.664 |
+| white_prop           | numeric |     0.693 |     0.167 |
 
 For boolean variables, “mean” is the proportion that they are TRUE. Many
 of the variables recorded in MPEDS allowed for the input of multiple
@@ -754,6 +747,8 @@ we have complete data.
 
 # Maps and related things
 
+    ##   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |========================                                              |  34%  |                                                                              |====================================                                  |  51%  |                                                                              |================================================                      |  68%  |                                                                              |======================================================================| 100%
+
 ![](exploratory_plots_files/figure-gfm/mpeds_map-1.png)<!-- -->
 
 # Investigating specific movements
@@ -762,12 +757,12 @@ we have complete data.
 
 | Statistics for Mizzou protests |   n |
 |:-------------------------------|----:|
-| Total number of links          | 135 |
-| Unique events                  | 102 |
-| Campaign events only           |  18 |
-| Coinciding events only         |   7 |
+| Total number of links          | 170 |
+| Unique events                  | 120 |
+| Campaign events only           |  17 |
+| Coinciding events only         |  18 |
 | Counterprotest events only     |   1 |
-| Solidarity events only         | 109 |
+| Solidarity events only         | 134 |
 
 The discrepancy between the total number of links from the original
 Mizzou event to the total number of unique events comes from some events
@@ -780,27 +775,27 @@ and solidarity events.
 
 | value                                                                 |   n |
 |:----------------------------------------------------------------------|----:|
-| Anti-racism (racial)                                                  |  91 |
-| Campus climate (racial)                                               |  74 |
-| University governance, admin, policies, programs, curriculum (racial) |  65 |
-| University governance, admin, policies, programs, curriculum          |  16 |
+| Anti-racism (racial)                                                  | 110 |
+| Campus climate (racial)                                               |  89 |
+| University governance, admin, policies, programs, curriculum (racial) |  74 |
+| University governance, admin, policies, programs, curriculum          |  18 |
+| Police violence (racial)                                              |   9 |
 | Hate speech (racial)                                                  |   8 |
-| Police violence (racial)                                              |   7 |
-| Racist/racialized symbols (racial)                                    |   7 |
-| Labor and work                                                        |   5 |
-| Tuition, fees, financial aid                                          |   5 |
-| Economy/inequality                                                    |   4 |
-| Hate crimes/Anti-minority violence (racial)                           |   4 |
+| Racist/racialized symbols (racial)                                    |   8 |
+| Hate crimes/Anti-minority violence (racial)                           |   6 |
+| Labor and work                                                        |   6 |
+| Tuition, fees, financial aid                                          |   6 |
+| Economy/inequality                                                    |   5 |
 | \_Other Issue                                                         |   4 |
+| \_Other Issue (racial)                                                |   4 |
+| Public funding for higher education                                   |   3 |
 | Transgender issues                                                    |   3 |
-| \_Other Issue (racial)                                                |   3 |
 | Affirmative action (For) (racial)                                     |   2 |
 | Cultural appropriation (racial)                                       |   2 |
 | Environmental                                                         |   2 |
 | Indigenous issues (racial)                                            |   2 |
 | LGB+/Sexual orientation (For)                                         |   2 |
 | Pro-Palestine/BDS                                                     |   2 |
-| Public funding for higher education                                   |   2 |
 | Sexual assault/violence                                               |   2 |
 | Free speech                                                           |   1 |
 | Prison/mass incarceration (racial)                                    |   1 |
@@ -915,8 +910,8 @@ nonracial issues than racial issues for November 2016.
 | 2015-11-12                      |           51 |
 | 2016-11-16                      |           48 |
 | 2018-03-14                      |           47 |
-| 2014-12-01                      |           40 |
-| 2014-11-25                      |           38 |
+| 2014-12-01                      |           41 |
+| 2014-11-25                      |           40 |
 
 | Top dates for immigration-related protests |   n |
 |:-------------------------------------------|----:|
