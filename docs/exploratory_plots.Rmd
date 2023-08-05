@@ -326,9 +326,13 @@ take a look by state. It seems there are non-MO locations being recognized as
 happening in Missouri. See our 1:1 notes Google Doc for details.
 
 ```{r police_counts}
-# God that was hard
-glimpse_counts <- function(colname){
-  mpeds |>
+glimpse_counts <- function(colname, dta = mpeds, percent = FALSE){
+  total_events <- mpeds |> 
+    filter(!str_detect(key, "^Umbrella")) |> 
+    select(key) |> 
+    distinct() |> 
+    nrow()
+  dta |>
     mutate("{{ colname }}" := map({{ colname }}, \(item){
       if(is.null(item)){
         return(NA)
@@ -340,7 +344,9 @@ glimpse_counts <- function(colname){
     group_by({{ colname }}) |> 
     count({{ colname }}) |> 
     arrange(desc(n)) |> 
-    kable()
+    mutate(n = ifelse(percent,
+                      paste0(round(100 * n / total_events, 2), "%"),
+                      n)) 
 }
 
 glimpse_counts(police_presence_and_size)
@@ -368,15 +374,35 @@ examples of:
 
 Hm. 
 
-## Counts by issue
+## Counts by (combined) issue
+
+Issue counts here were combined for each canonical event, such that 
+no issue, racial issue, or some combination of the two is counted twice.
+If an event has "University governance" for both issue and racial issue, 
+it is counted once.
+
+The table below thus represents the proportion of all events a given combined
+racial-nonracial issue was relevant to.
+
+```{r}
+# combining racial and non-racial into one list-col
+combined <- mpeds |> 
+  select(key, issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  select(-name) |> 
+  unnest(value) |> 
+  filter(value != "_Not relevant", value != "") |> 
+  distinct() |> 
+  group_by(key) |> 
+  summarize(issue = list(value))
+
+glimpse_counts(issue, combined, TRUE)
+```
+
+## Counts by (split) issue and racial issue
 
 ```{r}
 glimpse_counts(issue)
-```
-
-## Counts by racial issue:
-
-```{r}
 glimpse_counts(racial_issue)
 ```
 
