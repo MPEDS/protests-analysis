@@ -351,7 +351,8 @@ glimpse_counts <- function(colname, dta = mpeds, percent = FALSE){
     arrange(desc(n)) |> 
     mutate(n = ifelse(percent,
                       paste0(round(100 * n / total_events, 2), "%"),
-                      n)) 
+                      n)) |> 
+    kable()
 }
 
 glimpse_counts(police_presence_and_size)
