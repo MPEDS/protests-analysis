@@ -1601,26 +1601,13 @@ tar_load(canonical_event_relationship)
 # the `canonical_event_relationship` data.frame doesn't expose at first glance
 # children-of-children, so we have to loop through the dataset until 
 # we know we've found all of the sub-campaign events
-mizzou_ids <- mpeds |>
+mizzou_id <- mpeds |>
   filter(key == "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov") |> 
   pull(canonical_id)
 
-new_ids <- mizzou_ids
-should_find_events <- TRUE
-while(should_find_events){
-  new_events <- tibble(canonical_id2 = new_ids) |> 
-    inner_join(canonical_event_relationship, by = c("canonical_id2"))
-  new_ids <- new_events$canonical_id1
-  mizzou_ids <- c(mizzou_ids, new_ids)
-  if(length(new_ids) == 0){
-    should_find_events <- FALSE
-  }
-}
-mizzou_ids <- unique(mizzou_ids)
-
 mizzou_events <- canonical_event_relationship |> 
-  filter(canonical_id2 %in% mizzou_ids | 
-         canonical_id1 %in% mizzou_ids) 
+  filter(canonical_id2 %in% mizzou_id) 
+mizzou_ids <- mizzou_events$canonical_id1
   
 mizzou_by_type <- mizzou_events |> 
   mutate(relationship_type = paste0(str_to_title(relationship_type), " events only")) |> 
@@ -1642,14 +1629,14 @@ counterprotest events, or campaign events and solidarity events.
 tar_load(geo)
 tar_load(canada_province_shapes)
 
-mizzou_sf <- tibble(canonical_id = mizzou_ids) |> 
+mizzou_sf <- mizzou_events |> 
   # joining on `mpeds` and not `mpeds_sf` because we want coords of counties/CMAs,
   # not exactly where protests occurred (which is more granular)
-  left_join(mpeds, by = "canonical_id") |> 
+  left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
   # Some events have been marked as both campaign and counterprotest/solidarity,
   # so they show up twice, but we only need one occurrence (and it doesn't
   # matter which, for this viz)
-  group_by(canonical_id) |> 
+  group_by(canonical_id1) |> 
   slice_head(n = 1) |> 
   group_by(geoid) |> 
   count() |> 

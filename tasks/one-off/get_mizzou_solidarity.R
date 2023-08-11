@@ -37,3 +37,24 @@ get_mizzou_solidarity <- function(){
     left_join(keys, by = c("canonical_id2" = "id")) |>
     select(-id, -coder_id, -notes, -last_updated)
 }
+
+get_mizzou_schools <- function(){
+  mizzou_id <- 26
+  canonical_event_relationship <- tar_read(canonical_event_relationship)
+  mizzou_solidarity <- canonical_event_relationship |>
+    filter(relationship_type == "solidarity", canonical_id2 == 26) |>
+    pull(canonical_id1)
+  mpeds <- tar_read(integrated) |>
+    st_drop_geometry() |>
+    filter(canonical_id %in% mizzou_solidarity)
+
+  participating_universities <- mpeds |>
+    select(key, participating_universities_text) |>
+    unnest(participating_universities_text) |>
+    rename(university = participating_universities_text) |>
+    mutate(uni_name_source = "Other participating universities")
+
+  universities <- mpeds |>
+    select(key, university, uni_name_source) |>
+    bind_rows(participating_universities)
+}

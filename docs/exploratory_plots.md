@@ -824,7 +824,7 @@ we have complete data.
 
 # Maps and related things
 
-    ##   |                                                                              |                                                                      |   0%  |                                                                              |==========================================                            |  60%  |                                                                              |============================================================          |  85%  |                                                                              |======================================================================| 100%
+    ##   |                                                                              |                                                                      |   0%  |                                                                              |============                                                          |  17%  |                                                                              |=====================                                                 |  30%  |                                                                              |======================================================================| 100%
 
 ![](exploratory_plots_files/figure-gfm/mpeds_map-1.png)<!-- -->
 
@@ -834,12 +834,10 @@ we have complete data.
 
 | Statistics for Mizzou protests |   n |
 |:-------------------------------|----:|
-| Total number of links          | 170 |
-| Unique events                  | 120 |
-| Campaign events only           |  17 |
-| Coinciding events only         |  18 |
-| Counterprotest events only     |   1 |
-| Solidarity events only         | 134 |
+| Total number of links          | 118 |
+| Unique events                  | 118 |
+| Campaign events only           |  10 |
+| Solidarity events only         | 108 |
 
 The discrepancy between the total number of links from the original
 Mizzou event to the total number of unique events comes from some events
@@ -852,8 +850,8 @@ and solidarity events.
 
 | value                                                                 |   n |
 |:----------------------------------------------------------------------|----:|
-| Anti-racism (racial)                                                  | 110 |
-| Campus climate (racial)                                               |  89 |
+| Anti-racism (racial)                                                  | 109 |
+| Campus climate (racial)                                               |  88 |
 | University governance, admin, policies, programs, curriculum (racial) |  74 |
 | University governance, admin, policies, programs, curriculum          |  18 |
 | Police violence (racial)                                              |   9 |
@@ -874,7 +872,6 @@ and solidarity events.
 | LGB+/Sexual orientation (For)                                         |   2 |
 | Pro-Palestine/BDS                                                     |   2 |
 | Sexual assault/violence                                               |   2 |
-| Free speech                                                           |   1 |
 | Prison/mass incarceration (racial)                                    |   1 |
 
 ### 2015 Antiracism protest profiles and comparison
