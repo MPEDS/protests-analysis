@@ -35,7 +35,7 @@ list(
   # CLUSTERING-SPECIFIC TARGETS
   tar_target(cluster_inputs, create_cluster_inputs(cleaned_events)),
   tar_target(distance_matrix, create_distance_matrix(cluster_inputs)),
-  tar_target(indexes, seq(100, 300, by = 50)),
+  tar_target(indexes, seq(100, nrow(cleaned_events), by = 50)),
   tar_target(clusters, assign_issue_clusters(distance_matrix, indexes),
              # dynamically create branches according to `indexes`
              pattern = map(indexes)),
