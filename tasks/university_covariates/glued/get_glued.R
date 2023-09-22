@@ -5,10 +5,17 @@
 #' URL is again not managed through targets because the ETag or Last-Modified
 #' headers aren't present on this resource
 get_glued <- function(){
+  filename <- tempfile()
+  drive_auth_configure(api_key = Sys.getenv("GMAPS_API_KEY"))
+  drive_deauth()
+  drive_download("https://docs.google.com/spreadsheets/d/1dpogHTjbYa1Omvw-nSuXVt5JNRyu1dV6/",
+                 filename)
 
-  glued <- read_dta(
-    "https://borealisdata.ca/api/access/datafile/424713?format=original&gbrecs=true"
-  ) |>
+  readxl::read_excel(filename)
+}
+
+clean_glued <- function(glued_raw){
+  glued_raw |>
     filter(country == "canada", is.na(yrclosed),
            orig_name != "", year == 2015) |>
     mutate(across(c(private01, phd_granting, b_granting, m_granting),
@@ -20,6 +27,7 @@ get_glued <- function(){
     select(
       uni_name = eng_name,
       glued_id = iau_id1,
+      coordinates,
       phd_granting,
       bachelors_granting = b_granting,
       masters_granting = m_granting,
@@ -27,6 +35,4 @@ get_glued <- function(){
       enrollment_count = students5_estimated,
       year
     )
-
-  return(glued)
 }

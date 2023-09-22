@@ -155,8 +155,8 @@ update_coarse_matches <- function(raw_coarse_filename){
 #' After the coarse clean by name only, add in canonical event keys and
 #' format the match spreadsheet so coders can clean it easily
 postprocess_names <- function(cleaned_events, coarse_uni_match_filename, intermediate_pass_filename,
-                              glued, ipeds,
-                              canonical_event_relationship){
+                              glued_raw, ipeds_raw,
+                              canonical_event_relationship, canada_geo){
   coarse_uni_match <- read_csv(coarse_uni_match_filename, show_col_types = FALSE)
   # The coders can make multiple passes as we revise the process; this integrates their changes into the new dataset
   # produced
@@ -224,6 +224,24 @@ postprocess_names <- function(cleaned_events, coarse_uni_match_filename, interme
     select(-true_uni_data_source, -true_uni_id, -true_name) |>
     select(seen, everything()) |>
     arrange(seen, canonical_event_key)
+
+  ipeds <- ipeds_raw |>
+    group_by(UNITID) |>
+    slice_max(order_by = year, n = 1) |>
+    select(id = UNITID, name = INSTNM, address = ADDR,
+           city = CITY, state = STABBR)
+
+  glued <- glued_raw |>
+    filter(country == "canada") |>
+    group_by(iau_id1) |>
+    slice_max(order_by = year, n = 1) |>
+    select(id = iau_id1, uni_name = eng_name, foundedyr, coordinates) |>
+    separate(coordinates, sep = ", ", into = c("lat", "lon")) |>
+    st_as_sf(coords = c("lon", "lat"), na.fail = FALSE) |>
+    st_set_crs(st_crs(canada_geo)) |>
+    st_join(canada_geo) |>
+    select(-geoid) |>
+    st_drop_geometry()
 
   writexl::write_xlsx(
     list(

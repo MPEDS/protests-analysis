@@ -17,7 +17,12 @@ get_school_directory <- function(){
       directory <- read_csv(unzipped_filename, show_col_types = FALSE) |>
         mutate(year = year)
       return(directory)
-  }) |>
+  })
+  return(directory_aggregated)
+}
+
+clean_school_directory <- function(directory){
+  directory |>
     mutate(
       hbcu = case_when(
         HBCU == 1 ~ TRUE,
@@ -34,6 +39,4 @@ get_school_directory <- function(){
            size_category = INSTSIZE,
            hbcu, tribal, year) |>
     mutate(id = as.character(id))
-
-  return(directory_aggregated)
 }

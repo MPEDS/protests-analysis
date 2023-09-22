@@ -34,12 +34,18 @@ get_unlinked_candidate_events <- function(){
     pull(event_id) |>
     unique()
 
+  linked_articles <- coder_event_creator |>
+    filter(variable == "link") |>
+    pull(article_id) |>
+    unique()
+
   unlinked_events <- event_metadata |>
     # uncodable_ids and no_start_dates notably don't change the result set
     filter(!(event_id %in% cec_linked_ids),
            !(event_id %in% uncodable_ids),
            !(event_id %in% no_start_dates),
-           !is.na(start_date)) |>
+           !is.na(start_date),
+           !(article_id %in% linked_articles)) |>
     rename(event_coder = coder_id)
 
   event_flag <- tbl(con, "event_flag") |>

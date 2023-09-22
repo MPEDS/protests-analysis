@@ -20,16 +20,19 @@ get_mizzou_solidarity <- function(){
     new_events <- new_events |>
       select(canonical_id2 = canonical_id1) |>
       inner_join(canonical_event_relationship, by = "canonical_id2",
-                 relationship = "many-to-many") |>
-      filter(relationship_type != "counterprotest")
+                 relationship = "many-to-many")
+      # filter(relationship_type != "counterprotest")
     mizzou_ids <- bind_rows(mizzou_ids, new_events) |> distinct()
     if(nrow(new_events) == 0){
       should_find_events <- FALSE
     }
   }
+  mizzou_ids <- canonical_event_relationship |>
+    filter(canonical_id1 %in% c(mizzou_ids$canonical_id1, mizzou_ids$canonical_id2) |
+            canonical_id2 %in% c(mizzou_ids$canonical_id1, mizzou_ids$canonical_id2))
 
   keys <- canonical_events |>
-    select(relationship_with =key, id) |>
+    select(relationship_with = key, id) |>
     distinct()
 
   canonical_events |>
@@ -58,3 +61,4 @@ get_mizzou_schools <- function(){
     select(key, university, uni_name_source) |>
     bind_rows(participating_universities)
 }
+
