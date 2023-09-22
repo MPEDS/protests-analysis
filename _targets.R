@@ -1,6 +1,6 @@
 library(targets)
 library(tarchetypes)
-library(crew)
+library(future)
 
 source("tasks/source_safely.R")
 fn_filenames <- list.files("tasks", full.names = TRUE,
@@ -8,11 +8,10 @@ fn_filenames <- list.files("tasks", full.names = TRUE,
                            recursive = TRUE)
 invisible(lapply(fn_filenames, source_safely))
 
+plan(multisession, workers = 8)
 tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven", "testthat",
                             "cluster", "googledrive",
                             "httr", "curl", "sf", "tigris", "tidycensus"),
-               # Runs branches on separate workers -- useful especially for clustering
-               controller = crew_controller_local(workers = parallel::detectCores() - 2),
                )
 
 list(
@@ -35,7 +34,7 @@ list(
   # CLUSTERING-SPECIFIC TARGETS
   tar_target(cluster_inputs, create_cluster_inputs(cleaned_events)),
   tar_target(distance_matrix, create_distance_matrix(cluster_inputs)),
-  tar_target(indexes, seq(100, nrow(cleaned_events), by = 50)),
+  tar_target(indexes, seq(100, nrow(cleaned_events) - 1, by = 50)),
   tar_target(clusters, assign_issue_clusters(distance_matrix, indexes),
              # dynamically create branches according to `indexes`
              pattern = map(indexes)),
