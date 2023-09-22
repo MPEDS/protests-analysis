@@ -1673,9 +1673,10 @@ ggplot(mizzou_sf) +
       "All other universities" = 19
     )
   ) + 
-  scale_size_continuous(breaks = seq(1, 13, by = 3), range = c(2, 8)) + 
+  scale_size_continuous(breaks = seq(1, 7, by = 2), range = c(2, 8)) + 
   guides(shape = FALSE,
-         color = guide_legend(override.aes = list(size = 4)))
+         color = guide_legend(override.aes = list(size = 4)),
+         size = guide_legend(override.aes = list(color = "#FA918A")))
 
 tibble(canonical_id = mizzou_ids) |> 
   left_join(mpeds, by = "canonical_id") |> 
