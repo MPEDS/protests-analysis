@@ -18,6 +18,11 @@ nu <- function(vec){
   length(unique(vec))
 }
 
+#' Loads the targets referenced by function arguments
+tar_load_args <- function(fun){
+  tar_load(names(formals(fun)))
+}
+
 if(interactive()){
   # hate typing this every time i start a session
   # notably not loaded by the pipeline runs
@@ -27,5 +32,6 @@ if(interactive()){
   library(RMariaDB)
   library(ssh)
   library(sf)
+  library(nplyr)
 }
 
