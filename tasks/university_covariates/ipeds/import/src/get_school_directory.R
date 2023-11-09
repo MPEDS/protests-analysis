@@ -35,8 +35,8 @@ clean_school_directory <- function(directory){
         TRUE ~ NA
         ),
     ) |>
-    select(id = UNITID, uni_name = INSTNM,
+    select(uni_id = UNITID, uni_name = INSTNM,
            size_category = INSTSIZE,
            hbcu, tribal, year) |>
-    mutate(id = as.character(id))
+    mutate(uni_id = as.character(uni_id))
 }

@@ -26,7 +26,7 @@ clean_glued <- function(glued_raw){
                   })) |>
     select(
       uni_name = eng_name,
-      glued_id = iau_id1,
+      uni_id = iau_id1,
       coordinates,
       phd_granting,
       bachelors_granting = b_granting,

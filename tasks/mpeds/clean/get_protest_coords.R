@@ -12,7 +12,7 @@
 #' @return A four-column tibble:
 #' lon<numeric> | lat<numeric> | location<character>
 #'   | location_type<"city" | "uni" >
-get_protest_coords <- function(events){
+get_protest_coords <- function(events_wide){
   # Filename not stored as separate target because we don't want
   # changes to the cache to trigger changes to the pipeline
   geocoded_cache_filename <-"tasks/mpeds/clean/geocoding_cache.csv"
@@ -25,7 +25,7 @@ get_protest_coords <- function(events){
     )
   }
 
-  cities <- events |>
+  cities <- events_wide |>
     pull(location) |>
     unlist() |>
     {\(.) tibble(cities = .) }() |>
@@ -42,13 +42,13 @@ get_protest_coords <- function(events){
   }, .progress = "Fetching city coordinates") |>
     filter(!is.na(lng), !is.na(lat))
 
-  unique_unis <- events |>
+  unique_unis <- events_wide |>
     pull(university) |>
-    unlist() |>
-    {\(.) tibble(unis = .) }() |>
-    drop_na(unis) |>
+    bind_rows() |>
+    drop_na(university_name) |>
     distinct() |>
-    pull(unis)
+    pull(university_name)
+
   uni_coords <- imap_dfr(unique_unis, \(uni, index){
     coords <- tryCatch(
       get_coords(uni, geocoded_cache),
@@ -60,23 +60,12 @@ get_protest_coords <- function(events){
   updated_cache <- bind_rows(city_coords, uni_coords)
   write_csv(updated_cache, geocoded_cache_filename)
 
-  events <- events |>
+  events <- events_wide |>
+    mutate(location = map_chr(location, ~ifelse(is.null(.), NA_character_, .[1]))) |>
     left_join(city_coords, by = "location") |>
     rename(location_lng = lng,
            location_lat = lat) |>
-    # not sure how to do a join properly on a list-col, as the `university`
-    # column is (e.g. multiple possible universities for a single event)
-    # So far I have this very inefficient method
-    mutate(university_locations = imap(
-      university, \(uni_name, index){
-        # if university name is null, return empty tibble
-        if(is.null(uni_name)){
-          return(tibble())
-        }
-        # otherwise, match it with the uni_coords geocoded set
-        return(tibble(location = uni_name) |> left_join(uni_coords, by = "location"))
-      }
-    ))
+    nest_left_join(university, uni_coords, by = c("university_name" = "location"))
   return(events)
 }
 

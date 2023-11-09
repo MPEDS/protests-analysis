@@ -158,8 +158,8 @@ postprocess_names <- function(cleaned_events, coarse_uni_match_filename, interme
                               glued_raw, ipeds_raw,
                               canonical_event_relationship, canada_geo){
   coarse_uni_match <- read_csv(coarse_uni_match_filename, show_col_types = FALSE)
-  # The coders can make multiple passes as we revise the process; this integrates their changes into the new dataset
-  # produced
+  # The coders can make multiple passes as we revise the process;
+  # this integrates their changes into the new dataset produced
   intermediate_pass <- read_csv(intermediate_pass_filename, show_col_types = FALSE) |>
     filter(seen) |>
     select(seen, original_name, canonical_event_key,

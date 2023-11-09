@@ -68,6 +68,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
   # partly to help with geocoding as a stand-in for the actual location
   # also does cleaning of the university names variable itself
   with_unis <- wide |>
+    filter(nchar(key) > 0, !is.na(key)) |>
     mutate(publication = str_replace_all(publication, " ", "-"),
            pub_uni = publication |>
              str_extract(":-.*$") |>
@@ -82,31 +83,28 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
   # so we use this hand-coded table for university-publication matching
     left_join(uni_pub_xwalk, by = c("publication" = "pub")) |>
     mutate(
-      # use pub_uni when uni is not available; pub_uni contains
+      # use uni when pub_uni is not available; uni contains
       # manual corrections I made
-      university = ifelse(is.na(pub_uni), uni, pub_uni),
-      # use university_names, which coders annotated, when available
-      university = map2(university_names_text, university,
-                        function(annotated_uni, publication_uni){
-                          if(length(annotated_uni) > 0){
-                            return(annotated_uni)
-                          } else {
-                            return(publication_uni)
-                          }
-                          }),
-      uni_name_source = map_chr(
-        university_names_text,
-        ~ifelse(length(.) > 0, "other univ where protest occurs", "publication")
-      )) |>
-    select(-uni, -pub_uni, -university_names_text) |>
-    # Some issues have strange presets
+      publication = ifelse(is.na(pub_uni), uni, pub_uni) |>
+        as.list()
+    ) |>
+    rename(
+      "other univ where protest occurs" = university_names_text,
+    ) |>
+    pivot_longer(cols = c(`other univ where protest occurs`, publication),
+                 names_to = "uni_name_source",
+                 values_to = "university_name") |>
+    unnest(cols = c(university_name)) |>
+    nest(university = c(uni_name_source, university_name)) |>
+    select(-uni, -pub_uni) |>
+    # Some issues have strange presets / existing data problems
     mutate(racial_issue = map(racial_issue, \(issue_list){
       issue_list |>
         str_trim() |>
         str_replace_all("Indigenous Issues", "Indigenous issues") |>
-        str_replace_all("LGB+/Sexual orientation$", "LGB+/Sexual orientation (For)") |>
         unique()
-    }))
+    }), start_date = map_chr(start_date, ~ifelse(is.null(.), NA_character_, .[1]))
+    )
 
   # converting yes/no columns to lgl
   is_yesno <- function(col){

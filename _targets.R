@@ -10,9 +10,13 @@ invisible(lapply(fn_filenames, source_safely))
 
 plan(multisession, workers = parallel::detectCores() - 2)
 tar_option_set(packages = c("tidyverse", "RMariaDB", "ssh", "haven", "testthat",
-                            "cluster", "googledrive",
+                            "cluster", "googledrive", "nplyr",
                             "httr", "curl", "sf", "tigris", "tidycensus"),
                )
+
+# Prevent package from asking for sign-in options
+googledrive::drive_deauth()
+googledrive::drive_auth_configure(api_key = Sys.getenv("GMAPS_API_KEY"))
 
 list(
   tar_target(canonical_events, get_canonical_events(),
@@ -26,7 +30,8 @@ list(
             )
      ),
   tar_target(canonical_event_relationship, get_canonical_event_relationship(canonical_events)),
-  tar_target(uni_pub_xwalk_file, format = "file",
+  tar_target(uni_pub_xwalk_file, format =
+               "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
   tar_target(cleaned_events, get_protest_coords(events_wide)),
@@ -44,9 +49,9 @@ list(
             )),
 
   # 450 is approx. the number of campaigns (422)
-  tar_target(cluster_campaigns, assign_issue_cluster(distance_matrix, 450)),
+  tar_target(cluster_campaigns, assign_issue_clusters(distance_matrix, 450)),
 
-  tar_target(articles, get_articles()),
+  tar_target(articles, get_articles(), cue = tar_cue(mode = "always")),
 
   # Geographic information
   tar_target(us_regions_filename, format = "file",
@@ -96,7 +101,13 @@ list(
     canonical_event_relationship, canada_geo
   ), format = "file"),
   # And read in again after they've made their edits
-  tar_target(uni_xwalk,  readxl::read_excel(postprocess_filename) |> distinct()),
+  tar_target(cleaned_xwalk_dribble, googledrive::drive_download(
+    "https://docs.google.com/spreadsheets/d/14ms9FF6Zg0oZf6AQRqOHASbrx1zLprRh/edit#gid=480957682",
+    tempfile()),
+    cue = tar_cue(mode = ifelse(Sys.getenv("DOWNLOAD_UNI_XWALK") %in% c('', 'false'), 'never', 'always')
+                  )
+  ),
+  tar_target(uni_xwalk,  readxl::read_excel(cleaned_xwalk_dribble$local_path)),
 
   # Export Canadian universities for additional manual data input
   tar_target(canadian_universities_filename, export_canada(
