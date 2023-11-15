@@ -1,7 +1,10 @@
 library(targets)
 library(tarchetypes)
 library(future)
-
+library(crew)
+tar_option_set(
+  controller = crew_controller_local(workers = 4)
+)
 source("tasks/source_safely.R")
 fn_filenames <- list.files("tasks", full.names = TRUE,
                            pattern = ".R",
@@ -34,13 +37,17 @@ list(
                "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   tar_target(events_wide, process_canonical_events(canonical_events, uni_pub_xwalk_file)),
-  tar_target(cleaned_events, get_protest_coords(events_wide)),
+  tar_target(cleaned_events, get_protest_coords(events_wide),
+             cue = tar_cue(mode = "always")
+             ),
 
   # CLUSTERING-SPECIFIC TARGETS
   tar_target(cluster_inputs, create_cluster_inputs(cleaned_events)),
   tar_target(distance_matrix, create_distance_matrix(cluster_inputs)),
   tar_target(indexes, seq(100, nrow(cluster_inputs) - 1, by = 50)),
   tar_target(clusters, assign_issue_clusters(distance_matrix, indexes),
+             memory = "transient", storage = "worker",
+             retrieval = "worker", garbage_collection = TRUE,
              # dynamically create branches according to `indexes`
              pattern = map(indexes)),
   tar_target(cluster_metrics,

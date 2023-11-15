@@ -46,8 +46,8 @@ get_protest_coords <- function(events_wide){
     pull(university) |>
     bind_rows() |>
     drop_na(university_name) |>
-    distinct() |>
-    pull(university_name)
+    pull(university_name) |>
+    unique()
 
   uni_coords <- imap_dfr(unique_unis, \(uni, index){
     coords <- tryCatch(
@@ -56,17 +56,19 @@ get_protest_coords <- function(events_wide){
     )
     return(coords)
   }, .progress = "Fetching university coordinates") |>
-    filter(!is.na(lng), !is.na(lat))
+    filter(!is.na(lng), !is.na(lat)) |>
+    distinct()
   updated_cache <- bind_rows(city_coords, uni_coords)
   write_csv(updated_cache, geocoded_cache_filename)
 
-  events <- events_wide |>
+  cleaned_events <- events_wide |>
     mutate(location = map_chr(location, ~ifelse(is.null(.), NA_character_, .[1]))) |>
     left_join(city_coords, by = "location") |>
     rename(location_lng = lng,
            location_lat = lat) |>
-    nest_left_join(university, uni_coords, by = c("university_name" = "location"))
-  return(events)
+    nest_left_join(university, uni_coords,
+                   by = c("university_name" = "location"))
+  return(cleaned_events)
 }
 
 get_coords <- function(location, cache){

@@ -18,14 +18,14 @@ clean_mpeds_names <- function(cleaned_events, ipeds, glued){
   authoritative_uni_directory <- bind_rows(
     list(
       ipeds = ipeds |>
-        group_by(id) |>
+        group_by(uni_id) |>
         arrange(desc(year)) |>
         slice_head(n = 1) |>
-        select(id, uni_name),
+        select(authoritative_uni_id = uni_id, uni_name),
       glued = glued |>
-        group_by(glued_id) |>
+        group_by(uni_id) |>
         arrange(desc(year)) |>
-        select(id = glued_id, uni_name) |>
+        select(authoritative_uni_id = uni_id, uni_name) |>
         slice_head(n = 1)
     ),
     .id = "data_source"
@@ -36,19 +36,13 @@ clean_mpeds_names <- function(cleaned_events, ipeds, glued){
     distinct()
 
   mpeds_names <- cleaned_events |>
-    select(university, participating_universities_text) |>
-    unnest(participating_universities_text, keep_empty = TRUE) |>
-    unnest(university, keep_empty = TRUE) |>
-    pivot_longer(cols = c(university, participating_universities_text),
-                 values_to = "university"
-                 ) |>
-    select(-name) |>
-    mutate(university = str_remove_all(university, ",") |> str_trim()) |>
+    pull(university) |>
+    bind_rows() |>
     distinct() |>
-    arrange(university) |>
-    mutate(name = university, og_name = university,
+    arrange(university_name) |>
+    mutate(name = university_name, og_name = university_name,
            uni_id = "", uni_data_source = "") |>
-    select(-university)
+    select(-university_name)
 
   # If adding a dash between the last two words helps,
   # add the dash, otherwise keep old name
@@ -78,7 +72,7 @@ clean_mpeds_names <- function(cleaned_events, ipeds, glued){
           ifelse(is.null(matcher$pattern), "$", matcher$pattern),
           matcher$repl)) |>
       left_join(authoritative_uni_matcher, by = c("alt_name" = "uni_name"),
-                multiple = "all") |>
+                multiple = "all", relationship = "many-to-many") |>
       mutate(
         # if is_authoritative is TRUE, then the new rule helped find a match
         # case_when() needed since ipeds_dummy is TRUE or NA, not TRUE or FALSE
@@ -87,18 +81,18 @@ clean_mpeds_names <- function(cleaned_events, ipeds, glued){
           TRUE ~ name
         ),
         uni_id = case_when(
-          is_authoritative ~ id,
+          is_authoritative ~ authoritative_uni_id,
           TRUE ~ uni_id,
         ),
         uni_data_source = case_when(
           is_authoritative ~ data_source,
           TRUE ~ uni_data_source
         )) |>
-      select(-is_authoritative, -alt_name, -id, -data_source)
+      select(-is_authoritative, -alt_name, -authoritative_uni_id, -data_source)
   }, .init = mpeds_names) |>
     # final match to know which are correct and which need adjustments
     left_join(authoritative_uni_matcher, by = c("name" = "uni_name"),
-              multiple = "all") |>
+              multiple = "all", relationship = "many-to-many") |>
     mutate(is_authoritative = case_when(
       is_authoritative == TRUE ~ TRUE,
       TRUE ~ FALSE
@@ -107,6 +101,12 @@ clean_mpeds_names <- function(cleaned_events, ipeds, glued){
     select(original_name = og_name,
            authoritative_name = name,
            uni_id, uni_data_source) |>
+    # Since often names in our data like "Columbia" get matched
+    # to multiple universities, and that is a task for coders to correct
+    # and cannot be resolved programmatically, and it is confusing to include
+    # single entries more than once, i am arbitrarily selecting one name
+    group_by(original_name) |>
+    slice_head(n = 1) |>
     distinct() |>
     write_csv(raw_coarse_filename)
 
@@ -169,19 +169,10 @@ postprocess_names <- function(cleaned_events, coarse_uni_match_filename, interme
 
   # Creating a keys dataframe so that coders can reference canonical event keys
   # for names
-  initial_keys <- cleaned_events |>
-    select(key, university, uni_name_source, description) |>
-    unnest(university)
-
-  # Adding on "participating universities"
   keys <- cleaned_events |>
-    select(key, participating_universities_text, description) |>
-    mutate(uni_name_source = "participating-universities-text") |>
-    unnest(participating_universities_text) |>
-    rename(university = participating_universities_text) |>
-    bind_rows(initial_keys) |>
-    mutate(university = str_remove_all(university, ",") |> str_trim()) |>
-    distinct()
+    select(key, university, description) |>
+    unnest(university) |>
+    select(-lat, -lng)
 
   postprocess_filename <- "tasks/university_covariates/hand/university_names_verification.xlsx"
   umbrella_ids <- canonical_event_relationship |>
@@ -203,7 +194,7 @@ postprocess_names <- function(cleaned_events, coarse_uni_match_filename, interme
     distinct()
 
   MPEDS <- keys |>
-    rename(original_name = university) |>
+    rename(original_name = university_name) |>
     # Multiple=first is fine because we don't want RAs to check same university-key twice
     left_join(coarse_uni_match, by = "original_name", multiple = "first") |>
     filter(!is.na(original_name),

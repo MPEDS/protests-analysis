@@ -74,15 +74,28 @@ n_cmas <- mpeds |>
   pull(geoid) |> 
   unique() |> 
   length()
-n_universities <- length(unique(mpeds$university))
 
-missing_unis <- mpeds$university_locations |>
-  bind_rows() |>
-  filter(is.na(lat), !is.na(location))
-n_missing_uni_rows <- nrow(missing_unis)
-n_missing_unis <- missing_unis$location |>
-  unique() |> 
-  length()
+
+n_universities <- mpeds$university |>
+  bind_rows()  |>
+  filter(uni_name_source %in% c(
+    "publication", "participating_universities_text"
+    )) |>
+  select(uni_id) |>
+  distinct() |>
+  nrow()
+
+# counts for universities -- defined as university where protest took place
+# which is "other univ where protest took place" if present and publication otherwise
+# So to count missings, look for rows where neither are present
+missing_uni_locations <- mpeds |> 
+  filter(!str_detect(key, "Umbrella")) |> 
+  mutate(uni_missing = map_lgl(university, ~!any(.$uni_name_source %in% c(
+    "publication", "other univ where protest occurs"
+  ))), uni_location_missing = map_lgl(university, ~all(is.na(.$lat))))
+
+n_missing_unis <- sum(missing_uni_locations$uni_missing)
+n_missing_uni_locations <- sum(missing_uni_locations$uni_location_missing)
 
 n_has_police <- mpeds |> 
   filter(!map_lgl(police_presence_and_size, is.null),
@@ -169,15 +182,19 @@ mpeds_issues <- mpeds |>
   count()
 
 # % with at least one issue, at least one racial issue
-n_one_both_issue <- mpeds |> 
+issue_count <- mpeds |> 
   select(key, issue, racial_issue) |> 
   pivot_longer(cols = c(issue, racial_issue)) |> 
   unnest(value) |> 
   filter(value != "_Not relevant") |> 
   select(key, name) |> 
   distinct() |> 
-  count(key) |> 
+  count(key)
+n_one_both_issue <- issue_count |> 
   filter(n >= 2) |> 
+  nrow()
+n_one_issue <- issue_count |> 
+  filter(n >= 1) |> 
   nrow()
 
 # mode of issues per protests
@@ -217,14 +234,15 @@ tribble(
   "US counties", n_counties,
   "Canadian CMAs", n_cmas,
   "Universities", n_universities,
-  "Missing universities", n_missing_unis,
-  "CEs with missing universities", n_missing_uni_rows,
+  "CEs with missing universities", n_missing_unis,
+  "Universities with missing locations", n_missing_uni_locations,
   "# of events with police activity recorded", n_has_police_activity,
   "# of events with any police field recorded", n_any_police_field,
   "# of events with university police only", n_uni_police_only,
   "# of events with government police only", n_govt_police_only,
   "# of events with both types of police", n_uni_and_govt_police,
-  "# of events with at least one issue", n_one_both_issue,
+  "# of events with at least one issue or racial issue", n_one_issue,
+  "# of events with at least one issue and racial issue", n_one_both_issue,
   "mode of issue counts", mode_issues,
   "mean of issue counts", mean_issues,
   "# of events with just one issue", n_only_one_issue, 
@@ -255,8 +273,7 @@ found geocoding matches, and hand-checking the most common ones indicates that
 there isn't a strong pattern of missing value substitution, e.g. Google isn't
 sending the majority of results  to the centroid of America or to `(-1, -1)` or 
 anything weird like that. Universities had a harder time, with `r n_missing_unis`
-universities and `r n_missing_uni_rows` rows (canonical events) not returning
-lon/lat coords for universities. 
+canonical events missing lon/lat coords for universities. 
 
 That comes out to ~5% of universities not having coordinates, and
 ~2.5% of canonical events not having universities with coordinates.
@@ -266,7 +283,9 @@ The top universities by appearances:
 ```{r university_counts}
 
 university_counts <- mpeds |> 
-  group_by(university) |> 
+  pull(university) |> 
+  bind_rows() |> 
+  group_by(university_name) |> 
   count() |> 
   ungroup() |> 
   drop_na() |>
@@ -950,16 +969,33 @@ uni_grouping <- tribble(
   "University of Wisconsin-Madison", "Midwest"
 )
 
+get_uni_protest_took_place <- function(uni_df){
+  uni <- uni_df |> 
+    filter(
+      uni_name_source %in% c("publication", "other univ where protest occurs")
+    ) |> 
+    arrange(uni_name_source) |> 
+    slice_head(n = 1) |> 
+    pull(university_name)
+  return(ifelse(length(uni) > 0, uni, NA_character_))
+}
+
 unis_over_time <- mpeds |> 
-  mutate(date = floor_date(start_date, "month")) |> 
-  group_by(university, date) |> 
+  mutate(date = floor_date(start_date, "month"),
+         university_took_place = map_chr(
+           university, get_uni_protest_took_place
+           )) |> 
+  group_by(university_took_place, date) |> 
   count() |> 
   drop_na() |> 
-  filter(university %in% university_counts$university[1:10]) |> 
-  mutate(university = str_wrap(university, 15)) |> 
-  left_join(uni_grouping, by = "university")
+  filter(university_took_place %in% university_counts$university_name[1:10]) |> 
+  mutate(university_took_place = str_wrap(university_took_place, 15)) |> 
+  left_join(uni_grouping, by = c("university_took_place" = "university"))
 
-uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, fill = university)) + 
+uni_plot <- ggplot(unis_over_time,
+                   aes(x = date,
+                       y = n, 
+                       fill = university_took_place)) + 
   geom_bar(stat = "identity") + 
   scale_fill_brewer(type = "qual", palette = "Paired") + 
   labs(
@@ -983,14 +1019,18 @@ uni_plot <- ggplot(unis_over_time, aes(x = date, y = n, fill = university)) +
 uni_plot
 
 uni_grouping_over_time <- mpeds |> 
-  mutate(date = floor_date(start_date, "month")) |> 
-  filter(university %in% university_counts$university[1:10]) |> 
-  left_join(uni_grouping, by = "university") |> 
+  mutate(date = floor_date(start_date, "month"),
+         university_took_place = map_chr(
+           university, get_uni_protest_took_place
+           )) |> 
+  filter(university_took_place %in% university_counts$university_name[1:10]) |> 
+  left_join(uni_grouping, by = c("university_took_place" = "university")) |> 
   group_by(group, date) |> 
   count() |> 
   drop_na() 
 
-uni_grouped_plot <- ggplot(uni_grouping_over_time, aes(x = date, y = n, fill = group)) + 
+uni_grouped_plot <- ggplot(uni_grouping_over_time,
+                           aes(x = date, y = n, fill = group)) + 
   geom_bar(stat = "identity") + 
   scale_fill_brewer(type = "qual", palette = "Set1") + 
   scale_x_date(breaks = "4 months",
@@ -1401,7 +1441,7 @@ mpeds_issue_time |>
 mpeds |> 
   select(where(function(x){is.numeric(x) || is.logical(x)}),
                  -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -link) |> 
+                 -year, -university, -link) |> 
   pivot_longer(cols = everything()) |> 
   filter(name != "NA") |> 
   group_by(name) |> 
@@ -1422,7 +1462,7 @@ so those are handled as list-cols and not shown here.
 ```{r pairs, warning = FALSE, width = 8, height = 8}
 mpeds |> 
   select(where(is.numeric), -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category, -enrollment_count) |> 
+                 -year, -university) |> 
   ggpairs(progress = FALSE, lower = list(
     continuous = wrap(ggally_points, size = 0.1, alpha = 0.2)
     ),
@@ -1438,7 +1478,7 @@ later on.
 ```{r distributions}
 mpeds |> 
   select(where(is.numeric), -canonical_id, -starts_with("location"),
-                 -year, -uni_id, -size_category) |> 
+                 -year, -university) |> 
   pivot_longer(everything()) |> 
   drop_na() |> 
   ggplot(aes(value)) + 

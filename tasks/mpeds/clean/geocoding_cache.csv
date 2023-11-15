@@ -544,19 +544,20 @@ lat,lng,location
 35.9752487,-78.899654,North Carolina Central University
 35.8430861,-90.6748589,Arkansas State University
 42.3709104,-72.5170028,Amherst College
-42.3867598,-72.5300515,University of Massachusetts Amherst
+42.3709104,-72.5170028,Amherst College in Massachusetts
 42.3867598,-72.5300515,University of Massachusetts Amherst
 42.2762537,-83.7412441,University of Michigan Ann Arbor
 33.7515658,-84.4112315,Clark Atlanta University
 26.4626967,-81.7800748,Florida Gulf Coast University
 33.7971368,-84.32224,Emory University
-33.7971368,-84.32224,Emory University
+33.7473412,-84.415528,Morehouse College
+33.753068,-84.38528190000001,Georgia State University
+33.7756178,-84.39628499999999,Georgia Institute of Technology
+33.7451953,-84.41143749999999,Spelman College
+34.0234337,-84.6154897,Kennesaw State University
 40.19396769999999,-75.4563232,Ursinus College
 33.753068,-84.38528190000001,Georgia State University in Atlanta
 41.8742327,-87.62483379999999,Columbia College Chicago
-41.8742327,-87.62483379999999,Columbia College Chicago
-33.7971368,-84.32224,Emory University
-33.7971368,-84.32224,Emory University
 38.5382322,-121.7617125,University of California Davis
 25.7173947,-80.2781262,University of Miami
 37.3192806,-122.0447919,De Anza College
@@ -568,35 +569,31 @@ lat,lng,location
 34.0977461,-117.711806,Pomona College
 37.8718992,-122.2585399,University of California Berkeley
 39.63942520000001,-86.8634933,Depauw University
-37.8718992,-122.2585399,"University of California, Berkeley"
 37.72569,-122.4510797,City College of San Francisco
-42.3504997,-71.1053991,Boston University
+42.3465952,-71.0895292,Berklee College of Music
+42.3522266,-71.0658133,Emerson College
+42.3365405,-71.0997491,Massachusetts College of Art and Design
 42.3504997,-71.1053991,Boston University
 43.7044406,-72.2886934,Dartmouth College
 43.7044406,-72.2886934,Dartmouth
 40.3430942,-74.65507389999999,Princeton University
-40.3430942,-74.65507389999999,Princeton University
-42.3355488,-71.16849450000001,Boston College
 42.3355488,-71.16849450000001,Boston College
 38.435092,-78.8697548,James Madison University
-38.435092,-78.8697548,James Madison University
-42.3770029,-71.11666009999999,Harvard University
 42.3770029,-71.11666009999999,Harvard University
 42.3780901,-71.1188478,Harvard Law
+42.36535689999999,-71.2586441,Brandeis University
+42.3356451,-71.104215,Harvard Medical School
+42.3754607,-71.1219533,Harvard Graduate School of Education
 42.3770029,-71.11666009999999,Harvard
-42.36535689999999,-71.2586441,Brandeis University
-42.36535689999999,-71.2586441,Brandeis University
 42.3780901,-71.1188478,Harvard Law School
-30.2849185,-97.7340567,University of Texas Austin
 30.2849185,-97.7340567,University of Texas Austin
 40.4908891,-88.9906541,Illinois Wesleyan University
 40.5121009,-88.99476299999999,Illinois State University
 39.1682449,-86.52300729999999,Indiana University
-39.1682449,-86.52300729999999,Indiana University
 38.2122761,-85.75850229999999,University of Louisville
 33.5842591,-101.8782822,Texas Tech University
 41.7055716,-86.2353388,University of Notre Dame
-41.7055716,-86.2353388,University of Notre Dame
+37.87015100000001,-122.2594606,University of California
 37.78059880000001,-122.1825631,Mills College
 42.6850273,-73.8247903,SUNY at Albany
 42.6850273,-73.8247903,University at Albany
@@ -605,125 +602,87 @@ lat,lng,location
 39.6779504,-75.7506114,University of Delaware
 39.21824,-76.0695767,Washington College
 43.076592,-89.4124875,University of Wisconsin Madison
-43.076592,-89.4124875,University of Wisconsin Madison
 41.2958696,-82.22108899999999,Oberlin College
-41.2958696,-82.22108899999999,Oberlin College
-41.8267718,-71.4025482,Brown University
 41.8267718,-71.4025482,Brown University
 33.7933203,-117.8520736,Chapman University
-40.3430942,-74.65507389999999,Princeton University
-40.3430942,-74.65507389999999,Princeton University
-45.3875812,-75.69602019999999,Carleton University
 45.3875812,-75.69602019999999,Carleton University
 45.42310639999999,-75.68313289999999,University of Ottawa
-45.42310639999999,-75.68313289999999,University of Ottawa
-47.6091765,-122.3178465,Seattle University
 47.6091765,-122.3178465,Seattle University
 40.00758099999999,-105.2659417,University of Colorado
 40.57341479999999,-105.0865487,Colorado State University
 41.8440047,-71.4347475,Providence College
 41.82708179999999,-71.4092965,Rhode Island School of Design
 46.7319225,-117.1542121,Washington State University
-46.7319225,-117.1542121,Washington State University
-46.7319225,-117.1542121,Washington State University
-46.7319225,-117.1542121,Washington State University
+46.7288124,-117.0126084,University of Idaho
 37.7079717,-89.2229983,Southern Illinois University
-41.5566104,-72.65690409999999,Wesleyan University
-41.5566104,-72.65690409999999,Wesleyan University
-41.5566104,-72.65690409999999,Wesleyan University
 41.5566104,-72.65690409999999,Wesleyan University
 40.0609352,-77.521684,Shippensburg University
 40.7430841,-74.246082,Seton Hall University
 37.4274745,-122.169719,Stanford University
 43.0386952,-87.9310153,Marquette University
 44.97399,-93.2277285,University of Minnesota
-44.97399,-93.2277285,University of Minnesota
 39.648035900000004,-79.9697147,West Virginia University
-46.7288124,-117.0126084,University of Idaho
 41.6578804,-83.6142374,University of Toledo
 43.7734535,-79.50186839999999,York University
-43.7734535,-79.50186839999999,York University
 43.6576585,-79.3788017,Ryerson University
-43.6576585,-79.3788017,Ryerson University
-43.653226,-79.3831843,University of Toronto
 43.653226,-79.3831843,University of Toronto
 43.6576585,-79.3788017,Ryerson
-43.653226,-79.3831843,University of Toronto
-43.653226,-79.3831843,University of Toronto
-42.0564594,-87.67526699999999,Northwestern University
+43.6633848,-79.3960062,University of Toronto.
+53.9614205,-1.0739108,York
 42.0564594,-87.67526699999999,Northwestern University
 36.1447034,-86.8026551,Vanderbilt University
 33.4551742,-88.79437659999999,Mississippi State University
 34.068921,-118.4451811,University of California Los Angeles
-34.068921,-118.4451811,University of California Los Angeles
+34.0585684,-117.8200304,Cal Poly Pomona
+33.8823476,-117.8851033,Cal State Fullerton
+34.2406756,-118.5300196,Cal State Northridge
 34.0663797,-118.1684782,California State University Los Angeles
 40.7982133,-77.8599084,Pennsylvania State University
 30.4418778,-84.2984889,Florida State University
-30.4418778,-84.2984889,Florida State University
 35.8486231,-86.3669156,Middle Tennessee State University
-30.4418778,-84.2984889,Florida State University
-30.4418778,-84.2984889,Florida State University
 30.4227211,-84.2877093,Florida Agricultural and Mechanical University
 35.0843187,-106.6197812,University of New Mexico
 44.4621319,-93.1840281,St Olaf College
 39.9811911,-75.1553563,Temple University
-39.9811911,-75.1553563,Temple University
 28.0587031,-82.41385389999999,University of South Florida
 39.3925121,-76.61263919999999,Towson University
-40.7649368,-111.8421021,University of Utah
+39.9522188,-75.1932137,University of Pennsylvania
+39.9566127,-75.18994409999999,Drexel
+39.9811911,-75.1553563,Temple
 40.7649368,-111.8421021,University of Utah
 33.9737055,-117.3280644,University of California Riverside
-37.7241492,-122.4799405,San Francisco State University
 37.7241492,-122.4799405,San Francisco State University
 41.8685636,-87.6484497,University of Illinois at Chicago
 27.9468757,-82.46722659999999,University of Tampa
 29.7199489,-95.3422334,University of Houston
-29.7199489,-95.3422334,University of Houston
 39.9523671,-75.5981257,West Chester University
 41.9241868,-87.65416549999999,DePaul University
-41.9241868,-87.65416549999999,DePaul University
 34.673407,-82.8367119,Clemson University
-34.673407,-82.8367119,Clemson University
-34.673407,-82.8367119,Clemson University
-34.673407,-82.8367119,Clemson University
-38.9076089,-77.07225849999999,Georgetown University
 38.9076089,-77.07225849999999,Georgetown University
 38.8997145,-77.0485992,George Washington University
 43.138948,-70.9370252,University of New Hampshire
-38.9076089,-77.07225849999999,Georgetown University
-38.9076089,-77.07225849999999,Georgetown University
 36.0014258,-78.9382286,Duke University
-36.0014258,-78.9382286,Duke University
-38.9380155,-77.088922,American University
 38.9380155,-77.088922,American University
 38.5893479,-90.3439695,Webster University
-36.1354887,-80.2792887,Wake Forest University
 36.1354887,-80.2792887,Wake Forest University
 42.9641221,-85.8890404,Grand Valley State University
 33.9480053,-83.3773221,University of Georgia in Athens
 39.324358,-82.10138889999999,Ohio University
-39.324358,-82.10138889999999,Ohio University
 32.7774047,-117.0714068,San Diego State University
 32.8800604,-117.2340135,University of California San Diego
 32.5933574,-85.4951663,Auburn University
-32.5933574,-85.4951663,Auburn University
-44.4778528,-73.1964637,University of Vermont
 44.4778528,-73.1964637,University of Vermont
 41.5043413,-81.6083838,Case Western Reserve University
 33.9937575,-81.0299186,University of South Carolina Columbia
 32.7175697,-117.1508543,San Diego City College
-32.7175697,-117.1508543,San Diego City College
 38.4162018,-96.1792715,Emporia State University
-42.3504997,-71.1053991,Boston University
-42.3504997,-71.1053991,Boston University
-42.4085371,-71.1182729,Tufts University
+42.4085371,-71.1182729,Tufts
+42.360091,-71.09416,Massachusetts Institute of Technology
 42.4085371,-71.1182729,Tufts University
 45.5243174,-123.1103252,Pacific University
 29.6436325,-82.3549302,University of Florida
-29.6436325,-82.3549302,University of Florida
 40.9416992,-90.3721309,Knox College
 40.376152,-82.39579330000001,Kenyon College
-49.26060520000001,-123.2459939,University of British Columbia
 49.26060520000001,-123.2459939,University of British Columbia
 46.0708191,-118.3295895,Whitman College
 42.2520353,-71.8245381,Clark University
@@ -731,26 +690,21 @@ lat,lng,location
 42.79600689999999,-77.82386269999999,SUNY at Geneseo
 34.16636,-118.2281216,Glendale Community College
 47.1150259,-88.5452004,Michigan Tech University
-42.3162992,-72.6403095,"Smith College in Northampton, Massachusetts"
-28.6024274,-81.2000599,University of Central Florida
+42.3162992,-72.6403095,Smith College in Northampton Massachusetts
+42.3162992,-72.6403095,Smith College
 28.6024274,-81.2000599,University of Central Florida
 44.901867,-68.66882509999999,University of Maine
 39.5087485,-84.73449149999999,Miami University
 37.1374838,-80.5502298,Radford University
-37.1374838,-80.5502298,Radford University
-37.1374838,-80.5502298,Radford University
-37.1374838,-80.5502298,Radford University
 40.6977743,-89.6153484,Bradley University
 35.7846633,-78.6820946,North Carolina State University
-40.4432027,-79.9428499,Carnegie Mellon University
+40.4443533,-79.960835,University of Pittsburgh
+40.4432027,-79.9428499,Carnegie Mellon
 40.4432027,-79.9428499,Carnegie Mellon University
 40.4443533,-79.960835,University of Pittsburgh Pittsburgh Campus
-36.0014258,-78.9382286,Duke University
-36.0014258,-78.9382286,Duke University
 29.888411,-97.938351,Texas State University San Marcos
 45.450223,-122.670186,Lewis & Clark College
 39.5437205,-119.8141582,University of Nevada Reno
-37.5526695,-77.4527359,Virginia Commonwealth University
 37.5526695,-77.4527359,Virginia Commonwealth University
 43.1305531,-77.6260033,University of Rochester
 37.7765643,-122.4507187,University of San Francisco
@@ -759,14 +713,11 @@ lat,lng,location
 43.2103817,-77.95108309999999,SUNY Brockport
 44.6925546,-73.4669464,SUNY College at Plattsburgh
 49.2780937,-122.9198833,Simon Fraser University
-49.2780937,-122.9198833,Simon Fraser University
-37.7241492,-122.4799405,San Francisco State University
-37.7241492,-122.4799405,San Francisco State University
-51.04473309999999,-114.0718831,University of Calgary
 51.04473309999999,-114.0718831,University of Calgary
 46.1672583,-60.08976879999999,Cape Breton University
 35.9049122,-79.0469134,UNC-Chapel Hill
 36.21356280000001,-81.68432179999999,Appalachian State
+36.21356280000001,-81.68432179999999,Appalachian State University
 39.7296653,-121.8478871,California State University Chico
 43.0527984,-75.4059719,Hamilton College
 38.5382322,-121.7617125,University of California at Davis
@@ -780,48 +731,38 @@ lat,lng,location
 42.3867598,-72.5300515,University of Massachusetts at Amherst
 42.0894288,-75.9694885,SUNY at Binghamton
 46.5653163,-66.46191639999999,University of New Brunswick
-46.5653163,-66.46191639999999,University of New Brunswick
 39.7099689,-75.1191932,Rowan University
-42.3867598,-72.5300515,University of Massachusetts Amherst
-42.3867598,-72.5300515,University of Massachusetts Amherst
-35.6068806,-77.3665364,East Carolina University
+35.9049122,-79.0469134,UNC-Chapel
 35.6068806,-77.3665364,East Carolina University
 44.63658119999999,-63.59165549999999,Dalhousie University
-44.63658119999999,-63.59165549999999,Dalhousie University
-41.66270780000001,-91.5549771,University of Iowa
-41.66270780000001,-91.5549771,University of Iowa
-41.66270780000001,-91.5549771,University of Iowa
 41.66270780000001,-91.5549771,University of Iowa
 36.3023954,-82.36985299999999,East Tennessee State University
+35.1987162,-97.4448963,OU
+39.1974437,-96.5847249,Kansas State University
+38.9543439,-95.2557961,University of Kansas
+31.5500848,-97.11354,Baylor University
+42.0266573,-93.6464516,Iowa State University
+30.2850284,-97.7335226,University of Texas-Austin
 35.2058936,-97.4457137,University of Oklahoma Norman Campus
 36.0917841,-79.8887051,Guilford College
 31.3298668,-89.33345349999999,University of Southern Misissippi
-33.753068,-84.38528190000001,Georgia State University
 42.360091,-71.09416,MIT
-42.3583767,-71.06121619999999,Suffolk University
 42.3583767,-71.06121619999999,Suffolk University
 37.6568259,-122.0558839,Cal State East Bay
 41.1497945,-81.34331590000001,Kent State University
+29.7604267,-95.3698028,Houston Community College
+29.7214214,-95.3592691,Texas Southern University
 42.4199229,-76.4969344,Ithaca College
-42.4534492,-76.4735027,Cornell University
 42.4534492,-76.4735027,Cornell University
 41.3148754,-105.5665744,University of Wyoming
 40.8201966,-96.7004763,University of Nebraska Lincoln
 41.745161,-111.8097425,Utah State University
-42.4085371,-71.1182729,Tufts University
-42.4085371,-71.1182729,Tufts University
-42.3770029,-71.11666009999999,Harvard University
-42.3770029,-71.11666009999999,Harvard University
 40.2079938,-85.4134775,Ball State University
 36.616251,-88.3209372,Murray State University
-36.616251,-88.3209372,Murray State University
 38.19997720000001,-84.8565381,Kentucky State University
-41.2958696,-82.22108899999999,Oberlin College
-41.2958696,-82.22108899999999,Oberlin College
 39.4835612,-88.17521839999999,Eastern Illinois University
 40.6984713,-75.2101079,Lafayette College
 36.8136777,-119.7461767,California State University Fresno
-43.260879,-79.9192254,McMaster University
 43.260879,-79.9192254,McMaster University
 41.0470553,-73.700419,SUNY Purchase
 21.299824,-157.8148228,University of Hawaii Manoa
@@ -830,76 +771,72 @@ lat,lng,location
 39.8405491,-86.1708927,Butler University
 45.548639,-94.1515367,St Cloud State University
 38.6487895,-90.3107962,Washington University St.Louis
-38.9543439,-95.2557961,University of Kansas
 39.0334683,-95.7018738,Washburn University
 41.6931245,-72.7638508,Central Connecticut University
 40.4766148,-90.6843599,Western Illinois University
 42.3080218,-88.99321909999999,Rock Valley College
 34.4139629,-119.848947,UC Santa Barbara
 34.0223519,-118.285117,University of Southern California
-34.0223519,-118.285117,University of Southern California
 29.888411,-97.938351,Texas State
 37.3496418,-121.9389875,Santa Clara University
 36.9820569,-122.0592552,UC Santa Cruz
 42.819091,-73.9283841,Union College
 41.5138435,-90.4907073,Western Illinois University Quad City riverfront campus
-40.4443533,-79.960835,University of Pittsburgh
-40.4432027,-79.9428499,Carnegie Mellon University
-40.4432027,-79.9428499,Carnegie Mellon University
 40.4486611,-79.92407279999999,Chatham College
 37.7626459,-122.4587106,UCSF
+-36.8517233,174.8310219,UCSF's Mission Bay
+40.1019523,-88.2271615,University of Illinois at Urbana-Champaign
 39.7305338,-89.6176711,University of Illinois Springfield
 46.4672485,-80.9757296,Laurentian University
+46.4672485,-80.9757296,Laurentian University’
+36.3429724,-88.86433319999999,UTM
 43.5482599,-79.66268409999999,University of Toronto Mississauga
 30.4132579,-91.1800023,Louisiana State University
+30.5190775,-91.5208624,universities across Louisiana
+30.5265222,-91.1929407,Southern University
+29.7903032,-90.8028911,Nicholls University
+32.5313471,-92.068744,University of Louisiana at Monroe
+30.211991,-92.019914,University of Louisiana at Lafayette
 43.1175731,-79.2476925,Brock University
 39.7596804,-94.7844794,Missouri Western State College
 41.7886079,-87.5987133,University of Chicago
-41.7886079,-87.5987133,University of Chicago
 38.0317977,-120.3885135,Columbia College
-36.21356280000001,-81.68432179999999,Appalachian State University
+39.7898336,-86.1935477,IU-Purdue University Indianapolis
+39.1682449,-86.52300729999999,IU-Bloomington
 40.0142329,-105.2670571,Naropa University
 40.00758099999999,-105.2659417,University of Colorado at Boulder
 41.1427108,-77.46062429999999,Lock Haven University
 33.7838235,-118.1140904,California State University Long Beach
 41.73856199999999,-74.085197,SUNY New Paltz
 42.88644679999999,-78.8783689,Buffalo
+43.0018111,-78.78952389999999,University at Buffalo
 42.9237929,-78.8550954,Canisius College
 40.1019523,-88.2271615,University of Illinois at Urbana Champaign
 40.6021807,-74.15038109999999,College of Staten Island
 36.1520526,-95.9460753,University of Tulsa
 36.0508093,-95.9528284,Oral Roberts University
 30.8491088,-83.2892073,Valdosta State University
-31.5500848,-97.11354,Baylor University
-31.5500848,-97.11354,Baylor University
 46.2568931,-63.13890780000001,University of Prince Edward Island
 41.8969889,-87.9471365,Elmhurst College
 40.268479,-74.77763329999999,College of New Jersey
 33.8823476,-117.8851033,California State University Fullerton
 41.749223,-92.7201302,Grinnell College
 34.3647349,-89.5383818,University of Mississippi
-34.3647349,-89.5383818,University of Mississippi
-34.3647349,-89.5383818,University of Mississippi
-34.3647349,-89.5383818,University of Mississippi
 41.8695424,-88.0969325,Wheaton College
 37.2709753,-76.71624659999999,College of William and Mary
-37.2709753,-76.71624659999999,College of William and Mary
 34.223874,-77.8696036,University of North Carolina Wilmington
-39.324358,-82.10138889999999,Ohio University
-39.324358,-82.10138889999999,Ohio University
 42.7297628,-73.67888839999999,Rensselaer Polytechnic Institute
 40.0368926,-75.3425785,Villanova University
-30.419119,-97.8390214,Concordia University
+45.5131547,-73.5602937,UQAM
+45.4948363,-73.577912799999993,Concordia
 30.419119,-97.8390214,Concordia University
 43.3807565,-84.6728043,Alma College
 42.3256097,-72.5312799,Hampshire College in Massachusetts
 38.1885119,-76.42627499999999,St Mary's College of Maryland
 42.3867598,-72.5300515,University of Massachusetts
 32.7721681,-117.1888625,University of San Diego
-32.7721681,-117.1888625,University of San Diego
 35.657506,-97.4709491,University of Central Oklahoma
 41.3163244,-72.92234309999999,Yale
-41.3163244,-72.92234309999999,Yale University
 41.3163244,-72.92234309999999,Yale University
 42.3256097,-72.5312799,Hampshire College
 32.7292117,-97.1151971,University of Texas Arlington
@@ -907,25 +844,23 @@ lat,lng,location
 30.211991,-92.019914,University of Louisiana Lafayette
 44.1057216,-70.2021865,Bates College
 38.9226843,-77.0194377,Howard University
-38.9226843,-77.0194377,Howard University
 38.908422,-76.99238749999999,Gallaudet University
 38.9368811,-76.99869199999999,Catholic University of America
-41.7886079,-87.5987133,University of Chicago
-41.7886079,-87.5987133,University of Chicago
-53.7608608,-98.8138763,University of Manitoba
+4.570868,-74.297333,Columbia
+41.7179751,-87.60943879999999,Chicago State University
+41.8686034,-87.6484377,University of Illinois [at] Chicago
+41.6048101,-88.07962590000001,Lewis University
+41.9241868,-87.65416549999999,DePaul
+41.8781136,-87.6297982,several Chicago-area colleges
 53.7608608,-98.8138763,University of Manitoba
 46.8619309,-113.9845969,University of Montana
 34.0414348,-118.1501982,East Los Angeles College
 34.0555994,-117.819263,California State Polytechnic University Pomona
 41.68667809999999,-73.8936812,Vassar College
-41.68667809999999,-73.8936812,Vassar College
 39.9617223,-75.1663954,Community College of Philadelphia
 38.7951375,-89.9996714,Southern Illinois University Edwardsville
 40.14932990000001,-76.58968349999999,Elizabethtown College
 42.1275517,-80.0896332,Gannon University
-44.0448302,-123.0726055,University of Oregon
-44.0448302,-123.0726055,University of Oregon
-44.0448302,-123.0726055,University of Oregon
 44.0448302,-123.0726055,University of Oregon
 44.5870879,-123.1147938,Linn Benton Community College
 64.8555748,-147.8340598,University of Alaska Fairbanks
@@ -935,38 +870,29 @@ lat,lng,location
 36.0686895,-94.1748471,University of Arkansas
 35.0742206,-78.8924896,Fayetteville State University
 40.4062697,-104.6944603,University of Northern Colorado
-40.4062697,-104.6944603,University of Northern Colorado
 42.298308,-71.4370588,Framingham State College
 38.3013039,-77.47447,Mary Washington
 42.4532365,-79.340746,SUNY at Fredonia
-45.50478469999999,-73.5771511,McGill University
-45.50478469999999,-73.5771511,McGill University
-30.419119,-97.8390214,Concordia University
-30.419119,-97.8390214,Concordia University
-45.5131547,-73.5602937,UQÀM
-42.2762537,-83.7412441,University of Michigan
-45.50478469999999,-73.5771511,McGill University
+36.8136777,-119.7461767,Fresno State
+37.3647146,-120.4241184,University of California Merced
+42.2506803,-83.624089,Eastern Michigan University
+42.277145,-83.7382071,University of Michigan-Ann Arbor
 45.50478469999999,-73.5771511,McGill University
 45.50478469999999,-73.5771511,McGill
+45.5131547,-73.5602937,UQÀM
+42.2762537,-83.7412441,University of Michigan
+45.4064041,-73.9417282,John Abbott College
 42.9269528,-85.58897189999999,Calvin College
 42.96689680000001,-85.6667224,Grand Rapids Community College
 40.0734008,-82.52290479999999,Denison University
-40.4062697,-104.6944603,University of Northern Colorado
-40.4062697,-104.6944603,University of Northern Colorado
-40.8075355,-73.9625727,Columbia University
 40.8075355,-73.9625727,Columbia University
 43.5327217,-80.22618039999999,University of Guelph
 48.4634067,-123.3116935,University of Victoria
-48.4634067,-123.3116935,University of Victoria
 30.2849185,-97.7340567,University of Texas at Austin
-36.616251,-88.3209372,Murray State University
-36.616251,-88.3209372,Murray State University
 38.0306511,-84.5039697,University of Kentucky
 44.4780611,-88.0822618,College of Menominee Nation
 41.4189262,-72.89364929999999,Quinnipiac University
-43.260879,-79.9192254,McMaster University
-43.260879,-79.9192254,McMaster University
-39.9606643,-75.6054882,"Bloomsburg, California, Cheyney, Clarion, East Stroudsburg, Edinboro, Indiana, Kutztown, Lock Haven, Mansfield, Millersville, Shippensburg, Slippery Rock and West Chester universities of Pennsylvania"
+39.9606643,-75.6054882,Bloomsburg California Cheyney Clarion East Stroudsburg Edinboro Indiana Kutztown Lock Haven Mansfield Millersville Shippensburg Slippery Rock and West Chester universities of Pennsylvania
 41.2033216,-77.1945247,Pennsylvania university system
 39.9523671,-75.5981257,West Chester University of Pennsylvania
 41.0639506,-80.0564468,Slippery Rock University of Pennsylvania
@@ -981,179 +907,176 @@ lat,lng,location
 41.1370133,-77.4469263,Lock Haven University of Pennsylvania
 41.8047541,-77.07042799999999,Mansfield University of Pennsylvania
 39.9987943,-76.3527392,Millersville University of Pennsylvania
+40.0609352,-77.521684,Shippensburg University of Pennsylvania
 41.7477163,-72.6905038,Trinity College
+41.6931245,-72.7638508,Connecticut State University
+41.3317662,-72.94834159999999,Southern Connecticut State University
 36.0770034,-79.7718199,North Carolina A-T State University
-35.6068806,-77.3665364,East Carolina University
-35.6068806,-77.3665364,East Carolina University
-40.7405244,-73.9832615,Baruch College
+36.0689296,-79.8101976,UNCG
+36.0770034,-79.7718199,A&T
 40.7405244,-73.9832615,Baruch College
 40.8095133,-73.96339689999999,Barnard
 40.72951339999999,-73.9964609,New York University
-40.72951339999999,-73.9964609,New York University
+40.7509381,-73.9735038,CUNY
+40.7404315,-73.98322519999999,Baruch
+40.7354925,-73.9971361,the New School
 40.7166872,-73.5993965,Hofstra University
 21.299824,-157.8148228,UH-Manoa
+21.320666,-157.8697388,Honolulu CC
 21.320666,-157.8697388,Honolulu Community College
 41.3660163,-93.562973,Simpson College
-4.570868,-74.297333,Columbia
-40.72951339999999,-73.9964609,New York University
-40.72951339999999,-73.9964609,New York University
-40.8095133,-73.96339689999999,Barnard College
 40.8095133,-73.96339689999999,Barnard College
 33.6404952,-117.8442962,UC Irvine
 26.3081983,-98.1740158,University of Texas Pan American
-30.2661204,-81.50723140000001,University of North Florida
 30.2661204,-81.50723140000001,University of North Florida
 39.033304,-94.5775473,University of Missouri Kansas City
 42.9254277,-72.2803457,Keene State College
 41.4862328,-71.53067879999999,University of Rhode Island
 41.2655521,-95.9463862,Creighton University The Creightonian
-32.5933574,-85.4951663,Auburn University
-32.5933574,-85.4951663,Auburn University
-29.7214214,-95.3592691,Texas Southern University
-29.7199489,-95.3422334,University of Houston
-29.7199489,-95.3422334,University of Houston
+29.7214214,-95.3592691,Texas Southern University.
 30.2849185,-97.7340567,University of Texas- Austin
 41.9989483,-87.65825919999999,Loyola University Chicago
-41.7179751,-87.60943879999999,Chicago State University
+39.4835612,-88.17521839999999,Eastern Illinois
+41.9794789,-87.7188527,Northeastern Illinois
+41.9794789,-87.7188527,Northeastern Illinois University
 42.3398067,-71.0891717,Northeastern University
 42.4534492,-76.4735027,Cornell
 38.564761,-121.4276493,California State University Sacramento
+36.778261,-119.4179324,the 23 California State University campuses
 32.7721681,-117.1888625,The University of San Diego
 30.2849185,-97.7340567,University of Texas
 34.0223519,-118.285117,the University of Southern California
 34.068921,-118.4451811,UCLA
 27.5269111,-97.884787,Texas A &M University Kingsville
 43.8159885,-91.23115330000002,University of Wisconsin LaCrosse
-37.87015100000001,-122.2594606,University of California
-36.107496,-115.1435252,"University of Nevada, Las Vegas"
-42.3162992,-72.6403095,Smith College
 33.8850876,-118.095832,Cerritos College
 47.2617495,-122.4814442,University of Puget Sound
 32.2318851,-110.9501094,University of Arizona
 34.1035316,-117.7119768,The Claremont Colleges
+45.3875848,-75.6960158,Carleton
 44.4621319,-93.1840281,St. Olaf
-32.8800604,-117.2340135,"University of California, San Diego"
 32.8800604,-117.2340135,UC San Diego
 45.514669,-73.5663793,Cegep du Vieux Montreal
 45.5123906,-73.67180809999999,Cégep de Saint-Laurent
 -33.769979,150.7734575,Saint Mary's
-41.7055716,-86.2353388,University of Notre Dame
-41.7055716,-86.2353388,University of Notre Dame
 32.2792887,-106.7491391,New Mexico State University
+45.514669,-73.5663793,Cégep du Vieux Montréal
 34.1482032,-118.1404425,Fuller Theological Seminary
 44.0262095,-88.55081559999999,University of Wisconsin Oshkosh
 41.2580268,-96.010696,University of Nebraska at Omaha
 42.8627836,-112.429762,Idaho State University
 47.0730714,-122.9739949,Evergreen State College
 40.3430942,-74.65507389999999,Princeton
-41.8267718,-71.4025482,Brown University
-41.8267718,-71.4025482,Brown University
+46.86718459999999,-96.7610059,MSUM
 37.4245914,-81.005363,Concord College
-45.42310639999999,-75.68313289999999,University of Ottawa
-45.42310639999999,-75.68313289999999,University of Ottawa
+46.7295265,-117.1803059,WSU
+52.835854,-6.932474399999999,Carlow
+40.4450813,-80.0087746,Community College of Allegheny County
 18.220833,-66.590149,University of Puerto Rico
 29.9346582,-90.1209925,Loyola University New Orleans
 42.599001,-76.187797,SUNY Cortland
 40.2390377,-74.96717900000002,Bucks County Community College
 40.691145,-73.9805528,Long Island University Brooklyn Campus
-42.0564594,-87.67526699999999,Northwestern University
-42.0564594,-87.67526699999999,Northwestern University
 41.8071104,-72.25235239999999,University of Connecticut
 39.9566127,-75.18994409999999,Drexel University
 40.7678398,-73.9645291,Hunter College
 40.8506041,-73.9297205,Yeshiva University
+36.778261,-119.4179324,all 23 California State Universities
 36.9847153,-86.4559991,Western Kentucky University
 41.3797788,-83.6300826,Bowling Green State University
-40.6311257,-73.9523802,Brooklyn College
+40.7322206,-111.8549815,Westminster College
+41.1913021,-111.9440252,Weber State
 40.6311257,-73.9523802,Brooklyn College
 29.4457849,-98.4959969,San Antonio College
-40.8728933,-73.8945076,Lehman College
 40.8728933,-73.8945076,Lehman College
 29.5830733,-98.6198779,The University of Texas at San Antonio
 40.72951339999999,-73.9964609,NYU
 43.5583281,-83.9869942,Delta College
 35.3050053,-120.6624942,Cal Poly San Luis Obispo
 41.06597319999999,-73.7891834,Westchester Community College
-38.5382322,-121.7617125,"University of California,Davis"
+38.5382322,-121.7617125,University of CaliforniaDavis
 29.888411,-97.938351,Texas State University
+33.7838235,-118.1140904,Cal State Long Beach
+34.2406756,-118.5300196,CSU Northridge
+33.8624581,-118.2544108,CSU Dominguez Hills
+34.0663797,-118.1684782,CSU Los Angeles
+39.7296653,-121.8478871,Chico State
+40.7127753,-74.0059728,City University of New York
 37.4274745,-122.169719,Stanford
 30.0954974,-95.9907076,Prairie View A&M University
 44.0081076,-73.1760412,Middlebury College
-44.0081076,-73.1760412,Middlebury College
 47.6491714,-122.3618554,Seattle Pacific University
 47.65464069999999,-122.3074579,University of Washington
+47.65464069999999,-122.3074579,University of Washington.
 47.6062095,-122.3320708,University of Washington Seattle campus
 52.157902,-106.6701577,University of Saskatoon
 37.8718992,-122.2585399,UC Berkeley
+33.9737055,-117.3280644,UC Riverside
 37.765574,-122.3901281,UCSF Mission Bay
+37.7798721,-122.2821855,Alameda Community College
 37.7626459,-122.4587106,UC San Francisco
-34.068921,-118.4451811,University of California Los Angeles
-34.068921,-118.4451811,University of California Los Angeles
+34.0699182,-118.4438495,University of California - Los Angeles
 42.9203078,-73.2359361,Bennington College
-42.4534492,-76.4735027,Cornell University
-42.4534492,-76.4735027,Cornell University
-38.9380155,-77.088922,American University
-38.9380155,-77.088922,American University
+38.9446796,-77.06562939999999,University of the District of Columbia
 44.49598,-73.163743,St Michael's College
+34.0223519,-118.285117,USC
+38.9076089,-77.07225849999999,Georgetown Solidarity Committee
 32.8800604,-117.2340135,the University of California San Diego
 32.8800604,-117.2340135,University California San Diego
-32.7175697,-117.1508543,San Diego City College
-32.7175697,-117.1508543,San Diego City College
-32.7721681,-117.1888625,University of San Diego
-32.7721681,-117.1888625,University of San Diego
+32.8800604,-117.2340135,University California San Diego]
+38.9869183,-76.9425543,University of Maryland
 42.5121517,-92.4646469,University of Northern Iowa
 47.4906616,-117.5847877,Eastern Washington University
+43.7830333,-79.1873806,UTSC
 40.0506453,-77.5202647,Shippensburg
 39.9987943,-76.3527392,Millersville University
 41.0639506,-80.0564468,Slippery Rock University
+29.868389,-95.4665258,Lone Star Community College
 30.2645512,-97.7223212,Huston-Tillotson University
+30.2850284,-97.7335226,UT
 34.1300755,-117.8883593,Azusa Pacific University
 39.3476737,-76.6172375,Loyola College Maryland
 32.4196512,-81.7842919,Georgia Southern University
 38.6348237,-90.2336408,Saint Louis University
-38.6348237,-90.2336408,Saint Louis University
 42.3591388,-83.06654619999999,Wayne State University
 44.7956278,-91.5038225,University of Wisconsin Eau Claire
-38.0335529,-78.5079772,University of Virginia
+40.19396769999999,-75.4563232,Ursinus
+38.0293059,-78.47667810000002,the University and Charlottesville communities
+38.9097057,-77.06535650000001,Georgetown
 38.0335529,-78.5079772,University of Virginia
 43.4738499,-80.5274701,Wilfrid Laurier University
 43.4722854,-80.5448576,University of Waterloo
 42.2935733,-71.3059277,Wellesley College
+42.2964421,-71.2657077,Babson College
 44.9491147,-93.111261,St. Paul College
 37.9798869,-121.3128577,University of the Pacific
 33.8842409,-118.3302549,El Camino College
 37.525398,-120.8554591,California State University Stanislaus
 41.2921105,-72.96189919999999,University of New Haven
 40.2802758,-74.0054114,Monmouth University
-37.2709753,-76.71624659999999,College of William and Mary
-37.2709753,-76.71624659999999,College of William and Mary
 30.4227211,-84.2877093,Florida A&M
 39.3437959,-76.5843847,Morgan State University
 39.3299013,-76.6205177,Johns Hopkins University
+39.3299013,-76.6205177,Johns Hopkins
+39.3545406,-76.4817584,Community College of Baltimore County Essex
 34.465182,-81.87755899999999,Presbyterian College
 33.4242399,-111.9280527,Arizona State University
 30.6186806,-96.3364655,Texas A&M University in College Station
 30.6186806,-96.3364655,Texas A &M University
 30.6186806,-96.3364655,Texas A&M University
-53.7608608,-98.8138763,University of Manitoba
-53.7608608,-98.8138763,University of Manitoba
 49.891786,-97.153556,University of Winnipeg
+49.845352,-99.962159,Brandon University
+49.88952330000001,-97.1199402,Université de Saint Boniface
 43.6628917,-79.39565640000001,the University of Toronto campus
 53.5232189,-113.5263186,University of Alberta
-53.5232189,-113.5263186,University of Alberta
 38.8491957,-104.8254254,Colorado College
-33.9737055,-117.3280644,UC Riverside
-36.1354887,-80.2792887,Wake Forest University
-36.1354887,-80.2792887,Wake Forest University
 36.970591,-82.560716,University of Virginia Wise
 44.5637806,-123.2794442,Oregon State University
 32.8412178,-96.7845175,Southern Methodist University
 32.9856974,-96.7502474,University of Texas Dallas
 35.5015528,-80.8423248,Davidson College
 38.5382322,-121.7617125,UC Davis
-38.5382322,-121.7617125,"University of California, Davis"
 41.1066413,-80.6480952,Youngstown State University
-42.2506803,-83.624089,Eastern Michigan University
 41.902411,-87.822057,Dominican University
 29.2110122,-81.03157399999999,Bethune Cookman University
 39.7401454,-84.17904449999999,University of Dayton
@@ -1161,237 +1084,244 @@ lat,lng,location
 46.560196500000004,-87.4076051,Northern Michigan University
 45.2006802,-123.1993365,Linfield College
 35.1187498,-89.9374928,University of Memphis
-34.0223519,-118.285117,University of Southern California
-34.0223519,-118.285117,University of Southern California
-40.0073499,-105.2659871,CU Boulder
-44.4778528,-73.1964637,University of Vermont
-44.4778528,-73.1964637,University of Vermont
-45.4948363,-73.577912799999993,Concordia
-45.514669,-73.5663793,CÉGEP Vieux-Montreal
-45.5131547,-73.5602937,l’Université du Québec à Montréal (UQAM)
+45.6425126,-73.8418398,Collège Lionel-Groulx
+45.873666,-72.505408,CÉGEP de Drummondville
+45.514669,-73.5663793,CÉGEP du Vieux-Montréal
+45.5123906,-73.67180809999999,CÉGEP St-Laurent
+46.78174629999999,-71.2747424,University of Laval
 45.5056156,-73.61375919999999,University of Montreal
+40.0073499,-105.2659871,CU Boulder
+45.514669,-73.5663793,CÉGEP Vieux-Montreal
+45.514669,-73.5663793,CEGEP Vieux-Montreal
+45.5131547,-73.5602937,l’Université du Québec à Montréal (UQAM)
+43.5327217,-80.22618039999999,Geulph University
+43.676042700000004,-79.41072840000001,George Brown College.
 37.5758243,-77.5397192,University of Richmond
 45.55086130000001,-73.5532995,CEGEP Maisonneuve
 45.6184246,-73.60685749999999,CEGEP Marie-Victorin
 45.5123906,-73.67180809999999,CEGEP Saint-Laurent
-43.7734535,-79.50186839999999,York University
-43.7734535,-79.50186839999999,York University
+35.7850744,-78.6812824,NC State
+29.8921835,-81.3139313,St. Augustine
+36.0014258,-78.9382286,Duke
 43.6628917,-79.39565640000001,UTSG
-43.6576585,-79.3788017,Ryerson University
-43.6576585,-79.3788017,Ryerson University
 40.2027462,-77.2008334,Dickinson College
 49.3117995,-117.652355,Selkirk College
-40.1019523,-88.2271615,University of Illinois at Urbana-Champaign
 35.3070929,-80.735164,University of North Carolina Charlotte
-37.7079717,-89.2229983,"Southern Illinois University,Carbondale"
-51.04473309999999,-114.0718831,University of Calgary
-51.04473309999999,-114.0718831,University of Calgary
-38.0335529,-78.5079772,University of Virginia
-38.0335529,-78.5079772,University of Virginia
+37.7079717,-89.2229983,Southern Illinois UniversityCarbondale
+51.0469212,-114.0559973,Bow Valley College
 38.0063054,-78.484332,Piedmont Virginia Community College
+34.1035316,-117.7119768,Claremont Colleges
 34.1006868,-117.7065073,Claremont McKenna College
 34.055103,-117.7499909,Pomona
 35.2270869,-80.8431267,North Carolina at Charlotte
 35.188626,-80.83297240000002,Queens University of Charlotte
-31.5500848,-97.11354,Baylor University
-31.5500848,-97.11354,Baylor University
 35.9049122,-79.0469134,University of North Carolina at Chapel Hill
-37.3647146,-120.4241184,University of California Merced
 32.9211774,-96.7284624,Richland College
-42.277145,-83.7382071,University of Michigan-Ann Arbor
 42.3242969,-83.2376024,Henry Ford Community College
 40.7602397,-74.4266389,Drew University
 32.4700922,-99.7080103,Abilene Christian University
 34.1039266,-117.7101745,Scripps College
-42.3355488,-71.16849450000001,Boston College
-42.3355488,-71.16849450000001,Boston College
-44.97399,-93.2277285,University of Minnesota
-44.97399,-93.2277285,University of Minnesota
 44.9728923,-93.2832714,Minneapolis Community &Technical College
+44.9727807,-93.2901335,Dunwoody College of Technology
+48.3705449,10.89779,Augsburg
+44.9379079,-93.168480400000007,Macalester College
 39.7463596,-105.002342,University of Colorado Denver
 32.7774047,-117.0714068,San Diego State
 45.5131547,-73.5602937,Université de Québec a Montréal
-45.514669,-73.5663793,CEGEP Vieux-Montreal
-45.5131547,-73.5602937,UQAM
+45.514669,-73.5663793,Cégep du Vieux-Montréal
 45.514669,-73.5663793,CEGEP du Vieux-Montreal
 42.701848,-84.4821719,Michigan State University
+45.5131547,-73.5602937,Université du Québec à Montreal
+45.55086130000001,-73.5532995,Collège de Maisonneuve
 45.5018869,-73.56739189999999,Université de Québec à Montréal (UQAM)
+45.514669,-73.5663793,CEGEP du Vieux Montréal
 45.5131547,-73.5602937,Université du Québec à Montréal
 39.63942520000001,-86.8634933,DePauw University
 45.5131547,-73.5602937,L’Université du Québec à Montréal
+41.7904484,-87.6003953,UChicago
+41.7958147,-87.598874,Lutheran School of Theology at Chicago
+41.8795845,-87.62371329999999,the Art Institute of Chicago
 32.7323764,-97.280207,Texas Wesleyan University
-44.0081076,-73.1760412,Middlebury College
-44.0081076,-73.1760412,Middlebury College
-41.9241868,-87.65416549999999,DePaul University
-41.9241868,-87.65416549999999,DePaul University
+44.0081076,-73.1760412,Middleburry College
+48.406199,-71.2485487,Cégep de Jonquière.
+45.50478469999999,-73.5771511,McGill University.
 30.2849185,-97.7340567,The University of Texas at Austin
 42.7287897,-92.4832333,Wartburg College
 36.3023954,-82.36985299999999,ETSU
 36.3020183,-82.2948382,Milligan College
+36.3018473,-82.2986742,Emmanuel Christian Seminary
 36.3023954,-82.36985299999999,East Tennessee State University:
 36.0686895,-94.1748471,University of Arkansas Main Campus
 40.8201966,-96.7004763,University of Nebraska at Lincoln
 45.5131547,-73.5602937,Université du Québec à Montréal (UQAM)
+45.5520559,-73.6420105,Cégép Ahuntsic
+45.8287615,-73.4204123,CEGEP Regional De Lanaudière à L’assomption
+41.9983568,-87.6569374,Loyola
+42.0564594,-87.67526699999999,Northwestern
 42.7875308,-86.1026663,Hope College
 30.7135813,-95.547276,Sam Houston State University
 39.0312035,-84.4625345,Northern Kentucky University
 37.3952229,-79.1515702,Virginia University of Lynchburg
 39.1974437,-96.5847249,K-State
-39.1974437,-96.5847249,Kansas State University
-39.1974437,-96.5847249,Kansas State University
 33.7756178,-84.39628499999999,Georgia Tech
-33.7756178,-84.39628499999999,Georgia Tech
+30.211991,-92.019914,University of Louisiana
+30.0307277,-90.06956939999999,University of New Orleans school of hotel restaurant and tourism.
+29.7903032,-90.8028911,Nicholls State John Folse culinary institute
 32.5313471,-92.068744,University of Louisiana Monroe
-29.6436325,-82.3549302,University of Florida
-29.6436325,-82.3549302,University of Florida
 37.8718992,-122.2585399,University of California-Berkley
 29.7903032,-90.8028911,Nicholls State University
 37.8718992,-122.2585399,University of California at Berkeley
-33.8823476,-117.8851033,Cal State Fullerton
 44.8716186,-91.9267041,University of Wisconsin Stout
 44.8716186,-91.9267041,UW-Stout
+37.3647146,-120.4241184,UC Merced
 36.1683703,-86.8258566,Tennessee State University
 41.6931245,-72.7638508,Central Connecticut State University
 37.22838429999999,-80.42341669999999,Virginia Tech
+42.3504997,-71.1053991,Boston University'
 42.3465952,-71.0895292,Berklee College
-42.360091,-71.09416,Massachusetts Institute of Technology
+41.8267718,-71.4025482,Brown
+42.3811689,-71.11756679999999,Lesley University
 33.207488,-97.1525862,University of North Texas
 33.2272211,-97.127052,Texas Woman's University
 45.5056156,-73.61375919999999,Université de Montréal (UdeM)
-42.2964421,-71.2657077,Babson College
 44.97399,-93.2277285,the University of Minnesota's St. Paul campus
 27.763435,-82.6352615,University of South Florida St.Petersburg
 42.6410428,-95.2097352,Buena Vista University
+42.3141992,-71.0419953,UMass Boston
+42.339904,-71.0898892,Northeastern
 42.7331994,-90.48782140000002,University of Wisconsin Platteville
 45.4810848,-122.6308086,Reed College
 30.4227211,-84.2877093,Florida A&M University
+30.4227211,-84.2877093,Florida A&M Universit
 43.4738499,-80.5274701,Laurier
 27.9516896,-82.45875269999999,the Tampa campus
 35.78948099999999,-78.637391,Peace College
 43.7852043,-79.2281691,Centennial College
 43.676042700000004,-79.41072840000001,George Brown
 43.0144419,-79.26234029999999,Niagara College
+44.76470579999999,-106.9429672,Sheridan College
 43.7722498,-79.4996257,Seneca at York
 43.676042700000004,-79.41072840000001,George Brown College
 43.7734535,-79.50186839999999,Seneca college campus at York University
 44.76470579999999,-106.9429672,Sheridan college
 44.4613633,-93.1559742,Carleton College
+41.6617986,-86.22041809999999,Indiana University South Bend
 41.7055716,-86.2353388,Notre Dame
 42.2392391,-71.8079608,Holy Cross
+47.0730714,-122.9739949,Evergreen State college
+47.02316279999999,-122.9304656,South Puget Sound
 47.02316279999999,-122.9304656,South Puget Sound Community College
 33.4981687,-80.8492832,South Carolina State
+33.4990214,-80.85421099999999,Claflin universities
 33.4990214,-80.85421099999999,Claflin University
 40.2787626,-111.7153739,Utah Valley University
+40.1268746,-82.9371852,Otterbein University
+45.51446259999999,-73.6755719,Vanier College
+42.6678782,-83.20823469999999,Oakland University.
 43.5142733,-83.9623559,Saginaw Valley State University
+45.5131547,-73.5602937,Université de Québec à Montréal
+45.5123906,-73.67180809999999,CÉGEP de Saint-Laurent
+45.5018869,-73.56739189999999,Montreal CEGEPS
 45.5018869,-73.56739189999999,Université de Montréal
+45.5572558,-73.5822943,Cégep Rosemont
 45.5018869,-73.56739189999999,Universite de Montreal
 42.3141992,-71.0419953,University of Massachusetts Boston
+45.5056156,-73.61375919999999,Université de Montréal (UdeM).
 48.406199,-71.2485487,CEGEP de Jonquière
 40.9135265,-90.6386297,Monmouth College
 45.6425126,-73.8418398,CEGEP Lionel-Groulx
 44.8538061,-123.2405476,Western Oregon University
 40.8666026,-74.1976433,Montclair State University
 46.78174629999999,-71.2747424,Université Laval
+45.4042669,-71.89367399999999,Université de Sherbrooke
+46.78174629999999,-71.2747424,Université de Laval
+48.419008,-71.052621,Université du Québec à Chicoutimi
 45.5360826,-73.4937692,CEGEP Edouard-Montpetit
+45.55988869999999,-73.7193243,Cégep de Montmorency
 45.3779155,-71.92944050000001,University of Sherbrooke
-43.076592,-89.4124875,University of Wisconsin Madison
-43.076592,-89.4124875,University of Wisconsin Madison
 38.45573,-122.7211551,Santa Rosa Junior College
 45.55988869999999,-73.7193243,CEGEP Montmorency
 42.6678782,-83.20823469999999,Oakland University
-44.76470579999999,-106.9429672,Sheridan College
+38.564761,-121.4276493,Sac State
+34.0663797,-118.1684782,Cal State Los Angeles
 39.721199,-89.60927869999999,Lincoln Land Community College
 38.7455928,-90.437059,St. Louis Community College
-33.1298249,-117.1586856,"California State University, San Marcos"
+33.1298249,-117.1586856,California State University San Marcos
 37.765574,-122.3901281,UCSF Mission Bay campus
+37.7626459,-122.4587106,University of California San Francisco
+40.8200471,-73.9492724,City College campuses-Civic Center
 1.2814942,103.8448202,Chinatown
-45.3875812,-75.69602019999999,Carleton University
-45.3875812,-75.69602019999999,Carleton University
 38.9237863,-94.7306238,Johnson County Community College
 34.1376576,-118.125269,Caltech
 39.9539018,-75.1929845,Penn Law School
 35.0713551,-106.6289378,Central New Mexico Community College
-40.7649368,-111.8421021,University of Utah
-40.7649368,-111.8421021,University of Utah
-40.7322206,-111.8549815,Westminster College
-40.7322206,-111.8549815,Westminster College
-40.7322206,-111.8549815,Westminster College
-40.7322206,-111.8549815,Westminster College
+39.3209801,-111.0937311,universities throughout Utah
+40.6720495,-111.9446057,Salt Lake Community College
 32.8800604,-117.2340135,UCSD
-43.7830333,-79.1873806,UTSC
+43.5482599,-79.66268409999999,UTM-Sheridan
+43.7830333,-79.1873806,UTSC-Centennial
+40.4486611,-79.92407279999999,Chatham University
 43.6628917,-79.39565640000001,University of Toronto Scarborough
-38.9869183,-76.9425543,University of Maryland
-34.0223519,-118.285117,USC
+32.5387385,75.97099779999999,Dalhousie
+44.6495501,-63.574157,Nova Scotia College of Arts and Design (NSCAD)
+40.9126286,-73.9028651,Mount Saint Vincent
+37.8408837,-122.1089374,Saint Mary’s
+49.88952330000001,-97.1199402,Université de Saint-Boniface
+45.514669,-73.5663793,CEGEP du Vieux-Montréal.
 33.4756761,-82.0224542,Augusta State University
-47.6091765,-122.3178465,Seattle University
-47.6091765,-122.3178465,Seattle University
-47.6167229,-122.3215965,Seattle Central Community College
 47.6167229,-122.3215965,Seattle Central Community College
 53.8922034,-122.8133607,University of Northern British Columbia
 50.6707684,-120.3660271,Thompson Rivers University
+45.5131547,-73.5602937,Université du Québec à Montréal (UQAM
+45.514669,-73.5663793,Le cégep du Vieux Montréal
 37.765574,-122.3901281,UCSF Mission Bay Campus
-40.8095133,-73.96339689999999,Barnard College
-40.8095133,-73.96339689999999,Barnard College
 43.65318449999999,-79.3914842,Ontario College of Art and Design University
+40.7354925,-73.9971361,The New School
+40.3430942,-74.65507389999999,Princeton University l
 40.7486484,-73.98400699999999,CUNY Graduate Center
-40.7405244,-73.9832615,Baruch College
-40.7405244,-73.9832615,Baruch College
+40.7188851,-74.0117547,Borough of Manhattan Community College
+40.7010415,-73.7961103,York College
 40.8200471,-73.9492724,City College of New York
-40.8200471,-73.9492724,City College of New York
-40.6311257,-73.9523802,Brooklyn College
-40.6311257,-73.9523802,Brooklyn College
-38.9226843,-77.0194377,Howard University
-38.9226843,-77.0194377,Howard University
-38.9097057,-77.06535650000001,Georgetown
+40.7707237,-73.9892342,John Jay College
 42.9641221,-85.8890404,GVSU
-42.0266573,-93.6464516,Iowa State University
 41.8760026,-87.6251806,Roosevelt University
-49.26060520000001,-123.2459939,University of British Columbia
-49.26060520000001,-123.2459939,University of British Columbia
-49.2847564,-123.1118716,"CUPE members held a silent protest outside of the library and Maggie Benston Centre, and on Oct. 19, they walked off the job and picketed the SFU Vancouver locations, including the Harbour Centre and Woodward’s campuses"
-49.2847564,-123.1118716,"SFU’s Vancouver campuses, including Harbour Centre and Woodward’s, were picketed on Saturday and Sunday"
-39.1682449,-86.52300729999999,Indiana University
-39.1682449,-86.52300729999999,Indiana University
+49.2847564,-123.1118716,CUPE members held a silent protest outside of the library and Maggie Benston Centre and on Oct. 19 they walked off the job and picketed the SFU Vancouver locations including the Harbour Centre and Woodward’s campuses
+49.2847564,-123.1118716,SFU’s Vancouver campuses including Harbour Centre and Woodward’s were picketed on Saturday and Sunday
 32.7078531,-97.3628041,Texas Christian University
 44.0489409,-123.0947649,Lane Community Downtown Campus
+44.0089824,-123.034753,Lane Community
 49.2666104,-123.0990736,Native Education College
 49.2780937,-122.9198833,Simon Fraser
 35.0457984,-85.3093995,University of Tennessee in Chattanooga
 41.8685636,-87.6484497,University of Illinois at Chicago campus
 41.9748871,-87.7108736,North Park University
-49.2780937,-122.9198833,Simon Fraser University
-49.2780937,-122.9198833,Simon Fraser University
 49.28458939999999,-123.11146,SFU’s Vancouver and Surrey campuses
 49.1865906,-122.8490733,all three of SFU’s campuses
-48.4634067,-123.3116935,University of Victoria
-48.4634067,-123.3116935,University of Victoria
+42.2930114,-71.26378199999999,Olin College of Engineering
 48.4634067,-123.3116935,the University of Victoria
 40.5008405,-74.44741739999999,Rutgers
 33.8823476,-117.8851033,California State University - Fullerton
+45.4948363,-73.577912799999993,Concordia Universities
+45.4896599,-73.5880803,Dawson College
+52.1333989,-106.6313567,University of Saskatchewan
 39.0804917,-108.5534074,Mesa State College
 39.9927652,-75.2941372,Haverford and Bryn Mawr Colleges
 40.00744230000001,-75.3051299,Haverford College
 38.8714463,-99.3444887,Fort Hays State University
+44.0081076,-73.1760412,Middlebury College.
+44.4778528,-73.1964637,UVM
 19.6999095,-155.0853594,University of Hawai'i at Hilo
 47.1150259,-88.5452004,Michigan Tech
 40.3519854,-94.8825243,Northwest Missouri State University
 21.3008904,-157.8173481,University of Hawaii
-30.2849185,-97.7340567,University of Texas Austin
-30.2849185,-97.7340567,University of Texas Austin
-44.4778528,-73.1964637,UVM
-45.4896599,-73.5880803,Dawson College
+44.4778528,-73.1964637,UVM'
 37.3351874,-121.8810715,San Jose State University
 46.4918881,-84.36387739999999,Lake Superior State University
 42.255425,-72.5728843,Mount Holyoke
 34.068921,-118.4451811,the UC system at almost every campus
 45.5056156,-73.61375919999999,Université de Montréal’s (UdeM)
-45.514669,-73.5663793,Cégep du Vieux Montréal
-45.55086130000001,-73.5532995,Collège de Maisonneuve
 40.77397089999999,-73.9801793,Macaulay Honors College
 40.8200471,-73.9492724,CCNY
-40.8728933,-73.8945076,Lehman College
-40.8728933,-73.8945076,Lehman College
-40.7509381,-73.9735038,CUNY
 49.1324803,-122.8708528,Kwantlen Polytechnic University
 39.4714449,-87.40827519999999,Indiana State University
 42.3043142,-83.06603899999999,University of Windsor
@@ -1404,12 +1334,11 @@ lat,lng,location
 40.3340766,-76.5157582,Lebanon Valley College
 41.2939386,-82.21737859999999,Oberlin
 46.4672485,-80.9757296,Laurentian
-46.5653163,-66.46191639999999,University of New Brunswick
-46.5653163,-66.46191639999999,University of New Brunswick
 43.667979,-79.3983677,Ontario Institute for Studies in Education
-28.6024274,-81.2000599,University of Central Florida
-28.6024274,-81.2000599,University of Central Florida
 28.0260852,-82.1030339,Hillsborough Community College
+43.0095971,-81.2737336,University of Western Ontario
+46.5010443,-84.2872445,Algoma University
+51.253775,-85.3232139,Ontario College of Arts and Design
 51.01113609999999,-114.1318513,Mount Royal University (MRU)
 37.3148783,-89.52804379999999,Southeast Missouri State University
 32.7908851,-79.93737209999999,Charleston School of Law
@@ -1418,45 +1347,43 @@ lat,lng,location
 33.9937575,-81.0299186,University of South Carolina
 39.9951217,-75.23993279999999,Saint Joseph's University
 37.3902811,-94.6911535,Pittsburg State University
-34.1035316,-117.7119768,Claremont Colleges
-41.8267718,-71.4025482,Brown
 38.3078425,-104.5758171,Colorado State University Pueblo
 30.3436839,-81.6836991,Edward Waters College
+41.7904484,-87.6003953,the University of Chicago
 41.7917114,-87.60270659999999,University of Chicago Pritzker School of Medicine
+41.8713117,-87.6734792,University of Illinois College of Medicine
+32.7766642,-96.7969879,University of Texas at Dallas
 32.8140043,-96.6608109,Eastfield College
+37.7626459,-122.4587106,UCSF's Parnassus campus
 35.771043,-78.6379262,Shaw University
 37.7706831,-122.3895903,UC San Francisco Mission Bay campus
 40.0066723,-83.0304546,Ohio State University
 27.7629896,-97.4108126,Del Mar College
 39.7846274,-84.0587338,Wright State University
 46.8187754,-92.0843306,University of Minnesota Duluth
-41.8742327,-87.62483379999999,Columbia College Chicago
-41.8742327,-87.62483379999999,Columbia College Chicago
 30.6186806,-96.3364655,Texas A&M
 33.9737055,-117.3280644,UCR's assistant vice chancellor and dean of students Ryan Alcantara
+45.8983431,-64.3731482,Mount Allison University
+38.2352198,-122.119899,Solano Community College
 32.8166735,-117.0065725,Grossmont College
 37.9634036,-87.6727294,University of Southern Indiana
-53.5232189,-113.5263186,University of Alberta
-53.5232189,-113.5263186,University of Alberta
+35.0713551,-106.6289378,CNM
+35.0843187,-106.6197812,UNM
+53.5470544,-113.5063721,MacEwan University
+51.01113609999999,-114.1318513,Mount Royal University
+49.6956181,-112.8451067,University of Lethbridge
 41.2033216,-77.1945247,Penn
-39.1974437,-96.5847249,Kansas State University
-39.1974437,-96.5847249,Kansas State University
+42.36535689999999,-71.2586441,Brandeis
 41.85862729999999,-87.836112,Loyola University Chicago Stritch School of Medicine
 41.6484557,-80.1455328,Allegheny College
-37.3647146,-120.4241184,UC Merced
 29.9407282,-90.1203167,Tulane
 40.9270597,-73.78634939999999,Iona College
-41.3163244,-72.92234309999999,Yale University
-41.3163244,-72.92234309999999,Yale University
-44.63658119999999,-63.59165549999999,Dalhousie University
-44.63658119999999,-63.59165549999999,Dalhousie University
+35.6068806,-77.3665364,East Carolina
+44.6356313,-63.5951737,Dalhousie University.
 34.4139629,-119.848947,University of California at Santa Barbara
-47.6167229,-122.3215965,Seattle Central Community College
-47.6167229,-122.3215965,Seattle Central Community College
 47.14519310000001,-122.4436669,Pacific Lutheran University
 42.8155894,-75.5407355,Colgate University
 44.3148443,-85.60236429999999,Michigan
-42.0564594,-87.67526699999999,Northwestern
 43.0481221,-76.14742439999999,Syracuse
 40.0230237,-75.3151772,Bryn Mawr
 40.0022406,-75.3208107,Haverford
@@ -1466,60 +1393,66 @@ lat,lng,location
 34.5463968,-112.4762283,Prescott College
 29.1917102,-81.0501089,Embry Riddle Aeronautical University
 43.5482599,-79.66268409999999,University of Toronto Mississauga (UTM)
-36.3429724,-88.86433319999999,UTM
+43.6628917,-79.39565640000001,St George campus
 33.1512505,-117.1821885,Palomar College
-45.4042669,-71.89367399999999,Université de Sherbrooke
+34.4208305,-119.6981901,Santa Barbara
+45.4042669,-71.89367399999999,Université de Sherbrooke.
 42.255425,-72.5728843,Mount Holyoke College
 37.2005546,-93.2806806,Missouri State University
+45.5018869,-73.56739189999999,Université de Montreal
 38.5529805,-121.4525906,University of California Davis School of Medicine
 45.5123906,-73.67180809999999,Cégep de St. Laurent
+45.5131547,-73.5602937,Université du Québec à Montréal (UQÀM)
 33.7505746,-84.4118579,AUC schools
-33.7473412,-84.415528,Morehouse College
-33.7756178,-84.39628499999999,Georgia Tech
-33.7756178,-84.39628499999999,Georgia Tech
+33.7473412,-84.415528,Morehouse
+33.7515658,-84.4112315,Clark Atlanta
+33.7451953,-84.41143749999999,Spelman
 36.8853217,-76.3058786,Old Dominion University
 35.0077519,-97.092877,Oklahoma
 40.7112562,-74.0051758,Pace University
 40.7280822,-73.99160859999999,The Cooper Union
-42.36535689999999,-71.2586441,Brandeis University
-42.36535689999999,-71.2586441,Brandeis University
+33.9737055,-117.3280644,UCR
+34.4139629,-119.848947,UCSB
 41.2449585,-75.8883633,Wilkes University
-38.435092,-78.8697548,James Madison University
-38.435092,-78.8697548,James Madison University
 28.5927153,-81.3485013,Rollins College
 26.3081983,-98.1740158,University of Texas Rio Grande Valley
-40.8200471,-73.9492724,City College of New York
-40.8200471,-73.9492724,City College of New York
-40.8075355,-73.9625727,Columbia University
-40.8075355,-73.9625727,Columbia University
 40.7664886,-73.9555127,Weill Cornell Medical College
 40.7354925,-73.9971361,New School in New York City
+45.50478469999999,-73.5771511,McGill’
 45.5131547,-73.5602937,e Université du Québec à Montréal (UQAM)
 45.55086130000001,-73.5532995,Maisonneuve
 41.98675069999999,-87.8721602,Rosemont
 45.514669,-73.5663793,CEGEP du Vieux-Montréal
+39.9020565,-75.3499123,Swarthmore
 25.8939072,-97.4869194,University of Texas at Brownsville
-30.211991,-92.019914,University of Louisiana at Lafayette
+31.1788284,-92.4145447,LSUAlexandria
+30.414219,-91.1749433,LSU Law
 30.5265222,-91.1929407,Southern University Baton Rouge
 39.4089481,-76.5926005,Goucher College
+39.4014955,-76.6019125,Towson
+39.4089481,-76.5926005,Goucher
 30.23218,-97.75833,St Edward's University
-42.3583767,-71.06121619999999,Suffolk University
-42.3583767,-71.06121619999999,Suffolk University
-30.2661204,-81.50723140000001,University of North Florida
-30.2661204,-81.50723140000001,University of North Florida
+34.4139629,-119.848947,UC campuses in Santa Barbara
+33.6845673,-117.8265049,Irvine
+33.9806005,-117.3754942,Riverside
+32.715738,-117.1610838,San Diego
+37.8715226,-122.273042,Berkeley
+37.7749295,-122.4194155,San Francisco
+40.9628845,-112.0953297,Davis
+37.3021632,-120.4829677,Merced
+36.9741171,-122.0307963,Santa Cruz
 30.33528919999999,-81.6601938,Florida Community College at Jacksonville
 43.076592,-89.4124875,University of Wisconsin - Madison
+44.6495501,-63.574157,NSCAD
+44.6377879,-63.59525790000001,University of King’s College
 41.4639394,-87.04388929999999,Valparaiso University
 41.4905602,-81.5297689,John Carroll University
 33.2951034,-111.7956814,Chandler-Gilbert Community College
 34.3647349,-89.5383818,Ole Miss
 29.3228413,-98.5465301,Palo Alto College
-39.9522188,-75.1932137,University of Pennsylvania
-39.9811911,-75.1553563,Temple University
-39.9811911,-75.1553563,Temple University
-39.9566127,-75.18994409999999,Drexel
+39.9522188,-75.1932137,University of Pennsylvania.
 39.9522188,-75.1932137,Students from the University of Pennsylvania and Community College of Philadelphia marched alongside Temple students
-39.7099689,-75.1191932,"Lee teaches at Philadelphia University, the University of Pennsylvania and Rowan University in South Jersey in addition to Temple"
+40.0231719,-75.1942263,Lee teaches at Philadelphia University the University of Pennsylvania and Rowan University in South Jersey in addition to Temple
 33.4242399,-111.9280527,ASU
 34.1083449,-117.2897652,San Bernardino
 33.8624581,-118.2544108,Dominguez Hills
@@ -1529,33 +1462,26 @@ lat,lng,location
 38.5815719,-121.4943996,Sacramento
 37.8699811,-122.2698694,Berkeley City College
 34.0522342,-118.2436849,Los Angeles campus
-41.68667809999999,-73.8936812,Vassar College
-41.68667809999999,-73.8936812,Vassar College
+41.68667809999999,-73.8936812,Vassar
 37.5565736,-79.0801084,Sweet Briar
 41.8417288,-71.4627575,Rhode Island College
-41.8417288,-71.4627575,Rhode Island College
-34.2406756,-118.5300196,CSU Northridge
-38.2352198,-122.119899,Solano Community College
-41.8417288,-71.4627575,Rhode Island College
-41.8417288,-71.4627575,Rhode Island College
-37.7749295,-122.4194155,San Francisco
-36.9741171,-122.0307963,Santa Cruz
-32.715738,-117.1610838,San Diego
+37.79517329999999,-122.2628117,Laney College
+32.8800604,-117.2340135,UCSD.
 32.8049085,-117.1675503,Mesa College
 38.3013039,-77.47447,University of Mary Washington
+37.0642445,-76.4936031,Christopher Newport
+37.4315734,-78.6568942,Virginia Commonwealth Universities
 42.2746179,-71.8068416,Worcester Polytechnic Institute
-37.5526695,-77.4527359,Virginia Commonwealth University
-37.5526695,-77.4527359,Virginia Commonwealth University
+37.5626214,-77.4513784,Virginia Union University
+37.2384006,-77.4198184,Virginia State University
 43.676042700000004,-79.41072840000001,George Brown Colleg
+25.6609576,-100.4202461,UdeM
+45.55988869999999,-73.7193243,Collège Montmorency
 38.6487895,-90.3107962,Washington University
-38.6348237,-90.2336408,Saint Louis University
-38.6348237,-90.2336408,Saint Louis University
 43.79602939999999,-79.3485918,Seneca College
 43.6628917,-79.39565640000001,the St George campus
 37.0965278,-113.5684164,St. George
 54.283113,-0.399752,Scarborough
 51.253775,-85.3232139,Ontario Institute for Student Education
-43.6628917,-79.39565640000001,St George campus
-53.9614205,-1.0739108,York
 43.6628917,-79.39565640000001,UofT
-42.3465952,-71.0895292,Berklee College of Music
+34.1439461,-118.118761,Pasadena City College

@@ -91,11 +91,13 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
     rename(
       "other univ where protest occurs" = university_names_text,
     ) |>
-    pivot_longer(cols = c(`other univ where protest occurs`, publication),
-                 names_to = "uni_name_source",
-                 values_to = "university_name") |>
+    pivot_longer(cols = c(
+      `other univ where protest occurs`, participating_universities_text, publication
+      ), names_to = "uni_name_source", values_to = "university_name") |>
     unnest(cols = c(university_name)) |>
+    mutate(university_name = str_remove_all(university_name, ",") |> str_trim()) |>
     nest(university = c(uni_name_source, university_name)) |>
+    nest_filter(university, !is.na(university_name)) |>
     select(-uni, -pub_uni) |>
     # Some issues have strange presets / existing data problems
     mutate(racial_issue = map(racial_issue, \(issue_list){

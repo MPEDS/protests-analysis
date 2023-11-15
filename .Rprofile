@@ -20,7 +20,7 @@ nu <- function(vec){
 
 #' Loads the targets referenced by function arguments
 tar_load_args <- function(fun){
-  tar_load(names(formals(fun)))
+  tar_load(names(formals(fun)), envir = parent.frame(n = 2))
 }
 
 if(interactive()){
