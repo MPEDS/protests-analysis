@@ -85,20 +85,22 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
     mutate(
       # use uni when pub_uni is not available; uni contains
       # manual corrections I made
-      publication = ifelse(is.na(pub_uni), uni, pub_uni) |>
+      pub_uni = ifelse(is.na(pub_uni), uni, pub_uni) |>
         as.list()
     ) |>
     rename(
       "other univ where protest occurs" = university_names_text,
     ) |>
     pivot_longer(cols = c(
-      `other univ where protest occurs`, participating_universities_text, publication
+      `other univ where protest occurs`, participating_universities_text, pub_uni
       ), names_to = "uni_name_source", values_to = "university_name") |>
     unnest(cols = c(university_name)) |>
-    mutate(university_name = str_remove_all(university_name, ",") |> str_trim()) |>
+    mutate(university_name = str_remove_all(university_name, ",") |> str_trim(),
+           uni_name_source = if_else(uni_name_source == "pub_uni", "publication", uni_name_source)
+           ) |>
     nest(university = c(uni_name_source, university_name)) |>
     nest_filter(university, !is.na(university_name)) |>
-    select(-uni, -pub_uni) |>
+    select(-uni) |>
     # Some issues have strange presets / existing data problems
     mutate(racial_issue = map(racial_issue, \(issue_list){
       issue_list |>

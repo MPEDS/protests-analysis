@@ -14,7 +14,10 @@ integrate_targets <- function(cleaned_events,
       original_name,
       source = original_source
     ) |>
-    filter(source != "participating-universities-text")
+    mutate(
+      source = str_replace_all(source, "-", "_"),
+      original_name = ifelse(is.na(original_name), authoritative_name, original_name)
+    )
 
   uni_contextual <- bind_rows(ipeds, glued)
 
