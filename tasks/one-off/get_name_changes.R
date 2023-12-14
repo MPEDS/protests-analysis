@@ -40,33 +40,56 @@ get_name_changes <- function(){
                                              ) |>
              map_chr(~paste0(., collapse = "\n\n"))
            ) |>
-    select(key, description, university, location, start_date,
-           issue, racial_issue, issues_text,
+    select(key, description, location, start_date,
+           issue, racial_issue, issues_text, slogans_text,
            counterprotest_with, solidarity_with, coinciding_with,
            is_correct_racist_history, uni_response_text_select,
            university_action_on_issue, university_reactions_to_protest,
            university_discourse_on_issue, university_discourse_on_protest
            ) |>
-    mutate(across(c(issue, racial_issue,
+    mutate(racial_issue_lst = racial_issue,
+        across(c(issue, racial_issue, slogans_text,
                     university_action_on_issue, university_discourse_on_issue,
                     university_reactions_to_protest, university_discourse_on_protest),
                   ~map_chr(., \(x){paste0(x, collapse = ", ")})),
            issues_text = map_chr(issues_text, ~paste0(., collapse = "\n\n"))) |>
     arrange(start_date)
 
-  name_protests <- cleaned_events |>
-    filter(
-      # Match name but not SayHerName/Say Her Name, "named", "unnamed", or "namely"
-      str_detect(str_to_lower(description), "(?<!sayher|say her |un)name(?!ly|d)") |
-        str_detect(description, "naming") |
-        str_detect(description, "renam")
-    )
-
   correct_racist_history <- cleaned_events |>
     filter(str_detect(university_action_on_issue, "Correct Racist History"))
 
-  return(lst(
-    name_protests,
-    correct_racist_history
-  ))
+  # Captures four words, to be used to provide context on matches
+  padder <- "(?:\\S*\\s*){4}"
+  patterns <- c(
+    name_general = "(?<!un)name(?!ly)|naming",
+    master = "(\\bmaster\\b)",
+    mascot_logo = "mascot|logo",
+    statue_flag = "statue|flag",
+    slavery = "slave"
+  )
+  name_protests <- cleaned_events |>
+    mutate(is_racist_symbol = map_lgl(racial_issue_lst, ~("Racist/racialized symbols" %in% .))) |>
+    filter(str_detect(str_to_lower(description), paste0(patterns, collapse = "|")) |
+             str_detect(str_to_lower(slogans_text), paste0(patterns, collapse = "|")) |
+             is_racist_symbol)
+
+  descriptions_extract <- imap_dfr(patterns, \(pattern, pattern_name){
+    tibble(
+      key = name_protests$key,
+      pattern_name = pattern_name,
+      extract = str_extract_all(name_protests$description, paste0(padder, "(", pattern, ")", padder)),
+    )
+  })
+  descriptions_extract <- descriptions_extract |>
+    unnest(extract) |>
+    mutate(extract = paste0("...", extract, "...")) |>
+    group_by(key, pattern_name) |>
+    summarize(extract = paste0(extract, collapse = "\n"), .groups = "drop") |>
+    pivot_wider(names_from = pattern_name, values_from = extract)
+
+  descriptions_extract |>
+    right_join(name_protests, by = "key") |>
+    select(key, description, is_racist_symbol,
+           names(descriptions_extract), slogans_text,
+           everything(), -racial_issue_lst)
 }

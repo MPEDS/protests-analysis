@@ -34,9 +34,14 @@ clean_school_directory <- function(directory){
         TRIBAL == 2 ~ FALSE,
         TRUE ~ NA
         ),
+      is_uni_public = case_when(
+        CONTROL == 1 ~ TRUE,
+        CONTROL %in% c(2, 3) ~ FALSE,
+        TRUE ~ NA
+      )
     ) |>
     select(uni_id = UNITID, uni_name = INSTNM,
-           size_category = INSTSIZE,
+           size_category = INSTSIZE, is_uni_public,
            hbcu, tribal, year) |>
     mutate(uni_id = as.character(uni_id))
 }

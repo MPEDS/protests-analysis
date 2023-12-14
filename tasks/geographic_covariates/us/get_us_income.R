@@ -47,7 +47,7 @@ get_us_income <- function(){
       unite("geoid", sfips, cfips, sep = "") |>
       mutate(year = year,
              mhi = suppressWarnings(
-               as.numeric(`Median Household Income`))
+               as.numeric(`Median Household Income`)/1000)
              ) |>
       select(geoid, year, mhi)
 

@@ -8,12 +8,13 @@ get_canada_mhi <- function(locality_keys){
 
   read_csv(paste0(tempdir(), "/canada-mhi/11100009.csv"),
            show_col_types = FALSE) |>
-    mutate(geoid = str_sub(DGUID, 10, -1)) |>
+    mutate(geoid = str_sub(DGUID, 10, -1),
+           mhi = VALUE/1000) |>
     filter(`Family characteristics` == "Median total income, all families",
            REF_DATE %in% 2012:2018) |>
     # multiple = all because each geographic unit is repped multiple times,
     # once per year
     right_join(locality_keys, by = "geoid",
                multiple = "all") |>
-    select(geoid, mhi = VALUE, year = REF_DATE)
+    select(geoid, mhi, year = REF_DATE)
 }

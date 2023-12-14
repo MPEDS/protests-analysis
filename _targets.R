@@ -124,7 +124,12 @@ list(
 
   # school-level covariates ---
   tar_target(ipeds_raw, get_school_directory()),
-  tar_target(ipeds, clean_school_directory(ipeds_raw)),
+  tar_target(ipeds_directory, clean_school_directory(ipeds_raw)),
+  tar_target(ipeds_tuition, get_ipeds_tuition()),
+  tar_target(ipeds_race, get_ipeds_race()),
+  tar_target(ipeds_pell, get_ipeds_pell()),
+  tar_target(ipeds, list(ipeds_directory, ipeds_tuition, ipeds_race, ipeds_pell) |>
+               reduce(full_join, by = c("uni_id", "year"))),
   tar_target(glued_raw, get_glued()),
   tar_target(glued, clean_glued(glued_raw)),
   tar_target(tuition, get_tuition()),
