@@ -63,3 +63,45 @@ get_uni_police_responses <- function(){
     response_keys
   )
 }
+
+get_addtl_info <- function(){
+  tar_load(integrated)
+  codes <- tribble(
+    ~category, ~question,
+    "Uni response", "university_reactions_to_protest",
+    "Uni response", "university_discourse_on_protest",
+    "Uni response", "university_action_on_issue",
+    "Uni response", "university_discourse_on_issue",
+    "Police action", "type_of_police",
+    "Police action", "police_activities",
+    "Police action", "police_presence_and_size",
+    "Police action", "protester_resistance_to_police",
+  )
+
+  responses <- integrated |>
+    st_drop_geometry() |>
+    select(key, codes$question) |>
+    mutate(across(c(where(is.character), -key), as.list)) |>
+    pivot_longer(cols = c(everything(), -key), names_to = "question") |>
+    left_join(codes, by = "question") |>
+    select(-question) |>
+    unnest(value) |>
+    drop_na(value) |>
+    pivot_wider(names_from = category) |>
+    mutate(response_type = map2_chr(`Police action`, `Uni response`, \(x,y){
+      case_when(
+      is.null(x) & is.null(y) ~ "neither",
+      is.null(x) & !is.null(y) ~ "uni_response",
+      !is.null(x) & is.null(y) ~ "police_action",
+      !is.null(x) & !is.null(y) ~ "both",
+      T ~ NA_character_
+    )}))
+
+  counts <- res
+
+  # Counts for canonical events with any value for each uni response question
+  summary_counts <- responses |>
+    group_by(question) |>
+    summarize("Number of canonical events with valid response" = length(unique(key)))
+
+}

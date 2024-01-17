@@ -72,24 +72,27 @@ get_campaign_subset <- function(){
 
   events <- integrated |>
     st_drop_geometry() |>
-    filter(year == 2014 | year == 2015) |>
+    # filter(year == 2014 | year == 2015) |>
     left_join(campaigns, by = "canonical_id") |>
     left_join(clusters, by = "key") |>
     left_join(keys, by = "campaign_id") |>
     select(key,
            campaign_key,
-           cluster_id,
            location,
            description,
            start_date,
-           university_action_on_issue,
-           university_discourse_on_issue,
-           university_reactions_to_protest,
-           university_discourse_on_protest,
+           # university_action_on_issue,
+           # university_discourse_on_issue,
+           # university_reactions_to_protest,
+           # university_discourse_on_protest,
            issue,
            racial_issue,
            ) |>
-    drop_na(start_date) |>
-    arrange(start_date) |>
-    mutate(across(where(is.list), ~map_chr(., \(x){paste0(sort(x), collapse = ", ")})))
+    drop_na(start_date, campaign_key) |>
+    arrange(campaign_key, start_date) |>
+    mutate(
+      across(where(is.list), ~map(., ~.[. != "_Not relevant"])),
+      across(where(is.list), ~map_chr(., \(x){paste0(sort(x), collapse = ", ")}))
+      )
+  return(events)
 }
