@@ -78,30 +78,47 @@ get_addtl_info <- function(){
     "Police action", "protester_resistance_to_police",
   )
 
+  is_all_na <- function(x){all(is.na(x))}
+
   responses <- integrated |>
     st_drop_geometry() |>
+    filter(!str_detect(key, "Umbrella")) |>
     select(key, codes$question) |>
     mutate(across(c(where(is.character), -key), as.list)) |>
     pivot_longer(cols = c(everything(), -key), names_to = "question") |>
     left_join(codes, by = "question") |>
     select(-question) |>
-    unnest(value) |>
-    drop_na(value) |>
-    pivot_wider(names_from = category) |>
+    unnest(value, keep_empty = TRUE) |>
+    mutate(value = ifelse(value == "NA/Unclear", NA_character_, value)) |>
+    distinct() |>
+    pivot_wider(names_from = category, values_fn = list) |>
     mutate(response_type = map2_chr(`Police action`, `Uni response`, \(x,y){
       case_when(
-      is.null(x) & is.null(y) ~ "neither",
-      is.null(x) & !is.null(y) ~ "uni_response",
-      !is.null(x) & is.null(y) ~ "police_action",
-      !is.null(x) & !is.null(y) ~ "both",
+      is_all_na(x) & is_all_na(y) ~ "neither",
+      is_all_na(x) & !is_all_na(y) ~ "uni_response",
+      !is_all_na(x) & is_all_na(y) ~ "police_action",
+      !is_all_na(x) & !is_all_na(y) ~ "both",
       T ~ NA_character_
     )}))
 
-  counts <- res
+  counts <- responses |>
+    group_by(response_type) |>
+    count()
 
-  # Counts for canonical events with any value for each uni response question
-  summary_counts <- responses |>
-    group_by(question) |>
-    summarize("Number of canonical events with valid response" = length(unique(key)))
+  key_info <- integrated |>
+    st_drop_geometry() |>
+    filter(!str_detect(key, "Umbrella")) |>
+    left_join(select(responses, key, response_type), by = "key") |>
+    select(key, location, description, start_date, form, issue, racial_issue, response_type, codes$question) |>
+    mutate(across(where(is.list), ~map_chr(., \(lst){
+      lst |>
+        str_subset("(_Not relevant)|(NA/Unclear)", negate = TRUE) |>
+        paste0(collapse = ", ")})),
+    ) |>
+    group_by(response_type)
 
+  key_info |>
+    group_split() |>
+    set_names(group_keys(key_info)$response_type) |>
+    map(\(dta){select(dta, -response_type)})
 }

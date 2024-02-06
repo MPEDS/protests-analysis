@@ -6,7 +6,7 @@
 #' headers aren't present on this resource
 get_glued <- function(){
   filename <- tempfile()
-  drive_auth_configure(api_key = Sys.getenv("GMAPS_API_KEY"))
+  drive_auth_configure(api_key = Sys.getenv("GCP_API_KEY"))
   drive_deauth()
   drive_download("https://docs.google.com/spreadsheets/d/1dpogHTjbYa1Omvw-nSuXVt5JNRyu1dV6/",
                  filename)

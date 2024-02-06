@@ -8,16 +8,17 @@ integrate_targets <- function(cleaned_events,
                               geo) {
   uni_xwalk <- uni_xwalk |>
     select(
-      canonical_event_key,
-      uni_id = authoritative_id,
-      authoritative_name,
+      canonical_id,
+      uni_id,
       original_name,
-      source = original_source
+      authoritative_name,
+      source
     ) |>
     mutate(
       source = str_replace_all(source, "-", "_"),
       original_name = ifelse(is.na(original_name), authoritative_name, original_name)
-    )
+    ) |>
+    select(-authoritative_name)
 
   uni_contextual <- bind_rows(ipeds, glued)
 
@@ -25,15 +26,16 @@ integrate_targets <- function(cleaned_events,
     mutate(
       start_date = as.Date(start_date),
       year = lubridate::year(start_date),
-      university = pmap(list(university, key, year), \(x, y, z) {
-        x |> mutate(key = y, year = z)
+      canonical_id = as.character(canonical_id),
+      university = pmap(list(university, canonical_id, year), \(x, y, z) {
+        x |> mutate(canonical_id = y, year = z)
       })
     ) |>
     nest_left_join(
       university,
       uni_xwalk,
       by = c("university_name" = "original_name",
-             "key" = "canonical_event_key",
+             "canonical_id",
              "uni_name_source" = "source")
     ) |>
     nest_left_join(

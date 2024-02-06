@@ -1,5 +1,5 @@
-export_second_pass <- function(uni_xwalk, cleaned_events, ipeds_raw, glued_raw, canada_geo){
-  uni_xwalk <- uni_xwalk |>
+export_second_pass <- function(initial_xwalk, cleaned_events, ipeds_raw, glued_raw, canada_geo){
+  initial_xwalk <- initial_xwalk |>
     select(
       canonical_event_key,
       uni_id = authoritative_id,
@@ -20,13 +20,13 @@ export_second_pass <- function(uni_xwalk, cleaned_events, ipeds_raw, glued_raw, 
     ) |>
     nest_left_join(
       university,
-      uni_xwalk,
+      initial_xwalk,
       by = c("university_name" = "original_name",
              "key" = "canonical_event_key",
              "uni_name_source" = "source")
     )
 
-  unmatched_corrections <- uni_xwalk |>
+  unmatched_corrections <- initial_xwalk |>
     filter(map_lgl(canonical_event_key, ~!(. %in% cleaned_events$key)),
            !is.na(uni_id),
            source != "publication") |>
@@ -34,7 +34,7 @@ export_second_pass <- function(uni_xwalk, cleaned_events, ipeds_raw, glued_raw, 
 
   unmatched_database_entries <- cleaned_events |>
     filter(!str_detect(key, "Umbrella"),
-           map_lgl(key, ~!(. %in% uni_xwalk$canonical_event_key))) |>
+           map_lgl(key, ~!(. %in% initial_xwalk$canonical_event_key))) |>
     select(key, description, publication, start_date, location, university) |>
     nest_select(university, uni_name_source, university_name) |>
     unnest(university) |>

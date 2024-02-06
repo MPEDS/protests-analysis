@@ -10,7 +10,7 @@ get_canada_covariates <- function(localities){
     mutate(geoid = str_remove_all(geoid, "^canada_"))
 
   year_covariates <- list(
-    get_canada_unemp(locality_keys),
+    # get_canada_unemp(locality_keys),
     get_canada_mhi(locality_keys)
   ) |>
     reduce(left_join, by = c("geoid", "year"))

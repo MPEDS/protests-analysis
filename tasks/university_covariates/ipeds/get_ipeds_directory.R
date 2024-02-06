@@ -6,7 +6,7 @@ get_directory_url <- function(year){
   return(full_url)
 }
 
-get_school_directory <- function(){
+get_ipeds_directory <- function(){
   years <- 2012:2018
   directory_aggregated <- map_dfr(
     years, function(year){
@@ -21,9 +21,17 @@ get_school_directory <- function(){
   return(directory_aggregated)
 }
 
-clean_school_directory <- function(directory){
+clean_ipeds_directory <- function(directory){
   directory |>
     mutate(
+      carnegie = case_when(
+        CARNEGIE %in% c(15, 16) ~ "Doctoral",
+        CARNEGIE %in% c(21, 22) ~ "Masters",
+        CARNEGIE %in% c(31, 32, 33) ~ "Baccalaureate",
+        CARNEGIE == 40 ~ "Associates",
+        CARNEGIE == -2 ~ NA_character_,
+        TRUE ~ "Other (specialized)"
+      ),
       hbcu = case_when(
         HBCU == 1 ~ TRUE,
         HBCU == 2 ~ FALSE,
@@ -38,10 +46,15 @@ clean_school_directory <- function(directory){
         CONTROL == 1 ~ TRUE,
         CONTROL %in% c(2, 3) ~ FALSE,
         TRUE ~ NA
-      )
+      ),
+     ipeds_fips = case_when(
+       nchar(COUNTYCD) == 4 ~ paste0("0", COUNTYCD),
+       nchar(COUNTYCD) == 5 ~ as.character(COUNTYCD),
+       TRUE ~ NA_character_
+     ),
     ) |>
     select(uni_id = UNITID, uni_name = INSTNM,
-           size_category = INSTSIZE, is_uni_public,
-           hbcu, tribal, year) |>
+           ipeds_fips, size_category = INSTSIZE, is_uni_public,
+           carnegie, hbcu, tribal, year) |>
     mutate(uni_id = as.character(uni_id))
 }

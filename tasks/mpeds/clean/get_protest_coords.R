@@ -1,9 +1,5 @@
 #' Geocodes protest locations into a lookup table
 #'
-#' Uses GMaps API to turn semantic strings into lon/lat coords in WGS84.
-#' Requires GMAPS_API_KEY in your .Renviron file. Heavily relies on
-#' `httr` functions and `purrr` syntax.
-#'
 #' The wrapper function (at the top) relies on `get_coords`,
 #' which actually queries Google Maps.
 #'
@@ -79,7 +75,7 @@ get_coords <- function(location, cache){
   response <- "https://maps.googleapis.com/maps/api/geocode/json" |>
     GET(query = list(
         address = location,
-        key = Sys.getenv("GMAPS_API_KEY")
+        key = Sys.getenv("GCP_API_KEY")
       )) |>
     content(as = "parsed")
 

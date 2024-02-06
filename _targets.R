@@ -3,7 +3,7 @@ library(tarchetypes)
 library(future)
 library(crew)
 tar_option_set(controller = crew_controller_local(workers = 4))
-source("tasks/source_safely.R")
+source("tasks/utils/source_safely.R")
 fn_filenames <- list.files(
   "tasks",
   full.names = TRUE,
@@ -15,25 +15,28 @@ invisible(lapply(fn_filenames, source_safely))
 plan(multisession, workers = parallel::detectCores() - 2)
 tar_option_set(
   packages = c(
-    "tidyverse",
-    "RMariaDB",
-    "ssh",
-    "haven",
-    "testthat",
     "cluster",
-    "googledrive",
-    "nplyr",
-    "httr",
     "curl",
+    "haven",
+    "googledrive",
+    "httr",
+    "janitor",
+    "leaps",
+    "nplyr",
+    "readxl",
+    "RMariaDB",
     "sf",
+    "ssh",
+    "testthat",
+    "tidyverse",
     "tigris",
     "tidycensus"
   ),
 )
 
-# Prevent package from asking for sign-in options
+# Prevent package from asking for sign-in options during a pipeline run
 googledrive::drive_deauth()
-googledrive::drive_auth_configure(api_key = Sys.getenv("GMAPS_API_KEY"))
+googledrive::drive_auth_configure(api_key = Sys.getenv("GCP_API_KEY"))
 
 list(
   tar_target(canonical_events, get_canonical_events(),
@@ -41,24 +44,28 @@ list(
              # to force a download of the MPEDS database from the `sheriff` server
              # this lets us toggle the download on and off without changes to
              # source-control tracked files
-             cue = tar_cue(
-               mode = ifelse(
-                 Sys.getenv("DOWNLOAD_MPEDS") %in% c('', 'false'),
-                 'never',
-                 'always'
-               )
-             )),
+             cue = tar_cue_if("DOWNLOAD_MPEDS")),
   tar_target(
     canonical_event_relationship,
     get_canonical_event_relationship(canonical_events)
   ),
+
+  # Hand-coding a
   tar_target(uni_pub_xwalk_file, format =
                "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
+  # An actual pre-made reference for university-publication-IPEDS that I was made aware of -
+  # Should be used in place of the above, must swap out
+  tar_target(uni_pub_xwalk_reference,
+             get_uni_pub_xwalk_reference("https://docs.google.com/spreadsheets/d/1LwWIMylixuo8cAFK1xQSS12jybQhLZQF06J40ggp-4A/edit#gid=0")
+             ),
+
   tar_target(
     events_wide,
     process_canonical_events(canonical_events, uni_pub_xwalk_file)
   ),
+
+
   tar_target(cleaned_events, get_protest_coords(events_wide)),
 
   # CLUSTERING-SPECIFIC TARGETS
@@ -111,9 +118,9 @@ list(
   tar_target(geo, bind_rows(us_geo, canada_geo)),
 
   # Using format = url here because it's updated regularly (weekly)
-  tar_target(ccc_url, format = "url",
-             command = "https://github.com/nonviolent-action-lab/crowd-counting-consortium/raw/master/ccc_compiled.csv"),
-  tar_target(ccc, get_ccc(ccc_url)),
+  tar_target(ccc_url_2017, format = "url",
+             command = "https://github.com/nonviolent-action-lab/crowd-counting-consortium/raw/master/ccc_compiled_2017-2020.csv"),
+  tar_target(ccc, get_ccc(ccc_url_2017, ccc_url_present)),
 
   # County+year-level covariates ---
   tar_target(canada_covariates, get_canada_covariates(canada_geo)),
@@ -123,12 +130,13 @@ list(
   tar_target(elephrame_blm, get_elephrame_blm()),
 
   # school-level covariates ---
-  tar_target(ipeds_raw, get_school_directory()),
-  tar_target(ipeds_directory, clean_school_directory(ipeds_raw)),
+  tar_target(ipeds_raw, get_ipeds_directory()),
+  tar_target(ipeds_directory, clean_ipeds_directory(ipeds_raw)),
   tar_target(ipeds_tuition, get_ipeds_tuition()),
   tar_target(ipeds_race, get_ipeds_race()),
+  tar_target(ipeds_finance, get_ipeds_finance()),
   tar_target(ipeds_pell, get_ipeds_pell()),
-  tar_target(ipeds, list(ipeds_directory, ipeds_tuition, ipeds_race, ipeds_pell) |>
+  tar_target(ipeds, list(ipeds_directory, ipeds_tuition, ipeds_race, ipeds_pell, ipeds_finance) |>
                reduce(full_join, by = c("uni_id", "year"))),
   tar_target(glued_raw, get_glued()),
   tar_target(glued, clean_glued(glued_raw)),
@@ -167,27 +175,19 @@ list(
     format = "file"
   ),
   # And read in again after they've made their edits
-  tar_target(
-    cleaned_xwalk_dribble,
-    googledrive::drive_download(
-      "https://docs.google.com/spreadsheets/d/14ms9FF6Zg0oZf6AQRqOHASbrx1zLprRh/edit#gid=480957682",
-      tempfile()
-    ),
-    cue = tar_cue(mode = ifelse(
-      Sys.getenv("DOWNLOAD_UNI_XWALK") %in% c('', 'false'),
-      'never',
-      'always'
-    ))
+  tar_target(initial_xwalk, read_googlesheet("14ms9FF6Zg0oZf6AQRqOHASbrx1zLprRh")$MPEDS,
+    cue = tar_cue_if("DOWNLOAD_UNI_XWALK")
   ),
-  tar_target(
-    uni_xwalk,
-    readxl::read_excel(cleaned_xwalk_dribble$local_path)
-  ),
+  # Second pass was necessary to clean up corner cases and such
   tar_target(
     second_pass_filename,
-    export_second_pass(uni_xwalk, cleaned_events, ipeds_raw,
+    export_second_pass(initial_xwalk, cleaned_events, ipeds_raw,
                        glued_raw, canada_geo)
   ),
+  tar_target(second_xwalk, read_googlesheet("16yFZwTXfafr32l1oUttsTzojAruOgoqS"),
+    cue = tar_cue_if("DOWNLOAD_UNI_XWALK"),
+  ),
+  tar_target(uni_xwalk, create_uni_xwalk(initial_xwalk, second_xwalk)),
 
   # Export Canadian universities for additional manual data input
   tar_target(

@@ -18,5 +18,14 @@ get_us_elections <- function(){
     select(year, geoid = county_fips, republican_vote_prop) |>
     drop_na()
 
+  # Interpolate this for 2013-2015 and 2016-2017
+  keys <- expand_grid(geoid = unique(elections$geoid),
+                      true_year = min(elections$year):max(elections$year))
+  elections <- elections |>
+    full_join(keys, by = "geoid") |>
+    filter(true_year >= year, true_year < year + 4) |>
+    select(-year) |>
+    rename(year = true_year)
+
   return(elections)
 }
