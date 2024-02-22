@@ -81,7 +81,6 @@ lat,lng,location
 44.4758825,-73.21207199999999,"Burlington, VT, USA"
 41.49932,-81.6943605,"Cleveland, OH, USA"
 34.0007104,-81.0348144,"Columbia, SC, USA"
-38.403903,-96.1816626,"Emporia, KS, USA"
 42.4184296,-71.1061639,"Medford, MA, USA"
 45.5196767,-123.1121017,"Forest Grove, OR, USA"
 40.5852602,-105.084423,"Fort Collins, CO, USA"
@@ -182,6 +181,7 @@ lat,lng,location
 41.1370133,-77.4469263,"Lock Haven, PA, USA"
 33.7700504,-118.1937395,"Long Beach, CA, USA"
 41.7475933,-74.0868095,"New Paltz, NY, USA"
+38.403903,-96.1816626,"Emporia, KS, USA"
 42.88644679999999,-78.8783689,"Buffalo, NY, USA"
 37.7272727,-89.2167501,"Carbondale, IL, USA"
 40.5795317,-74.1502007,"Staten Island, NY, USA"
@@ -215,7 +215,6 @@ lat,lng,location
 49.8954221,-97.1385145,"Winnipeg, MB, Canada"
 46.8721284,-113.9940314,"Missoula, MT, USA"
 34.0625106,-118.1228476,"Monterey Park, CA, USA"
-44.4582983,-93.161604,"Northfield, MN, USA"
 34.055103,-117.7499909,"Pomona, CA, USA"
 41.7003713,-73.9209701,"Poughkeepsie, NY, USA"
 39.9525839,-75.1652215,"Philadelphia, PA USA"
@@ -268,6 +267,7 @@ lat,lng,location
 43.8137751,-91.2519017,"La Crosse, WI, USA"
 42.09868669999999,-75.91797380000001,"Binghamton, New York, USA"
 42.09868669999999,-75.91797380000001,"Binghampton, New York, USA"
+44.4582983,-93.161604,"Northfield, MN, USA"
 33.9022367,-118.081733,"Norwalk, CA, USA"
 47.2528768,-122.4442906,"Tacoma, WA, USA"
 32.2539787,-110.9741769,"Tucson, AZ, USA"
@@ -370,7 +370,6 @@ lat,lng,location
 35.2270869,-80.8431267,"Charlotte, NC, USA"
 38.18724040000001,-76.4343173,"St. Mary's City, MD, USA"
 37.3021632,-120.4829677,"Merced, CA, USA"
-41.5278742,-73.12761069999999,"Middlebury, CT, USA"
 42.2808256,-83.7430378,"Ann Arbor, MI"
 43.30330559999999,-91.7857092,"Decorah, Iowa, USA"
 53.5460983,-113.4937266,"Edmonton, AB, USA"
@@ -439,7 +438,6 @@ lat,lng,location
 38.9896967,-76.93776,"College Park, MD, USA"
 26.3017374,-98.1633432,"Edinburg, TX, USA."
 39.9606643,-75.6054882,"West Chester, PA , USA"
-39.9606643,-75.6054882,"West Chester, Pennsylvania , USA"
 33.4734978,-82.0105148,"Augusta, GA, USA"
 53.9170641,-122.7496693,"Prince George, BC, Canada"
 50.674522,-120.3272674,"Kamloops, BC, Canada"
@@ -474,7 +472,6 @@ lat,lng,location
 40.3295359,-76.51524429999999,"Annville, PA, USA"
 43.653226,-79.3831843,"Toronto, ON, CAN"
 38.1074198,-122.5697032,"Novato, CA, USA"
-46.4917317,-80.99302899999999,"Sudbury, ON, Canada"
 45.2733153,-66.0633081,"St. John, NB, Canada"
 37.3058839,-89.51814759999999,"Cape Girardeau, MO, USA"
 40.8765649,-77.8367282,"Centre County, PA, USA"
@@ -671,7 +668,6 @@ lat,lng,location
 41.5043413,-81.6083838,Case Western Reserve University
 33.9937575,-81.0299186,University of South Carolina Columbia
 32.7175697,-117.1508543,San Diego City College
-38.4162018,-96.1792715,Emporia State University
 42.4085371,-71.1182729,Tufts
 42.360091,-71.09416,Massachusetts Institute of Technology
 42.4085371,-71.1182729,Tufts University
@@ -805,6 +801,7 @@ lat,lng,location
 41.1427108,-77.46062429999999,Lock Haven University
 33.7838235,-118.1140904,California State University Long Beach
 41.73856199999999,-74.085197,SUNY New Paltz
+38.4162018,-96.1792715,Emporia State University
 42.88644679999999,-78.8783689,Buffalo
 43.0018111,-78.78952389999999,University at Buffalo
 42.9237929,-78.8550954,Canisius College
@@ -824,9 +821,6 @@ lat,lng,location
 34.223874,-77.8696036,University of North Carolina Wilmington
 42.7297628,-73.67888839999999,Rensselaer Polytechnic Institute
 40.0368926,-75.3425785,Villanova University
-45.5131547,-73.5602937,UQAM
-45.4948363,-73.577912799999993,Concordia
-30.419119,-97.8390214,Concordia University
 43.3807565,-84.6728043,Alma College
 42.3256097,-72.5312799,Hampshire College in Massachusetts
 38.1885119,-76.42627499999999,St Mary's College of Maryland
@@ -875,6 +869,9 @@ lat,lng,location
 42.2506803,-83.624089,Eastern Michigan University
 42.277145,-83.7382071,University of Michigan-Ann Arbor
 45.50478469999999,-73.5771511,McGill University
+45.5131547,-73.5602937,UQAM
+45.4948363,-73.577912799999993,Concordia
+30.419119,-97.8390214,Concordia University
 45.50478469999999,-73.5771511,McGill
 45.5131547,-73.5602937,UQÀM
 42.2762537,-83.7412441,University of Michigan
@@ -1168,6 +1165,7 @@ lat,lng,location
 37.8718992,-122.2585399,University of California-Berkley
 29.7903032,-90.8028911,Nicholls State University
 37.8718992,-122.2585399,University of California at Berkeley
+45.5018869,-73.56739189999999,l’Université de Montréal
 44.8716186,-91.9267041,University of Wisconsin Stout
 44.8716186,-91.9267041,UW-Stout
 37.3647146,-120.4241184,UC Merced
@@ -1331,7 +1329,6 @@ lat,lng,location
 38.9066253,-77.0373587,University of California Washington Center
 40.3340766,-76.5157582,Lebanon Valley College
 41.2939386,-82.21737859999999,Oberlin
-46.4672485,-80.9757296,Laurentian
 43.667979,-79.3983677,Ontario Institute for Studies in Education
 28.0260852,-82.1030339,Hillsborough Community College
 43.0095971,-81.2737336,University of Western Ontario
@@ -1395,7 +1392,6 @@ lat,lng,location
 33.1512505,-117.1821885,Palomar College
 34.4208305,-119.6981901,Santa Barbara
 45.4042669,-71.89367399999999,Université de Sherbrooke.
-42.255425,-72.5728843,Mount Holyoke College
 37.2005546,-93.2806806,Missouri State University
 45.5018869,-73.56739189999999,Université de Montreal
 38.5529805,-121.4525906,University of California Davis School of Medicine
@@ -1467,6 +1463,7 @@ lat,lng,location
 32.8800604,-117.2340135,UCSD.
 32.8049085,-117.1675503,Mesa College
 38.3013039,-77.47447,University of Mary Washington
+37.4315734,-78.6568942,Old Dominion
 37.0642445,-76.4936031,Christopher Newport
 37.4315734,-78.6568942,Virginia Commonwealth Universities
 42.2746179,-71.8068416,Worcester Polytechnic Institute

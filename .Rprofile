@@ -33,5 +33,7 @@ if(interactive()){
   library(ssh)
   library(sf)
   library(nplyr)
+  library(googledrive)
+  library(readxl)
 }
 

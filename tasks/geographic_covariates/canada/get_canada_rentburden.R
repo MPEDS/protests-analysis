@@ -1,14 +1,24 @@
 #' For some reason a ridiculously large file with way too much detail than one
 #' would think this kind of table would be released with
-get_canada_rentburden <- function(locality_keys){
-  url <- "https://www150.statcan.gc.ca/n1/en/tbl/csv/98100328-eng.zip"
+download_canada_rentburden <- function(){
 
-  download_location <- tempfile()
-  download.file(url, download_location)
-  unzip(download_location, exdir = paste0(tempdir(), "/canada-rentburden"))
+  directory_name <- file.path(rappdirs::user_cache_dir("protests"), "canada_rentburden")
+  dir.create(directory_name, showWarnings = FALSE)
+  download_location <- file.path(directory_name, "canada_rentburden_raw")
 
-  read_csv(paste0(tempdir(), "/canada-rentburden/98100328.csv"),
-           show_col_types = FALSE) |>
+  if(!file.exists(download_location)){
+    url <- "https://www150.statcan.gc.ca/n1/en/tbl/csv/98100328-eng.zip"
+    download.file(url, download_location)
+  }
+  unzip(download_location, exdir = directory_name)
+
+  read_csv(file.path(directory_name, "98100328.csv"),
+           show_col_types = FALSE,
+           lazy = TRUE)
+}
+
+get_canada_rentburden <- function(canada_rentburden_raw, locality_keys){
+  canada_rentburden_raw |>
     filter(`Age (15C)` == "Total - Age",
            `Gender (3)` == "Total - Gender",
            `Statistics (3)` == "Count",

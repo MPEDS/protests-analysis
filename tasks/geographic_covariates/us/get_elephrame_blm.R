@@ -1,15 +1,13 @@
-# in this case, can't use tar_target(format = "url") to track online
-# changes because the response doesn't provide ETag or Last-Modified
-# headers
+# Unable to obtain raw data programmatically because of
+# unstandard Javascript-based redirect behavior on Elephrame's
+# website
 get_elephrame_blm <- function(){
-  url <- "https://elephrame.com/textbook/mapdata/blm"
   filename <- tempfile()
 
-  download.file(
-    url = url,
-    destfile = filename,
-    headers = c(referer = "https://elephrame.com/textbook/BLM/chart"),
-    quiet = TRUE
+  gcs_get_object(
+    "inputs/elephrame.json",
+    bucket = "mpeds_targets",
+    saveToDisk = filename
   )
 
   county_shps <- counties(progress_bar = FALSE) |>

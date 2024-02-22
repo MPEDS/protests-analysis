@@ -2,7 +2,8 @@ library(targets)
 library(tarchetypes)
 library(future)
 library(crew)
-tar_option_set(controller = crew_controller_local(workers = 4))
+
+# Load logic from various files to be excuted here
 source("tasks/utils/source_safely.R")
 fn_filenames <- list.files(
   "tasks",
@@ -12,6 +13,7 @@ fn_filenames <- list.files(
 )
 invisible(lapply(fn_filenames, source_safely))
 
+# Configure pipeline
 plan(multisession, workers = parallel::detectCores() - 2)
 tar_option_set(
   packages = c(
@@ -19,6 +21,7 @@ tar_option_set(
     "curl",
     "haven",
     "googledrive",
+    "googleCloudStorageR",
     "httr",
     "janitor",
     "leaps",
@@ -32,11 +35,20 @@ tar_option_set(
     "tigris",
     "tidycensus"
   ),
+  controller = crew_controller_local(workers = 4),
+  repository = "gcp",
+  resources = tar_resources(
+    gcp = tar_resources_gcp(
+      bucket = "mpeds_targets",
+      predefined_acl = "bucketLevel"),
+  )
 )
 
+# Authenticate with GCP and Google Drive
 # Prevent package from asking for sign-in options during a pipeline run
 googledrive::drive_deauth()
 googledrive::drive_auth_configure(api_key = Sys.getenv("GCP_API_KEY"))
+dir.create(file.path(rappdirs::user_cache_dir(), "protests"), FALSE)
 
 list(
   tar_target(canonical_events, get_canonical_events(),
@@ -57,7 +69,7 @@ list(
   # An actual pre-made reference for university-publication-IPEDS that I was made aware of -
   # Should be used in place of the above, must swap out
   tar_target(uni_pub_xwalk_reference,
-             get_uni_pub_xwalk_reference("https://docs.google.com/spreadsheets/d/1LwWIMylixuo8cAFK1xQSS12jybQhLZQF06J40ggp-4A/edit#gid=0")
+             get_uni_pub_xwalk_reference("1LwWIMylixuo8cAFK1xQSS12jybQhLZQF06J40ggp-4A")
              ),
 
   tar_target(
@@ -117,15 +129,16 @@ list(
   tar_target(canada_province_shapes, get_canada_provinces()),
   tar_target(geo, bind_rows(us_geo, canada_geo)),
 
-  # Using format = url here because it's updated regularly (weekly)
-  tar_target(ccc_url_2017, format = "url",
-             command = "https://github.com/nonviolent-action-lab/crowd-counting-consortium/raw/master/ccc_compiled_2017-2020.csv"),
-  tar_target(ccc, get_ccc(ccc_url_2017, ccc_url_present)),
+  tar_target(ccc, get_ccc()),
 
   # County+year-level covariates ---
-  tar_target(canada_covariates, get_canada_covariates(canada_geo)),
+  # Canada covariates unbearably slow because of rent burden
+  # tar_target(canada_rentburden_raw, download_canada_rentburden()),
+  # tar_target(canada_rentburden, get_canada_rentburden(canada_rentburden_raw, canada_geo)),
+  #tar_target(canada_mhi, get_canada_mhi(canada_geo)),
+  #tar_target(canada_covariates, get_canada_covariates(canada_rentburden, canada_mhi, canada_geo)),
   tar_target(us_covariates, get_us_covariates()),
-  tar_target(covariates, bind_rows(us_covariates, canada_covariates)),
+  tar_target(covariates, us_covariates),
 
   tar_target(elephrame_blm, get_elephrame_blm()),
 
@@ -207,12 +220,12 @@ list(
   ),
 
   # Can't figure out how to get targets loading to work with testthat working
-  # directory situation
-  tar_target(tests,
-             lapply(
-               list.files("tests", full.names = TRUE), source
-             ),
-             cue = tar_cue(mode = "always")),
+  # # directory situation
+  # tar_target(tests,
+  #            lapply(
+  #              list.files("tests", full.names = TRUE), source
+  #            ),
+  #            cue = tar_cue(mode = "always")),
 
   # Plotting and other exploratory analysis ---
   tar_render(exploratory, "docs/exploratory_plots.Rmd")

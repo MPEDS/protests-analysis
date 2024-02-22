@@ -1,10 +1,15 @@
 #' Median household income from StatCan
 get_canada_mhi <- function(locality_keys){
-  url <- "https://www150.statcan.gc.ca/n1/en/tbl/csv/11100009-eng.zip?st=e8RYM2Cy"
 
-  download_location <- tempfile()
-  download.file(url, download_location)
-  unzip(download_location, exdir = paste0(tempdir(), "/canada-mhi"))
+  directory_name <- rappdirs::user_cache_dir("protests")
+  download_location <- file.path(directory_name, "canada_mhi")
+
+  if(!file.exists(download_location)){
+    url <- "https://www150.statcan.gc.ca/n1/en/tbl/csv/11100009-eng.zip?st=e8RYM2Cy"
+    download.file(url, download_location)
+  }
+
+  unzip(download_location, exdir = file.path(directory_name, "/canada-mhi"))
 
   read_csv(paste0(tempdir(), "/canada-mhi/11100009.csv"),
            show_col_types = FALSE) |>

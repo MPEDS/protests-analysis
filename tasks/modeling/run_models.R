@@ -1,13 +1,15 @@
 run_models <- function(integrated, canonical_event_relationship, ipeds, us_covariates, uni_pub_xwalk_reference){
-  timeseries <- create_timeseries(integrated,
+  timeseries <- create_timeseries(integrated |>
+                                    filter(!str_detect(key, "Columbia|Reno")),
                                     canonical_event_relationship,
                                     ipeds,
                                     us_covariates,
                                     uni_pub_xwalk_reference)
 
   fit_cox_model <- function(subset, data) {
-    formula <- as.formula(paste("Surv(protest_age, is_protest_day) ~", paste(subset, collapse = " + ")))
+    formula <- as.formula(paste("Surv(protest_age, had_hazard_status) ~", paste(subset, collapse = " + ")))
     cox_model <- coxph(formula, data = data)
+
     return(cox_model)
   }
 
@@ -34,12 +36,12 @@ run_models <- function(integrated, canonical_event_relationship, ipeds, us_covar
     }) |>
     set_names("uni_model_combinations", "county_model_combinations")
 
-  uni_model <- coxph(Surv(protest_age, is_protest_day) ~ is_uni_public
+  uni_model <- coxph(Surv(protest_age, had_hazard_status) ~ is_uni_public
                      + tuition
                      + uni_nonwhite_prop + uni_total_pop + pell,
                     data = timeseries) |>
     get_printable_model()
-  county_model <- coxph(Surv(protest_age, is_protest_day) ~ white_prop +
+  county_model <- coxph(Surv(protest_age, had_hazard_status) ~ white_prop +
                           mhi +
                           rent_burden +
                           republican_vote_prop,
@@ -65,12 +67,12 @@ get_printable_model <- function(model, name = "estimate"){
     bind_rows(meta) |>
     select(-statistic) |>
     mutate(stars = case_when(
-      p.value <= 0.10 ~ "*",
-      p.value <= 0.05 ~ "**",
       p.value <= 0.005 ~ "***",
+      p.value <= 0.05 ~ "**",
+      p.value <= 0.10 ~ "*",
       TRUE ~ ""
     ),
-    estimate = ifelse(p.value == "", estimate, exp(estimate)),
+    estimate = ifelse(is.na(p.value), estimate, exp(estimate)),
     estimate = ifelse(is.na(p.value),
                       format_num(estimate),
                       paste0(format_num(estimate), stars, "\n(", format_num(std.error), ")")
@@ -81,9 +83,9 @@ get_printable_model <- function(model, name = "estimate"){
 get_summary_statistics <- function(timeseries){
   universities <- timeseries |>
     group_by(uni_id) |>
-    mutate(had_protest = any(as.logical(is_protest_day), na.rm = TRUE)) |>
+    mutate(had_protest = any(as.logical(had_hazard_status), na.rm = TRUE)) |>
     # One row per university, independent of date
-    select(-year, -is_protest_day, -protest_age, -hazard_date) |>
+    select(-year, -had_hazard_status, -protest_age, -hazard_date) |>
     distinct() |>
     # Other variables that cannot be represented by the below numerical summary stats
     select(-uni_name, -ipeds_fips, -size_category, -carnegie, -tribal) |>

@@ -35,44 +35,37 @@ create_timeseries <- function(integrated, canonical_event_relationship, ipeds, u
   ipeds_filtered <- ipeds |>
     filter(uni_id %in% mpeds_universe)
 
-  # Create a template for timeseries by creating unique combination of date-university
-  dates <- expand_grid(
-    protest_age = seq.Date(min(mizzou_events$start_date, na.rm = TRUE),
-                           max(mizzou_events$start_date, na.rm = TRUE),
-                           by = 1),
-    uni_id = mpeds_universe
-    )
-
   # Picks first hazard (protest) for each university in MPEDS
   mpeds_hazards <- mizzou_events_cleaned |>
     group_by(uni_id) |>
-    select(uni_id, hazard_date = start_date, year) |>
-    slice_min(hazard_date, n = 1, with_ties = FALSE)
+    select(uni_id, start_date, year) |>
+    slice_min(start_date, n = 1, with_ties = FALSE)
 
   # Then joins with rest of IPEDS that are in MPEDS universe
   timeseries <- mpeds_hazards |>
     ungroup() |>
     full_join(ipeds_filtered, by = c("uni_id", "year")) |>
-    mutate(hazard_date = ifelse(is.na(hazard_date), as.Date(Inf), hazard_date)) |>
-    full_join(dates, by = "uni_id",
-              relationship = "many-to-many"
-              ) |>
+    mutate(
+      # Assign (latest possible) date for universities without protests
+      protest_age = if_else(
+        is.na(start_date), max(mizzou_events$start_date, na.rm = TRUE), start_date
+      )
+    ) |>
+    # We need to do a full join to also get info for schools that didn't have a
+    # protest, but this gets additional years' data too --
     # IPEDS includes data from 2014, 2012, etc, so we need to constrain records to the
     # given time period by comparing with the dates joined that cover the
     # specific time period of interest
-    # We also want to censor our dataset so we're not including rows for
-    # after the hazard occurred
-    filter(protest_age <= hazard_date,
-           year == lubridate::year(protest_age)
-           ) |>
-    mutate(is_protest_day = ifelse(hazard_date == protest_age, 1, 0),
-           hazard_date = ifelse(is.infinite(hazard_date), NA_Date_, hazard_date),
-           # Protest age = number of days after first mizzou protest (oct 1 2015)
-           protest_age = as.numeric(protest_age - min(mizzou_events$start_date, na.rm = TRUE)),
-           tuition = tuition / 1000,
-           uni_total_pop = uni_total_pop / 1000,
-           ipeds_fips = paste0("us_", ipeds_fips)
-           ) |>
+    filter(year == lubridate::year(protest_age)) |>
+    mutate(
+      # FALSE = censored at end of study (no protest), TRUE = had hazard (protest)
+      had_hazard_status = !is.na(start_date),
+      # Protest age becomes "number of days after first mizzou protest (oct 1 2015)"
+      protest_age = as.numeric(protest_age - min(mizzou_events$start_date, na.rm = TRUE)),
+      tuition = tuition / 1000,
+      uni_total_pop = uni_total_pop / 1000,
+      ipeds_fips = paste0("us_", ipeds_fips)
+      ) |>
     left_join(us_covariates, by = c("ipeds_fips" = "geoid", "year"))
 
   return(timeseries)

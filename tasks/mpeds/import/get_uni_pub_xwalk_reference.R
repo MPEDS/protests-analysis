@@ -1,9 +1,7 @@
 get_uni_pub_xwalk_reference <- function(id){
-  filename <- paste0(tempfile(), ".xlsx")
-  drive_download(id, filename)
-
-  read_excel(filename) |>
-    clean_names() |>
+  id <- "1LwWIMylixuo8cAFK1xQSS12jybQhLZQF06J40ggp-4A"
+  read_googlesheet(id, sheet = 1) |>
+    janitor::clean_names() |>
     rename(uni_id = unit_id) |>
     pivot_longer(cols = contains("Newspaper"),
                  values_to = "newspaper_name") |>

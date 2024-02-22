@@ -94,10 +94,10 @@ get_addtl_info <- function(){
     pivot_wider(names_from = category, values_fn = list) |>
     mutate(response_type = map2_chr(`Police action`, `Uni response`, \(x,y){
       case_when(
+      !is_all_na(x) & !is_all_na(y) ~ "both",
       is_all_na(x) & is_all_na(y) ~ "neither",
       is_all_na(x) & !is_all_na(y) ~ "uni_response",
       !is_all_na(x) & is_all_na(y) ~ "police_action",
-      !is_all_na(x) & !is_all_na(y) ~ "both",
       T ~ NA_character_
     )}))
 

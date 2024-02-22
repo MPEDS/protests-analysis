@@ -1,6 +1,6 @@
 #' Aggregates the function colocated in this folder into a single dataset,
 #' where each row is specific to both locality and year
-get_canada_covariates <- function(localities){
+get_canada_covariates <- function(canada_rentburden, canada_mhi, localities){
   # Some Canadian CMAs are represented here twice because they reside across
   # multiple provinces or regions
   # This dedups them
@@ -11,13 +11,13 @@ get_canada_covariates <- function(localities){
 
   year_covariates <- list(
     # get_canada_unemp(locality_keys),
-    get_canada_mhi(locality_keys)
+    canada_mhi,
   ) |>
     reduce(left_join, by = c("geoid", "year"))
 
   covariates <- list(
     list(year_covariates),
-    get_canada_rentburden(locality_keys)
+    # canada_rentburden
   ) |>
     list_flatten() |>
     reduce(left_join, by = "geoid") |>
