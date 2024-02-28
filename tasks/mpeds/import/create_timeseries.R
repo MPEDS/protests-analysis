@@ -1,4 +1,4 @@
-create_timeseries <- function(integrated, canonical_event_relationship, ipeds, us_covariates, uni_pub_xwalk_reference){
+create_timeseries <- function(integrated, canonical_event_relationship, ipeds, us_covariates, uni_pub_xwalk_reference, us_geo){
   mizzou_id <- integrated |>
     filter(key == "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov") |>
     pull(canonical_id)
@@ -28,7 +28,7 @@ create_timeseries <- function(integrated, canonical_event_relationship, ipeds, u
 
   # Filter IPEDS to only include schools within the possible MPEDS universe
   mpeds_universe <- uni_pub_xwalk_reference |>
-    filter(source == "UWIRE Affiliate") |>
+    # filter(source == "UWIRE Affiliate") |>
     drop_na(uni_id) |>
     pull(uni_id) |>
     unique()
@@ -39,11 +39,11 @@ create_timeseries <- function(integrated, canonical_event_relationship, ipeds, u
   mpeds_hazards <- mizzou_events_cleaned |>
     group_by(uni_id) |>
     select(uni_id, start_date, year) |>
-    slice_min(start_date, n = 1, with_ties = FALSE)
+    slice_min(start_date, n = 1, with_ties = FALSE) |>
+    ungroup()
 
   # Then joins with rest of IPEDS that are in MPEDS universe
   timeseries <- mpeds_hazards |>
-    ungroup() |>
     full_join(ipeds_filtered, by = c("uni_id", "year")) |>
     mutate(
       # Assign (latest possible) date for universities without protests
@@ -64,9 +64,22 @@ create_timeseries <- function(integrated, canonical_event_relationship, ipeds, u
       protest_age = as.numeric(protest_age - min(mizzou_events$start_date, na.rm = TRUE)),
       tuition = tuition / 1000,
       uni_total_pop = uni_total_pop / 1000,
-      ipeds_fips = paste0("us_", ipeds_fips)
+      ipeds_fips = paste0("us_", ipeds_fips),
+      is_uni_public = as.numeric(is_uni_public)
       ) |>
-    left_join(us_covariates, by = c("ipeds_fips" = "geoid", "year"))
+    left_join(us_covariates, by = c("ipeds_fips" = "geoid", "year")) |>
+    left_join(us_geo, by = c("ipeds_fips" = "geoid")) |>
+    # TODO: get point geometries for all universities
+    st_as_sf() |>
+    st_centroid()
 
   return(timeseries)
 }
+
+
+# tar_load_args(create_timeseries)
+# timeseries <- create_timeseries(integrated,
+#                                 canonical_event_relationship,
+#                                 ipeds,
+#                                 us_covariates,
+#                                 uni_pub_xwalk_reference, us_geo)

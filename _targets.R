@@ -3,7 +3,7 @@ library(tarchetypes)
 library(future)
 library(crew)
 
-# Load logic from various files to be excuted here
+# Load logic from various files to be executed here
 source("tasks/utils/source_safely.R")
 fn_filenames <- list.files(
   "tasks",
@@ -127,7 +127,7 @@ list(
 
   # needed for plotting
   tar_target(canada_province_shapes, get_canada_provinces()),
-  tar_target(geo, bind_rows(us_geo, canada_geo)),
+  tar_target(geo, bind_rows(us_geo, st_transform(canada_geo, st_crs(us_geo)))),
 
   tar_target(ccc, get_ccc()),
 
@@ -217,6 +217,18 @@ list(
                       uni_xwalk,
                       covariates,
                       geo)
+  ),
+
+  # Modeling (in progress, a bit messy/in flux in terms of data structures)
+  tar_target(
+    timeseries,
+    create_timeseries(
+      integrated,
+      canonical_event_relationship,
+      ipeds,
+      us_covariates,
+      uni_pub_xwalk_reference
+    )
   ),
 
   # Can't figure out how to get targets loading to work with testthat working

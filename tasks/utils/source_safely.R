@@ -44,12 +44,12 @@ source_safely <- function(filename){
     assignment_value <- as.character(given_expr[[3]][[1]])
     is_function <- assignment_value == "function"
     if(!is_function){
-      abort(c(
+      rlang::abort(c(
         "Non-function value detected.",
         "*" = "Each expression in a file should be a function assignment.",
-        "*" = paste0("The file \"", filename, "\" had `", assignment_value, "` instead."),
-        call = error_env
-      ))
+        "*" = paste0("The file \"", filename, "\" had `", assignment_value, "` instead.")
+      ), call = error_env
+      )
     }
   }
   purrr::walk(given_exprs, check_requirements)
