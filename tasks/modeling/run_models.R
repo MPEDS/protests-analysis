@@ -5,8 +5,7 @@ run_models <- function(integrated, canonical_event_relationship, ipeds, us_covar
                                   ipeds,
                                   us_covariates,
                                   uni_pub_xwalk_reference,
-                                  us_geo) |>
-    create_proximity()
+                                  us_geo)
 
   fit_cox_model <- function(subset, data) {
     formula <- as.formula(paste("Surv(protest_age, had_hazard_status) ~", paste(subset, collapse = " + ")))

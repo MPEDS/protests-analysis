@@ -51,13 +51,12 @@ create_proximity <- function(timeseries){
     mutate(proximity = map2_dbl(uni_id, as.character(current_date), \(id, date){
       uni_idx <- uni_ids[[id]]
       previous_protest_unis <- unlist(uni_ids[protest_dates[[date]]])
-
       protest_distances <- unlist(dists[uni_idx, previous_protest_unis])
 
       # To get the weight, take the inverse of distance and consider 0s for all
       # of the schools that did not have protests, then average
       weight <- c(
-        1/protest_distances,
+        1/sqrt(protest_distances),
         rep(0, length(timeseries$uni_id) - length(protest_distances))
       ) |>
         mean()

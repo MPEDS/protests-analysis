@@ -350,13 +350,13 @@ take a look by state. It seems there are non-MO locations being recognized as
 happening in Missouri. See our 1:1 notes Google Doc for details.
 
 ```{r police_counts}
-glimpse_counts <- function(colname, dta = mpeds, percent = FALSE){
-  total_events <- mpeds |> 
+glimpse_counts <- function(colname, dta = mpeds, percent = FALSE, make_kable = TRUE){
+  total_events <- dta |> 
     filter(!str_detect(key, "^Umbrella")) |> 
     select(key) |> 
     distinct() |> 
     nrow()
-  dta |>
+  dta <- dta |>
     mutate("{{ colname }}" := map({{ colname }}, \(item){
       if(is.null(item)){
         return(NA)
@@ -370,8 +370,14 @@ glimpse_counts <- function(colname, dta = mpeds, percent = FALSE){
     arrange(desc(n)) |> 
     mutate(n = ifelse(percent,
                       paste0(round(100 * n / total_events, 2), "%"),
-                      n)) |> 
-    kable()
+                      n)) 
+  if(make_kable){
+    return(kable(dta))
+  } else {
+    return(dta)
+  }
+  
+    
 }
 
 glimpse_counts(police_presence_and_size)
@@ -412,16 +418,32 @@ racial-nonracial issue was relevant to.
 ```{r}
 # combining racial and non-racial into one list-col
 combined <- mpeds |> 
-  select(key, issue, racial_issue) |> 
+  select(key, geoid, issue, racial_issue) |> 
   pivot_longer(cols = c(issue, racial_issue)) |> 
   select(-name) |> 
   unnest(value) |> 
   filter(value != "_Not relevant", value != "") |> 
   distinct() |> 
-  group_by(key) |> 
+  group_by(key, geoid) |> 
   summarize(issue = list(value))
 
 glimpse_counts(issue, combined, TRUE)
+
+```
+
+## Counts by combined issue, separated by country
+
+```{r}
+combined <- combined |> 
+  mutate(country = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada"))
+
+us_issues <- glimpse_counts(issue, filter(combined, country == "US"), TRUE, FALSE) |> 
+  rename(US = n)
+canada_issues <- glimpse_counts(issue, filter(combined, country == "Canada"), TRUE, FALSE) |> 
+  rename(Canada = n)
+
+left_join(us_issues, canada_issues, by = "issue") |> 
+  kable()
 ```
 
 ## Counts by (split) issue and racial issue
@@ -429,6 +451,19 @@ glimpse_counts(issue, combined, TRUE)
 ```{r}
 glimpse_counts(issue)
 glimpse_counts(racial_issue)
+```
+
+## Counts of forms
+
+```{r}
+glimpse_counts(form)
+
+```
+
+## Counts of targets
+
+```{r}
+glimpse_counts(target)
 ```
 
 # Police involvement by issue
@@ -758,16 +793,11 @@ summers <- tibble(
   y2 = 400
 )
 
-mpeds |> 
-  mutate(date = floor_date(start_date, "month")) |> 
-  group_by(date) |> 
-  count() |> 
-  drop_na() |> 
-  ggplot() +
+make_line_plot <- function(dta){
+  ggplot(data = dta) +
   geom_rect(data = summers, aes(xmin = x1, xmax = x2, ymin = y1, ymax = y2), 
             alpha = 0.1,
             color = NA, fill = summer_color) +
-  geom_line(aes(x = date, y = n)) +
   scale_y_continuous(breaks = seq(0, 400, by = 50),
                      ) + 
   scale_x_date(date_breaks = "6 months",
@@ -806,6 +836,26 @@ mpeds |>
     y = "Number of associated events",
     caption = str_wrap("Dates are aggregated to months. Segments in red indicate summers.")
   ) 
+}
+line_dta <- mpeds |> 
+  mutate(date = floor_date(start_date, "month"),
+         country = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada")
+         ) |> 
+  filter(!is.na(country)) 
+
+line_dta |> 
+  group_by(date) |> 
+  count() |> 
+  drop_na() |> 
+  make_line_plot() + 
+  geom_line(aes(x = date, y = n))
+  
+line_dta |> 
+  group_by(date, country) |> 
+  count() |> 
+  drop_na() |> 
+  make_line_plot() + 
+  geom_line(aes(x = date, y = n, color = country))
 ```
 
 
@@ -1670,6 +1720,7 @@ tar_load(geo)
 tar_load(canada_province_shapes)
 
 mizzou_sf <- mizzou_events |> 
+  mutate(canonical_id1 = as.character(canonical_id1)) |> 
   # joining on `mpeds` and not `mpeds_sf` because we want coords of counties/CMAs,
   # not exactly where protests occurred (which is more granular)
   left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |> 
@@ -1718,7 +1769,7 @@ ggplot(mizzou_sf) +
          color = guide_legend(override.aes = list(size = 4)),
          size = guide_legend(override.aes = list(color = "#FA918A")))
 
-tibble(canonical_id = mizzou_ids) |> 
+tibble(canonical_id = as.character(mizzou_ids)) |> 
   left_join(mpeds, by = "canonical_id") |> 
   mutate(date = start_date) |> 
   group_by(date) |> 
@@ -1740,7 +1791,7 @@ tibble(canonical_id = mizzou_ids) |>
 ### Mizzou issues 
 
 ```{r mizzou_issues}
-tibble(canonical_id = mizzou_ids) |>
+tibble(canonical_id = as.character(mizzou_ids)) |>
   left_join(mpeds, by = "canonical_id") |> 
   select(key, issue, racial_issue) |> 
   pivot_longer(cols = c(issue, racial_issue)) |> 
@@ -1946,7 +1997,7 @@ tribble(~stat, ~n,
   rename("Statistics for Quebec protests" = stat) |> 
   kable()
 
-quebec_sf <- tibble(canonical_id = quebec_ids) |> 
+quebec_sf <- tibble(canonical_id = as.character(quebec_ids)) |> 
   left_join(mpeds_sf, by = "canonical_id") |> 
   st_as_sf() |> 
   group_by(geoid) |> 
@@ -1975,7 +2026,7 @@ top_quebec <- quebec_sf |>
 #     axis.ticks = element_blank(),
 #   )
 
-tibble(canonical_id = quebec_ids) |> 
+tibble(canonical_id = as.character(quebec_ids)) |> 
   left_join(mpeds, by = "canonical_id") |> 
   mutate(date = floor_date(start_date, "1 week")) |> 
   group_by(date) |> 
@@ -2018,7 +2069,7 @@ plot_quebec_by_police <- function(colname,
     str_replace_all("_", " ") |> 
     str_to_sentence() 
   
-  tibble(canonical_id = quebec_ids) |> 
+  tibble(canonical_id = as.character(quebec_ids)) |> 
     left_join(mpeds, by = "canonical_id") |>
     mutate(date = floor_date(start_date, "1 week")) |> 
     select(date, categories = {{colname}}) |> 
@@ -2061,7 +2112,7 @@ plot_quebec_by_police(type_of_police, police_type_xwalk) +
 ```{r quebec_extreme_police}
 
 # grouped bar graph: fill = non-extreme and extreme police involvement, group = quebec vs all events
-quebec_events <- tibble(canonical_id = quebec_ids) |> 
+quebec_events <- tibble(canonical_id = as.character(quebec_ids)) |> 
   left_join(mpeds, by = "canonical_id")
 
 quebec_extreme_police <- lmap(list("Quebec" = quebec_events, "All" = mpeds), \(list_item){
@@ -2196,6 +2247,7 @@ trump |>
 tar_load(geo)
 
 trump <- trump |> 
+  st_drop_geometry() |> 
   group_by(geoid, issue) |> 
   count() |> 
   left_join(geo, by = "geoid") |> 
