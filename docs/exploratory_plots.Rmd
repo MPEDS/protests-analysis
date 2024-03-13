@@ -16,6 +16,7 @@ library(GGally)
 library(RColorBrewer)
 library(gridExtra)
 library(cowplot)
+library(viridis)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 opts_chunk$set(echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 7)
@@ -48,7 +49,9 @@ theme_set(custom_theme())
 # but this chunk isn't
 mpeds_raw <- tar_read(canonical_events)
 mpeds_sf <- tar_read(integrated) 
-mpeds <- mpeds_sf |> st_drop_geometry()
+mpeds <- mpeds_sf |>
+  st_drop_geometry() |> 
+  mutate(country = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada"))
 ```
 
 
@@ -350,34 +353,65 @@ take a look by state. It seems there are non-MO locations being recognized as
 happening in Missouri. See our 1:1 notes Google Doc for details.
 
 ```{r police_counts}
-glimpse_counts <- function(colname, dta = mpeds, percent = FALSE, make_kable = TRUE){
+glimpse_counts <- function(colname, dta = mpeds, percent = FALSE, make_kable = TRUE, public_private = FALSE){
   total_events <- dta |> 
     filter(!str_detect(key, "^Umbrella")) |> 
     select(key) |> 
     distinct() |> 
     nrow()
-  dta <- dta |>
+  dta_cleaned <- dta |>
     mutate("{{ colname }}" := map({{ colname }}, \(item){
       if(is.null(item)){
         return(NA)
       }
       return(str_replace_all(item, "\n", " "))
       })) |>
-    select({{colname}}) |> 
-    unnest(cols = {{colname}}) |> 
-    group_by({{ colname }}) |> 
-    count({{ colname }}) |> 
-    arrange(desc(n)) |> 
-    mutate(n = ifelse(percent,
-                      paste0(round(100 * n / total_events, 2), "%"),
-                      n)) 
-  if(make_kable){
-    return(kable(dta))
-  } else {
-    return(dta)
+    select(country, {{colname}}) |> 
+    unnest(cols = {{colname}}) 
+  
+  dta_display <- dta_cleaned |> 
+    group_by(country, {{ colname }}) |> 
+    count() |> 
+    drop_na(country) |> 
+    pivot_wider(names_from = country, values_from = n) |> 
+    mutate(Total = US + Canada) |> 
+    arrange(desc(Total)) |> 
+    mutate(across(c(Total, US, Canada), ~ifelse(percent,
+                      paste0(round(100 * . / total_events, 2), "%"),
+                      .)))
+  
+  if(public_private){
+    dta_cleaned <- dta |>
+      mutate("{{ colname }}" := map({{ colname }}, \(item){
+        if(is.null(item)){
+          return(NA)
+        }
+        return(str_replace_all(item, "\n", " "))
+        })) |>
+      select(university, country, {{colname}}) |> 
+      unnest(cols = {{colname}}) 
+    dta_us <- dta_cleaned |> 
+      filter(country == "US") |> 
+      mutate(is_public = if_else(map_lgl(university, ~.$is_uni_public[1]), "Public", "Private")) |> 
+      group_by(is_public, {{ colname }}) |> 
+      count() |> 
+      pivot_wider(names_from = is_public, values_from = n) |> 
+      arrange(desc(Public)) |> 
+      mutate(across(c(Public, Private), ~ifelse(percent,
+                      paste0(round(100 * . / total_events, 2), "%"),
+                      .)))
+    if(make_kable){
+      return(kable(dta_us))
+    } else {
+      return(dta_us)
+    }
   }
   
-    
+  if(make_kable){
+    return(kable(dta_display))
+  } else {
+    return(dta_display)
+  }
 }
 
 glimpse_counts(police_presence_and_size)
@@ -385,10 +419,28 @@ glimpse_counts(police_activities)
 glimpse_counts(type_of_police)
 ```
 
+## For US events, public/private division of police analyses
+
+```{r}
+glimpse_counts(police_presence_and_size, public_private = TRUE)
+glimpse_counts(police_activities, public_private = TRUE)
+glimpse_counts(type_of_police, public_private = TRUE)
+```
+
+# Counts of university responses 
+
 ```{r university_responses_counts}
 glimpse_counts(university_action_on_issue)
 glimpse_counts(university_discourse_on_issue)
 glimpse_counts(university_reactions_to_protest)
+```
+
+## For US, university responses disaggregated by public/private status
+
+```{r}
+glimpse_counts(police_presence_and_size, public_private = TRUE)
+glimpse_counts(police_activities, public_private = TRUE)
+glimpse_counts(type_of_police, public_private = TRUE)
 ```
 
 "NA" marks canonical events where issues were not assigned at all, or where
@@ -418,14 +470,15 @@ racial-nonracial issue was relevant to.
 ```{r}
 # combining racial and non-racial into one list-col
 combined <- mpeds |> 
-  select(key, geoid, issue, racial_issue) |> 
+  select(key, country, geoid, issue, racial_issue) |> 
   pivot_longer(cols = c(issue, racial_issue)) |> 
-  select(-name) |> 
   unnest(value) |> 
-  filter(value != "_Not relevant", value != "") |> 
+  mutate(value = if_else(name == "racial_issue", paste0(value, " (racialized)"), value)) |> 
+  select(-name) |> 
+  filter(!str_detect(value, "_Not relevant"), value != "") |> 
   distinct() |> 
-  group_by(key, geoid) |> 
-  summarize(issue = list(value))
+  group_by(key, country, geoid) |> 
+  summarize(issue = list(value), .groups = "drop")
 
 glimpse_counts(issue, combined, TRUE)
 
@@ -434,16 +487,7 @@ glimpse_counts(issue, combined, TRUE)
 ## Counts by combined issue, separated by country
 
 ```{r}
-combined <- combined |> 
-  mutate(country = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada"))
-
-us_issues <- glimpse_counts(issue, filter(combined, country == "US"), TRUE, FALSE) |> 
-  rename(US = n)
-canada_issues <- glimpse_counts(issue, filter(combined, country == "Canada"), TRUE, FALSE) |> 
-  rename(Canada = n)
-
-left_join(us_issues, canada_issues, by = "issue") |> 
-  kable()
+glimpse_counts(issue, combined) 
 ```
 
 ## Counts by (split) issue and racial issue
@@ -464,6 +508,7 @@ glimpse_counts(form)
 
 ```{r}
 glimpse_counts(target)
+
 ```
 
 # Police involvement by issue
@@ -687,11 +732,13 @@ top_police_issues |>
 
 ```
 
-```{r police_issue_baseline, width = 10, height = 8}
+```{r}
+top_issues_overall <- mpeds_police_issue$value[1:10]
+```
+
+```{r police_issue_baseline, width = 10, height = 8, include = FALSE}
 # Where all_protests is "0", and we just graph the diffs above/below the x-axis for the
 # top X overall protests
-
-top_issues_overall <- mpeds_police_issue$value[1:10]
 
 all_cats <- expand_grid(
   value = top_issues_overall, 
@@ -748,6 +795,57 @@ police_issue_combined |>
 
 ```
 
+# Police involvement by issue separated by country
+
+```{r police_involvement_country}
+
+police_involvement |> 
+  filter(!str_detect(key, "^Umbrella")) |> 
+  select(country, issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(cols = value) |> 
+  filter(value != "_Not relevant") |> 
+  drop_na() |> 
+  mutate(value = ifelse(
+    name == "racial_issue", paste(value, "(racial)"), value)
+    ) |> 
+  select(-name) |> 
+  group_by(value, country) |> 
+  count() |> 
+  ungroup() |> 
+  pivot_wider(names_from = country, values_from = n) |> 
+  select(issue = value, US, Canada) |> 
+  arrange(desc(US)) |> 
+  kable()
+
+```
+
+# Police involvement for US disaggregated by public vs private universities
+
+```{r}
+police_involvement |> 
+  filter(!str_detect(key, "^Umbrella")) |> 
+  mutate(is_public = if_else(map_lgl(university, ~.$is_uni_public[1]), "Public", "Private")) |> 
+  select(is_public, issue, racial_issue) |> 
+  pivot_longer(cols = c(issue, racial_issue)) |> 
+  unnest(cols = value) |> 
+  filter(value != "_Not relevant") |> 
+  drop_na() |> 
+  mutate(value = ifelse(
+    name == "racial_issue", paste(value, "(racial)"), value)
+    ) |> 
+  select(-name) |> 
+  group_by(is_public, value) |> 
+  count() |> 
+  ungroup() |> 
+  pivot_wider(names_from = is_public, values_from = n) |> 
+  select(issue = value, Public, Private) |> 
+  arrange(desc(Public)) |> 
+  kable()
+
+```
+
+
 # Percentages of all protest with given preset
 
 ```{r}
@@ -786,56 +884,29 @@ get_percent(racial_issue)
 summer_color <- "#ff4b3a"
 events_color <- "#2133ff"
 
-summers <- tibble(
-  x1 = seq(as.Date("2012-06-01"), as.Date("2018-06-01"), by = "1 year"),
-  x2 = seq(as.Date("2012-08-31"), as.Date("2018-08-31"), by = "1 year"),
-  y1 = -100,
-  y2 = 400
-)
 
 make_line_plot <- function(dta){
+  summers <- tibble(
+    x1 = seq(as.Date("2012-06-01"), as.Date("2018-06-01"), by = "1 year"),
+    x2 = seq(as.Date("2012-08-31"), as.Date("2018-08-31"), by = "1 year"),
+    y1 = -100,
+    y2 = Inf
+  )
   ggplot(data = dta) +
-  geom_rect(data = summers, aes(xmin = x1, xmax = x2, ymin = y1, ymax = y2), 
-            alpha = 0.1,
-            color = NA, fill = summer_color) +
-  scale_y_continuous(breaks = seq(0, 400, by = 50),
-                     ) + 
-  scale_x_date(date_breaks = "6 months",
-               date_labels = "%b %y",
-               guide = guide_axis(n.dodge = 2)) + 
-  geom_vline(linetype = "dashed", 
-             xintercept = as.Date("2012-02-01"), color = events_color) +
-  annotate(geom = "label", label = "Quebec\nprotests",
-           color = events_color, x = as.Date("2012-06-01"), y = 300,
-           family = "Lato") + 
-  
-  geom_vline(linetype = "dashed", 
-             xintercept = as.Date("2014-11-01"), color = events_color) +
-  annotate(geom = "label", label = "Darren Wilson\nnon-indictment",
-           color = events_color, x = as.Date("2014-05-15"), y = 275,
-           family = "Lato") + 
-  
-  geom_vline(linetype = "dashed",
-             xintercept = as.Date("2015-10-01"), color = events_color) +
-  annotate(geom = "label", label = "Mizzou\nprotests",
-           color = events_color, x = as.Date("2016-01-15"), y = 325,
-           family = "Lato") + 
-  
-  geom_vline(linetype = "dashed", 
-             xintercept = as.Date("2016-11-01"),
-             color = events_color) +
-  annotate(geom = "label", label = "Anti-Trump\nprotests",
-           color = events_color, x = as.Date("2017-04-01"), y = 300,
-           family = "Lato") + 
-           
-  coord_cartesian(expand = FALSE, ylim = c(0, 400),
-                  xlim = c(as.Date("2011-12-02"), as.Date("2018-11-30"))) + 
-  labs(
-    title = "Counts of protest events over time",
-    x = NULL,
-    y = "Number of associated events",
-    caption = str_wrap("Dates are aggregated to months. Segments in red indicate summers.")
-  ) 
+    geom_rect(data = summers, aes(xmin = x1, xmax = x2, ymin = y1, ymax = y2), 
+              alpha = 0.1,
+              color = NA, fill = summer_color) +
+    scale_y_continuous(breaks = \(x){seq(0, max(x), by = 50)}) + 
+    scale_x_date(date_breaks = "6 months",
+                 date_labels = "%b '%y",
+                 guide = guide_axis(n.dodge = 2)) + 
+      
+    labs(
+      title = "Counts of protest events over time",
+      x = NULL,
+      y = "Number of associated events",
+      caption = str_wrap("Dates are aggregated to months.")
+    ) 
 }
 line_dta <- mpeds |> 
   mutate(date = floor_date(start_date, "month"),
@@ -843,19 +914,92 @@ line_dta <- mpeds |>
          ) |> 
   filter(!is.na(country)) 
 
+events <- tribble(
+  ~date, ~x_offset, ~text, ~country, ~height, 
+  "2012-02-01", NA, "Quebec\nprotests", "Canada", 300,
+  "2014-11-01", -180, "Darren Wilson\nnon-indictment\nprotests", "US", 275,
+  "2015-10-01", -120, "Mizzou\nprotests", "US", 325,
+  "2015-11-01", 150, "Toronto labor\nprotests", "Canada", 275,
+  "2016-11-01", 150,"Anti-Trump\nprotests", "US", 300
+) |> 
+  mutate(date = as.Date(date),
+         x_offset = if_else(is.na(x_offset), 120, x_offset))
+
 line_dta |> 
   group_by(date) |> 
   count() |> 
   drop_na() |> 
-  make_line_plot() + 
-  geom_line(aes(x = date, y = n))
+  make_line_plot() +
+  geom_line(aes(x = date, y = n)) +
+  geom_vline(aes(xintercept = as.Date(date), color = country), data = events,
+            linetype = "dashed") + 
+  geom_label(
+    data = events,
+    aes(x = as.Date(date) + x_offset, y = height, label = text, color = country),
+    family = "Lato") + 
+  scale_color_manual(values = c(
+    "US" = "blue",
+    "Canada" = "red"
+  )) + 
+  coord_cartesian(expand = FALSE, ylim = c(0, 400),
+                  xlim = c(as.Date("2011-12-02"), as.Date("2018-11-30"))) +
+  theme(legend.position = "none")
   
+
 line_dta |> 
   group_by(date, country) |> 
   count() |> 
   drop_na() |> 
   make_line_plot() + 
-  geom_line(aes(x = date, y = n, color = country))
+  geom_line(aes(x = date, y = n, color = country)) +
+  geom_vline(aes(xintercept = as.Date(date), color = country), data = events, linetype = "dashed") + 
+  geom_label(
+    data = events,
+    aes(x = as.Date(date) + x_offset, y = height, label = text, color = country),
+    family = "Lato") +
+  scale_color_manual(values = c(
+    "US" = "blue",
+    "Canada" = "red"
+  )) + 
+  coord_cartesian(expand = FALSE, ylim = c(0, 400),
+                  xlim = c(as.Date("2011-12-02"), as.Date("2018-11-30"))) +
+  theme(
+    legend.position = "none"
+  )
+
+events_mod <- events |> 
+  mutate(height = if_else(country == "Canada", 100, height - 50),
+         x_offset = if_else(country == "Canada", x_offset + 40, x_offset)) 
+
+line_dta |> 
+  group_by(date, country) |> 
+  count() |> 
+  group_by(country) |> 
+  mutate(max_n = max(n, na.rm = TRUE)) |> 
+  ungroup() |> 
+  drop_na() |> 
+  make_line_plot() + 
+  geom_line(aes(x = date, y = n, color = country)) +
+  geom_vline(aes(xintercept = as.Date(date), color = country),
+             data = events_mod, linetype = "dashed") + 
+  geom_label(
+    data = events_mod,
+    aes(x = as.Date(date) + x_offset,
+        y = height, label = text, color = country),
+    family = "Lato") +
+  scale_color_manual(values = c(
+    "US" = "blue",
+    "Canada" = "red"
+  )) + 
+  coord_cartesian(expand = FALSE,
+                  ylim = c(0, NA),
+                  xlim = c(as.Date("2011-12-02"), as.Date("2018-11-30"))) +
+  geom_blank(aes(y = max_n + 50, color = country)) + 
+  facet_wrap(~country, ncol = 1, scales = "free_y") + 
+  theme(
+    legend.position = "none"
+  ) 
+
 ```
 
 
@@ -1482,6 +1626,82 @@ mpeds_issue_time |>
     fill = "% of events\ncontaining racial issues"
   ) + 
   scale_fill_viridis_c(option = "magma")
+
+```
+
+
+# Issue co-occurrence
+
+```{r, width = 16, height = 14}
+# For racial issue and issue separately: take top ten categories, 
+
+top_issues_combined <- mpeds |> 
+  select(issue, racial_issue) |> 
+  pivot_longer(cols = everything()) |> 
+  unnest(value) |> 
+  filter(value != "_Not relevant") |> 
+  count(value) |> 
+  slice_max(order_by = n, n = 10) |> 
+  pull(value) |> 
+  str_wrap(10)
+
+issue_heatmap <- mpeds |> 
+  mutate(
+    y = map2(issue, racial_issue, \(x, y){
+      c(x[x != "_Not relevant"], y) |> 
+        str_wrap(width = 10)
+      }),
+    x = y) |> 
+  select(country, x, y) |> 
+  unnest(x) |> 
+  unnest(y) |> 
+  filter(x != "", y != ""
+         ) |>
+  count(country, x, y) |> 
+  mutate(n = if_else(x == y, Inf, n))
+
+get_issue_cooccurrence <- function(country_name){
+  issue_export <- issue_heatmap |> 
+    filter(country == country_name) |> 
+    pivot_wider(names_from = x, values_from = n) |> 
+    mutate(across(where(is.numeric), ~if_else(is.na(.), 0, .)),
+           across(where(is.numeric), ~if_else(is.infinite(.), NA, .))) |> 
+    arrange(y)
+  issue_top_export <- issue_heatmap |> 
+    filter(country == country_name) |> 
+    filter(x %in% top_issues_combined,
+           y %in% top_issues_combined) |> 
+    pivot_wider(names_from = x, values_from = n) |> 
+    mutate(across(where(is.numeric), ~if_else(is.na(.), 0, .)),
+           across(where(is.numeric), ~if_else(is.infinite(.), NA, .))) |> 
+    arrange(y)
+  list(issue_export, 
+       issue_top_export) |> 
+    set_names(paste0(country_name, "_", c("all_issues", "top_issues")))
+}
+# writexl::write_xlsx(list(get_issue_cooccurrence("US"), get_issue_cooccurrence("Canada")) |> 
+#                       flatten(), "~/Downloads/issues.xlsx")
+
+make_issue_heatmap <- function(country_name) {
+  issue_heatmap |> 
+    mutate(n = if_else(is.infinite(n), NA, n)) |> 
+    filter(country == country_name, 
+           x != y, 
+           x %in% top_issues_combined,
+           y %in% top_issues_combined) |> 
+    ggplot(aes(x, y, fill = n)) + 
+    geom_tile() + 
+    labs(title = paste0("Issue co-occurrence in ", country_name)) +
+    theme(
+      axis.title = element_blank(),
+      legend.title = element_blank(),
+      legend.position = "bottom",
+      legend.key.width = unit(3, "cm"),
+    ) + 
+    scale_fill_viridis(option = "magma", begin = 0.1)
+}
+make_issue_heatmap("US")
+make_issue_heatmap("Canada")
 
 ```
 
