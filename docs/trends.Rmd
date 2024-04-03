@@ -1,0 +1,389 @@
+---
+title: "Tables and Figures for _Trends in Higher Ed Protest_"
+output:
+  github_document: 
+    toc: true
+---
+
+```{r setup, include=FALSE, message=FALSE}
+library(targets)
+library(knitr)
+library(sf)
+library(showtext)
+library(tigris)
+library(tidyverse)
+library(writexl)
+library(RColorBrewer)
+library(gridExtra)
+library(cowplot)
+library(viridis)
+
+opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+opts_chunk$set(echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 7)
+
+font_add_google("Lato")
+showtext_auto()
+
+custom_theme <- function(...){
+  theme_bw() + 
+    theme(
+      text = element_text(family = "Lato", size = 14),
+      ...
+    )
+}
+
+theme_set(custom_theme())
+country_scale <- c(
+  "US" = "#377EB8",
+  "Canada" = "#E41A1C"
+)
+```
+
+```{r}
+# During interactive use, this chunk has to be loaded separately from the setup chunk.
+# `targets` looks for a `_targets/` directory but cannot find one
+# if the working directory is pointed at the `docs/` directory already, as is the
+# case with Rmarkdown documents by default.
+
+# The line starting with `opts_knit$set` above sets the correct working directory,
+# but it only applies for chunks after the setup chunk, hence the separation of 
+# the data load and the rest of the setup
+
+# This is quite annoying workflow-wise, as the setup chunk is loaded automatically
+# but this chunk isn't
+mpeds_raw <- tar_read(canonical_events)
+mpeds_sf <- tar_read(integrated) 
+mpeds <- mpeds_sf |>
+  st_drop_geometry() |> 
+  mutate(country = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada") |> 
+           fct_relevel("US", "Canada")
+           )
+relationships <- tar_read(canonical_event_relationship)
+```
+
+# Figure 1: Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018
+
+```{r}
+protests_by_country <- mpeds |> 
+  filter(start_date >= as.Date("2012-01-01"),
+         start_date <= as.Date("2018-07-31"),
+         !(country == "Canada" & start_date > as.Date("2018-06-30"))) |> 
+  mutate(date = floor_date(start_date, "month")) |> 
+  group_by(country, date) |> 
+  count() |> 
+  drop_na() 
+
+breaks <- seq.Date(from = as.Date("2011-10-01"),
+                   to = as.Date("2018-04-01"),
+                   by = "6 months")
+
+ggplot(protests_by_country, aes(fill = country, x = date, y = n)) + 
+  geom_bar(stat = "identity") + 
+  scale_fill_manual(values = country_scale) + 
+  scale_x_date(date_labels = "%b '%y",
+               breaks = breaks,
+               expand = c(0, 0),
+               limits = c(as.Date("2012-01-01"), as.Date("2018-07-31")),
+               guide = guide_axis(n.dodge = 2)) + 
+  labs(
+    y = "Number of associated protests",
+    x = NULL,
+    fill = NULL,
+    title = "Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018"
+  ) + 
+  theme(legend.position = "bottom")
+
+```
+
+# Figure 2: Frequency of U.S. higher ed protest events and major waves, Jan. 2012 - July 2018 
+
+```{r us_over_time, width = 12, height = 8}
+
+summer_color <- "#ff4b3a"
+events_color <- "#2133ff"
+
+summers <- tibble(
+  x1 = seq(as.Date("2012-06-01"), as.Date("2018-06-01"), by = "1 year"),
+  x2 = seq(as.Date("2012-08-31"), as.Date("2018-08-31"), by = "1 year"),
+  y1 = -100,
+  y2 = Inf
+)
+
+events <- tribble(
+  ~date, ~x_offset, ~text, ~country, ~height, 
+  "2012-02-01", 200, "Quebec tuition\nprotests", "Canada", 90,
+  "2014-11-01", 250, "Toronto labor\nprotests", "Canada", 80,
+  "2014-11-01", -180, "Protests against\nracist policing", "US", 225,
+  "2015-10-01", -90, "Mizzou\nprotests", "US", 225,
+  "2016-11-01", -150,"Anti-Trump\nprotests", "US", 350
+) |> 
+  mutate(date = as.Date(date))
+
+
+make_plot <- function(country_opt){
+  dta <- protests_by_country |> 
+    filter(country == country_opt)
+  country_events <- events |>
+    filter(country == country_opt)
+  
+  ggplot(data = dta, aes(x = date, y = n)) + 
+    geom_line(color = country_scale[country_opt]) + 
+    geom_label(data = country_events, 
+               aes(x = date + x_offset, y = height, label = text),
+               color = country_scale[country_opt]) + 
+    scale_y_continuous(breaks = \(x){seq(0, max(x), by = 50)},
+                       limits = c(0, max(dta$n, country_events$height, na.rm = T) + 30),
+                       expand = c(0, 0)) + 
+    scale_x_date(breaks = breaks,
+                 date_labels = "%b '%y",
+                 expand = c(0, 0),
+                 guide = guide_axis(n.dodge = 2)) + 
+      
+    labs(
+      title = paste0("Counts of protests in ", country_opt, " over time"),
+      x = NULL,
+      y = "Number of associated events",
+    ) 
+}
+
+make_plot("US")
+```
+
+# Figure 3. Frequency of Canadian higher ed protest events and major waves, Jan. 2012 -  Dec. 2018 
+
+```{r canada_over_time, width = 12, height = 8}
+make_plot("Canada")
+```
+
+# Table 1: Top 10 U.S. and Canadian universities and locations for higher ed protests
+
+```{r}
+university_counts <- mpeds |> 
+  pull(university) |> 
+  bind_rows() |> 
+  group_by(university_name) |> 
+  count(name = "university_n") |> 
+  ungroup() |> 
+  drop_na() |>
+  slice_max(order_by = university_n, n = 15)
+
+location_counts <- mpeds |> 
+  group_by(location) |> 
+  count(name = "location_n") |> 
+  ungroup() |> 
+  drop_na() |> 
+  slice_max(order_by = location_n, n = 15)
+
+bind_cols(university_counts, location_counts) |> 
+  kable()
+```
+
+# Table 2: Top 15 U.S. Higher Ed Protest Issues
+
+```{r}
+
+buckets <- tribble(
+  ~bucket, ~issue,
+  "Support for Racially Marginalized Students", "Campus climate",
+  "Support for Racially Marginalized Students", "Affirmative action (For)",
+)
+
+make_issue_counts <- function(country_opt, sub_dta = NULL){
+  if(is.null(sub_dta)){
+    sub_dta <- mpeds
+  }
+  country <- sub_dta |> 
+    filter(country == country_opt)
+  
+  total_n <- country |> 
+    filter(!str_detect(key, "Umbrella")) |> 
+    pull(key) |> 
+    unique() |> 
+    length()
+  
+  raw <- country |> 
+    select(issue, racial_issue) |> 
+    pivot_longer(cols = everything()) |> 
+    unnest(value) |> 
+    filter(value != "_Not relevant", value != "",
+           value != "Anti-racism") |> 
+    count(value, name)
+  
+  bucket_counts <- buckets |> 
+    left_join(raw, by = c("issue" = "value")) |> 
+    group_by(value = bucket) |> 
+    summarize(total_n = sum(n, na.rm = TRUE)) 
+  
+  with_buckets <- bucket_counts |> 
+    mutate(bucket_placeholder = value) |> 
+    bind_rows(raw) |> 
+    left_join(buckets, by = c("value" = "issue")) |> 
+    mutate(n = ifelse(is.na(total_n), n, total_n)) |> 
+    select(-total_n) |> 
+    left_join(bucket_counts, by = c("bucket" = "value")) |> 
+    mutate(total_n = ifelse(is.na(total_n), n, total_n), 
+           name = ifelse(is.na(name), "total", name), 
+           bucket = ifelse(is.na(bucket_placeholder), bucket, bucket_placeholder)) |> 
+    arrange(desc(total_n), bucket) |> 
+    select(-bucket_placeholder, -total_n) 
+  
+  formatted <- with_buckets |> 
+    pivot_wider(names_from = name, values_from = n) |> 
+    mutate(
+      total_candidate = ifelse(is.na(issue), 0, issue) + 
+             ifelse(is.na(racial_issue), 0, racial_issue),
+      total = ifelse(is.na(total), total_candidate, total),
+      bucket = ifelse(is.na(bucket), "", bucket),
+      across(
+        where(is.numeric), ~ifelse(
+          is.na(.), "", paste0(round(100 * ./total_n, 2), "% (", ., ")"))
+      )) |> 
+    select(issue_name = value, 
+           bucket,
+           total,
+           `non-racial` = issue,
+           racial = racial_issue) |> 
+    head(15)
+  
+  return(lst(raw, formatted))
+}
+
+make_issue_counts("US")$formatted |> 
+  kable()
+
+```
+
+# Table 3: Top 15 U.S. Higher Ed Protest Issues with University as the Target
+
+```{r}
+make_issue_counts(
+  "US", mpeds |> filter(map_lgl(target, ~"University/school" %in% .))
+)$formatted |> 
+  kable()
+
+```
+
+# Table x: Top 15 Canadian Higher Ed Protest Issues
+
+```{r}
+
+get_canada_issue_counts <- function(dta){
+  canada <- dta |> 
+    filter(country == "Canada", !str_detect(key, "Umbrella"))
+  canada_racial <- canada |> 
+    filter(map_lgl(racial_issue, ~!all(. == "_Not relevant"))) |> 
+    nrow()
+  
+  canada_issue <- canada |> 
+    select(issue) |> 
+    unnest(issue) |> 
+    filter(issue != "_Not relevant") |> 
+    count(issue) |> 
+    bind_rows(tibble(issue = "Any racial issue", n = canada_racial)) |> 
+    arrange(desc(n)) |> 
+    mutate(n = ifelse(
+      is.na(n), "", paste0(round(100 * n/nrow(canada), 2), "% (", n, ")"))
+    )
+  return(canada_issue)
+}
+
+
+get_canada_issue_counts(mpeds) |> 
+  head(15) |> 
+  kable()
+
+```
+
+# Table x. Top 10 Canadian  Higher Ed Protest Issues with University as the Target
+
+```{r}
+
+mpeds |> 
+  filter(map_lgl(target, ~"University/school" %in% .)) |> 
+  get_canada_issue_counts() |> 
+  head(10) |> 
+  kable()
+
+```
+
+# Statistics for in-text citations 
+
+```{r}
+# canonical_id2 = campaign marker
+campaigns <- relationships |> 
+  filter(relationship_type == "campaign") |> 
+  select(campaign_id = canonical_id2, event_id = canonical_id1)
+
+make_stats <- function(dta){
+  dta <- dta |> filter(!str_detect(key, "Umbrella"))
+  n_protests <- length(unique(dta$key))
+  n_locations <- length(unique(dta$location))
+  n_universities <- dta$university |>
+    bind_rows()  |>
+    filter(uni_name_source %in% c(
+      "publication", "participating_universities_text"
+      )) |>
+    select(uni_id) |>
+    distinct() |>
+    nrow()
+  
+  n_offcampus <- sum(dta$off_campus)
+  n_counterprotest_checkbox <- sum(dta$counterprotest)
+  n_multiplecities <- sum(dta$multiple_cities)
+  
+  # How many campaigns had an event that took place in this country
+  n_campaigns <- dta |> 
+    mutate(canonical_id = as.numeric(canonical_id)) |> 
+    select(canonical_id) |> 
+    inner_join(campaigns, by = c("canonical_id" = "event_id")) |> 
+    pull(campaign_id) |> 
+    unique() |> 
+    length()
+  
+  n_oneform <- map_lgl(dta$form, ~length(.) == 1) |> sum()
+  n_multipleform <- map_lgl(dta$form, ~length(.) > 1) |> sum()
+  
+  n_target_uni <- map_lgl(dta$target, ~any(. == "University/school")) |> sum()
+  n_target_domestic_gov <- map_lgl(
+    dta$target, ~any(. == "Domestic government")) |> sum()
+  n_target_domestic_uni <- map_lgl(dta$target, ~(
+    any(. == "Domestic government") & any(. == "University/school"))) |> 
+    sum()
+  
+  stats <- tribble(
+    ~statistic, ~value,
+    "Protests", n_protests,
+    "Locations", n_locations,
+    "Universities", n_universities,
+    "Off-campus protests", n_offcampus,
+    "Counterprotest (via checkbox)", n_counterprotest_checkbox,
+    "Protests in multiple cities", n_multiplecities,
+    "Campaigns", n_campaigns,
+    "Events with one form", n_oneform,
+    "Events with multiple forms", n_multipleform,
+    "# for Target = University", n_target_uni,
+    "Target = Domestic government", n_target_domestic_gov,
+    "Target = Domestic gov. + University", n_target_domestic_uni
+  ) 
+  
+  return(stats)
+}
+
+bind_rows(
+  make_stats(mpeds) |> mutate(country = "Both"), 
+  make_stats(mpeds |> filter(country == "US")) |> mutate(country = "US"),
+  make_stats(mpeds |> filter(country == "Canada")) |> mutate(country = "Canada")
+) |> 
+  pivot_wider(names_from = country) |> 
+  kable()
+
+```
+
+```{r export_sheets, eval = FALSE, include = FALSE}
+make_issue_counts("US") |> 
+  writexl::write_xlsx("~/Downloads/us_issues.xlsx")
+
+get_canada_issue_counts(mpeds) |> 
+  writexl::write_xlsx("~/Downloads/canada_issues.xlsx")
+
+```

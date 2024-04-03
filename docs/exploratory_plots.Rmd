@@ -916,7 +916,7 @@ line_dta <- mpeds |>
 
 events <- tribble(
   ~date, ~x_offset, ~text, ~country, ~height, 
-  "2012-02-01", NA, "Quebec\nprotests", "Canada", 300,
+  "2012-02-01", NA, "Quebec tuition\nprotests", "Canada", 300,
   "2014-11-01", -180, "Darren Wilson\nnon-indictment\nprotests", "US", 275,
   "2015-10-01", -120, "Mizzou\nprotests", "US", 325,
   "2015-11-01", 150, "Toronto labor\nprotests", "Canada", 275,
@@ -1632,7 +1632,7 @@ mpeds_issue_time |>
 
 # Issue co-occurrence
 
-```{r, width = 16, height = 14}
+```{r, fig.dim=c(14, 12)}
 # For racial issue and issue separately: take top ten categories, 
 
 top_issues_combined <- mpeds |> 
