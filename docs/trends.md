@@ -26,14 +26,6 @@ Tables and Figures for *Trends in Higher Ed Protest*
   - [Country-level counts](#country-level-counts)
   - [Wave-specific counts](#wave-specific-counts)
 
-    ## Rows: 20 Columns: 2
-    ## ── Column specification ────────────────────────────────────────────────────────
-    ## Delimiter: ","
-    ## chr (2): bucket, issue
-    ## 
-    ## ℹ Use `spec()` to retrieve the full column specification for this data.
-    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
 # Figure 1: Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018
 
 ![](trends_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
