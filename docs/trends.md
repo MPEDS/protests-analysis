@@ -62,12 +62,12 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 | issue_name                                                   | total          | non-racial     | racial       |
 |:-------------------------------------------------------------|:---------------|:---------------|:-------------|
-| All anti-racist racial issues                                | 46.69% (2,086) |                |              |
-| University governance, admin, policies, programs, curriculum | 41.63% (1,860) | 30.42% (1,359) | 11.21% (501) |
+| University governance, admin, policies, programs, curriculum | 39.62% (1,770) | 30.42% (1,359) | 11.21% (501) |
+| All anti-racist racial issues                                | 37.47% (1,674) |                |              |
 | Labor and work                                               | 16.61% (742)   | 16.61% (742)   |              |
 | Police violence                                              | 12.44% (556)   |                | 12.44% (556) |
 | Trump and/or his administration (Against)                    | 12.4% (554)    | 12.4% (554)    |              |
-| \_Other Issue                                                | 10.52% (470)   | 8.03% (359)    | 2.48% (111)  |
+| \_Other Issue                                                | 10.27% (459)   | 8.03% (359)    | 2.48% (111)  |
 | Immigration (For)                                            | 10.14% (453)   |                | 10.14% (453) |
 | Campus climate                                               | 8.95% (400)    |                | 8.95% (400)  |
 | Environmental                                                | 7.74% (346)    | 7.74% (346)    |              |
@@ -76,14 +76,14 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | Economy/inequality                                           | 4.99% (223)    | 4.99% (223)    |              |
 | Feminism/women’s issues                                      | 4.88% (218)    | 4.88% (218)    |              |
 | Faith-based discrimination                                   | 4.5% (201)     | 4.5% (201)     |              |
-| All racist issues                                            | 1.28% (57)     |                |              |
+| All racist issues                                            | 1.12% (50)     |                |              |
 
 # Table 3: Top 15 U.S. Higher Ed Protest Issues with University as the Target
 
 | issue_name                                                   | total          | non-racial    | racial       |
 |:-------------------------------------------------------------|:---------------|:--------------|:-------------|
-| University governance, admin, policies, programs, curriculum | 86.59% (1,744) | 63.8% (1,285) | 22.79% (459) |
-| All anti-racist racial issues                                | 44.59% (898)   |               |              |
+| University governance, admin, policies, programs, curriculum | 82.17% (1,655) | 63.8% (1,285) | 22.79% (459) |
+| All anti-racist racial issues                                | 31.93% (643)   |               |              |
 | Labor and work                                               | 30.34% (611)   | 30.34% (611)  |              |
 | Campus climate                                               | 14.05% (283)   |               | 14.05% (283) |
 | Tuition, fees, financial aid                                 | 11.12% (224)   | 11.12% (224)  |              |
@@ -91,22 +91,22 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | Immigration (For)                                            | 9.04% (182)    |               | 9.04% (182)  |
 | Economy/inequality                                           | 7.6% (153)     | 7.6% (153)    |              |
 | Sexual assault/violence                                      | 6.75% (136)    | 6.75% (136)   |              |
-| \_Other Issue                                                | 6.31% (127)    | 4.62% (93)    | 1.69% (34)   |
+| \_Other Issue                                                | 6.06% (122)    | 4.62% (93)    | 1.69% (34)   |
 | Trump and/or his administration (Against)                    | 6.01% (121)    | 6.01% (121)   |              |
 | Police violence                                              | 5.16% (104)    |               | 5.16% (104)  |
 | Feminism/women’s issues                                      | 3.13% (63)     | 3.13% (63)    |              |
 | White supremacy (Against)                                    | 3.03% (61)     |               | 3.03% (61)   |
-| All racist issues                                            | 0.6% (12)      |               |              |
+| All racist issues                                            | 0.55% (11)     |               |              |
 
 # Table x: Top 15 Canadian Higher Ed Protest Issues
 
 | issue_name                                                   | total        | non-racial   | racial     |
 |:-------------------------------------------------------------|:-------------|:-------------|:-----------|
-| University governance, admin, policies, programs, curriculum | 34.93% (350) | 32.83% (329) | 2.1% (21)  |
+| University governance, admin, policies, programs, curriculum | 34.33% (344) | 32.83% (329) | 2.1% (21)  |
 | Tuition, fees, financial aid                                 | 30.04% (301) | 30.04% (301) |            |
 | Labor and work                                               | 19.86% (199) | 19.86% (199) |            |
-| \_Other Issue                                                | 16.07% (161) | 14.77% (148) | 1.3% (13)  |
-| All anti-racist racial issues                                | 14.97% (150) |              |            |
+| \_Other Issue                                                | 15.57% (156) | 14.77% (148) | 1.3% (13)  |
+| All anti-racist racial issues                                | 11.68% (117) |              |            |
 | Public funding for higher education                          | 9.18% (92)   | 9.18% (92)   |            |
 | Economy/inequality                                           | 8.98% (90)   | 8.98% (90)   |            |
 | Environmental                                                | 6.59% (66)   | 6.59% (66)   |            |

@@ -246,18 +246,24 @@ make_issue_counts <- function(country_opt, sub_dta = NULL){
     unique() |> 
     length()
   
-  raw <- country |> 
-    select(issue, racial_issue) |> 
-    pivot_longer(cols = everything()) |> 
+  raw_key <- country |> 
+    select(key, issue, racial_issue) |> 
+    pivot_longer(cols = c(everything(), -key)) |> 
     unnest(value) |> 
     filter(value != "_Not relevant", value != "",
-           value != "Anti-racism") |> 
-    count(value, name)
+           value != "Anti-racism")
+  
+  raw <- raw_key |> 
+    group_by(value, name) |> 
+    summarize(n = n(),
+              lst = list(key), .groups = "drop")
   
   bucket_counts <- racial_issues |> 
-    left_join(raw, by = c("issue" = "value")) |> 
+    left_join(raw_key, by = c("issue" = "value")) |> 
+    select(bucket, key) |> 
+    distinct() |> 
     group_by(value = bucket) |> 
-    summarize(total_n = sum(n, na.rm = TRUE)) 
+    summarize(total_n = n(), .groups = "drop")
   
   with_buckets <- bucket_counts |> 
     rename(n = total_n) |> 
@@ -267,15 +273,19 @@ make_issue_counts <- function(country_opt, sub_dta = NULL){
     arrange(desc(n)) 
   
   formatted <- with_buckets |> 
-    pivot_wider(names_from = name, values_from = n) |> 
+    pivot_wider(names_from = name, values_from = c(n, lst)) |> 
     mutate(
       is_racist = value == "All racist issues"
     ) |> 
-    slice_max(tibble(is_racist, total), n = 15, with_ties = FALSE) |> 
+    slice_max(tibble(is_racist, n_total), n = 15, with_ties = FALSE) |> 
     mutate(
-      total_candidate = ifelse(is.na(issue), 0, issue) + 
-             ifelse(is.na(racial_issue), 0, racial_issue),
-      total = ifelse(is.na(total), total_candidate, total)) |> 
+      total_candidate = map2_dbl(
+        lst_issue, lst_racial_issue,
+        \(issue, racial_issue){
+          length(unique(c(issue, racial_issue)))
+        }
+      ),
+      total = ifelse(is.na(n_total), total_candidate, n_total)) |> 
     arrange(desc(total)) |> 
     mutate(across(where(is.numeric), ~ifelse(
           is.na(.), "", paste0(
@@ -285,8 +295,8 @@ make_issue_counts <- function(country_opt, sub_dta = NULL){
     )) |> 
     select(issue_name = value, 
            total,
-           `non-racial` = issue,
-           racial = racial_issue) 
+           `non-racial` = n_issue,
+           racial = n_racial_issue) 
   
   return(lst(raw, formatted))
 }
