@@ -23,6 +23,16 @@ Tables and Figures for *Trends in Higher Ed Protest*
   the
   Target](#table-x-top-10-canadian-higher-ed-protest-issues-with-university-as-the-target)
 - [Statistics for in-text citations](#statistics-for-in-text-citations)
+  - [Country-level counts](#country-level-counts)
+  - [Wave-specific counts](#wave-specific-counts)
+
+    ## Rows: 20 Columns: 2
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (2): bucket, issue
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 
 # Figure 1: Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018
 
@@ -58,92 +68,96 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 # Table 2: Top 15 U.S. Higher Ed Protest Issues
 
-| issue_name                                                   | bucket                                     | total        | non-racial    | racial       |
-|:-------------------------------------------------------------|:-------------------------------------------|:-------------|:--------------|:-------------|
-| University governance, admin, policies, programs, curriculum |                                            | 41.2% (1820) | 30.09% (1329) | 11.12% (491) |
-| Labor and work                                               |                                            | 16.69% (737) | 16.69% (737)  |              |
-| Police violence                                              |                                            | 12.54% (554) |               | 12.54% (554) |
-| Trump and/or his administration (Against)                    |                                            | 12.45% (550) | 12.45% (550)  |              |
-| Immigration (For)                                            |                                            | 10.1% (446)  |               | 10.1% (446)  |
-| Support for Racially Marginalized Students                   | Support for Racially Marginalized Students | 9.69% (428)  |               |              |
-| Affirmative action (For)                                     | Support for Racially Marginalized Students | 0.72% (32)   |               | 0.72% (32)   |
-| Campus climate                                               | Support for Racially Marginalized Students | 8.97% (396)  |               | 8.97% (396)  |
-| \_Other Issue                                                |                                            | 10.55% (466) | 8.06% (356)   | 2.49% (110)  |
-| Environmental                                                |                                            | 7.7% (340)   | 7.7% (340)    |              |
-| Tuition, fees, financial aid                                 |                                            | 6.63% (293)  | 6.63% (293)   |              |
-| Sexual assault/violence                                      |                                            | 5.91% (261)  | 5.91% (261)   |              |
-| Economy/inequality                                           |                                            | 5.05% (223)  | 5.05% (223)   |              |
-| Feminism/women’s issues                                      |                                            | 4.87% (215)  | 4.87% (215)   |              |
-| Faith-based discrimination                                   |                                            | 4.51% (199)  | 4.51% (199)   |              |
+| issue_name                                                   | total          | non-racial     | racial       |
+|:-------------------------------------------------------------|:---------------|:---------------|:-------------|
+| All anti-racist racial issues                                | 46.69% (2,086) |                |              |
+| University governance, admin, policies, programs, curriculum | 41.63% (1,860) | 30.42% (1,359) | 11.21% (501) |
+| Labor and work                                               | 16.61% (742)   | 16.61% (742)   |              |
+| Police violence                                              | 12.44% (556)   |                | 12.44% (556) |
+| Trump and/or his administration (Against)                    | 12.4% (554)    | 12.4% (554)    |              |
+| \_Other Issue                                                | 10.52% (470)   | 8.03% (359)    | 2.48% (111)  |
+| Immigration (For)                                            | 10.14% (453)   |                | 10.14% (453) |
+| Campus climate                                               | 8.95% (400)    |                | 8.95% (400)  |
+| Environmental                                                | 7.74% (346)    | 7.74% (346)    |              |
+| Tuition, fees, financial aid                                 | 6.62% (296)    | 6.62% (296)    |              |
+| Sexual assault/violence                                      | 5.91% (264)    | 5.91% (264)    |              |
+| Economy/inequality                                           | 4.99% (223)    | 4.99% (223)    |              |
+| Feminism/women’s issues                                      | 4.88% (218)    | 4.88% (218)    |              |
+| Faith-based discrimination                                   | 4.5% (201)     | 4.5% (201)     |              |
+| All racist issues                                            | 1.28% (57)     |                |              |
 
 # Table 3: Top 15 U.S. Higher Ed Protest Issues with University as the Target
 
-| issue_name                                                   | bucket                                     | total         | non-racial    | racial       |
-|:-------------------------------------------------------------|:-------------------------------------------|:--------------|:--------------|:-------------|
-| University governance, admin, policies, programs, curriculum |                                            | 86.29% (1706) | 63.58% (1257) | 22.71% (449) |
-| Labor and work                                               |                                            | 30.65% (606)  | 30.65% (606)  |              |
-| Support for Racially Marginalized Students                   | Support for Racially Marginalized Students | 15.58% (308)  |               |              |
-| Affirmative action (For)                                     | Support for Racially Marginalized Students | 1.47% (29)    |               | 1.47% (29)   |
-| Campus climate                                               | Support for Racially Marginalized Students | 14.11% (279)  |               | 14.11% (279) |
-| Tuition, fees, financial aid                                 |                                            | 11.18% (221)  | 11.18% (221)  |              |
-| Environmental                                                |                                            | 10.17% (201)  | 10.17% (201)  |              |
-| Immigration (For)                                            |                                            | 9% (178)      |               | 9% (178)     |
-| Economy/inequality                                           |                                            | 7.74% (153)   | 7.74% (153)   |              |
-| Sexual assault/violence                                      |                                            | 6.68% (132)   | 6.68% (132)   |              |
-| Trump and/or his administration (Against)                    |                                            | 5.97% (118)   | 5.97% (118)   |              |
-| Police violence                                              |                                            | 5.16% (102)   |               | 5.16% (102)  |
-| \_Other Issue                                                |                                            | 6.42% (127)   | 4.7% (93)     | 1.72% (34)   |
-| Feminism/women’s issues                                      |                                            | 3.09% (61)    | 3.09% (61)    |              |
-| White supremacy (Against)                                    |                                            | 3.03% (60)    |               | 3.03% (60)   |
+| issue_name                                                   | total          | non-racial    | racial       |
+|:-------------------------------------------------------------|:---------------|:--------------|:-------------|
+| University governance, admin, policies, programs, curriculum | 86.59% (1,744) | 63.8% (1,285) | 22.79% (459) |
+| All anti-racist racial issues                                | 44.59% (898)   |               |              |
+| Labor and work                                               | 30.34% (611)   | 30.34% (611)  |              |
+| Campus climate                                               | 14.05% (283)   |               | 14.05% (283) |
+| Tuition, fees, financial aid                                 | 11.12% (224)   | 11.12% (224)  |              |
+| Environmental                                                | 10.18% (205)   | 10.18% (205)  |              |
+| Immigration (For)                                            | 9.04% (182)    |               | 9.04% (182)  |
+| Economy/inequality                                           | 7.6% (153)     | 7.6% (153)    |              |
+| Sexual assault/violence                                      | 6.75% (136)    | 6.75% (136)   |              |
+| \_Other Issue                                                | 6.31% (127)    | 4.62% (93)    | 1.69% (34)   |
+| Trump and/or his administration (Against)                    | 6.01% (121)    | 6.01% (121)   |              |
+| Police violence                                              | 5.16% (104)    |               | 5.16% (104)  |
+| Feminism/women’s issues                                      | 3.13% (63)     | 3.13% (63)    |              |
+| White supremacy (Against)                                    | 3.03% (61)     |               | 3.03% (61)   |
+| All racist issues                                            | 0.6% (12)      |               |              |
 
 # Table x: Top 15 Canadian Higher Ed Protest Issues
 
-| issue                                                        | n            |
-|:-------------------------------------------------------------|:-------------|
-| University governance, admin, policies, programs, curriculum | 32.64% (315) |
-| Tuition, fees, financial aid                                 | 30.88% (298) |
-| Labor and work                                               | 20.1% (194)  |
-| \_Other Issue                                                | 14.3% (138)  |
-| Any racial issue                                             | 12.95% (125) |
-| Economy/inequality                                           | 9.33% (90)   |
-| Public funding for higher education                          | 9.12% (88)   |
-| Environmental                                                | 6.84% (66)   |
-| Feminism/women’s issues                                      | 5.7% (55)    |
-| Sexual assault/violence                                      | 5.08% (49)   |
-| Social services and welfare                                  | 4.15% (40)   |
-| Faith-based discrimination                                   | 4.04% (39)   |
-| Pro-Palestine/BDS                                            | 3.01% (29)   |
-| Abortion access                                              | 2.8% (27)    |
-| Police violence/anti-law enforcement/criminal justice        | 2.28% (22)   |
+| issue_name                                                   | total        | non-racial   | racial     |
+|:-------------------------------------------------------------|:-------------|:-------------|:-----------|
+| University governance, admin, policies, programs, curriculum | 34.93% (350) | 32.83% (329) | 2.1% (21)  |
+| Tuition, fees, financial aid                                 | 30.04% (301) | 30.04% (301) |            |
+| Labor and work                                               | 19.86% (199) | 19.86% (199) |            |
+| \_Other Issue                                                | 16.07% (161) | 14.77% (148) | 1.3% (13)  |
+| All anti-racist racial issues                                | 14.97% (150) |              |            |
+| Public funding for higher education                          | 9.18% (92)   | 9.18% (92)   |            |
+| Economy/inequality                                           | 8.98% (90)   | 8.98% (90)   |            |
+| Environmental                                                | 6.59% (66)   | 6.59% (66)   |            |
+| Feminism/women’s issues                                      | 5.69% (57)   | 5.69% (57)   |            |
+| Indigenous issues                                            | 5.19% (52)   |              | 5.19% (52) |
+| Sexual assault/violence                                      | 5.19% (52)   | 5.19% (52)   |            |
+| Faith-based discrimination                                   | 4.19% (42)   | 4.19% (42)   |            |
+| Social services and welfare                                  | 3.99% (40)   | 3.99% (40)   |            |
+| Pro-Palestine/BDS                                            | 2.89% (29)   | 2.89% (29)   |            |
+| All racist issues                                            | 0.3% (3)     |              |            |
 
 # Table x. Top 10 Canadian Higher Ed Protest Issues with University as the Target
 
 | issue                                                        | n            |
 |:-------------------------------------------------------------|:-------------|
-| University governance, admin, policies, programs, curriculum | 77.48% (289) |
-| Labor and work                                               | 38.34% (143) |
-| Tuition, fees, financial aid                                 | 21.72% (81)  |
-| Any racial issue                                             | 10.19% (38)  |
-| Environmental                                                | 9.92% (37)   |
-| Sexual assault/violence                                      | 7.24% (27)   |
-| \_Other Issue                                                | 5.63% (21)   |
-| Economy/inequality                                           | 4.29% (16)   |
-| Feminism/women’s issues                                      | 4.29% (16)   |
-| Public funding for higher education                          | 2.95% (11)   |
+| University governance, admin, policies, programs, curriculum | 77.38% (301) |
+| Labor and work                                               | 37.53% (146) |
+| Tuition, fees, financial aid                                 | 21.08% (82)  |
+| Any racial issue                                             | 10.54% (41)  |
+| Environmental                                                | 9.51% (37)   |
+| Sexual assault/violence                                      | 7.2% (28)    |
+| \_Other Issue                                                | 6.17% (24)   |
+| Economy/inequality                                           | 4.11% (16)   |
+| Feminism/women’s issues                                      | 4.11% (16)   |
+| Public funding for higher education                          | 2.83% (11)   |
 
 # Statistics for in-text citations
 
+## Country-level counts
+
 | statistic                           | Both |   US | Canada |
 |:------------------------------------|-----:|-----:|-------:|
-| Protests                            | 5488 | 4417 |    965 |
-| Locations                           |  534 |  464 |     67 |
-| Universities                        |  585 |  511 |     74 |
-| Off-campus protests                 |  441 |  265 |    175 |
-| Counterprotest (via checkbox)       |  267 |  224 |     36 |
-| Protests in multiple cities         |  148 |  124 |     22 |
-| Campaigns                           |  406 |  304 |     98 |
-| Events with one form                | 3153 | 2484 |    571 |
-| Events with multiple forms          | 2110 | 1731 |    373 |
-| \# for Target = University          | 2415 | 1977 |    373 |
-| Target = Domestic government        | 1392 | 1003 |    379 |
-| Target = Domestic gov. + University |  223 |  178 |     44 |
+| Protests                            | 5488 | 4468 |   1002 |
+| Locations                           |  534 |  467 |     72 |
+| Universities                        |  585 |  513 |     74 |
+| Off-campus protests                 |  441 |  264 |    177 |
+| Counterprotest (via checkbox)       |  267 |  227 |     39 |
+| Protests in multiple cities         |  148 |  125 |     23 |
+| Campaigns                           |  406 |  310 |     98 |
+| Events with one form                | 3153 | 2534 |    605 |
+| Events with multiple forms          | 2110 | 1732 |    376 |
+| \# for Target = University          | 2415 | 2014 |    389 |
+| Target = Domestic government        | 1392 | 1007 |    384 |
+| Target = Domestic gov. + University |  223 |  179 |     44 |
+
+## Wave-specific counts

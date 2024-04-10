@@ -10,13 +10,9 @@ library(targets)
 library(knitr)
 library(sf)
 library(showtext)
-library(tigris)
 library(tidyverse)
 library(writexl)
-library(RColorBrewer)
-library(gridExtra)
-library(cowplot)
-library(viridis)
+library(nplyr)
 
 opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 opts_chunk$set(echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 7)
@@ -59,6 +55,44 @@ mpeds <- mpeds_sf |>
            fct_relevel("US", "Canada")
            )
 relationships <- tar_read(canonical_event_relationship)
+
+uni_country <- bind_rows(
+  "US" = tar_read(ipeds),
+  "Canada" = tar_read(glued),
+  .id = "country"
+) |> 
+  select(country, uni_id) |> 
+  distinct()
+
+mpeds <- mpeds |> 
+  nest_left_join(university, uni_country, by = "uni_id") |> 
+  mutate(country = map_chr(university, \(uni_dta){
+      if(nrow(uni_dta) == 0){
+        return(NA_character_)
+      }
+      if(nrow(drop_na(uni_dta, uni_id)) == 0){
+        return(NA_character_)
+      }
+      
+      # For each event, look through the university dataframe and pick a university
+      # prioritizing "other univ where protest occurs" and then "publication" if it's available
+      row <- uni_dta |> 
+        filter(!is.na(uni_id)) |> 
+        mutate(uni_name_source = factor(uni_name_source, levels = c(
+          "other univ where protest occurs", "publication"
+          ))) |>
+        arrange(uni_name_source) |>
+        slice_head(n = 1)
+      
+      # Then return the corresponding country
+      row$country
+    }), 
+    country_geo = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada"),
+    country = if_else(is.na(country), country_geo, country)) 
+
+racial_issues <- read_csv("tasks/university_covariates/hand/racial_issues.csv",
+                          show_col_types = FALSE)
+
 ```
 
 # Figure 1: Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018
@@ -110,12 +144,29 @@ summers <- tibble(
 )
 
 events <- tribble(
-  ~date, ~x_offset, ~text, ~country, ~height, 
-  "2012-02-01", 200, "Quebec tuition\nprotests", "Canada", 90,
-  "2014-11-01", 250, "Toronto labor\nprotests", "Canada", 80,
-  "2014-11-01", -180, "Protests against\nracist policing", "US", 225,
-  "2015-10-01", -90, "Mizzou\nprotests", "US", 225,
-  "2016-11-01", -150,"Anti-Trump\nprotests", "US", 350
+  ~date, ~x_offset, ~text, ~country, ~height, ~filter,
+  "2012-02-01", 200, "Quebec tuition\nprotests", "Canada", 90, \(dta){
+    dta |> 
+      filter(map_lgl(issue, ~any(str_detect(., "Tuition"))),
+             str_detect(location, "QC, Canada"))
+  },
+  "2014-11-01", 250, "Toronto labor\nprotests", "Canada", 80, \(dta){
+    dta |> 
+      filter(map_lgl(issue, ~any(str_detect(., "Labor"))),
+             str_detect(location, "Toronto"))
+  },
+  "2014-11-01", -180, "Protests against\nracist policing", "US", 225, \(dta){
+    dta |> 
+      filter(map_lgl(issue, ~any(str_detect(., "Police violence"))))
+  },
+  "2015-10-01", -90, "Mizzou\nprotests", "US", 225, \(dta){
+    dta |> 
+      filter(canonical_id %in% mizzou_events)
+  },
+  "2016-11-01", -150,"Anti-Trump\nprotests", "US", 350, \(dta){
+    dta |> 
+      filter(map_lgl(issue, ~any(str_detect(., "Trump"))))
+  }
 ) |> 
   mutate(date = as.Date(date))
 
@@ -182,12 +233,6 @@ bind_cols(university_counts, location_counts) |>
 
 ```{r}
 
-buckets <- tribble(
-  ~bucket, ~issue,
-  "Support for Racially Marginalized Students", "Campus climate",
-  "Support for Racially Marginalized Students", "Affirmative action (For)",
-)
-
 make_issue_counts <- function(country_opt, sub_dta = NULL){
   if(is.null(sub_dta)){
     sub_dta <- mpeds
@@ -209,41 +254,39 @@ make_issue_counts <- function(country_opt, sub_dta = NULL){
            value != "Anti-racism") |> 
     count(value, name)
   
-  bucket_counts <- buckets |> 
+  bucket_counts <- racial_issues |> 
     left_join(raw, by = c("issue" = "value")) |> 
     group_by(value = bucket) |> 
     summarize(total_n = sum(n, na.rm = TRUE)) 
   
   with_buckets <- bucket_counts |> 
-    mutate(bucket_placeholder = value) |> 
+    rename(n = total_n) |> 
+    mutate(value = paste0("All ", value) |> str_to_sentence()) |> 
     bind_rows(raw) |> 
-    left_join(buckets, by = c("value" = "issue")) |> 
-    mutate(n = ifelse(is.na(total_n), n, total_n)) |> 
-    select(-total_n) |> 
-    left_join(bucket_counts, by = c("bucket" = "value")) |> 
-    mutate(total_n = ifelse(is.na(total_n), n, total_n), 
-           name = ifelse(is.na(name), "total", name), 
-           bucket = ifelse(is.na(bucket_placeholder), bucket, bucket_placeholder)) |> 
-    arrange(desc(total_n), bucket) |> 
-    select(-bucket_placeholder, -total_n) 
+    mutate(name = ifelse(is.na(name), "total", name)) |> 
+    arrange(desc(n)) 
   
   formatted <- with_buckets |> 
     pivot_wider(names_from = name, values_from = n) |> 
     mutate(
+      is_racist = value == "All racist issues"
+    ) |> 
+    slice_max(tibble(is_racist, total), n = 15, with_ties = FALSE) |> 
+    mutate(
       total_candidate = ifelse(is.na(issue), 0, issue) + 
              ifelse(is.na(racial_issue), 0, racial_issue),
-      total = ifelse(is.na(total), total_candidate, total),
-      bucket = ifelse(is.na(bucket), "", bucket),
-      across(
-        where(is.numeric), ~ifelse(
-          is.na(.), "", paste0(round(100 * ./total_n, 2), "% (", ., ")"))
-      )) |> 
+      total = ifelse(is.na(total), total_candidate, total)) |> 
+    arrange(desc(total)) |> 
+    mutate(across(where(is.numeric), ~ifelse(
+          is.na(.), "", paste0(
+            round(100 * ./total_n, 2), "% (", format(., big.mark = ",") |> 
+              str_trim(), ")")
+          )
+    )) |> 
     select(issue_name = value, 
-           bucket,
            total,
            `non-racial` = issue,
-           racial = racial_issue) |> 
-    head(15)
+           racial = racial_issue) 
   
   return(lst(raw, formatted))
 }
@@ -288,8 +331,7 @@ get_canada_issue_counts <- function(dta){
 }
 
 
-get_canada_issue_counts(mpeds) |> 
-  head(15) |> 
+make_issue_counts("Canada")$formatted |> 
   kable()
 
 ```
@@ -307,6 +349,8 @@ mpeds |>
 ```
 
 # Statistics for in-text citations 
+
+## Country-level counts
 
 ```{r}
 # canonical_id2 = campaign marker
@@ -379,6 +423,26 @@ bind_rows(
 
 ```
 
+## Wave-specific counts
+
+```{r}
+mizzou_events <- relationships |> 
+  filter(canonical_id2 == 26,
+         relationship_type != "counterprotest") |> 
+  pull(canonical_id1)
+
+event_counts <- events |> 
+  mutate(count = map2_dbl(date, filter, \(date, event_filter){
+    mpeds |> 
+      event_filter() |> 
+      filter(start_date <= date + 7,
+             start_date >= date - 7,
+             !str_detect(key, "Umbrella")) |> 
+      nrow()
+  }))
+
+```
+
 ```{r export_sheets, eval = FALSE, include = FALSE}
 make_issue_counts("US") |> 
   writexl::write_xlsx("~/Downloads/us_issues.xlsx")
@@ -387,3 +451,4 @@ get_canada_issue_counts(mpeds) |>
   writexl::write_xlsx("~/Downloads/canada_issues.xlsx")
 
 ```
+
