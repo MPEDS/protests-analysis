@@ -48,11 +48,8 @@
     },
     "KernSmooth": {
       "Package": "KernSmooth",
-      "Version": "2.23-20",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8dcfa99b14c296bc9f1fd64d52fd3ce7",
-      "Requirements": []
+      "Version": "2.23-22",
+      "Source": "Repository"
     },
     "MASS": {
       "Package": "MASS",
@@ -705,11 +702,8 @@
     },
     "fs": {
       "Package": "fs",
-      "Version": "1.6.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "94af08e0aa9675a16fadbb3aaaa90d2a",
-      "Requirements": []
+      "Version": "1.6.3",
+      "Source": "Repository"
     },
     "furrr": {
       "Package": "furrr",
@@ -1069,17 +1063,8 @@
     },
     "igraph": {
       "Package": "igraph",
-      "Version": "1.4.2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "3e476b375c746d899fd53a7281d78191",
-      "Requirements": [
-        "Matrix",
-        "cpp11",
-        "magrittr",
-        "pkgconfig",
-        "rlang"
-      ]
+      "Version": "2.0.3",
+      "Source": "Repository"
     },
     "isoband": {
       "Package": "isoband",
@@ -1257,14 +1242,8 @@
     },
     "mgcv": {
       "Package": "mgcv",
-      "Version": "1.8-42",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "3460beba7ccc8946249ba35327ba902a",
-      "Requirements": [
-        "Matrix",
-        "nlme"
-      ]
+      "Version": "1.9-1",
+      "Source": "Repository"
     },
     "mime": {
       "Package": "mime",
@@ -1333,13 +1312,8 @@
     },
     "nlme": {
       "Package": "nlme",
-      "Version": "3.1-162",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "0984ce8da8da9ead8643c5cbbb60f83e",
-      "Requirements": [
-        "lattice"
-      ]
+      "Version": "3.1-164",
+      "Source": "Repository"
     },
     "nplyr": {
       "Package": "nplyr",
@@ -1622,11 +1596,8 @@
     },
     "renv": {
       "Package": "renv",
-      "Version": "0.15.5",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "6a38294e7d12f5d8e656b08c5bd8ae34",
-      "Requirements": []
+      "Version": "1.0.7",
+      "Source": "Repository"
     },
     "reprex": {
       "Package": "reprex",
@@ -1776,18 +1747,8 @@
     },
     "sf": {
       "Package": "sf",
-      "Version": "1.0-13",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "8fb4839843abc03528ff9f86424d6acd",
-      "Requirements": [
-        "DBI",
-        "Rcpp",
-        "classInt",
-        "magrittr",
-        "s2",
-        "units"
-      ]
+      "Version": "1.0-16",
+      "Source": "Repository"
     },
     "shiny": {
       "Package": "shiny",
@@ -2228,13 +2189,8 @@
     },
     "units": {
       "Package": "units",
-      "Version": "0.8-2",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Hash": "422376fe53419adcde4710d43acbcdd0",
-      "Requirements": [
-        "Rcpp"
-      ]
+      "Version": "0.8-5",
+      "Source": "Repository"
     },
     "utf8": {
       "Package": "utf8",
