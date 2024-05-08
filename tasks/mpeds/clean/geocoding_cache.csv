@@ -131,7 +131,6 @@ lat,lng,location
 35.612661,-77.3663538,"Greenville, NC, USA"
 44.8857087,-63.1005273,"Halifax, NS, Canada"
 41.6578257,-91.5346169,"Iowa City, IA, USA"
-33.4555279,-88.7903868,"Mississippi State, MS, United States"
 36.313439700000004,-82.3534727,"Johnson City, TN, USA"
 35.2225668,-97.4394777,"Norman, OK, USA"
 36.0726354,-79.7919754,"Greensboro, NC, USA"
@@ -171,7 +170,6 @@ lat,lng,location
 42.8142432,-73.9395687,"Schenectady, NY, USA"
 40.44062479999999,-79.9958864,"Pittsburgh, PA USA"
 44.6994873,-73.4529124,"Plattsburgh, NY, USA"
-40.7282239,-73.7948516,"Queens, NY, USA"
 39.78172130000001,-89.6501481,"Springfield, IL, USA"
 44.38935559999999,-79.6903316,"Barrie, ON, CAN"
 30.4514677,-91.1871466,"Baton Rouge, LA, USA"
@@ -290,7 +288,6 @@ lat,lng,location
 29.95106579999999,-90.0715323,"New Orleans, LA, USA"
 40.735657,-74.1723667,"Newark, NJ, USA"
 42.6011813,-76.1804843,"Cortland, NY, USA"
-45.4215296,-75.69719309999999,"Ottawa, ON, CAN"
 40.2283371,-74.9322596,"Newtown, PA, USA"
 41.788489,-72.2292913,"Mansfield, CT, USA"
 36.9685219,-86.4808043,"Bowling Green, KY, USA"
@@ -405,6 +402,7 @@ lat,lng,location
 39.109724,-95.0877465,"Tonganoxie, KS, USA"
 43.653226,-79.3831843,"Toronto, ON, CA"
 40.6781784,-73.9441579,"Brooklyn, NY, USA"
+39.9259463,-75.1196199,"Camden, NJ, USA"
 33.7879139,-117.8531007,"Orange,  CA, USA"
 33.4918203,-80.8556476,"Orangeburg, SC, USA"
 40.2968979,-111.6946475,"Orem, UT, USA"
@@ -470,7 +468,6 @@ lat,lng,location
 49.3199816,-123.0724139,"North Vancouver, BC,  Canada"
 33.2098407,-87.56917349999999,"Tuscaloosa, AL, USA"
 40.3295359,-76.51524429999999,"Annville, PA, USA"
-43.653226,-79.3831843,"Toronto, ON, CAN"
 38.1074198,-122.5697032,"Novato, CA, USA"
 45.2733153,-66.0633081,"St. John, NB, Canada"
 37.3058839,-89.51814759999999,"Cape Girardeau, MO, USA"
@@ -524,11 +521,13 @@ lat,lng,location
 42.09868669999999,-75.91797380000001,"Binghamton, NY, United States"
 42.09868669999999,-75.91797380000001,"Binghamton, NY USA"
 45.4765446,-75.7012723,"Gatineau, Quebec, Canada"
+45.4215296,-75.69719309999999,"Ottawa, ON, CAN"
 42.3149367,-83.03636329999999,"Windsor, ON, Canada"
 42.9849233,-81.2452768,"London, ON, Canada"
 43.653226,-79.3831843,"Toronto, ON, Canada."
 43.653226,-79.3831843,"Toronto,ON, Canada"
 43.653226,-79.3831843,"Toronto, Ontario, Canada"
+42.1142112,-84.2910759,"Columbia, MI, USA"
 38.9403808,-92.3277375,University of Missouri-Columbia
 38.7092187,-90.3083223,University of Missouri St.Louis
 38.9403808,-92.3277375,University of Missouri
@@ -1199,6 +1198,8 @@ lat,lng,location
 43.676042700000004,-79.41072840000001,George Brown College
 43.7734535,-79.50186839999999,Seneca college campus at York University
 44.76470579999999,-106.9429672,Sheridan college
+40.7416473,-74.1745558,Rutgers-Newark
+39.9484052,-75.1217367,Rutgers-Camden
 44.4613633,-93.1559742,Carleton College
 41.6617986,-86.22041809999999,Indiana University South Bend
 41.7055716,-86.2353388,Notre Dame
@@ -1228,6 +1229,7 @@ lat,lng,location
 44.8538061,-123.2405476,Western Oregon University
 40.8666026,-74.1976433,Montclair State University
 46.78174629999999,-71.2747424,Université Laval
+39.1682449,-86.52300729999999,Indiana University |
 45.4042669,-71.89367399999999,Université de Sherbrooke
 46.78174629999999,-71.2747424,Université de Laval
 48.419008,-71.052621,Université du Québec à Chicoutimi
@@ -1277,6 +1279,7 @@ lat,lng,location
 40.7188851,-74.0117547,Borough of Manhattan Community College
 40.7010415,-73.7961103,York College
 40.8200471,-73.9492724,City College of New York
+40.7509381,-73.9735038,students from different CUNY schools
 40.7707237,-73.9892342,John Jay College
 42.9641221,-85.8890404,GVSU
 41.8760026,-87.6251806,Roosevelt University
@@ -1388,7 +1391,6 @@ lat,lng,location
 34.5463968,-112.4762283,Prescott College
 29.1917102,-81.0501089,Embry Riddle Aeronautical University
 43.5482599,-79.66268409999999,University of Toronto Mississauga (UTM)
-43.6628917,-79.39565640000001,St George campus
 33.1512505,-117.1821885,Palomar College
 34.4208305,-119.6981901,Santa Barbara
 45.4042669,-71.89367399999999,Université de Sherbrooke.
@@ -1475,6 +1477,7 @@ lat,lng,location
 38.6487895,-90.3107962,Washington University
 43.79602939999999,-79.3485918,Seneca College
 43.6628917,-79.39565640000001,the St George campus
+43.6628917,-79.39565640000001,St George campus
 37.0965278,-113.5684164,St. George
 54.283113,-0.399752,Scarborough
 51.253775,-85.3232139,Ontario Institute for Student Education
