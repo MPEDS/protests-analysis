@@ -57,3 +57,4 @@ source_safely <- function(filename){
   # If errors pass just source it
   source(filename)
 }
+

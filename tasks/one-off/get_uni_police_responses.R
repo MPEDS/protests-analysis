@@ -121,4 +121,7 @@ get_addtl_info <- function(){
     group_split() |>
     set_names(group_keys(key_info)$response_type) |>
     map(\(dta){select(dta, -response_type)})
+
+  writexl::write_xlsx(lst(responses, summary_counts, key_info),
+                      "docs/data-cleaning-requests/test.xlsx")
 }

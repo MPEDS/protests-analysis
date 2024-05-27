@@ -242,3 +242,4 @@ list(
   # Plotting and other exploratory analysis ---
   tar_render(exploratory, "docs/exploratory_plots.Rmd")
 )
+

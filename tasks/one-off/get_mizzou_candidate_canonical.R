@@ -1,7 +1,5 @@
 # stuff to pull:
 
-  #
-
   # university-reactions-to-protest
   # university-discourse-on-protest
   # university-action-on-issue
@@ -11,9 +9,7 @@
 # tbl(con, "coder_event_creator")
 
 get_mizzou_candidate_canonical <- function(){
-  con <- connect_sheriff()
-  coder_event_creator <- tbl(con, "coder_event_creator") |>
-    collect() |>
+  con <- connect_sheriff() |> collect() |>
     # if text exists, use it as value
     mutate(value = case_when(!is.na(text) ~ text,
                              T ~ value)) |>
