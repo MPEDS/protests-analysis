@@ -40,6 +40,7 @@ tar_option_set(
   resources = tar_resources(
     gcp = tar_resources_gcp(
       bucket = "mpeds_targets",
+      prefix = "protests_analysis",
       predefined_acl = "bucketLevel"),
   )
 )
@@ -56,7 +57,8 @@ list(
              # to force a download of the MPEDS database from the `sheriff` server
              # this lets us toggle the download on and off without changes to
              # source-control tracked files
-             cue = tar_cue_if("DOWNLOAD_MPEDS")),
+             # cue = tar_cue_if("DOWNLOAD_MPEDS")
+             ),
   tar_target(
     canonical_event_relationship,
     get_canonical_event_relationship(canonical_events)
