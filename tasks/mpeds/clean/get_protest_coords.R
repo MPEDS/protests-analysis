@@ -92,6 +92,7 @@ get_coords <- function(location, cache){
   return(tibble(
     lat = coords$lat,
     lng = coords$lng,
-    location = location
+    location = location,
+    clean_location = response$results[[1]]$geometry$formatted_address,
   ))
 }
