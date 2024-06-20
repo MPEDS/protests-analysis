@@ -1,4 +1,7 @@
-
+# gets specific canonical events requested by kristen:
+#
+# 20151102_Columbia_Occupation_UniversityGovernance
+# 20151109_Columbia_Rally_CampusClimate
 
 get_columbia_keys <- function() {
   source("tasks/mpeds/import/connect_sheriff.R")
@@ -8,6 +11,7 @@ get_columbia_keys <- function() {
   candidates <- tbl(con, "coder_event_creator")
   canonicals <- tbl(con, "canonical_event")
   link <- tbl(con, "canonical_event_link")
+  metadata <- tbl(con,"event_metadata")
 
   relevant_canonicals <- canonicals |>
     filter(key=="20151102_Columbia_Occupation_UniversityGovernance" |
@@ -18,6 +22,7 @@ get_columbia_keys <- function() {
     left_join(candidates, by = c("cec_id" = "id")) |>
     select(key, event_id) |>
     distinct() |>
+    inner_join(metadata, by = "event_id") |>
     collect()
 
 
