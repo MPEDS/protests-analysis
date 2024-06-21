@@ -229,7 +229,8 @@ list(
       canonical_event_relationship,
       ipeds,
       us_covariates,
-      uni_pub_xwalk_reference
+      uni_pub_xwalk_reference,
+      us_geo
     )
   ),
 
@@ -242,6 +243,6 @@ list(
   #            cue = tar_cue(mode = "always")),
 
   # Plotting and other exploratory analysis ---
-  tar_render(exploratory, "docs/exploratory_plots.Rmd")
+  tar_render(exploratory, "docs/exploratory_plots/exploratory_plots.Rmd")
 )
 
