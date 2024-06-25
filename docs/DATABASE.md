@@ -44,6 +44,12 @@ the following command:
 ssh -L 3306:localhost:3306 <YOUR_USERNAME>@sheriff.ssc.wisc.edu -fN
 ```
 
+If you are looking for a quick list of all of the tables in the database,
+use the following command:
+```R
+dbListTables(con)
+```
+
 Lastly, I recommend installing a graphical SQL explorer. I use
 [DBeaver Community](https://dbeaver.io).
 
