@@ -528,14 +528,12 @@ lat,lng,location
 43.653226,-79.3831843,"Toronto,ON, Canada"
 43.653226,-79.3831843,"Toronto, Ontario, Canada"
 42.1142112,-84.2910759,"Columbia, MI, USA"
+43.0125274,-83.6874562,"Flint, MI, USA"
 38.9403808,-92.3277375,University of Missouri-Columbia
 38.7092187,-90.3083223,University of Missouri St.Louis
 38.9403808,-92.3277375,University of Missouri
 38.9403808,-92.3277375,University of Missouri Columbia
 38.9403808,-92.3277375,University of Missouri-Columbia's campus
-41.935056,-88.7734365,Northern Illinois University
-35.9752487,-78.899654,North Carolina Central University
-35.8430861,-90.6748589,Arkansas State University
 42.3709104,-72.5170028,Amherst College
 42.3709104,-72.5170028,Amherst College in Massachusetts
 42.3867598,-72.5300515,University of Massachusetts Amherst
@@ -694,12 +692,12 @@ lat,lng,location
 40.4432027,-79.9428499,Carnegie Mellon
 40.4432027,-79.9428499,Carnegie Mellon University
 40.4443533,-79.960835,University of Pittsburgh Pittsburgh Campus
-29.888411,-97.938351,Texas State University San Marcos
 45.450223,-122.670186,Lewis & Clark College
 39.5437205,-119.8141582,University of Nevada Reno
 37.5526695,-77.4527359,Virginia Commonwealth University
 43.1305531,-77.6260033,University of Rochester
 37.7765643,-122.4507187,University of San Francisco
+29.888411,-97.938351,Texas State University San Marcos
 44.2611716,-88.3989041,Lawrence University
 35.614396,-82.566611,University of North Carolina Asheville
 43.2103817,-77.95108309999999,SUNY Brockport
@@ -745,6 +743,7 @@ lat,lng,location
 29.7604267,-95.3698028,Houston Community College
 29.7214214,-95.3592691,Texas Southern University
 42.4199229,-76.4969344,Ithaca College
+41.935056,-88.7734365,Northern Illinois University
 42.4534492,-76.4735027,Cornell University
 41.3148754,-105.5665744,University of Wyoming
 40.8201966,-96.7004763,University of Nebraska Lincoln
@@ -1156,6 +1155,7 @@ lat,lng,location
 39.0312035,-84.4625345,Northern Kentucky University
 37.3952229,-79.1515702,Virginia University of Lynchburg
 39.1974437,-96.5847249,K-State
+35.8430861,-90.6748589,Arkansas State University
 33.7756178,-84.39628499999999,Georgia Tech
 30.211991,-92.019914,University of Louisiana
 30.0307277,-90.06956939999999,University of New Orleans school of hotel restaurant and tourism.
@@ -1484,3 +1484,5 @@ lat,lng,location
 51.253775,-85.3232139,Ontario Institute for Student Education
 43.6628917,-79.39565640000001,UofT
 34.1439461,-118.118761,Pasadena City College
+39.0343551,-94.58342739999999,University of Missouri-Kansas City
+43.0125274,-83.6874562,University of Michigan in Flint

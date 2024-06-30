@@ -123,5 +123,5 @@ get_addtl_info <- function(){
     map(\(dta){select(dta, -response_type)})
 
   writexl::write_xlsx(lst(responses, summary_counts, key_info),
-                      "docs/data-cleaning-requests/test.xlsx")
+                      "docs/data-cleaning-requests/mizzou_candidate_canonical.xlsx")
 }

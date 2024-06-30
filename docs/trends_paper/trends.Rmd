@@ -129,7 +129,7 @@ ggplot(protests_by_country, aes(fill = country, x = date, y = n)) +
 
 ```
 
-# Figure 2: Frequency of U.S. higher ed protest events and major waves, Jan. 2012 - July 2018 
+# Figure 2: Frequency of U.S. higher ed protest events and major waves, Jan. 2012 - July 2018
 
 ```{r us_over_time, width = 12, height = 8}
 
@@ -200,7 +200,7 @@ make_plot <- function(country_opt){
 make_plot("US")
 ```
 
-# Figure 3. Frequency of Canadian higher ed protest events and major waves, Jan. 2012 -  Dec. 2018 
+# Figure 3. Frequency of Canadian higher ed protest events and major waves, Jan. 2012 - Dec. 2018
 
 ```{r canada_over_time, width = 12, height = 8}
 make_plot("Canada")
@@ -346,7 +346,7 @@ make_issue_counts("Canada")$formatted |>
 
 ```
 
-# Table x. Top 10 Canadian  Higher Ed Protest Issues with University as the Target
+# Table x. Top 10 Canadian Higher Ed Protest Issues with University as the Target
 
 ```{r}
 
@@ -358,7 +358,7 @@ mpeds |>
 
 ```
 
-# Statistics for in-text citations 
+# Statistics for in-text citations
 
 ## Country-level counts
 
@@ -461,4 +461,3 @@ get_canada_issue_counts(mpeds) |>
   writexl::write_xlsx("docs/trends_paper/.xlsx")
 
 ```
-

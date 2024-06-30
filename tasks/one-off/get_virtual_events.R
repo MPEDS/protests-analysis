@@ -1,7 +1,13 @@
+# pulling all virtual events so that coders can pull their locations
 
-get_non_USA_Canada <- function() {
+get_virtual_events <- function() {
 
-  tar_load(integrated)
+  con <- connect_sheriff()
+  # using this instead of integrated for now
+  canonical_events <- tbl(con, "canonical_event") |>
+    filter(!str_detect(location, "USA"),
+           !str_detect(location, "Canada"),
+           !str_detect(key, "Umbrella")) |> collect()
 
   all_non_USA_canada_locations <- integrated |>
     filter(!grepl("USA", location),
