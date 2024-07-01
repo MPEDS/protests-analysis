@@ -358,7 +358,9 @@ mpeds |>
 
 ```
 
-# Table x. Top 10 U.S. Higher Ed Protest Issues by year and by month
+# NEW TABLES BELOW THIS POINT
+
+# Table x. Top 10 U.S. Higher Ed Protest Issues by year
 
 ```{r}
 make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
@@ -369,7 +371,79 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
   country <- sub_dta |> 
     filter(country == country_opt)
   
-  country <- mpeds
+  total_n <- country |> 
+    filter(!str_detect(tolower(key), "umbrella")) |> 
+    pull(key) |> 
+    unique() |> 
+    length()
+  
+  dates <- country |> 
+    select(canonical_id, key, start_date, end_date) |> 
+    filter(!str_detect(start_date, "2011")|!str_detect(end_date, "2011")) |>
+    mutate(year = format(start_date, "%Y")) |> 
+    group_by(year) |> 
+    summarise("number_of_protests" = sum(length(unique(key))))
+  
+  country <- country |> 
+    mutate(year = year(start_date))
+    
+  issues_values <- country |> 
+    select(key, issue, racial_issue, year) |> 
+    pivot_longer(cols = c(everything(), -key, -year)) |> 
+    unnest(value) |> 
+    filter(value != "_Not relevant", value != "",
+           value != "Anti-racism")
+  
+  top_issues <- issues_values |> 
+    group_by(value, name) |> 
+    summarize(n = n(),
+              lst = list(key), .groups = "drop") |> 
+    ungroup() |> 
+    drop_na() |> 
+    slice_max(order_by = n, n = 10, with_ties = FALSE) |> 
+    select(!lst)
+  
+  issue_count_by_year <- issues_values |>  
+    right_join(top_issues, by = c("name", "value")) |> 
+    group_by(year, issue = value, type = name, total_n = n) |> 
+    summarize(n = n())  |> 
+    ungroup() |> 
+    pivot_wider(names_from = "year",
+                values_from = "n") |> 
+    select(-"2011") |> 
+    arrange(desc(total_n)) 
+  
+  return(issue_count_by_year)
+}
+  
+  # running same analysis using end_date, just to check
+  # country$end_date <- as.Date(country$end_date)
+  # 
+  # end_dates <-country |> 
+  #   select(canonical_id, key, start_date, end_date) |> 
+  #   filter(!str_detect(start_date, "2011")|!str_detect(end_date, "2011")) |>
+  #   mutate(year = format(end_date, "%Y")) |> 
+  #   group_by(year) |> 
+  #   summarise("number_of_protests" = sum(length(unique(key))))
+  
+
+  make_issue_counts_by_year("US") |> 
+    kable()
+  
+  
+  # ISSUES BY MONTH -- should probably just make it all one function with
+  # interval parameter instead. will correct in the future
+  
+  make_issue_counts_by_month <- function(country_opt, sub_dta = NULL) {
+  if(is.null(sub_dta)){
+    sub_dta <- mpeds
+  }
+  
+  country <- sub_dta |> 
+    filter(country == country_opt)
+  
+  #DELETE THIS LINE
+  country <- mpeds  #DELETE THIS LINE
   
   total_n <- country |> 
     filter(!str_detect(tolower(key), "umbrella")) |> 
@@ -379,12 +453,88 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
   
   dates <- country |> 
     select(canonical_id, key, start_date, end_date) |> 
-    filter(!str_detect(start_date, "2011")|!str_detect(end_date, "2011")) |> 
-    group_by(start_date) |> 
-    summarise()
-}
+    filter(!str_detect(start_date, "2011")|!str_detect(end_date, "2011")) |>
+    mutate(month_year = format(start_date, "%Y-%m")) |> 
+    group_by(month_year) |> 
+    summarise("number_of_protests" = sum(length(unique(key))))
+  
+  country <- country |> 
+    mutate(year = year(start_date)) |> 
+    mutate(month_year = format(start_date, "%Y-%m"))
+    
+  issues_values <- country |> 
+    select(key, issue, racial_issue, month_year) |> 
+    pivot_longer(cols = c(everything(), -key, -month_year)) |> 
+    unnest(value) |> 
+    filter(value != "_Not relevant", value != "",
+           value != "Anti-racism")
+  
+  top_issues <- issues_values |> 
+    group_by(value, name) |> 
+    summarize(n = n(),
+              lst = list(key), .groups = "drop") |> 
+    ungroup() |> 
+    drop_na() |> 
+    slice_max(order_by = n, n = 10, with_ties = FALSE) |> 
+    select(!lst)
+  
+  issue_count_by_month <- issues_values |>  
+    right_join(top_issues, by = c("name", "value")) |> 
+    group_by(month_year, issue = value, type = name, total_n = n) |> 
+    summarize(n = n())  |> 
+    ungroup() |> 
+    pivot_wider(names_from = "month_year",
+                values_from = "n") |> 
+    select(!starts_with("2011")) |> 
+    arrange(desc(total_n)) 
+  
+  return(issue_count_by_month)
+  
+  }
+  
+```
+  
+# Table x. Top 10 U.S. Higher Ed Protest Issues by month
+```{r}  
+  make_issue_counts_by_month("US") |> 
+    kable()
 ```
 
+# Table x. Top 10 Canada Higher Ed Protest Issues by year
+```{r}
+ make_issue_counts_by_year("Canada") |> 
+    kable()
+
+```
+
+# Table x. Top 10 Canada Higher Ed Protest Issues by month
+```{r}
+ make_issue_counts_by_month("Canada") |> 
+    kable()
+
+```
+
+
+# U.S. Waves Count
+
+## First Wave
+```{r}
+racial_issues <- mpeds |> 
+  select(canonical_id, key, start_date, racial_issue) |> 
+  st_drop_geometry() |> 
+  unnest(cols = c(racial_issue)) |> 
+  filter(racial_issue == "Police violence") |> 
+  filter(start_date >= as.Date("2014-11-20") & 
+         start_date <= as.Date("2014-12-15"))
+```
+
+## Second Wave
+```{r}
+
+  source("tasks/one-off/get_any_umbrella.R")
+  mizzou_wave <- get_any_umbrella("Umbrella_Mizzou_Anti-Racism_2015-2016_Oct-Feb")
+
+```
 
 # Statistics for in-text citations
 
@@ -482,10 +632,10 @@ event_counts <- events |>
 ```
 
 ```{r export_sheets}
-make_issue_counts("US") |> 
-  writexl::write_xlsx("docs/trends_paper/us_issues.xlsx")
-
-get_canada_issue_counts(mpeds) |> 
-  writexl::write_xlsx("docs/trends_paper/canada_issues.xlsx")
+# make_issue_counts("US") |> 
+#   writexl::write_xlsx("docs/trends_paper/us_issues.xlsx")
+# 
+# get_canada_issue_counts(mpeds) |> 
+#   writexl::write_xlsx("docs/trends_paper/canada_issues.xlsx")
 
 ```
