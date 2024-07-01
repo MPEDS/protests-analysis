@@ -212,7 +212,7 @@ make_plot("Canada")
 university_counts <- mpeds |> 
   pull(university) |> 
   bind_rows() |> 
-  group_by(university_name) |> 
+  group_by(uni_name) |> 
   count(name = "university_n") |> 
   ungroup() |> 
   drop_na() |>
@@ -241,7 +241,7 @@ make_issue_counts <- function(country_opt, sub_dta = NULL){
     filter(country == country_opt)
   
   total_n <- country |> 
-    filter(!str_detect(key, "Umbrella")) |> 
+    filter(!str_detect(tolower(key), "umbrella")) |> 
     pull(key) |> 
     unique() |> 
     length()
@@ -358,6 +358,34 @@ mpeds |>
 
 ```
 
+# Table x. Top 10 U.S. Higher Ed Protest Issues by year and by month
+
+```{r}
+make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
+  if(is.null(sub_dta)){
+    sub_dta <- mpeds
+  }
+  
+  country <- sub_dta |> 
+    filter(country == country_opt)
+  
+  country <- mpeds
+  
+  total_n <- country |> 
+    filter(!str_detect(tolower(key), "umbrella")) |> 
+    pull(key) |> 
+    unique() |> 
+    length()
+  
+  dates <- country |> 
+    select(canonical_id, key, start_date, end_date) |> 
+    filter(!str_detect(start_date, "2011")|!str_detect(end_date, "2011")) |> 
+    group_by(start_date) |> 
+    summarise()
+}
+```
+
+
 # Statistics for in-text citations
 
 ## Country-level counts
@@ -458,6 +486,6 @@ make_issue_counts("US") |>
   writexl::write_xlsx("docs/trends_paper/us_issues.xlsx")
 
 get_canada_issue_counts(mpeds) |> 
-  writexl::write_xlsx("docs/trends_paper/.xlsx")
+  writexl::write_xlsx("docs/trends_paper/canada_issues.xlsx")
 
 ```
