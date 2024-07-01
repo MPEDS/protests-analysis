@@ -362,7 +362,7 @@ mpeds |>
 
 # Table x. Top 10 U.S. Higher Ed Protest Issues by year
 
-```{r}
+```{r, message=FALSE}
 make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
   if(is.null(sub_dta)){
     sub_dta <- mpeds
@@ -495,20 +495,20 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
 ```
   
 # Table x. Top 10 U.S. Higher Ed Protest Issues by month
-```{r}  
+```{r, message=FALSE}  
   make_issue_counts_by_month("US") |> 
     kable()
 ```
 
 # Table x. Top 10 Canada Higher Ed Protest Issues by year
-```{r}
+```{r, message=FALSE}
  make_issue_counts_by_year("Canada") |> 
     kable()
 
 ```
 
 # Table x. Top 10 Canada Higher Ed Protest Issues by month
-```{r}
+```{r, message=FALSE}
  make_issue_counts_by_month("Canada") |> 
     kable()
 
@@ -534,6 +534,52 @@ racial_issues <- mpeds |>
   source("tasks/one-off/get_any_umbrella.R")
   mizzou_wave <- get_any_umbrella("Umbrella_Mizzou_Anti-Racism_2015-2016_Oct-Feb")
 
+```
+
+## Third Wave
+```{r}
+us_protests_issues <- us_protests |> 
+   select(canonical_id, key, start_date, issue, racial_issue) |> 
+   unnest(issue) |> 
+   unnest(racial_issue)
+
+ # issue == trump, racial_issue != immigration
+ trump_not_immigration <- us_protests_issues |> 
+   filter(str_detect(tolower(issue),"trump")) |> 
+   filter(!str_detect(tolower(racial_issue), "immigration"))
+ 
+ # issue != trump, racial_issue == immigration
+ immigration_not_trump <- us_protests_issues |>
+   filter(str_detect(tolower(racial_issue), "immigration")) |> 
+   filter(!str_detect(tolower(issue),"trump")) 
+ 
+ # issue = trump, issue = immigration
+ trump_and_immigration <- us_protests_issues |> 
+   filter(str_detect(tolower(issue),"trump")) |> 
+   filter(str_detect(tolower(racial_issue), "immigration"))
+ 
+ third_us_wave_counts <- c(nrow(trump_not_immigration), 
+                           nrow(immigration_not_trump), 
+                           nrow(trump_and_immigration))
+ 
+ third_us_wave_summary <- tibble(
+   data_frame = c("trump_not_immigration", "immigration_not_trump", "trump_and_immigration"),
+   row_count = third_us_wave_counts 
+   ) 
+ 
+ third_us_wave_summary <- third_us_wave_summary |>
+   add_row(data_frame = "total", row_count = sum(third_us_wave_counts)) 
+
+ make_weekly_count <- function(issue_df) {
+   weekly_count <- issue_df |> 
+   mutate(week_start = as.Date(format(start_date - (as.numeric(format(start_date, "%u")) - 1), "%Y-%m-%d"))) |> 
+   group_by(week_start) |> 
+   summarize(n = n())
+ }
+
+ trump_not_immigration_weekly_count <- make_weekly_count(trump_not_immigration)
+ immigration_not_trump_weekly_count <- make_weekly_count(immigration_not_trump)
+ trump_and_immigration_weekly_count <- make_weekly_count(trump_and_immigration)
 ```
 
 # Statistics for in-text citations
