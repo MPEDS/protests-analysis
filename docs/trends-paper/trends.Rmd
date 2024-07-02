@@ -806,10 +806,10 @@ event_counts <- events |>
 ```
 
 ```{r export_sheets}
-# make_issue_counts("US") |> 
-#   writexl::write_xlsx("docs/trends_paper/us_issues.xlsx")
-# 
-# get_canada_issue_counts(mpeds) |> 
-#   writexl::write_xlsx("docs/trends_paper/canada_issues.xlsx")
+make_issue_counts("US") |>
+  writexl::write_xlsx("docs/trends-paper/us_issues.xlsx")
+
+get_canada_issue_counts(mpeds) |>
+  writexl::write_xlsx("docs/trends-paper/canada_issues.xlsx")
 
 ```
