@@ -25,3 +25,4 @@ get_canada_covariates <- function(canada_rentburden, canada_mhi, localities){
 
   return(covariates)
 }
+

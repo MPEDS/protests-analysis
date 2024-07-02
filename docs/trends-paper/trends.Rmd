@@ -650,20 +650,61 @@ writexl::write_xlsx(us_waves_summary,
     unnest(issue) |> 
     unnest(racial_issue) 
   
-  quebec_tuition_protests <- canada_protests_issues |>
-    filter(str_detect(location,"QC")) |> 
+  quebec_protests <- canada_protests_issues |>
+    filter(str_detect(location,"QC"))  
+    
+  quebec_tuition_protests <- quebec_protests |> 
     filter(issue == "Tuition, fees, financial aid") |> 
+    filter(str_detect(start_date, "2012-"))
+    
+  quebec_police_violence_protests <- quebec_protests |> 
+    filter(issue == "Police violence/anti-law enforcement/criminal justice") |> 
     filter(str_detect(start_date, "2012-"))
   
   quebec_tuition_weekly_count <- make_weekly_count(quebec_tuition_protests)
+  quebec_police_violence_protests_weekly_count <- make_weekly_count(quebec_police_violence_protests)
 
   first_canada_wave_summary <- tibble(
-     wave = "Quebec Tuition Protests in 2012",
-     n_protests = nrow(quebec_tuition_protests) 
+     issue = c("Quebec Tuition Protests in 2012", "Quebec Police Violence Protests in 2012"),
+     n_protests = c(nrow(quebec_tuition_protests), nrow(quebec_police_violence_protests)) 
      )
+  
+  writexl::write_xlsx(lst(first_canada_wave_summary, 
+                         quebec_tuition_weekly_count, 
+                         quebec_police_violence_protests_weekly_count),
+                      "docs/trends-paper/wave-counts/canada-wave-counts/first_canada_wave_counts.xlsx")
 
 ```
 
+## Second Wave - Toronto Labor
+```{r}
+  
+  toronto_protests <- canada_protests_issues |>
+      filter(str_detect(location,"Toronto"))  
+  
+  toronto_labor_protests <- toronto_protests |> 
+      filter(issue == "Labor and work") |> 
+      filter(str_detect(start_date, "2015-") | str_detect(start_date, "2014-"))
+  
+  toronto_labor_weekly_count <- make_weekly_count(toronto_labor_protests)
+  
+  quebec_labor_protests <- quebec_protests |> 
+      filter(issue == "Labor and work") |> 
+      filter(str_detect(start_date, "2015-") | str_detect(start_date, "2014-"))
+  
+  quebec_labor_weekly_count <- make_weekly_count(quebec_labor_protests)
+
+  second_canada_wave_summary <- tibble(
+     criteria = c("Toronto Labor Protests 2014/2015", "Quebec Labor Protests 2014/2015"),
+     n_protests = c(nrow(toronto_labor_protests), nrow(quebec_labor_protests)) 
+     )
+  
+  writexl::write_xlsx(lst(second_canada_wave_summary, 
+                         toronto_labor_weekly_count, 
+                         quebec_labor_weekly_count),
+                      "docs/trends-paper/wave-counts/canada-wave-counts/second_canada_wave_counts.xlsx")
+
+```
 
 # Statistics for in-text citations
 

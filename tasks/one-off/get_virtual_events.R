@@ -1,25 +1,17 @@
-# pulling all virtual events so that coders can pull their locations
+# pulling all virtual events so that coders can get their locations
 
 get_virtual_events <- function() {
 
-  con <- connect_sheriff()
-  # using this instead of integrated for now
-  canonical_events <- tbl(con, "canonical_event") |>
-    filter(!str_detect(location, "USA"),
-           !str_detect(location, "Canada"),
-           !str_detect(key, "Umbrella")) |> collect()
+  integrated <- tar_read(integrated)
 
-  all_non_USA_canada_locations <- integrated |>
-    filter(!grepl("USA", location),
-           !grepl("Canada",location),
-           !str_detect(key, "Umbrella"))
+  virtual_events <- integrated |>
+    st_drop_geometry() |>
+    filter(str_detect(tolower(key), "virtual")) |>
+    unnest(cols = c(university), names_repair = "minimal")
+    select(canonical_id,key,location,description, uni_name)
 
-  mislabeled_locations <- all_non_USA_canada_locations |>
-    filter(!is.na(location))
 
-  virtual_events <- all_non_USA_canada_locations |>
-    filter(is.na(location))
 
-  writexl::write_xlsx(lst(all_non_USA_canada_locations, mislabeled_locations, virtual_events),
-                      "docs/data_cleaning_requests/non_USA_canada_locations.xlsx")
+  writexl::write_xlsx(virtual_events,
+                      "docs/data_cleaning_requests/virtual_events.xlsx")
 }

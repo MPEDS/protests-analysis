@@ -32,8 +32,13 @@ Tables and Figures for *Trends in Higher Ed Protest*
 - [Table x. Top 10 Canada Higher Ed Protest Issues by
   month](#table-x-top-10-canada-higher-ed-protest-issues-by-month)
 - [U.S. Waves Count](#us-waves-count)
-  - [First Wave](#first-wave)
-  - [Second Wave](#second-wave)
+  - [First Wave - BLM 2014](#first-wave---blm-2014)
+  - [Second Wave - Mizzou](#second-wave---mizzou)
+  - [Third Wave - Trump](#third-wave---trump)
+  - [US Waves Summary](#us-waves-summary)
+- [Canada Waves Count](#canada-waves-count)
+  - [First Wave - Quebec 2012](#first-wave---quebec-2012)
+  - [Second Wave - Toronto Labor](#second-wave---toronto-labor)
 - [Statistics for in-text citations](#statistics-for-in-text-citations)
   - [Country-level counts](#country-level-counts)
   - [Wave-specific counts](#wave-specific-counts)
@@ -209,9 +214,19 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 # U.S. Waves Count
 
-## First Wave
+## First Wave - BLM 2014
 
-## Second Wave
+## Second Wave - Mizzou
+
+## Third Wave - Trump
+
+## US Waves Summary
+
+# Canada Waves Count
+
+## First Wave - Quebec 2012
+
+## Second Wave - Toronto Labor
 
 # Statistics for in-text citations
 
