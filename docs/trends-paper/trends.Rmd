@@ -534,12 +534,16 @@ blm_wave <- us_protests_issues |>
          start_date <= as.Date("2014-12-15"))
 
  make_weekly_count <- function(issue_df) {
-   first_protest_date <- min(issue_df$start_date)
-   last_protest_date <- max(issue_df$start_date)
-   all_weeks <- seq(first_protest_date, last_protest_date, by = "week")
+   first_protest_date <- min(issue_df$start_date) #get first protest in the wave
+   last_protest_date <- max(issue_df$start_date) #get last protest in the wave
+   
+   #create a week by week sequence of the wave, ranging from first to last protest
+   all_weeks <- seq(floor_date(first_protest_date, "week"), 
+                    floor_date(last_protest_date, "week"), 
+                    by = "week") 
  
    weekly_count <- issue_df |> 
-   mutate(week_start = as.Date(format(start_date - (as.numeric(format(start_date, "%u")) - 1), "%Y-%m-%d"))) |> 
+   mutate(week_start = floor_date(start_date, "week")) |> 
    group_by(week_start) |> 
    summarize(n = n()) |> 
    complete(week_start = all_weeks, fill = list(n=0)) |> 
