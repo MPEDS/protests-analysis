@@ -553,8 +553,9 @@ blm_wave <- us_protests_issues |>
  }
  
  first_us_wave_summary <- tibble(
-   wave = "BLM wave",
-   n_protests = nrow(blm_wave) 
+   wave = "First Wave (BLM 2014)",
+   criteria = "dates = late November/early December and racial_issue = \"Police violence\"",
+   n_protests = nrow(blm_wave)
    )
    
  first_us_wave_weekly_count <- make_weekly_count(blm_wave)
@@ -581,6 +582,7 @@ blm_wave <- us_protests_issues |>
   univ_admin_and_campus_climate_weekly_count <- make_weekly_count(univ_admin_and_campus_climate)
   
   second_us_wave_summary <- tibble(
+   wave = "Second Wave (Mizzou)",
    criteria = c("Mizzou umbrella", "racial_issue == Univ governance... OR racial_issue == Campus climate"),
    n_protests = c(nrow(mizzou_umbrella), nrow(univ_admin_and_campus_climate))
   )
@@ -614,7 +616,8 @@ blm_wave <- us_protests_issues |>
                            nrow(trump_and_immigration))
  
  third_us_wave_summary <- tibble(
-   issue = c("trump_not_immigration", "immigration_not_trump", "trump_and_immigration"),
+   wave = "Third Wave (Trump)",
+   criteria = c("trump_not_immigration", "immigration_not_trump", "trump_and_immigration"),
    n_protests = c(third_us_wave_counts)
  )
 
