@@ -553,7 +553,7 @@ blm_wave <- us_protests_issues |>
  }
  
  first_us_wave_summary <- tibble(
-   wave = "First Wave (BLM 2014)",
+   wave = "First US Wave (BLM 2014)",
    criteria = "dates = late November/early December and racial_issue = \"Police violence\"",
    n_protests = nrow(blm_wave)
    )
@@ -582,7 +582,7 @@ blm_wave <- us_protests_issues |>
   univ_admin_and_campus_climate_weekly_count <- make_weekly_count(univ_admin_and_campus_climate)
   
   second_us_wave_summary <- tibble(
-   wave = "Second Wave (Mizzou)",
+   wave = "Second US Wave (Mizzou)",
    criteria = c("Mizzou umbrella", "racial_issue == Univ governance... OR racial_issue == Campus climate"),
    n_protests = c(nrow(mizzou_umbrella), nrow(univ_admin_and_campus_climate))
   )
@@ -616,7 +616,7 @@ blm_wave <- us_protests_issues |>
                            nrow(trump_and_immigration))
  
  third_us_wave_summary <- tibble(
-   wave = "Third Wave (Trump)",
+   wave = "Third US Wave (Trump)",
    criteria = c("trump_not_immigration", "immigration_not_trump", "trump_and_immigration"),
    n_protests = c(third_us_wave_counts)
  )
@@ -637,7 +637,7 @@ blm_wave <- us_protests_issues |>
 ```{r}
 
 us_waves_summary <- tibble(
-  wave = c("first wave", "second wave (mizzou umbrella count)", "third wave (trump AND immigration count)"),
+  wave = c("First Wave", "Second Wave (Mizzou umbrella)", "Third Wave (trump AND immigration count)"),
   n_protests = c(nrow(blm_wave), nrow(mizzou_umbrella), nrow(trump_and_immigration))
 )
 
@@ -672,7 +672,8 @@ writexl::write_xlsx(us_waves_summary,
   quebec_police_violence_protests_weekly_count <- make_weekly_count(quebec_police_violence_protests)
 
   first_canada_wave_summary <- tibble(
-     issue = c("Quebec Tuition Protests in 2012", "Quebec Police Violence Protests in 2012"),
+     wave = "First Canada Wave",
+     criteria = c("year = 2012 AND location = QC AND issue = \"Tuition\"", "Quebec Police Violence Protests in 2012"),
      n_protests = c(nrow(quebec_tuition_protests), nrow(quebec_police_violence_protests)) 
      )
   
@@ -809,10 +810,10 @@ event_counts <- events |>
 ```
 
 ```{r export_sheets}
-make_issue_counts("US") |>
-  writexl::write_xlsx("docs/trends-paper/us_issues.xlsx")
-
-get_canada_issue_counts(mpeds) |>
-  writexl::write_xlsx("docs/trends-paper/canada_issues.xlsx")
+# make_issue_counts("US") |>
+#   writexl::write_xlsx("docs/trends-paper/us_issues.xlsx")
+# 
+# get_canada_issue_counts(mpeds) |>
+#   writexl::write_xlsx("docs/trends-paper/canada_issues.xlsx")
 
 ```
