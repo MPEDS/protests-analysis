@@ -15,9 +15,9 @@ get_glued <- function(){
 }
 
 clean_glued <- function(glued_raw){
-  glued_raw |>
+  glued_clean <- glued_raw |>
     filter(country == "canada", is.na(yrclosed),
-           orig_name != "", year == 2015) |>
+           orig_name != "", year %in% c(2010, 2015, 2020)) |>
     mutate(across(c(private01, phd_granting, b_granting, m_granting),
                   function(x){
                     case_when(x == 1 ~ TRUE,
@@ -27,7 +27,6 @@ clean_glued <- function(glued_raw){
     select(
       uni_name = eng_name,
       uni_id = iau_id1,
-      coordinates,
       phd_granting,
       bachelors_granting = b_granting,
       masters_granting = m_granting,
@@ -35,4 +34,29 @@ clean_glued <- function(glued_raw){
       enrollment_count = students5_estimated,
       year
     )
+
+  # GLUED only provides data for colleges in 5-year intervals,
+  # so we have to interpolate the data between 2010 and 2020
+  # before restricting to the 2012-2018 range
+  # For numeric variables, we take the average;
+  # for binary variables, we take the most recent
+  # so "is_uni_public" for 2017 would be the 2015 value, for 2014 it would be
+  # the 2010 value, etc
+  glued_year_skeleton <- expand_grid(
+    uni_id = unique(glued_clean$uni_id),
+    year = 2011:2018
+    )
+
+  glued_interpolated <- glued_clean |>
+    # Initial interpolation to get bachelors' and masters' degree
+    # granting status in 2010, when most are missing (?) --
+    group_by(uni_id) |>
+    mutate(across(c(bachelors_granting, masters_granting),
+                  ~ifelse(is.na(.), lead(.), .))) |>
+    full_join(glued_year_skeleton, by = join_by(uni_id, year)) |>
+    arrange(uni_id, year) |>
+    fill(where(is.character) | where(is.logical)) |>
+    mutate(across(where(is.numeric), ~na.approx(., na.rm = F)))
+
+  return(glued_interpolated)
 }

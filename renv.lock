@@ -486,23 +486,6 @@
       ],
       "Hash": "0aaa05204035dc43ea0004b9c76611dd"
     },
-    "clustermq": {
-      "Package": "clustermq",
-      "Version": "0.9.4",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "R6",
-        "Rcpp",
-        "globals",
-        "methods",
-        "narray",
-        "progress",
-        "utils"
-      ],
-      "Hash": "e4f8e89f5c705e9ec9c723dbb98d24c0"
-    },
     "codetools": {
       "Package": "codetools",
       "Version": "0.2-20",
@@ -1579,21 +1562,6 @@
         "later"
       ],
       "Hash": "bc33d655d4141d99012ef86efaebd978"
-    },
-    "narray": {
-      "Package": "narray",
-      "Version": "0.5.1",
-      "Source": "Repository",
-      "Repository": "CRAN",
-      "Requirements": [
-        "R",
-        "Rcpp",
-        "progress",
-        "stats",
-        "stringr",
-        "utils"
-      ],
-      "Hash": "7ec5a2396d3c9ad4374495283dfcdc83"
     },
     "nlme": {
       "Package": "nlme",
@@ -2849,6 +2817,21 @@
       "Source": "Repository",
       "Repository": "CRAN",
       "Hash": "fcc4bd8e6da2d2011eb64a5e5cc685ab"
+    },
+    "zoo": {
+      "Package": "zoo",
+      "Version": "1.8-12",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "grDevices",
+        "graphics",
+        "lattice",
+        "stats",
+        "utils"
+      ],
+      "Hash": "5c715954112b45499fb1dadc6ee6ee3e"
     }
   }
 }

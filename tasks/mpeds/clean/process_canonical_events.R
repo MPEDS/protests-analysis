@@ -1,13 +1,13 @@
 #' Processes the raw/imported coder table
 #' @param canonical_events The target created by get_canonical_events.
-#' @param uni_pub_xwalk_file Target of the same name. Parameterized
-#' because `targets` keeps track of
+#' @param uni_pub_hand_xwalk Target of the same name
+#' @param uni_pub_xwalk_reference Data from google sheet linking publications to universities
 #' @return A "wide" version of the table, meaning
 #' each row is a single event-article combination
 #' and variables are a single column.
 #' Obligatory: read "tidy data" for goals http://vita.had.co.nz/papers/tidy-data.html
-process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
-  uni_pub_xwalk <- read_csv(uni_pub_xwalk_file, show_col_types = FALSE)
+process_canonical_events <- function(canonical_events, uni_pub_hand_xwalk, uni_pub_xwalk_reference){
+  uni_pub_hand_xwalk <- read_csv(uni_pub_hand_xwalk, show_col_types = FALSE)
 
   wide <- canonical_events |>
     select(-event_id, -cec_id) |>
@@ -81,7 +81,7 @@ process_canonical_events <- function(canonical_events, uni_pub_xwalk_file){
                                     str_trim())) |>
   # around 7k/35k don't match because they dont fit the above patterns,
   # so we use this hand-coded table for university-publication matching
-    left_join(uni_pub_xwalk, by = c("publication" = "pub")) |>
+    left_join(uni_pub_hand_xwalk, by = c("publication" = "pub")) |>
     mutate(
       # use uni when pub_uni is not available; uni contains
       # manual corrections I made
