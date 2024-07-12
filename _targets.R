@@ -59,7 +59,7 @@ list(
              # to force a download of the MPEDS database from the `sheriff` server
              # this lets us toggle the download on and off without changes to
              # source-control tracked files
-             # cue = tar_cue_if("DOWNLOAD_MPEDS")
+             cue = tar_cue_if("DOWNLOAD_MPEDS")
              ),
   tar_target(
     canonical_event_relationship,

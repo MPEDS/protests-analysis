@@ -42,7 +42,8 @@ integrate_targets <- function(cleaned_events,
       university,
       uni_contextual,
       by = c("uni_id", "year")
-    )
+    ) |>
+    nest_select(university, -university_name)
 
   # Sanity checks to make sure the process is working
   # which events were not in spreadsheet but in DB
