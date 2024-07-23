@@ -620,10 +620,15 @@ make_wave_line_graph <- function(daily_count_df,graph_title) {
  
   make_wave_line_graph(first_us_wave_daily_count,"First US Wave (BLM)") +
     scale_x_date(date_breaks = "1 day",
-                 date_labels = "%b %d") +
-    scale_y_continuous(expand = c(0, 0), breaks = seq(0, 35, by = 5)) 
+                 date_labels = "%b %d",
+                 expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0), 
+                       breaks = seq(0, 35, by = 5), 
+                       limits = c(0, 35),
+                       )
  
 ```
+
 #### First Wave Summary
 ```{r}
 first_us_wave_summary |> 
@@ -669,17 +674,19 @@ first_us_wave_summary |>
 
   make_wave_line_graph(mizzou_umbrella_daily_count, "Second US Wave (Mizzou umbrella)") +
     scale_x_date(date_breaks = "3 days",
-                 date_labels = "%b %d") +
-    scale_y_continuous(expand = c(0, 0), breaks = c(0,10, 20,30, 40,50,60, 70,80,90,100))
+                 date_labels = "%b %d",
+                 expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0), breaks = seq(0, 50, by = 5), limits = c(0, 40))
   
 ```
 
 ```{r}
 
   make_wave_line_graph(mizzou_by_issue_daily_count, "Second US Wave (Mizzou by issue)") +
-        scale_x_date(date_breaks = "4 weeks",
-                 date_labels = "%b %d") +
-        scale_y_continuous(expand = c(0, 0), breaks = c(0,25,50,75,100,125,150,175,200))
+        scale_x_date(date_breaks = "2 months",
+                 date_labels = "%b %d",
+                 expand = c(0, 0)) +
+        scale_y_continuous(expand = c(0, 0), breaks = seq(0,100, by = 5), limits = c(0,70))
 ```
 
 #### Second Wave Summary 
@@ -742,10 +749,9 @@ second_us_wave_summary |>
       geom_line(data = trump_not_immigration_daily_count, aes(x = start_date, y = n, color = "Trump not immigration"), size = 0.8) +
       geom_line(data = immigration_not_trump_daily_count, aes(x = start_date, y = n, color = "Immigration not Trump"), size = 0.8) +
       geom_line(data = trump_and_immigration_daily_count, aes(x = start_date, y = n, color = "Trump and immigration"), size = 0.8) +
-      scale_x_date(date_breaks = "3 days", date_labels = "%b %d") +
-      expand_limits(y = 0) +
+      scale_x_date(expand = c(0, 0),date_breaks = "3 days", date_labels = "%b %d") +
       labs(x = "Date", y = "Protest Count", title = "Third US Wave") +
-      scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, by = 10)) +
+      scale_y_continuous(expand = c(0, 0), limits = c(0,65), breaks = seq(0, 100, by = 10)) +
       theme(
         axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
         legend.title = element_blank()
@@ -765,10 +771,9 @@ make_third_wave_scatterplot <- function() {
     geom_point(data = trump_not_immigration_daily_count, aes(x = start_date, y = n, color = "Trump not immigration"), size = 1.2) +
     geom_point(data = immigration_not_trump_daily_count, aes(x = start_date, y = n, color = "Immigration not Trump"), size = 1.2) +
     geom_point(data = trump_and_immigration_daily_count, aes(x = start_date, y = n, color = "Trump and immigration"), size = 1.2) +
-    scale_x_date(date_breaks = "3 days", date_labels = "%b %d") +
-    expand_limits(y = 0) +
+    scale_x_date(expand = c(0, 0),date_breaks = "3 days", date_labels = "%b %d") +
     labs(x = "Date", y = "Protest Count", title = "Third US Wave") +
-    scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, by = 10)) +
+    scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, by = 5), limits = c(0,65)) +
     theme(
       axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
       legend.title = element_blank()
@@ -795,6 +800,9 @@ us_waves_summary <- tibble(
 
 writexl::write_xlsx(us_waves_summary,
                       "docs/trends-paper/wave-counts/us-wave-counts/us_waves_summary.xlsx")
+
+us_waves_summary |> 
+  kable()
 ```
 
 # Canada Waves Count
@@ -822,9 +830,12 @@ writexl::write_xlsx(us_waves_summary,
   
   quebec_tuition_weekly_count <- make_weekly_count(quebec_tuition_protests)
   quebec_police_violence_protests_weekly_count <- make_weekly_count(quebec_police_violence_protests)
+  
+  quebec_tuition_daily_count <- make_daily_count(quebec_tuition_protests)
+  quebec_police_violence_daily_count <- make_daily_count(quebec_police_violence_protests)
 
   first_canada_wave_summary <- tibble(
-     wave = "First Canada Wave",
+     wave = "First Canada Wave (Quebec 2012)",
      criteria = c("year = 2012 AND location = QC AND issue = \"Tuition\"", "Quebec Police Violence Protests in 2012"),
      n_protests = c(nrow(quebec_tuition_protests), nrow(quebec_police_violence_protests)) 
      )
@@ -834,6 +845,28 @@ writexl::write_xlsx(us_waves_summary,
                          quebec_police_violence_protests_weekly_count),
                       "docs/trends-paper/wave-counts/canada-wave-counts/first_canada_wave_counts.xlsx")
 
+  first_canada_wave_summary |> 
+    kable()
+```
+
+```{r}
+  canada_first_wave_colors <- c("Tuition" = "aquamarine4", "Police Violence" = "brown")
+  make_canada_first_wave_graph <- function() {
+       ggplot() +
+      geom_line(data = quebec_tuition_daily_count, aes(x = start_date, y = n, color = "Tuition"), size = 0.8) +
+      geom_line(data = quebec_police_violence_daily_count, aes(x = start_date, y = n, color = "Police Violence"), size = 0.8) +
+      scale_x_date(expand = c(0, 0),date_breaks = "2 weeks", date_labels = "%b %d") +
+      labs(x = "Date", y = "Protest Count", title = "First Canada Wave") +
+      scale_y_continuous(expand = c(0, 0), limits = c(0,11), breaks = seq(0, 100, by = 1)) +
+      theme(
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
+        legend.title = element_blank()
+      ) +
+      scale_color_manual(values = canada_first_wave_colors)
+ }
+  
+  
+  make_canada_first_wave_graph()
 ```
 
 ## Second Wave - Toronto Labor
@@ -847,16 +880,29 @@ writexl::write_xlsx(us_waves_summary,
       filter(str_detect(start_date, "2015-") | str_detect(start_date, "2014-"))
   
   toronto_labor_weekly_count <- make_weekly_count(toronto_labor_protests)
+  toronto_labor_daily_count <- make_daily_count(toronto_labor_protests)
   
   quebec_labor_protests <- quebec_protests |> 
       filter(issue == "Labor and work") |> 
       filter(str_detect(start_date, "2015-") | str_detect(start_date, "2014-"))
   
   quebec_labor_weekly_count <- make_weekly_count(quebec_labor_protests)
+  quebec_labor_daily_count <- make_daily_count(quebec_labor_protests)
+  
+  quebec_economy_protests <- quebec_protests |> 
+      filter(issue == "Economy/inequality") |> 
+      filter(str_detect(start_date, "2015-") | str_detect(start_date, "2014-"))
+    
+  quebec_economy_daily_count <- make_daily_count(quebec_economy_protests)
 
   second_canada_wave_summary <- tibble(
-     criteria = c("Toronto Labor Protests 2014/2015", "Quebec Labor Protests 2014/2015"),
-     n_protests = c(nrow(toronto_labor_protests), nrow(quebec_labor_protests)) 
+     wave = "Second Canada Wave (Labor)",
+     criteria = c("Toronto Labor Protests 2014/2015", 
+                  "Quebec Labor Protests 2014/2015", 
+                  "Quebec Economy/inequality Protests 2014/2015"),
+     n_protests = c(nrow(toronto_labor_protests), 
+                    nrow(quebec_labor_protests), 
+                    nrow(quebec_economy_protests)) 
      )
   
   writexl::write_xlsx(lst(second_canada_wave_summary, 
@@ -864,7 +910,54 @@ writexl::write_xlsx(us_waves_summary,
                          quebec_labor_weekly_count),
                       "docs/trends-paper/wave-counts/canada-wave-counts/second_canada_wave_counts.xlsx")
 
+  second_canada_wave_summary |> 
+    kable()
+  
 ```
+  
+```{r}
+  
+  canada_second_wave_colors <- c("Toronto Labor" = "coral4", "Quebec Labor" = "darkcyan", "Quebec Economy" = "black")
+  
+    make_canada_second_wave_graph <- function() {
+       ggplot() +
+      geom_line(data = toronto_labor_daily_count, aes(x = start_date, y = n, color = "Toronto Labor"), size = 0.8) +
+      geom_line(data = quebec_labor_daily_count, aes(x = start_date, y = n, color = "Quebec Labor"), size = 0.8) +
+      geom_line(data = quebec_economy_daily_count, aes(x = start_date, y = n, color = "Quebec Economy"), size = 0.8) +
+      scale_x_date(expand = c(0, 0),date_breaks = "3 weeks", date_labels = "%b %d") +
+      labs(x = "Date", y = "Protest Count", title = "Second Canada Wave") +
+      scale_y_continuous(expand = c(0, 0), limits = c(0,7), breaks = seq(0, 100, by = 1)) +
+      theme(
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
+        legend.title = element_blank()
+      ) +
+      scale_color_manual(values = canada_second_wave_colors)
+ }
+  
+  
+  make_canada_second_wave_graph()
+```
+## Canada Waves Summary
+```{r}
+
+canada_waves_summary <- tibble(
+  wave = c("First Wave", "First Wave", "Second Wave", "Second Wave","Second Wave"),
+  criteria = c("year = 2012 AND location = QC AND issue = \"Tuition\"", 
+               "Quebec Police Violence Protests in 2012",
+               "Toronto Labor Protests 2014/2015", 
+               "Quebec Labor Protests 2014/2015", 
+               "Quebec Economy/inequality Protests 2014/2015"),
+  n_protests = c(nrow(quebec_tuition_protests), 
+                 nrow(quebec_police_violence_protests),
+                 nrow(toronto_labor_protests), 
+                 nrow(quebec_labor_protests), 
+                 nrow(quebec_economy_protests))
+)
+
+canada_waves_summary |> 
+  kable()
+```  
+
 
 # Statistics for in-text citations
 

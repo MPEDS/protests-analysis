@@ -186,8 +186,9 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 ### First Wave - BLM 2014
 
-![](trends_files/figure-gfm/unnamed-chunk-12-1.png)<!-- --> \#### First
-Wave Summary
+![](trends_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+
+#### First Wave Summary
 
 | wave                     | criteria                                                                  | n_protests |
 |:-------------------------|:--------------------------------------------------------------------------|-----------:|
@@ -214,11 +215,41 @@ Wave Summary
 
 ## US Waves Summary
 
+| wave                                     | n_protests |
+|:-----------------------------------------|-----------:|
+| First Wave                               |        213 |
+| Second Wave (Mizzou umbrella)            |        130 |
+| Third Wave (trump AND immigration count) |        178 |
+
 # Canada Waves Count
 
 ## First Wave - Quebec 2012
 
+| wave                            | criteria                                            | n_protests |
+|:--------------------------------|:----------------------------------------------------|-----------:|
+| First Canada Wave (Quebec 2012) | year = 2012 AND location = QC AND issue = “Tuition” |        164 |
+| First Canada Wave (Quebec 2012) | Quebec Police Violence Protests in 2012             |         10 |
+
+![](trends_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+
 ## Second Wave - Toronto Labor
+
+| wave                       | criteria                                     | n_protests |
+|:---------------------------|:---------------------------------------------|-----------:|
+| Second Canada Wave (Labor) | Toronto Labor Protests 2014/2015             |         29 |
+| Second Canada Wave (Labor) | Quebec Labor Protests 2014/2015              |         12 |
+| Second Canada Wave (Labor) | Quebec Economy/inequality Protests 2014/2015 |         47 |
+
+![](trends_files/figure-gfm/unnamed-chunk-24-1.png)<!-- --> \## Canada
+Waves Summary
+
+| wave        | criteria                                            | n_protests |
+|:------------|:----------------------------------------------------|-----------:|
+| First Wave  | year = 2012 AND location = QC AND issue = “Tuition” |        164 |
+| First Wave  | Quebec Police Violence Protests in 2012             |         10 |
+| Second Wave | Toronto Labor Protests 2014/2015                    |         29 |
+| Second Wave | Quebec Labor Protests 2014/2015                     |         12 |
+| Second Wave | Quebec Economy/inequality Protests 2014/2015        |         47 |
 
 # Statistics for in-text citations
 
