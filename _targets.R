@@ -19,6 +19,7 @@ tar_option_set(
   packages = c(
     "cluster",
     "curl",
+    "zoo",
     "haven",
     "googledrive",
     "googleCloudStorageR",
@@ -41,6 +42,7 @@ tar_option_set(
     gcp = tar_resources_gcp(
       bucket = "mpeds_targets",
       prefix = "protests_analysis",
+      verbose = TRUE,
       predefined_acl = "bucketLevel"),
   )
 )
@@ -64,19 +66,18 @@ list(
     get_canonical_event_relationship(canonical_events)
   ),
 
-  # Hand-coding a
-  tar_target(uni_pub_xwalk_file, format =
+  # Hand-coding certain publications that don't match a university easily
+  tar_target(uni_pub_hand_xwalk, format =
                "file",
              command = "tasks/mpeds/hand/uni_pub_xwalk.csv"),
   # An actual pre-made reference for university-publication-IPEDS that I was made aware of -
-  # Should be used in place of the above, must swap out
   tar_target(uni_pub_xwalk_reference,
              get_uni_pub_xwalk_reference("1LwWIMylixuo8cAFK1xQSS12jybQhLZQF06J40ggp-4A")
              ),
 
   tar_target(
     events_wide,
-    process_canonical_events(canonical_events, uni_pub_xwalk_file)
+    process_canonical_events(canonical_events, uni_pub_hand_xwalk, uni_pub_xwalk_reference)
   ),
 
 
@@ -152,7 +153,7 @@ list(
   tar_target(ipeds_finance, get_ipeds_finance()),
   tar_target(ipeds_pell, get_ipeds_pell()),
   tar_target(ipeds, list(ipeds_directory, ipeds_tuition, ipeds_race, ipeds_pell, ipeds_finance) |>
-               reduce(full_join, by = c("uni_id", "year"))),
+               combine_ipeds()),
   tar_target(glued_raw, get_glued()),
   tar_target(glued, clean_glued(glued_raw)),
   tar_target(tuition, get_tuition()),
@@ -219,6 +220,10 @@ list(
                       uni_xwalk,
                       covariates,
                       geo)
+  ),
+  tar_target(
+    audited_names,
+    audit_university_names(integrated)
   ),
 
   # Modeling (in progress, a bit messy/in flux in terms of data structures)

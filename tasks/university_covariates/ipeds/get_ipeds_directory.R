@@ -54,7 +54,8 @@ clean_ipeds_directory <- function(directory){
      ),
     ) |>
     select(uni_id = UNITID, uni_name = INSTNM,
-           ipeds_fips, size_category = INSTSIZE, is_uni_public,
+           ipeds_fips,
+           is_uni_public,
            carnegie, hbcu, tribal, year) |>
     mutate(uni_id = as.character(uni_id))
 }

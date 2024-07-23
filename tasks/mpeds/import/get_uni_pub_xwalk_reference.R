@@ -1,5 +1,4 @@
 get_uni_pub_xwalk_reference <- function(id){
-  id <- "1LwWIMylixuo8cAFK1xQSS12jybQhLZQF06J40ggp-4A"
   read_googlesheet(id, sheet = 1) |>
     janitor::clean_names() |>
     rename(uni_id = unit_id) |>
