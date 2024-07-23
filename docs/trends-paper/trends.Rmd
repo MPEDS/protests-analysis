@@ -360,7 +360,7 @@ mpeds |>
 
 # NEW TABLES BELOW THIS POINT
 
-# Table x. Top 10 U.S. Higher Ed Protest Issues by year
+# Table x. Top 10 U.S. Higher Ed Protest Issues percentages by year
 
 ```{r, message=FALSE}
 make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
@@ -368,53 +368,63 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
     sub_dta <- mpeds
   }
   
-  country <- sub_dta |> 
+  country <- sub_dta |>
     filter(country == country_opt)
-  
-  total_n <- country |> 
-    filter(!str_detect(tolower(key), "umbrella")) |> 
-    pull(key) |> 
-    unique() |> 
+
+  total_n <- country |>
+    filter(!str_detect(tolower(key), "umbrella")) |>
+    pull(key) |>
+    unique() |>
     length()
-  
-  dates <- country |> 
-    select(canonical_id, key, start_date, end_date) |> 
+
+  dates <- country |>
+    select(canonical_id, key, start_date, end_date) |>
     filter(!str_detect(start_date, "2011")|!str_detect(end_date, "2011")) |>
-    mutate(year = format(start_date, "%Y")) |> 
-    group_by(year) |> 
-    summarise("number_of_protests" = sum(length(unique(key))))
-  
-  country <- country |> 
+    mutate(year = year(start_date)) |>
+    group_by(year) |>
+    summarise("year_n" = sum(length(unique(key))))
+
+  country <- country |>
     mutate(year = year(start_date))
-    
-  issues_values <- country |> 
-    select(key, issue, racial_issue, year) |> 
-    pivot_longer(cols = c(everything(), -key, -year)) |> 
-    unnest(value) |> 
+
+  issues_values <- country |>
+    select(key, issue, racial_issue, year) |>
+    pivot_longer(cols = c(everything(), -key, -year)) |>
+    unnest(value) |>
     filter(value != "_Not relevant", value != "",
            value != "Anti-racism")
-  
-  top_issues <- issues_values |> 
-    group_by(value, name) |> 
+
+  top_issues <- issues_values |>
+    group_by(value, name) |>
     summarize(n = n(),
-              lst = list(key), .groups = "drop") |> 
-    ungroup() |> 
-    drop_na() |> 
-    slice_max(order_by = n, n = 10, with_ties = FALSE) |> 
+              lst = list(key), .groups = "drop") |>
+    ungroup() |>
+    drop_na() |>
+    slice_max(order_by = n, n = 10, with_ties = FALSE) |>
     select(!lst)
-  
-  issue_count_by_year <- issues_values |>  
-    right_join(top_issues, by = c("name", "value")) |> 
-    group_by(year, issue = value, type = name, total_n = n) |> 
-    summarize(n = n())  |> 
-    ungroup() |> 
+
+  issue_count_by_year <- issues_values |>
+    right_join(top_issues, by = c("name", "value")) |>
+    group_by(year, issue = value, type = name, issue_n_all_years = n) |>
+    summarize(n = n())  |>
+    left_join(dates, by ="year") |> 
+    mutate(n = ifelse(
+      is.na(n), "", paste0(
+        round(100 * n/year_n, 2), "% (", format(n, big.mark = ",") |> 
+          str_trim(), ")")
+      )
+    ) |> 
+    ungroup() |>
+    select(-year_n) |> 
     pivot_wider(names_from = "year",
-                values_from = "n") |> 
-    select(-"2011") |> 
-    arrange(desc(total_n)) 
-  
+                values_from = "n") |>
+    select(-"2011") |>
+    arrange(desc(total_n))
+
   return(issue_count_by_year)
 }
+
+
   
   # running same analysis using end_date, just to check
   # country$end_date <- as.Date(country$end_date)
@@ -441,9 +451,6 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
   
   country <- sub_dta |> 
     filter(country == country_opt)
-  
-  #DELETE THIS LINE
-  country <- mpeds  #DELETE THIS LINE
   
   total_n <- country |> 
     filter(!str_detect(tolower(key), "umbrella")) |> 
@@ -486,7 +493,7 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
     pivot_wider(names_from = "month_year",
                 values_from = "n") |> 
     select(!starts_with("2011")) |> 
-    arrange(desc(total_n)) 
+    arrange(desc(total_n))
   
   return(issue_count_by_month)
   
@@ -494,120 +501,212 @@ make_issue_counts_by_year <- function(country_opt, sub_dta = NULL) {
   
 ```
   
-# Table x. Top 10 U.S. Higher Ed Protest Issues by month
+<!-- # Table x. Top 10 U.S. Higher Ed Protest Issues by month -->
 ```{r, message=FALSE}  
-  make_issue_counts_by_month("US") |> 
-    kable()
+  # make_issue_counts_by_month("US") |> 
+  #   kable()
 ```
 
-# Table x. Top 10 Canada Higher Ed Protest Issues by year
+# Table x. Top 10 Canada Higher Ed Protest Issues percentages by year
 ```{r, message=FALSE}
  make_issue_counts_by_year("Canada") |> 
     kable()
 
 ```
 
-# Table x. Top 10 Canada Higher Ed Protest Issues by month
+<!-- # Table x. Top 10 Canada Higher Ed Protest Issues by month -->
 ```{r, message=FALSE}
- make_issue_counts_by_month("Canada") |> 
-    kable()
+ # make_issue_counts_by_month("Canada") |> 
+ #    kable()
 
 ```
 
 
 # U.S. Waves Count
 
-## First Wave - BLM 2014
+### First Wave - BLM 2014
 ```{r}
-us_protests <- mpeds |> 
-  filter(country == "US")
 
-us_protests_issues <- us_protests |> 
-  select(canonical_id, key, start_date, issue, racial_issue) |> 
-  unnest(issue) |> 
-  unnest(racial_issue)
+  us_protests <- mpeds |> 
+    filter(country == "US")
 
-blm_wave <- us_protests_issues |> 
-  select(-issue) |> 
-  filter(racial_issue == "Police violence") |> 
-  filter(start_date >= as.Date("2014-11-20") & 
-         start_date <= as.Date("2014-12-15"))
+  us_protests_issues <- us_protests |>  
+    select(canonical_id, key, start_date, issue, racial_issue) |> 
+    unnest(issue) |> 
+    unnest(racial_issue)
 
- make_weekly_count <- function(issue_df) {
-   first_protest_date <- min(issue_df$start_date) #get first protest in the wave
-   last_protest_date <- max(issue_df$start_date) #get last protest in the wave
+# hard codes the specific parameters for getting this US wave
+# in this case:
+#   - racial_issue == "Police violence"
+#   - dates between "2014-11-20" and "2014-12-15"
+get_first_us_wave <- function() {
+  
+  first_us_wave <- us_protests_issues |> 
+    select(-issue) |> 
+    filter(racial_issue == "Police violence") |> 
+    filter(start_date >= as.Date("2014-11-20") & 
+           start_date <= as.Date("2014-12-15"))
+  
+  return(first_us_wave)
+}
+
+first_us_wave <- get_first_us_wave()
+
+
+# creates a data frame with a week-by-week count of the number of protests for 
+# a given wave data frame of filtered canonical events from integrated
+make_weekly_count <- function(wave_df) {
+  
+  # get the bounds of the wave
+  first_protest_date <- min(wave_df$start_date)
+  last_protest_date <- max(wave_df$start_date)
    
-   #create a week by week sequence of the wave, ranging from first to last protest
-   all_weeks <- seq(floor_date(first_protest_date, "week"), 
-                    floor_date(last_protest_date, "week"), 
-                    by = "week") 
- 
-   weekly_count <- issue_df |> 
-   mutate(week_start = floor_date(start_date, "week")) |> 
-   group_by(week_start) |> 
-   summarize(n = n()) |> 
-   complete(week_start = all_weeks, fill = list(n=0)) |> 
-   arrange(week_start) 
+  #create a week by week sequence of the wave, ranging from first to last protest
+  all_weeks <- seq(floor_date(first_protest_date, "week"), 
+                   floor_date(last_protest_date, "week"), 
+                   by = "week") 
+  
+  weekly_count <- wave_df |> 
+  mutate(week_start = floor_date(start_date, "week")) |> 
+  group_by(week_start) |> 
+  summarize(n = n()) |> 
+  complete(week_start = all_weeks, fill = list(n=0)) |> 
+  arrange(week_start) 
    
-   return(weekly_count)
- }
+  return(weekly_count)
+}
  
+ # create a summary data frame of the wave, with basic counts
+ # this is hard coded for each wave 
  first_us_wave_summary <- tibble(
    wave = "First US Wave (BLM 2014)",
    criteria = "dates = late November/early December and racial_issue = \"Police violence\"",
-   n_protests = nrow(blm_wave)
+   n_protests = nrow(first_us_wave)
    )
    
- first_us_wave_weekly_count <- make_weekly_count(blm_wave)
+ first_us_wave_weekly_count <- make_weekly_count(first_us_wave)
  
-  writexl::write_xlsx(lst(first_us_wave_summary, 
-                         first_us_wave_weekly_count),
-                      "docs/trends-paper/wave-counts/us-wave-counts/first_us_wave_counts.xlsx")
+ writexl::write_xlsx(lst(first_us_wave_summary, 
+                         first_us_wave_weekly_count),             "docs/trends-paper/wave-counts/us-wave-counts/first_us_wave_counts.xlsx")
+  
+
+ make_daily_count <- function(issue_df) {
+  first_protest_date <- min(issue_df$start_date) #get first protest in the wave
+  last_protest_date <- max(issue_df$start_date) #get last protest in the wave
+
+  all_days <- seq(first_protest_date, last_protest_date, by = "day")
+
+  daily_count <- issue_df |>
+    group_by(start_date) |>
+    summarize(n = n()) |>
+    complete(start_date = all_days, fill = list(n=0)) |>
+    arrange(start_date)
+
+  return(daily_count)
+ }
  
+ first_us_wave_daily_count <- make_daily_count(first_us_wave)
+ 
+make_wave_line_graph <- function(daily_count_df,graph_title) {
+
+  ggplot(data = daily_count_df, aes(x = start_date, y = n)) +
+    geom_line() +
+    expand_limits(y = 0) +
+    labs(x = "Date", y = "Protest Count", title = graph_title) +
+    theme(
+      axis.text.x = element_text(angle = 90, vjust = 0, hjust=0)
+    )
+}
+ 
+  make_wave_line_graph(first_us_wave_daily_count,"First US Wave (BLM)") +
+    scale_x_date(date_breaks = "1 day",
+                 date_labels = "%b %d") +
+    scale_y_continuous(expand = c(0, 0), breaks = seq(0, 35, by = 5)) 
+ 
+```
+#### First Wave Summary
+```{r}
+first_us_wave_summary |> 
+  kable()
 ```
 
 ## Second Wave - Mizzou
 ```{r}
-
-  source("tasks/one-off/get_any_umbrella.R")
-  mizzou_umbrella <- get_any_umbrella("Umbrella_Mizzou_Anti-Racism_2015-2016_Oct-Feb")
+# using two different sets of criteria for the mizzou wave
+#     1. canonical events under the mizzou umbrella
+#     2. filtering by racial_issue == "University governance..." or 
+#                     racial_issue == "Campus climate"
   
-  mizzou_umbrella_weekly_count <- make_weekly_count(mizzou_umbrella)
+  # 1. mizzou umbrella
+  source("tasks/one-off/get_any_umbrella.R") #helper function
   
-  # racial_issue == univ admin
-  univ_admin_and_campus_climate <- us_protests_issues |> 
+  mizzou_umbrella_wave <- get_any_umbrella("Umbrella_Mizzou_Anti-Racism_2015-2016_Oct-Feb")
+  mizzou_umbrella_weekly_count <- make_weekly_count(mizzou_umbrella_wave)
+  mizzou_umbrella_daily_count <- make_daily_count(mizzou_umbrella_wave)
+  
+  # 2. mizzou by issue
+  get_second_us_wave <- function() {
+      univ_admin_and_campus_climate <- us_protests_issues |> 
     filter(racial_issue == "University governance, admin, policies, programs, curriculum" |
            racial_issue == "Campus climate")
+      return(univ_admin_and_campus_climate)
+  }
   
-  univ_admin_and_campus_climate_weekly_count <- make_weekly_count(univ_admin_and_campus_climate)
+  mizzou_by_issue_wave <- get_second_us_wave()
+  mizzou_by_issue_weekly_count <- make_weekly_count(mizzou_by_issue_wave)
+  mizzou_by_issue_daily_count <- make_daily_count(mizzou_by_issue_wave)
   
+  # make the summary, including counts from the two different sets of criteria
   second_us_wave_summary <- tibble(
    wave = "Second US Wave (Mizzou)",
    criteria = c("Mizzou umbrella", "racial_issue == Univ governance... OR racial_issue == Campus climate"),
-   n_protests = c(nrow(mizzou_umbrella), nrow(univ_admin_and_campus_climate))
+   n_protests = c(nrow(mizzou_umbrella_wave), nrow(mizzou_by_issue_wave))
   )
   
   writexl::write_xlsx(lst(second_us_wave_summary, 
-                         univ_admin_and_campus_climate_weekly_count),
+                         mizzou_by_issue_weekly_count),
                       "docs/trends-paper/wave-counts/us-wave-counts/second_us_wave_counts.xlsx")
 
+  make_wave_line_graph(mizzou_umbrella_daily_count, "Second US Wave (Mizzou umbrella)") +
+    scale_x_date(date_breaks = "3 days",
+                 date_labels = "%b %d") +
+    scale_y_continuous(expand = c(0, 0), breaks = c(0,10, 20,30, 40,50,60, 70,80,90,100))
+  
+```
+
+```{r}
+
+  make_wave_line_graph(mizzou_by_issue_daily_count, "Second US Wave (Mizzou by issue)") +
+        scale_x_date(date_breaks = "4 weeks",
+                 date_labels = "%b %d") +
+        scale_y_continuous(expand = c(0, 0), breaks = c(0,25,50,75,100,125,150,175,200))
+```
+
+#### Second Wave Summary 
+```{r}
+second_us_wave_summary |> 
+  kable()
 ```
 
 ## Third Wave - Trump
 ```{r}
+  
+ trump_wave <- us_protests_issues |> 
+    filter(start_date >= as.Date("2016-11-01") & 
+           start_date <= as.Date("2017-2-28"))
 
  # issue == trump, racial_issue != immigration
- trump_not_immigration <- us_protests_issues |> 
+ trump_not_immigration <- trump_wave |> 
    filter(str_detect(tolower(issue),"trump")) |> 
    filter(!str_detect(tolower(racial_issue), "immigration"))
  
  # issue != trump, racial_issue == immigration
- immigration_not_trump <- us_protests_issues |>
+ immigration_not_trump <- trump_wave |>
    filter(str_detect(tolower(racial_issue), "immigration")) |> 
    filter(!str_detect(tolower(issue),"trump")) 
  
  # issue = trump, issue = immigration
- trump_and_immigration <- us_protests_issues |> 
+ trump_and_immigration <- trump_wave |> 
    filter(str_detect(tolower(issue),"trump")) |> 
    filter(str_detect(tolower(racial_issue), "immigration"))
  
@@ -626,11 +725,64 @@ blm_wave <- us_protests_issues |>
  immigration_not_trump_weekly_count <- make_weekly_count(immigration_not_trump)
  trump_and_immigration_weekly_count <- make_weekly_count(trump_and_immigration)
  
+ trump_not_immigration_daily_count <- make_daily_count(trump_not_immigration)
+ immigration_not_trump_daily_count <- make_daily_count(immigration_not_trump)
+ trump_and_immigration_daily_count <- make_daily_count(trump_and_immigration)
+ 
  writexl::write_xlsx(lst(third_us_wave_summary, 
                          trump_not_immigration_weekly_count,
                          immigration_not_trump_weekly_count,
                          trump_and_immigration_weekly_count),
                       "docs/trends-paper/wave-counts/us-wave-counts/third_us_wave_counts.xlsx")
+ 
+ colors <- c("Trump not immigration" = "red", "Immigration not Trump" = "blue", "Trump and immigration" = "black")
+
+ make_third_wave_line_graph <- function() {
+       ggplot() +
+      geom_line(data = trump_not_immigration_daily_count, aes(x = start_date, y = n, color = "Trump not immigration"), size = 0.8) +
+      geom_line(data = immigration_not_trump_daily_count, aes(x = start_date, y = n, color = "Immigration not Trump"), size = 0.8) +
+      geom_line(data = trump_and_immigration_daily_count, aes(x = start_date, y = n, color = "Trump and immigration"), size = 0.8) +
+      scale_x_date(date_breaks = "3 days", date_labels = "%b %d") +
+      expand_limits(y = 0) +
+      labs(x = "Date", y = "Protest Count", title = "Third US Wave") +
+      scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, by = 10)) +
+      theme(
+        axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
+        legend.title = element_blank()
+      ) +
+      scale_color_manual(values = colors)
+ }
+ 
+ make_third_wave_line_graph()
+```
+
+
+
+```{r}
+
+make_third_wave_scatterplot <- function() {
+    ggplot() +
+    geom_point(data = trump_not_immigration_daily_count, aes(x = start_date, y = n, color = "Trump not immigration"), size = 1.2) +
+    geom_point(data = immigration_not_trump_daily_count, aes(x = start_date, y = n, color = "Immigration not Trump"), size = 1.2) +
+    geom_point(data = trump_and_immigration_daily_count, aes(x = start_date, y = n, color = "Trump and immigration"), size = 1.2) +
+    scale_x_date(date_breaks = "3 days", date_labels = "%b %d") +
+    expand_limits(y = 0) +
+    labs(x = "Date", y = "Protest Count", title = "Third US Wave") +
+    scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, by = 10)) +
+    theme(
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
+      legend.title = element_blank()
+    ) +
+    scale_color_manual(values = colors)
+  
+}
+
+make_third_wave_scatterplot()
+
+```
+
+```{r}
+#make_third_wave_line_graph() + make_third_wave_scatterplot()
 ```
 
 ## US Waves Summary
@@ -638,7 +790,7 @@ blm_wave <- us_protests_issues |>
 
 us_waves_summary <- tibble(
   wave = c("First Wave", "Second Wave (Mizzou umbrella)", "Third Wave (trump AND immigration count)"),
-  n_protests = c(nrow(blm_wave), nrow(mizzou_umbrella), nrow(trump_and_immigration))
+  n_protests = c(nrow(first_us_wave), nrow(mizzou_umbrella_wave), nrow(trump_and_immigration))
 )
 
 writexl::write_xlsx(us_waves_summary,
