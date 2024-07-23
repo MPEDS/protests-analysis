@@ -248,6 +248,6 @@ list(
   #            cue = tar_cue(mode = "always")),
 
   # Plotting and other exploratory analysis ---
-  tar_render(exploratory, "docs/exploratory_plots/exploratory_plots.Rmd")
+  tar_render(exploratory, "docs/exploratory-plots/exploratory_plots.Rmd")
 )
 
