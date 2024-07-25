@@ -1,10 +1,13 @@
 match_pubs <- function(filename, uni_pub_xwalk_reference){
   pubs <- tar_read(canonical_events) |>
     select(publication) |>
-    distinct() |>
-    mutate(in_ipeds = TRUE)
+    mutate(in_ipeds = TRUE,
+           publication = str_replace(publication, " - ", "-") |>
+             str_replace("-", " - ")) |> # standardizing dashes, trust me
+    distinct()
   uni_pub_xwalk_reference |>
-    mutate(university_college = str_replace(university_college, "-", " - "),
+    mutate(university_college = str_replace(university_college, " - ", "-") |>
+             str_replace("-", " - "), # standardizing dashes, trust me
            publication = paste0(newspaper_name, ": ", university_college)) |>
     select(uni_id, publication) |>
     full_join(pubs, by = join_by(publication)) |>

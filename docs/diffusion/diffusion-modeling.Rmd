@@ -1,0 +1,247 @@
+---
+title: "Diffusion modeling"
+output: github_document
+date: "2024-07-23"
+---
+
+```{r setup, include=FALSE}
+library(GGally)
+library(tidyverse)
+library(targets)
+library(sf)
+library(showtext)
+library(sysfonts)
+library(survival)
+library(broom)
+library(knitr)
+library(nplyr)
+
+opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+opts_chunk$set(echo = FALSE, warning = FALSE, fig.width = 10, fig.height = 7)
+
+font_add_google("Lato")
+showtext_auto()
+
+
+custom_theme <- function(...){
+  theme_bw() + 
+    theme(
+      text = element_text(family = "Lato", size = 14),
+      ...
+    )
+}
+
+theme_set(custom_theme())
+country_scale <- c(
+  "US" = "#377EB8",
+  "Canada" = "#E41A1C"
+)
+
+```
+
+```{r data_load}
+source("tasks/modeling/run_models.R")
+source("tasks/mpeds/import/create_timeseries.R")
+source("tasks/utils/format.R")
+tar_load(c(
+  integrated,
+  canonical_event_relationship, 
+  ipeds, us_covariates, uni_pub_xwalk_reference, us_geo
+))
+
+covariates <- get_covariates()
+
+timeseries <- create_timeseries(integrated |>
+                                  filter(!str_detect(key, "Columbia|Reno")),
+                                canonical_event_relationship,
+                                ipeds,
+                                us_covariates,
+                                uni_pub_xwalk_reference,
+                                us_geo) |> 
+  filter(uni_name != "University of Phoenix-Arizona")
+
+```
+
+# Summary statistics of variables of interest
+
+```{r summary_stats}
+timeseries |> 
+  st_drop_geometry() |> 
+  select(all_of(covariates$name)) |> 
+  pivot_longer(cols = everything()) |> 
+  group_by(name) |> 
+  summarize(
+    mean = mean(value, na.rm = TRUE),
+    median = median(value, na.rm = TRUE),
+    sd = sd(value, na.rm = TRUE),
+    max =  max(value, na.rm = TRUE),
+    min = min(value, na.rm = TRUE),
+    NAs = sum(is.na(value)),
+  ) |> 
+  replace_variable_names("name", keep_category = TRUE) |> 
+  arrange(category) |> 
+  mutate(across(where(is.numeric), ~round(., 3))) |> 
+  kable()
+```
+
+# Colinearity
+
+We noticed in previous modeling that certain combinations
+of variables showed very strange results, with very high coefficient values
+(>10 for a proportional hazards regression).
+
+One explanation for this was that we're dealing with multicolinearity
+in these variables and produce incorrect coefficients by measuring 
+essentially a single variable twice. 
+
+## Pairs 
+
+```{r pairs}
+
+timeseries |> 
+  st_drop_geometry() |> 
+  select(all_of(covariates$name)) |> 
+  rename_with(rename_covariates) |> 
+  rename_with(~str_wrap(., width = 10)) |> 
+  ggpairs(progress = FALSE, lower = list(
+    continuous = wrap(ggally_points, size = 0.1, alpha = 0.2)
+    ),
+    title = "Glimpse at relationships among covariates in model"
+    )
+```
+
+## PCA
+
+
+```{r pca}
+
+pca_dta <- timeseries |> 
+  st_drop_geometry() |> 
+  select(covariates$name) |> 
+  # About 20 or so NA values -- deserves another glance
+  drop_na()
+pca_results <- prcomp(pca_dta, scale = TRUE) 
+pca_results$rotation <- -1 * pca_results$rotation
+
+pca_results$rotation |>
+  as.data.frame() |>
+  rownames_to_column(var = "Variable") |> 
+  replace_variable_names("Variable") |> 
+  kable()
+```
+
+We see that nonwhite proportion of enrolled students and the white proportion of
+the county as a whole are the strongest elements in the first principal component.
+This ... makes sense.
+
+
+```{r scree}
+explained_variance <- pca_results$sdev^2 / sum(pca_results$sdev^2)
+
+tibble(x = 1:length(explained_variance),
+       y = explained_variance) |> 
+  ggplot(aes(x = x,  y = y)) +
+  geom_line() + 
+  labs(
+    x = "Component number",
+    y = "Total variance explained",
+    title = "Scree plot (variance explained) of principal components",
+    subtitle = "Steep dropoffs and clear leveling indicates a separation between useful and not-very-useful PCs. Here, no clear picture emerges.",
+    caption = "Note also the relatively low proportion of variance explained by the highest component (.30)"
+  )
+  
+```
+
+- No clear dropoff/leveling -> No single principal component captures all of the problem
+- Also, first few principal components don't capture a crazy amount of total variance
+
+# Kaplan-Meier estimators across each variable
+
+```{r survival_curves}
+map(covariates$name, \(cov){
+  formula <- as.formula(paste("Surv(protest_age, had_hazard_status) ~ ", cov))
+  cox_model <- coxph(formula, data = timeseries) |> 
+    survfit(newdata = seq(min(timeseries[[cov]], na.rm = TRUE),
+                          max(timeseries[[cov]], na.rm = TRUE), 
+                          length.out = min(length(unique(timeseries[[cov]])), 4)) |> 
+              list() |> 
+              set_names(cov) |> 
+              as.data.frame())
+  
+  printable_name <- covariates$formatted[which(covariates$name == cov)]
+  
+  broom::tidy(cox_model) |> 
+    select(time, contains("estimate")) |> 
+    pivot_longer(cols = contains("estimate")) |> 
+    mutate(name = parse_number(str_remove(name, "estimate\\.")) - 1) |> 
+    ggplot(aes(x = time, y = value, color = as.factor(name))) + 
+    geom_line() +
+    labs(
+      title = paste0("Survival curves across ", printable_name),
+      y = "Percent chance of not having a protest event by given date",
+      x = "Days after initial Mizzou protest",
+      color = NULL,
+    ) + 
+    scale_color_viridis_d() + 
+    theme_bw()
+})
+
+```
+
+# Review of main models
+
+```{r models}
+
+fit_cox_model <- function(subset, data) {
+  formula <- as.formula(paste("Surv(protest_age, had_hazard_status) ~", paste(subset, collapse = " + ")))
+  cox_model <- coxph(formula, data = data)
+
+  return(cox_model)
+}
+
+covariates <- get_covariates()
+model_combinations <- covariates |>
+  group_split(category) |>
+  map(\(cov_dta){
+    covs <- cov_dta$name
+    # generate list of all possible covariate combinations
+    covs_list <- map(covs, \(x){c(T, F)}) |>
+      set_names(covs)
+    do.call(expand_grid, covs_list) |>
+      mutate(id = 1:n()) |>
+      pivot_longer(cols = c(everything(), -id),
+                   values_to = "is_variable_included") |>
+      filter(is_variable_included) |>
+      group_split(id) |> 
+      imap(\(cov_grp, i){
+        grp_model <- fit_cox_model(cov_grp$name, timeseries)
+        get_printable_model(grp_model, paste0("estimate_", i)) |> 
+          select(-category)
+      }) |>
+      reduce(full_join, by = "term") |>
+      mutate(across(everything(), ~replace_na(., ""))) |> 
+      set_names("")
+  }) |> 
+  set_names("uni_model_combinations", "county_model_combinations")
+
+uni_model <- coxph(Surv(protest_age, had_hazard_status) ~ is_uni_public
+                   + tuition
+                   + uni_nonwhite_prop + uni_total_pop + pell,
+                  data = timeseries) |>
+  get_printable_model()
+county_model <- coxph(Surv(protest_age, had_hazard_status) ~ white_prop +
+                        mhi +
+                        rent_burden +
+                        republican_vote_prop,
+                      data = timeseries) |>
+  get_printable_model()
+full_model <- fit_cox_model(covariates$name, timeseries) |>
+  get_printable_model()
+
+list(
+  lst(uni_model, county_model, full_model),
+  model_combinations
+) |> 
+  flatten() |> 
+  writexl::write_xlsx("docs/data-cleaning-requests/diffusion.xlsx")
+```
