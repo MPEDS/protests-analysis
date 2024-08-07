@@ -1,5 +1,9 @@
 ## Sorry for this inelegant plotting. I needed to make a graph for a paper - ALH
 
+<<<<<<< HEAD
+=======
+library(googledrive)
+>>>>>>> 7d41ffb (adding trump breakdown graph)
 library(tidyverse)
 library(ggplot2)
 
