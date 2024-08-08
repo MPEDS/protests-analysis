@@ -1,6 +1,8 @@
 Tables and Figures for *Trends in Higher Ed Protest*
 ================
 
+This is the running list of figures which we use in the Trends paper.
+
 - [Figure 1: Frequency of U.S. and Canadian higher ed protest events,
   Jan. 2012 - July
   2018](#figure-1-frequency-of-us-and-canadian-higher-ed-protest-events-jan-2012---july-2018)
