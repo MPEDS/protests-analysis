@@ -1,6 +1,6 @@
 create_timeseries <- function(integrated, canonical_event_relationship, ipeds, us_covariates, uni_pub_xwalk_reference, us_geo){
   mizzou_id <- integrated |>
-    filter(key == "Umbrella_Mizzou_Anti-Racism_2015_Oct-Nov") |>
+    filter(key == "Umbrella_Mizzou_Anti-Racism_2015-2016_Oct-Feb") |>
     pull(canonical_id)
   mizzou_events_ids <- canonical_event_relationship |>
     filter(canonical_id2 %in% mizzou_id) |>

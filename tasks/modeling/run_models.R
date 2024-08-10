@@ -86,8 +86,7 @@ get_printable_model <- function(model, name = "estimate"){
     select(term, "{name}" := estimate) |>
     left_join(covariates, by = c("term" = "name")) |>
     mutate(term = ifelse(is.na(formatted), term, formatted)) |>
-    select(term, category, everything(), -formatted) |>
-    rename("Scope of covariate" = category)
+    select(term, -category, everything(), -formatted)
 }
 
 get_summary_statistics <- function(timeseries){
@@ -129,13 +128,6 @@ get_summary_statistics <- function(timeseries){
     })
 }
 
-format_num <- function(num){
-  case_when(
-    abs(num) > 1e5 | abs(num) < 1e-4 ~ formatC(num, digits = 3, big.mark = ","),
-    TRUE ~ prettyNum(round(num, digits = 3), big.mark = ",")
-  )
-}
-
 get_covariates <- function() {
   tribble(
     ~category, ~name, ~formatted,
@@ -149,4 +141,23 @@ get_covariates <- function() {
     "County", "rent_burden", "Proportion of households spending more than 30% of income on rent",
     "County", "republican_vote_prop", "Proportion in county voting Republican in 2016 presidential election"
   )
+}
+
+replace_variable_names <- function(dta, colname = NULL, keep_category = FALSE){
+  covariates <- get_covariates()
+  new_dta <- dta |>
+    left_join(covariates, by = "name" |> set_names(colname)) |>
+    select(-{{colname}}) |>
+    rename({{colname}} := formatted) |>
+    select({{colname}}, category, everything())
+  if(keep_category){
+    return(new_dta)
+  }
+  return(new_dta |> select(-category))
+}
+
+#' To be plugged into rename_with()
+rename_covariates <- function(str){
+  covs <- get_covariates()
+  return(covs$formatted[covs$name == str])
 }
