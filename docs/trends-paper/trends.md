@@ -204,7 +204,7 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 | wave                    | criteria                                                           | n_protests |
 |:------------------------|:-------------------------------------------------------------------|-----------:|
-| Second US Wave (Mizzou) | Mizzou umbrella                                                    |        130 |
+| Second US Wave (Mizzou) | Mizzou umbrella                                                    |        125 |
 | Second US Wave (Mizzou) | racial_issue == Univ governance… OR racial_issue == Campus climate |       1239 |
 
 ## Third Wave - Trump
@@ -218,7 +218,7 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | wave                                     | n_protests |
 |:-----------------------------------------|-----------:|
 | First Wave                               |        213 |
-| Second Wave (Mizzou umbrella)            |        130 |
+| Second Wave (Mizzou umbrella)            |        125 |
 | Third Wave (trump AND immigration count) |        178 |
 
 # Canada Waves Count
