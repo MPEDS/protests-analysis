@@ -659,18 +659,22 @@ first_us_wave_summary |>
   mizzou_umbrella_wave <- get_any_umbrella("Umbrella_Mizzou_Anti-Racism_2015-2016_Oct-Feb") |>
   filter(start_date >= as.Date("2015-10-01") & 
          start_date <= as.Date("2015-12-31"))
+  
   mizzou_umbrella_weekly_count <- make_weekly_count(mizzou_umbrella_wave)
   mizzou_umbrella_daily_count <- make_daily_count(mizzou_umbrella_wave)
   
   # 2. mizzou by issue
   get_second_us_wave <- function() {
       univ_admin_and_campus_climate <- us_protests_issues |> 
-    filter(racial_issue == "University governance, admin, policies, programs, curriculum" |
-           racial_issue == "Campus climate") 
+      filter(racial_issue == "University governance, admin, policies, programs, curriculum" |
+             racial_issue == "Campus climate") |> 
+      filter(start_date >= as.Date("2015-10-01") & 
+             start_date <= as.Date("2015-12-31"))
       return(univ_admin_and_campus_climate) 
   }
   
   mizzou_by_issue_wave <- get_second_us_wave()
+  
   mizzou_by_issue_weekly_count <- make_weekly_count(mizzou_by_issue_wave)
   mizzou_by_issue_daily_count <- make_daily_count(mizzou_by_issue_wave)
   
@@ -685,8 +689,8 @@ first_us_wave_summary |>
                          mizzou_by_issue_weekly_count),
                       "docs/trends-paper/wave-counts/us-wave-counts/second_us_wave_counts.xlsx")
 
-  make_wave_line_graph_weekly(mizzou_umbrella_weekly_count, "Second US Wave (Mizzou umbrella)") +
-    scale_x_date(date_breaks = "1 week",
+  make_wave_line_graph(mizzou_umbrella_daily_count, "Second US Wave (Mizzou umbrella Oct 1-Dec 31)") +
+    scale_x_date(date_breaks = "2 days",
                  date_labels = "%b %d",
                  expand = c(0, 0)) +
     scale_y_continuous(expand = c(0, 0), breaks = seq(0, 50, by = 5), limits = c(0, 40))
@@ -696,10 +700,24 @@ first_us_wave_summary |>
 ```{r}
 
   make_wave_line_graph(mizzou_by_issue_daily_count, "Second US Wave (Mizzou by issue)") +
-        scale_x_date(date_breaks = "2 months",
+        scale_x_date(date_breaks = "2 days",
                  date_labels = "%b %d",
                  expand = c(0, 0)) +
         scale_y_continuous(expand = c(0, 0), breaks = seq(0,100, by = 5), limits = c(0,70))
+```
+
+```{r}
+
+  mizzou_campaign_wave <- mizzou_umbrella_wave |> 
+    filter(relationship_type == "campaign")
+
+  mizzou_campaign_daily_count <- make_daily_count(mizzou_campaign_wave)
+
+  make_wave_line_graph(mizzou_campaign_daily_count, "Second US Wave (Mizzou campaign)") +
+        scale_x_date(date_breaks = "2 days",
+                 date_labels = "%b %d",
+                 expand = c(0, 0)) +
+        scale_y_continuous(expand = c(0, 0), breaks = seq(0,5, by = 1), limits = c(0,5))
 ```
 
 #### Second Wave Summary 

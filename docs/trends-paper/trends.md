@@ -200,18 +200,20 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 ![](trends_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
 
+![](trends_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+
 #### Second Wave Summary
 
 | wave                    | criteria                                                           | n_protests |
 |:------------------------|:-------------------------------------------------------------------|-----------:|
 | Second US Wave (Mizzou) | Mizzou umbrella                                                    |        125 |
-| Second US Wave (Mizzou) | racial_issue == Univ governance… OR racial_issue == Campus climate |       1239 |
+| Second US Wave (Mizzou) | racial_issue == Univ governance… OR racial_issue == Campus climate |        353 |
 
 ## Third Wave - Trump
 
-![](trends_files/figure-gfm/unnamed-chunk-17-1.png)<!-- -->
-
 ![](trends_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+![](trends_files/figure-gfm/unnamed-chunk-19-1.png)<!-- -->
 
 ## US Waves Summary
 
@@ -230,7 +232,7 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | First Canada Wave (Quebec 2012) | year = 2012 AND location = QC AND issue = “Tuition” |        164 |
 | First Canada Wave (Quebec 2012) | Quebec Police Violence Protests in 2012             |         10 |
 
-![](trends_files/figure-gfm/unnamed-chunk-22-1.png)<!-- -->
+![](trends_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
 
 ## Second Wave - Toronto Labor
 
@@ -240,7 +242,7 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | Second Canada Wave (Labor) | Quebec Labor Protests 2014/2015              |         12 |
 | Second Canada Wave (Labor) | Quebec Economy/inequality Protests 2014/2015 |         47 |
 
-![](trends_files/figure-gfm/unnamed-chunk-24-1.png)<!-- --> \## Canada
+![](trends_files/figure-gfm/unnamed-chunk-25-1.png)<!-- --> \## Canada
 Waves Summary
 
 | wave        | criteria                                            | n_protests |
