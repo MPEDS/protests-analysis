@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE, message=FALSE}
 library(targets)
-library(knitr)
+library(knitr) 
 library(sf)
 library(showtext)
 library(tidyverse)
@@ -35,7 +35,7 @@ country_scale <- c(
 )
 ```
 
-```{r}
+```{r loading}
 # During interactive use, this chunk has to be loaded separately from the setup chunk.
 # `targets` looks for a `_targets/` directory but cannot find one
 # if the working directory is pointed at the `docs/` directory already, as is the
@@ -97,7 +97,7 @@ racial_issues <- read_csv("tasks/university_covariates/hand/racial_issues.csv",
 
 # Figure 1: Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018
 
-```{r}
+```{r Figure1}
 protests_by_country <- mpeds |> 
   filter(start_date >= as.Date("2012-01-01"),
          start_date <= as.Date("2018-07-31"),
@@ -131,7 +131,7 @@ ggplot(protests_by_country, aes(fill = country, x = date, y = n)) +
 
 # Figure 2: Frequency of U.S. higher ed protest events and major waves, Jan. 2012 - July 2018
 
-```{r us_over_time, width = 12, height = 8}
+```{r Figure2-us_over_time, width = 12, height = 8}
 
 summer_color <- "#ff4b3a"
 events_color <- "#2133ff"
@@ -202,7 +202,7 @@ make_plot("US")
 
 # Figure 3. Frequency of Canadian higher ed protest events and major waves, Jan. 2012 - Dec. 2018
 
-```{r canada_over_time, width = 12, height = 8}
+```{r Figure3-canada_over_time, width = 12, height = 8}
 make_plot("Canada")
 ```
 
@@ -568,14 +568,16 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
   }
   
 ```
-  
+
 <!-- # Table x. Top 10 U.S. Higher Ed Protest Issues by month -->
-```{r, message=FALSE}  
+
+```{r, message=FALSE}
   # make_issue_counts_by_month("US") |> 
   #   kable()
 ```
 
 # Table x. Top 10 Canada Higher Ed Protest Issues percentages by year
+
 ```{r, message=FALSE}
  make_issue_counts_by_semester("Canada") |> 
     kable()
@@ -583,23 +585,24 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
 ```
 
 <!-- # Table x. Top 10 Canada Higher Ed Protest Issues by month -->
+
 ```{r, message=FALSE}
  # make_issue_counts_by_month("Canada") |> 
  #    kable()
 
 ```
 
-
 # U.S. Waves Count
 
 ### First Wave - BLM 2014
+
 ```{r}
 
   us_protests <- mpeds |> 
     filter(country == "US")
 
   us_protests_issues <- us_protests |>  
-    select(canonical_id, key, start_date, issue, racial_issue) |> 
+    select(canonical_id, key, description, start_date, issue, racial_issue) |> 
     unnest(issue) |> 
     unnest(racial_issue)
 
@@ -709,13 +712,15 @@ make_wave_line_graph_weekly <- function(daily_count_df,graph_title) {
 ```
 
 #### First Wave Summary
+
 ```{r}
 first_us_wave_summary |> 
   kable()
 ```
 
 ## Second Wave - Mizzou
-```{r}
+
+```{r Mizzou}
 # using two different sets of criteria for the mizzou wave
 #     1. canonical events under the mizzou umbrella
 #     2. filtering by racial_issue == "University governance..." or 
@@ -765,7 +770,7 @@ first_us_wave_summary |>
   
 ```
 
-```{r}
+```{r Mizzou-by-issue}
 
   make_wave_line_graph(mizzou_by_issue_daily_count, "Second US Wave (Mizzou by issue)") +
         scale_x_date(date_breaks = "2 days",
@@ -795,7 +800,8 @@ second_us_wave_summary |>
 ```
 
 ## Third Wave - Trump
-```{r}
+
+```{r ThirdWave}
   
  trump_wave <- us_protests_issues |> 
     filter(start_date >= as.Date("2016-11-01") & 
@@ -819,7 +825,7 @@ second_us_wave_summary |>
  third_us_wave_counts <- c(nrow(trump_not_immigration), 
                            nrow(immigration_not_trump), 
                            nrow(trump_and_immigration))
- 
+  
  third_us_wave_summary <- tibble(
    wave = "Third US Wave (Trump)",
    criteria = c("trump_not_immigration", "immigration_not_trump", "trump_and_immigration"),
@@ -865,9 +871,38 @@ make_third_wave_stacked_bar_graph()
 
 ```
 
+## Third Wave - Trump / Sanctuary
+```{r ThirdWave-Trump-ALH}
+us_protests_issues |>
+  mutate(is_trump = str_detect(issue, "Trump and/or his administration \\(Against\\)"),
+         is_immigration = str_detect(racial_issue, "Immigration \\(For\\)"),
+         is_sanctuary = str_detect(description, regex("sanctuary", ignore_case = TRUE))
+         )|>
+  filter(start_date >= '2016-11-01' & start_date <=  '2017-02-28',
+         is_trump == 1 | is_immigration == 1) |>
+  mutate(protest_type =
+          case_when(is_sanctuary == 1 ~ 'Sanctuary',
+                    is_immigration == 1 & is_trump == 0 & is_sanctuary == 0 ~ 'Immigration not Trump',
+                    is_immigration == 0 & is_trump == 1 & is_sanctuary == 0 ~ 'Trump not immigration',
+                    is_immigration == 1 & is_trump == 1 & is_sanctuary == 0 ~ 'Trump and immigration')
+         ) |>
+  ggplot(aes(x = start_date, fill = protest_type)) +
+    geom_bar() +
+    labs(x = "Date", y = "Protest Count") +
+    scale_y_continuous(expand = c(0, 0), limits = c(0,65), breaks = seq(0, 100, by = 10)) +
+    scale_x_date(expand = c(0, 0),date_breaks = "3 days", date_labels = "%b %d") +
+    theme_bw() +
+    theme(
+      axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
+      legend.title = element_blank()
+    ) +
+    scale_fill_manual(values = c("Sanctuary" = "blue2",
+            "Immigration not Trump" = "orange2",
+            "Trump not immigration" = "brown4",
+            "Trump and immigration" = "red3"))
+```
 
-
-```{r}
+```{r ThirdWave-ScatterPlot}
 
 make_third_wave_scatterplot <- function() {
     ggplot() +
@@ -894,6 +929,7 @@ make_third_wave_scatterplot()
 ```
 
 ## US Waves Summary
+
 ```{r}
 
 us_waves_summary <- tibble(
@@ -911,6 +947,7 @@ us_waves_summary |>
 # Canada Waves Count
 
 ## First Wave - Quebec 2012
+
 ```{r}
   canada_protests <- mpeds |> 
     filter(country == "Canada")
@@ -976,6 +1013,7 @@ make_canada_first_wave_graph <- function() {
 ```
 
 ## Second Wave - Toronto Labor
+
 ```{r}
   
   toronto_protests <- canada_protests_issues |>
@@ -1021,7 +1059,7 @@ make_canada_first_wave_graph <- function() {
     kable()
   
 ```
-  
+
 ```{r}
   
   canada_second_wave_colors <- c("Toronto Labor" = "coral4", "Quebec Labor" = "darkcyan", "Quebec Economy" = "black")
@@ -1058,7 +1096,9 @@ make_canada_second_wave_graph <- function() {
   
   make_canada_second_wave_graph()
 ```
+
 ## Canada Waves Summary
+
 ```{r}
 
 canada_waves_summary <- tibble(
@@ -1077,8 +1117,7 @@ canada_waves_summary <- tibble(
 
 canada_waves_summary |> 
   kable()
-```  
-
+```
 
 # Statistics for in-text citations
 
