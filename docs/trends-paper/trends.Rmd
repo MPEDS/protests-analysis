@@ -450,8 +450,8 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
     mutate(year = year(start_date))
 
   issues_values <- country |>
-    select(key, issue, racial_issue, year) |>
-    pivot_longer(cols = c(everything(), -key, -year)) |>
+    select(key, issue, racial_issue, start_date) |>
+    pivot_longer(cols = c(everything(), -key, -start_date)) |>
     unnest(value) |>
     filter(value != "_Not relevant", value != "",
            value != "Anti-racism")
@@ -467,9 +467,15 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
 
   issue_count_by_semester <- issues_values |>
     right_join(top_issues, by = c("name", "value")) |>
-    group_by(year, issue = value, type = name, issue_n_all_years = n) |>
-    summarize(n = n())  |>
-    left_join(dates, by ="year") |> 
+    mutate(year_half = ifelse(month(start_date), "a", "b"),
+           year = year(start_date)) |> 
+    group_by(year,
+             year_half,
+             issue = value,
+             type = name,
+             issue_n_all_years = n) |>
+    summarize(n = n())  |> 
+    left_join(dates, by =c("year", "year_half")) |> 
     mutate(n = ifelse(
       is.na(n), "", paste0(
         round(100 * n/year_n, 2), "% (", format(n, big.mark = ",") |> 
