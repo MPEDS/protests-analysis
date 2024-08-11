@@ -506,6 +506,7 @@ lat,lng,location
 38.5925524,-90.3573389,"Webster Groves, MO,  USA"
 41.2459149,-75.88130749999999,"Wilkes-Barre, PA, USA"
 28.5999998,-81.33923519999999,"Winter Park, FL, USA"
+45.5018869,-73.56739189999999,"Montreal, QC, Canda"
 25.9017472,-97.4974838,"Brownsville, TX, USA"
 30.267153,-97.7430608,"Austin, Texas, USA"
 41.4730948,-87.0611412,"Valparaiso, IN, USA"
@@ -962,6 +963,7 @@ lat,lng,location
 46.86718459999999,-96.7610059,MSUM
 37.4245914,-81.005363,Concord College
 46.7295265,-117.1803059,WSU
+40.7406438,-74.173126,Rutgers University
 52.835854,-6.932474399999999,Carlow
 40.4450813,-80.0087746,Community College of Allegheny County
 18.220833,-66.590149,University of Puerto Rico
@@ -1195,6 +1197,7 @@ lat,lng,location
 43.0144419,-79.26234029999999,Niagara College
 44.76470579999999,-106.9429672,Sheridan College
 43.7722498,-79.4996257,Seneca at York
+43.79602939999999,-79.3485918,Seneca’s Newnham campus.
 43.676042700000004,-79.41072840000001,George Brown College
 43.7734535,-79.50186839999999,Seneca college campus at York University
 44.76470579999999,-106.9429672,Sheridan college
@@ -1484,5 +1487,5 @@ lat,lng,location
 51.253775,-85.3232139,Ontario Institute for Student Education
 43.6628917,-79.39565640000001,UofT
 34.1439461,-118.118761,Pasadena City College
-39.0343551,-94.58342739999999,University of Missouri-Kansas City
+39.0343551,-94.5834274,University of Missouri-Kansas City
 43.0125274,-83.6874562,University of Michigan in Flint

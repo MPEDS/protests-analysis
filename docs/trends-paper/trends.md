@@ -36,21 +36,22 @@ Tables and Figures for *Trends in Higher Ed Protest*
 - [Canada Waves Count](#canada-waves-count)
   - [First Wave - Quebec 2012](#first-wave---quebec-2012)
   - [Second Wave - Toronto Labor](#second-wave---toronto-labor)
+  - [Canada Waves Summary](#canada-waves-summary)
 - [Statistics for in-text citations](#statistics-for-in-text-citations)
   - [Country-level counts](#country-level-counts)
   - [Wave-specific counts](#wave-specific-counts)
 
 # Figure 1: Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018
 
-![](trends_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](trends_files/figure-gfm/Figure1-1.png)<!-- -->
 
 # Figure 2: Frequency of U.S. higher ed protest events and major waves, Jan. 2012 - July 2018
 
-![](trends_files/figure-gfm/us_over_time-1.png)<!-- -->
+![](trends_files/figure-gfm/Figure2-us_over_time-1.png)<!-- -->
 
 # Figure 3. Frequency of Canadian higher ed protest events and major waves, Jan. 2012 - Dec. 2018
 
-![](trends_files/figure-gfm/canada_over_time-1.png)<!-- -->
+![](trends_files/figure-gfm/Figure3-canada_over_time-1.png)<!-- -->
 
 # Table 1: Top 10 U.S. and Canadian universities and locations for higher ed protests
 
@@ -151,6 +152,7 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 # Table x. Top 10 U.S. Higher Ed Protest Issues percentages by year
 
+<<<<<<< HEAD
 | issue                                                        | type         | issue_n_all_years | 2012a       | 2012b        | 2013a       | 2013b       | 2014a         | 2014b        | 2015a        | 2015b        | 2016a        | 2016b        | 2017a        | 2017b        | 2018a        | 2018b        |
 |:-------------------------------------------------------------|:-------------|------------------:|:------------|:-------------|:------------|:------------|:--------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|:-------------|
 | Environmental                                                | issue        |               345 | 5.48% (4)   | 10.81% (4)   | 45% (27)    | 13.57% (27) | 25.82% (55)   | 10.6% (55)   | 20.95% (79)  | 16.81% (79)  | 24.15% (100) | 14.47% (100) | 11.71% (74)  | 18.45% (74)  | 1.16% (5)    | 500% (5)     |
@@ -163,6 +165,20 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | University governance, admin, policies, programs, curriculum | racial_issue |               537 | 4.11% (3)   | 8.11% (3)    | 23.33% (14) | 7.04% (14)  | 20.19% (43)   | 8.29% (43)   | 44.83% (169) | 35.96% (169) | 35.51% (147) | 21.27% (147) | 18.51% (117) | 29.18% (117) | 10.23% (44)  | 4400% (44)   |
 | \_Other Issue                                                | issue        |               358 | 10.96% (8)  | 21.62% (8)   | 38.33% (23) | 11.56% (23) | 17.84% (38)   | 7.32% (38)   | 16.18% (61)  | 12.98% (61)  | 16.43% (68)  | 9.84% (68)   | 17.88% (113) | 28.18% (113) | 10.93% (47)  | 4700% (47)   |
 | Immigration (For)                                            | racial_issue |               454 | NA          | NA           | 48.33% (29) | 14.57% (29) | 13.62% (29)   | 5.59% (29)   | 5.31% (20)   | 4.26% (20)   | 22.71% (94)  | 13.6% (94)   | 39.87% (252) | 62.84% (252) | 6.98% (30)   | 3000% (30)   |
+=======
+| issue                                                        | type         | issue_n_all_years | 2012        | 2013        | 2014         | 2015         | 2016         | 2017         | 2018         |
+|:-------------------------------------------------------------|:-------------|------------------:|:------------|:------------|:-------------|:-------------|:-------------|:-------------|:-------------|
+| Environmental                                                | issue        |               345 | 3.64% (4)   | 10.42% (27) | 7.51% (55)   | 9.33% (79)   | 9.05% (100)  | 7.16% (74)   | 1.16% (5)    |
+| Trump and/or his administration (Against)                    | issue        |               555 | NA          | NA          | NA           | 0.47% (4)    | 21.45% (237) | 28.85% (298) | 3.48% (15)   |
+| Campus climate                                               | racial_issue |               427 | 2.73% (3)   | 3.86% (10)  | 6.42% (47)   | 21.37% (181) | 8.05% (89)   | 6.2% (64)    | 7.66% (33)   |
+| Labor and work                                               | issue        |               735 | 20% (22)    | 22.39% (58) | 10.11% (74)  | 20.66% (175) | 17.19% (190) | 12.1% (125)  | 21.11% (91)  |
+| Police violence                                              | racial_issue |               558 | 6.36% (7)   | 3.09% (8)   | 39.48% (289) | 11.69% (99)  | 9.59% (106)  | 2.71% (28)   | 4.87% (21)   |
+| Tuition, fees, financial aid                                 | issue        |               298 | 20% (22)    | 5.41% (14)  | 8.06% (59)   | 7.67% (65)   | 4.98% (55)   | 4.55% (47)   | 8.35% (36)   |
+| University governance, admin, policies, programs, curriculum | issue        |              1358 | 38.18% (42) | 38.22% (99) | 27.6% (202)  | 34.83% (295) | 26.88% (297) | 25.17% (260) | 37.82% (163) |
+| University governance, admin, policies, programs, curriculum | racial_issue |               537 | 2.73% (3)   | 5.41% (14)  | 5.87% (43)   | 19.95% (169) | 13.3% (147)  | 11.33% (117) | 10.21% (44)  |
+| \_Other Issue                                                | issue        |               358 | 7.27% (8)   | 8.88% (23)  | 5.19% (38)   | 7.2% (61)    | 6.15% (68)   | 10.94% (113) | 10.9% (47)   |
+| Immigration (For)                                            | racial_issue |               454 | NA          | 11.2% (29)  | 3.96% (29)   | 2.36% (20)   | 8.51% (94)   | 24.39% (252) | 6.96% (30)   |
+>>>>>>> c1738bb (regenerating)
 
 <!-- # Table x. Top 10 U.S. Higher Ed Protest Issues by month -->
 
@@ -187,7 +203,7 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 ### First Wave - BLM 2014
 
-![](trends_files/figure-gfm/unnamed-chunk-12-1.png)<!-- -->
+![](trends_files/figure-gfm/unnamed-chunk-10-1.png)<!-- -->
 
 #### First Wave Summary
 
@@ -197,9 +213,9 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 ## Second Wave - Mizzou
 
-![](trends_files/figure-gfm/unnamed-chunk-14-1.png)<!-- -->
+![](trends_files/figure-gfm/Mizzou-1.png)<!-- -->
 
-![](trends_files/figure-gfm/unnamed-chunk-15-1.png)<!-- -->
+![](trends_files/figure-gfm/Mizzou-by-issue-1.png)<!-- -->
 
 ![](trends_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
 
@@ -207,12 +223,23 @@ Tables and Figures for *Trends in Higher Ed Protest*
 
 | wave                    | criteria                                                           | n_protests |
 |:------------------------|:-------------------------------------------------------------------|-----------:|
+<<<<<<< HEAD
 | Second US Wave (Mizzou) | Mizzou umbrella                                                    |        125 |
 | Second US Wave (Mizzou) | racial_issue == Univ governance… OR racial_issue == Campus climate |        354 |
 
 ## Third Wave - Trump
 
 ![](trends_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+=======
+| Second US Wave (Mizzou) | Mizzou umbrella                                                    |        130 |
+| Second US Wave (Mizzou) | racial_issue == Univ governance… OR racial_issue == Campus climate |       1255 |
+
+## Third Wave - Trump
+
+![](trends_files/figure-gfm/ThirdWave-1.png)<!-- -->
+
+![](trends_files/figure-gfm/ThirdWave-ScatterPlot-1.png)<!-- -->
+>>>>>>> c1738bb (regenerating)
 
 ## Third Wave - Trump / Sanctuary
 
@@ -237,7 +264,11 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | First Canada Wave (Quebec 2012) | year = 2012 AND location = QC AND issue = “Tuition” |        164 |
 | First Canada Wave (Quebec 2012) | Quebec Police Violence Protests in 2012             |         10 |
 
+<<<<<<< HEAD
 ![](trends_files/figure-gfm/unnamed-chunk-23-1.png)<!-- -->
+=======
+![](trends_files/figure-gfm/unnamed-chunk-16-1.png)<!-- -->
+>>>>>>> c1738bb (regenerating)
 
 ## Second Wave - Toronto Labor
 
@@ -247,8 +278,14 @@ Tables and Figures for *Trends in Higher Ed Protest*
 | Second Canada Wave (Labor) | Quebec Labor Protests 2014/2015              |         12 |
 | Second Canada Wave (Labor) | Quebec Economy/inequality Protests 2014/2015 |         47 |
 
+<<<<<<< HEAD
 ![](trends_files/figure-gfm/unnamed-chunk-25-1.png)<!-- --> \## Canada
 Waves Summary
+=======
+![](trends_files/figure-gfm/unnamed-chunk-18-1.png)<!-- -->
+
+## Canada Waves Summary
+>>>>>>> c1738bb (regenerating)
 
 | wave        | criteria                                            | n_protests |
 |:------------|:----------------------------------------------------|-----------:|
