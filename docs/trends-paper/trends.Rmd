@@ -466,19 +466,36 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
     filter(value != "_Not relevant", value != "",
            value != "Anti-racism")
 
+  new_count_attempt <- issues_values |> 
+    filter(str_detect(value, "University governance")) |> 
+    mutate(year = year(start_date), 
+           year_half = ifelse(month(start_date) < 7, "a", "b")) |> 
+    group_by(key) |> 
+    filter(n() < 2) |> 
+    group_by(value, year, year_half) |> 
+    summarize(n=n()) |> 
+    mutate(name = "issue OR racial_issue")
+  
   top_issues <- issues_values |>
+    filter(!str_detect(value, "University governance")) |> 
     group_by(value, name) |>
     summarize(n = n(),
               lst = list(key), .groups = "drop") |>
     ungroup() |>
     drop_na() |>
     slice_max(order_by = n, n = 10, with_ties = FALSE) |>
-    select(!lst)
+    select(!lst) |> 
+    bind_rows(new_count_attempt |> 
+                select(-year, -year_half) |> 
+                group_by(value, name) |> 
+                summarize(n = sum(n))
+                )
 
   issue_count_by_semester <- issues_values |>
     right_join(top_issues, by = c("name", "value")) |>
     mutate(year_half = ifelse(month(start_date) < 7, "a", "b"),
            year = year(start_date)) |> 
+    bind_rows(new_count_attempt) |> 
     group_by(year,
              year_half,
              issue = value,
