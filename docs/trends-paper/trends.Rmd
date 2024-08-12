@@ -486,13 +486,13 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
     slice_max(order_by = n, n = 10, with_ties = FALSE) |>
     select(!lst) |> 
     bind_rows(new_count_attempt |> 
-                select(-year, -year_half) |> 
-                group_by(value, name) |> 
-                summarize(n = sum(n))
-                )
+              select(-year, -year_half) |> 
+              group_by(value, name) |> 
+              summarize(n = n())
+              )
 
   issue_count_by_semester <- issues_values |>
-    right_join(top_issues, by = c("name", "value")) |>
+    right_join(top_issues, by = c("name", "value")) |> 
     mutate(year_half = ifelse(month(start_date) < 7, "a", "b"),
            year = year(start_date)) |> 
     bind_rows(new_count_attempt) |> 
@@ -501,8 +501,8 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
              issue = value,
              type = name,
              issue_n_all_years = n) |> 
-    summarize(n = n())  |> 
-    left_join(dates, by =c("year", "year_half")) |> 
+    summarize(n = n()) |>    
+    left_join(dates, by =c("year", "year_half")) |>   
     mutate(n = ifelse(
       is.na(n), "", paste0(
         round(100 * n/year_n, 2), "% (", format(n, big.mark = ",") |> 
@@ -516,7 +516,10 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
                 values_from = "n") |>
     select(-contains("2011")) |>
     arrange(desc(total_n))
-
+  
+  # ADD fix to univ governance row
+  
+  
   return(issue_count_by_semester)
 }
 
