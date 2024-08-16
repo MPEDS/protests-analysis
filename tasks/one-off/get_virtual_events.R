@@ -13,5 +13,5 @@ get_virtual_events <- function() {
 
 
   writexl::write_xlsx(virtual_events,
-                      "docs/data_cleaning_requests/virtual_events.xlsx")
+                      "docs/data-cleaning-requests/virtual_events.xlsx")
 }
