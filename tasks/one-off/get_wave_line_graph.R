@@ -1,23 +1,32 @@
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 get_wave_line_graph_wrapper <- function() {
 
   # load basic stuff in
   mpeds_raw <- tar_load(canonical_events)
   mpeds_sf <- tar_load(integrated)
 =======
+=======
+>>>>>>> c1738bb (regenerating)
 make_wave_line_graph <- function() {
 
   # load basic stuff in
   mpeds_raw <- tar_read(canonical_events)
   mpeds_sf <- tar_read(integrated)
+<<<<<<< HEAD
+>>>>>>> c1738bb (regenerating)
+=======
 >>>>>>> c1738bb (regenerating)
   mpeds <- mpeds_sf |>
     st_drop_geometry() |>
     mutate(country = if_else(str_extract(geoid, "us|canada") == "us", "US", "Canada") |>
              fct_relevel("US", "Canada")
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> c1738bb (regenerating)
     )
   relationships <- tar_read(canonical_event_relationship)
 
