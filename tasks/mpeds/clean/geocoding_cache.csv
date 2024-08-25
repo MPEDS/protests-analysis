@@ -530,6 +530,7 @@ lat,lng,location
 43.653226,-79.3831843,"Toronto, Ontario, Canada"
 42.1142112,-84.2910759,"Columbia, MI, USA"
 43.0125274,-83.6874562,"Flint, MI, USA"
+43.653226,-79.3831843,"Toronto, ON, CAN"
 38.9403808,-92.3277375,University of Missouri-Columbia
 38.7092187,-90.3083223,University of Missouri St.Louis
 38.9403808,-92.3277375,University of Missouri
@@ -1172,6 +1173,7 @@ lat,lng,location
 37.3647146,-120.4241184,UC Merced
 36.1683703,-86.8258566,Tennessee State University
 41.6931245,-72.7638508,Central Connecticut State University
+37.87015100000001,-122.2594606,UC campuses
 37.22838429999999,-80.42341669999999,Virginia Tech
 42.3504997,-71.1053991,Boston University'
 42.3465952,-71.0895292,Berklee College
