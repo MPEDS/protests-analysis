@@ -19,6 +19,7 @@ get_ipeds_stem <- function(){
         filter(CIPCODE %in% dhs_codes | CIPCODE == 99) |>
         group_by(UNITID, CIPCODE) |>
         summarize(count = sum(CTOTALT, na.rm=TRUE)) |>
+        ungroup() |>
         pivot_wider(names_from = CIPCODE,
                     values_from = count,
                     values_fn = ~sum(., na.rm=T)) |>
