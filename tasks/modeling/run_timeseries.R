@@ -64,7 +64,6 @@ get_printable_model <- function(model, name = "estimate"){
     "n", model$n,
     "n_events", model$nevent,
     "log-likelihood test", summary(model)$logtest[3],
-    "concordance", concordance(model)$concordance
   )
 
   tidy(model) |>
@@ -132,8 +131,8 @@ get_covariates <- function() {
   tribble(
     ~category, ~name, ~formatted,
     "University", "is_uni_public", "Public/Private status (1 = Public)",
-    "University", "tuition", "Tuition (thousands of dollars)",
-    "University", "uni_nonwhite_prop", "Nonwhite proportion of enrolled students",
+    "University", "instruction_expenses", "Proportion of expenses spent on instruction",
+    "University", "government_revenue", "Proportion of revenue coming from government",
     "University", "uni_total_pop", "Total enrollment at university (thousands)",
     "University", "pell", "Proportion of Pell grant recipients",
     "County", "white_prop", "White proportion in county of university",
