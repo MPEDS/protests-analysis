@@ -151,9 +151,19 @@ list(
   tar_target(ipeds_tuition, get_ipeds_tuition()),
   tar_target(ipeds_race, get_ipeds_race()),
   tar_target(ipeds_finance, get_ipeds_finance()),
+  tar_target(ipeds_tenure, get_ipeds_tenure()),
+  tar_target(ipeds_stem, get_ipeds_stem()),
   tar_target(ipeds_pell, get_ipeds_pell()),
-  tar_target(ipeds, list(ipeds_directory, ipeds_tuition, ipeds_race, ipeds_pell, ipeds_finance) |>
-               combine_ipeds()),
+  tar_target(ipeds, list(
+    ipeds_directory,
+    ipeds_tuition,
+    ipeds_race,
+    ipeds_pell,
+    ipeds_finance,
+    ipeds_stem,
+    ipeds_tenure
+    ) |>
+      combine_ipeds()),
   tar_target(glued_raw, get_glued()),
   tar_target(glued, clean_glued(glued_raw)),
   tar_target(tuition, get_tuition()),
