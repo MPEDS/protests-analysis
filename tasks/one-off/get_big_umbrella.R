@@ -40,6 +40,6 @@ get_big_umbrella <- function() {
     mutate(across(where(is.list), ~map_chr(., ~paste0(.[. != "NA/Unclear"], collapse = ", "))))
 
   writexl::write_xlsx(responses,
-                      "docs/data_cleaning_requests/all_umbrella_uni_responses.xlsx")
+                      "docs/data-cleaning-requests/all_umbrella_uni_responses.xlsx")
 
 }
