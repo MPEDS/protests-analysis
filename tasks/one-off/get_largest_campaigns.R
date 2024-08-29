@@ -8,13 +8,35 @@ get_largest_campaigns <- function(){
     mutate(across(where(is.integer), as.character)) |>
     filter(relationship_type == "campaign") |>
     left_join(keys, by = c("canonical_id2" = "canonical_id")) |>
-    select(campaign_lead = key, campaign_event = canonical_id1)
+    select(campaign_lead = key, campaign_event = canonical_id1) |>
+    mutate(type = "campaign")
 
-  # one sheet with a list of Biggest campaigns
+  solidarity <- canonical_event_relationship |>
+    mutate(across(where(is.integer), as.character)) |>
+    filter(relationship_type == "solidarity") |>
+    left_join(keys, by = c("canonical_id2" = "canonical_id")) |>
+    select(campaign_lead = key, solidarity_event = canonical_id1) |>
+    mutate(type = "solidarity")
+
+  # Prepping some statistics -- min start date, max end date, # universities
   campaign_summary <- campaigns |>
+    bind_rows(solidarity) |>
+    left_join(integrated, by = c("campaign_event" = "canonical_id")) |>
+    mutate(university_ids = map(university, ~.$uni_id),
+           end_date = as.Date(end_date)) |>
     group_by(campaign_lead) |>
-    count(name = "number_events") |>
-    arrange(desc(number_events))
+    summarize(
+      # Not how you're supposed to do this but whatever
+      n_campaign_event = sum(type == "campaign"),
+      n_solidarity = sum(type == "solidarity"),
+      n_universities = length(unique(unlist(university_ids))),
+      min_start = min(start_date, na.rm=T),
+      max_end = max(end_date, na.rm=T),
+      est_length = ifelse(!is.infinite(max(end_date,na.rm=T)) & !is.na(max(end_date, na.rm = T)),
+                          max(end_date, na.rm=T) - min(start_date, na.rm=T),
+                          NA)
+    ) |>
+    arrange(desc(n_campaign_event))
 
   # Then for top 15 campaigns, a list of all of them
   top_15_campaigns <- integrated |>
@@ -47,5 +69,6 @@ get_largest_campaigns <- function(){
     lst(campaign_summary),
     top_15_campaigns,
   ) |>
-    flatten()
+    flatten() |>
+    writexl::write_xlsx("docs/data-cleaning-requests/campaign_summaries.xlsx")
 }
