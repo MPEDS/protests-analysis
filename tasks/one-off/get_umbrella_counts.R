@@ -21,4 +21,9 @@ get_umbrella_counts <- function() {
     relocate(key) |>
     select(-canonical_id2)
 
+  writexl::write_xlsx(umbrellas_summary,
+                      "docs/data-cleaning-requests/umbrella_count_summary.xlsx")
+
+  return(umbrella_summary)
+
 }

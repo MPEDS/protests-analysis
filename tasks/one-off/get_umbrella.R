@@ -3,7 +3,8 @@ get_umbrella <- function(){
   mpeds <- tar_read(integrated)
   mpeds <- mpeds |>
     st_drop_geometry() |>
-    select(canonical_id, key)
+    select(canonical_id, key) |>
+    mutate(canonical_id = as.integer(canonical_id))
   umbrella <- mpeds |>
     filter(str_detect(key, "^Umbrella"))
 
