@@ -2,7 +2,7 @@
 # for possible datasets and URLs
 # For data: https://nces.ed.gov/ipeds/datacenter/data/F1718_F2.zip
 # For dictionary: https://nces.ed.gov/ipeds/datacenter/data/F1718_F2_Dict.zip
-get_ipeds_finance <- function(){
+get_ipeds_finance_fasb <- function(){
   years <- 2012:2018
   finance_aggregated <- map_dfr(
     years, function(year){
@@ -50,11 +50,15 @@ get_ipeds_finance <- function(){
           revenue_total = F2D16,
           expenses_total = F2E131,
 
+          # Interesting variables marked with #
           government_revenue,
           sales_services_revenue,
+          #
           tuition_revenue = F2D01,
+          #
           private_revenue = F2D08,
           affiliated_contributions_revenue = F2D09,
+          # don't want to piss off donors if investment is highly valued?
           investment_revenue = F2D10,
           hospital_revenue = F2D13,
           independent_operations_revenue = F2D14,
@@ -68,12 +72,13 @@ get_ipeds_finance <- function(){
           institutional_support_expenses = F2E061,
           auxiliary_enterprises_expenses = F2E071,
           net_grant_aid_expenses = F2E081,
-          hospital_expenses_expenses = F2E091,
+          hospital_expenses = F2E091,
           independent_operations_expenses = F2E101,
           other_expenses = F2E121
         ) |>
         mutate(across(contains("_revenue"), ~100*round(./revenue_total, 2)),
-               across(contains("_expenses"), ~100*round(./expenses_total, 2)))
+               across(contains("_expenses"), ~100*round(./expenses_total, 2)),
+               across(where(is.numeric), ~ifelse(is.infinite(.), 0, .)))
 
       return(finance)
   })

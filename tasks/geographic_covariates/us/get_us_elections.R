@@ -20,9 +20,11 @@ get_us_elections <- function(){
 
   # Interpolate this for 2013-2015 and 2016-2017
   keys <- expand_grid(geoid = unique(elections$geoid),
-                      true_year = min(elections$year):max(elections$year))
+                      true_year = min(elections$year):2018)
   elections <- elections |>
     full_join(keys, by = "geoid") |>
+    # Produces empty values and many false matches -- 
+    # a row that has year (true_year) as 2018 should be matched with 2016 election data
     filter(true_year >= year, true_year < year + 4) |>
     select(-year) |>
     rename(year = true_year)

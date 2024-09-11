@@ -622,13 +622,13 @@ make_issue_counts_by_semester <- function(country_opt, sub_dta = NULL) {
 
 ```{r}
 
-  us_protests <- mpeds |> 
-    filter(country == "US")
+us_protests <- mpeds |> 
+  filter(country == "US")
 
-  us_protests_issues <- us_protests |>  
-    select(canonical_id, key, description, start_date, issue, racial_issue) |> 
-    unnest(issue) |> 
-    unnest(racial_issue)
+us_protests_issues <- us_protests |>  
+  select(canonical_id, key, description, start_date, issue, racial_issue) |> 
+  unnest(issue) |> 
+  unnest(racial_issue)
 
 # hard codes the specific parameters for getting this US wave
 # in this case:
@@ -901,10 +901,10 @@ make_third_wave_scatterplot <- function() {
     scale_y_continuous(expand = c(0, 0), breaks = seq(0, 100, by = 5), limits = c(0,65)) +
     theme(
       axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, size = 8),
-      legend.title = element_blank()
-    ) +
-    scale_color_manual(values = colors)
-  
+    legend.title = element_blank()
+  ) +
+  scale_color_manual(values = colors)
+
 }
 
 make_third_wave_scatterplot()

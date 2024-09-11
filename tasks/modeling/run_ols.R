@@ -38,6 +38,15 @@ get_mizzou_subset <- function(integrated, canonical_event_relationship){
   return(mizzou)
 }
 
+get_tbtn_subset <- function(integrated, canonical_event_relationship){
+  campaign_ids <- canonical_event_relationship |> 
+    filter(canonical_id2 == 6497) |> 
+    pull(canonical_id1)
+  
+  integrated |> 
+    filter(canonical_id %in% campaign_ids)
+}
+
 join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_reference){
   with_university <- subset |>
     # University covariates, which are present as a nested tibble, have to have
@@ -93,20 +102,23 @@ join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_refere
 }
 
 model_helper <- function(subset, variables){
+  covariates <- get_covariates()
   formula <- as.formula(paste("had_protest ~", paste(variables, collapse = " + ")))
-  model <- lm(formula, data = subset)
+  model <- glm(formula, data = subset, family=binomial)
+  null_mod <- glm("had_protest ~ 1", data = subset, family = binomial)
   model_sum <- summary(model)
   meta <- tribble(
     ~term, ~estimate,
-    "n", nrow(model$model) - length(model$na.action),
+    "n", nrow(model$model),
     "NAs", length(model$na.action),
     "Incidents", sum(model$model$had_protest),
-    "r-squared", model_sum$r.squared,
-    "Adjusted r-squared", model_sum$adj.r.squared,
+    "McFadden's r-squared", as.numeric(1-logLik(model)/logLik(null_mod)),
+    "Adj. McFadden's r-squared", as.numeric(1-(logLik(model) - attr(logLik(model), "df"))/logLik(null_mod)),
     "BIC", BIC(model)
   )
 
   broom::tidy(model) |>
+    mutate(estimate = exp(estimate)) |> 
     bind_rows(meta) |>
     select(-statistic) |>
     mutate(
@@ -130,7 +142,7 @@ model_helper <- function(subset, variables){
 run_subset <- function(subset){
   covariates <- get_covariates()
   model_combinations <- covariates |>
-    group_split(category) |>
+    group_split(category) |> 
     map(\(cov_dta){
       covs <- cov_dta$name
       # generate list of all possible covariate combinations
@@ -141,13 +153,15 @@ run_subset <- function(subset){
         pivot_longer(cols = c(everything(), -id),
                      values_to = "is_variable_included") |>
         filter(is_variable_included) |>
-        group_split(id) |>
+        group_split(id) |> 
         imap(\(cov_grp, i){
+          message(cov_grp$name)
           model_helper(subset, cov_grp$name)
         }) |>
         reduce(full_join, by = "term") |>
         mutate(across(everything(), ~replace_na(., ""))) |>
         set_names("")
+
     }) |>
     set_names("uni_model_combinations", "county_model_combinations")
 
@@ -163,15 +177,25 @@ run_ols <- function(integrated,
                     ipeds,
                     us_covariates,
                     uni_pub_xwalk_reference) {
-  lst(
+  models <- lst(
     trump = get_trump_subset(integrated),
     brown = get_brown_subset(integrated),
-    mizzou = get_mizzou_subset(integrated, canonical_event_relationship)
+    mizzou = get_mizzou_subset(integrated, canonical_event_relationship),
+    take_back_the_night = get_tbtn_subset(integrated, canonical_event_relationship)
   ) |>
-    iwalk(\(subset, name) {
+    imap(\(subset, name) {
       model_subset <- run_subset(join_universities(subset, ipeds, us_covariates, uni_pub_xwalk_reference))
 
       writexl::write_xlsx(model_subset,
                           paste0("docs/data-cleaning-requests/modeling/", name, ".xlsx"))
+
+      return(model_subset$full_model)
     })
+    
+  models |> 
+    imap(\(x, name){
+      x |> 
+        rename({{name}} := estimate)
+    }) |> 
+    reduce(left_join, by = "term")
 }

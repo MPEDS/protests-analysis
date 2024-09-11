@@ -131,8 +131,9 @@ get_covariates <- function() {
   tribble(
     ~category, ~name, ~formatted,
     "University", "is_uni_public", "Public/Private status (1 = Public)",
+    "University", "nonwhite_staff_prop", "Proportion of nonwhite instructors",
     "University", "instruction_expenses", "Proportion of expenses spent on instruction",
-    "University", "government_revenue", "Proportion of revenue coming from government",
+    "University", "investment_revenue", "Proportion of revenue coming from investments",
     "University", "uni_total_pop", "Total enrollment at university (thousands)",
     "University", "pell", "Proportion of Pell grant recipients",
     "County", "white_prop", "White proportion in county of university",
