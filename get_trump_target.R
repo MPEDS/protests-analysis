@@ -12,7 +12,7 @@ get_trump_target <- function(){
     filter(start_date >= as.Date("2016-11-01") &
              start_date <= as.Date("2017-2-28")) |>
     select(canonical_id, key, issue, issues_text, target, target_text) |>
-    mutate(across(where(is.list), ~paste(., collapse = ", ")))
+    mutate(across(where(is.list), ~map_chr(., ~paste(., collapse = ", "))))
 
   writexl::write_xlsx(trump,
                       "docs/data-cleaning-requests/low-level-data-cleaning/trump_protests_targets.xlsx")
