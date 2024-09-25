@@ -8,10 +8,8 @@ get_trump_target <- function(){
 
   trump <- integrated |>
     st_drop_geometry() |>
-    filter(map_lgl(issue, ~any(str_detect(., "Trump")))) |>
-    filter(start_date >= as.Date("2016-11-01") &
-             start_date <= as.Date("2017-2-28")) |>
-    select(canonical_id, key, issue, issues_text, target, target_text) |>
+    filter(map_lgl(target_text, ~any(str_detect(., "Trump")))) |>
+    select(canonical_id, key, start_date, end_date, issue, issues_text, target, target_text) |>
     mutate(across(where(is.list), ~map_chr(., ~paste(., collapse = ", "))))
 
   writexl::write_xlsx(trump,

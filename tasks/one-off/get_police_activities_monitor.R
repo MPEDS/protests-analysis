@@ -13,10 +13,12 @@ get_police_activities_monitor <- function() {
              length(activities[!(activities %in% c("Cooperate/Coordinate", '"Breaking the Rules"',
                                                    "Participate"))]) > 1
            })) |>
-    select(canonical_id, key, description, police_activities)
+    select(canonical_id, key, description, police_activities) |>
+    mutate(across(where(is.list), ~map_chr(., ~paste(., collapse = ", "))))
+
 
   writexl::write_xlsx(police_responses,
-                      "docs/data-cleaning-requests/police_responses_monitor.xlsx")
+                      "docs/data-cleaning-requests/low-level-data-cleaning/police_responses_monitor.xlsx")
 
 }
 
