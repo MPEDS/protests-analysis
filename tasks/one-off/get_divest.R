@@ -1,4 +1,6 @@
 get_divest <- function(){
+  source("tasks/mpeds/import/connect_sheriff.R")
+  source("tasks/utils/get_key_variables.R")
   con <- connect_sheriff()
   article_xwalk <- tbl(con, "coder_event_creator") |>
     select(id, article_id, event_id) |>
@@ -13,32 +15,18 @@ get_divest <- function(){
     summarize(article_text = list(text))
 
 
-  pick_university <- function(uni){
-    if(any(uni$uni_name_source == "publication")){
-      return(uni$university_name[uni$uni_name_source == "publication"][1])
-    } else if(any(uni$uni_name_source == "other univ where protest occurs")){
-      return(uni$university_name[uni$uni_name_source == "other univ where protest occurs"][1])
-    } else {
-      return(uni$university_name[1])
-    }
-  }
   integrated |>
-    st_drop_geometry() |>
-    mutate(canonical_id = as.integer(canonical_id)) |>
+    get_key_variables(university) |>
     left_join(article_xwalk, by = "canonical_id") |>
-    mutate(description_has_divest = str_detect(str_to_lower(description), "divest"),
-           article_text_has_divest = map_lgl(article_text, ~any(str_detect(str_to_lower(.), "divest")))) |>
-    filter(article_text_has_divest, !description_has_divest) |>
+    mutate(description_has_divest = str_detect(str_to_lower(description), "divest")) |>
+    filter(!description_has_divest) |>
     mutate(
       # Publication if present, uni where protest occurs if otherwise
       main_university = map_chr(university, pick_university),
     ) |>
-    select(
-      canonical_id, key, description, publication, start_date,
-      location, main_university, issue, racial_issue, article_text,
-    ) |>
-    st_drop_geometry() |>
+    # Annoying excel thing, only affects one event
+    filter(map_lgl(article_text, ~!any(str_length(.) > 32767))) |>
     unnest(cols = article_text) |>
-    mutate(across(where(is.list), ~map_chr(., ~paste0(.[. != "_Not relevant"], collapse = ", ")))) |>
+    filter(str_detect(str_to_lower(article_text), "divest")) |>
     writexl::write_xlsx("docs/data-cleaning-requests/divest.xlsx")
 }
