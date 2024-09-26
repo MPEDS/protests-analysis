@@ -17,7 +17,7 @@ get_ipeds_pell <- function(){
       return(pell)
   }) |>
     # Percent of full-time first-time undergraduates awarded Pell grants
-    mutate(pell = as.numeric(PGRNT_P)/100,
+    mutate(pell = as.numeric(PGRNT_P),
            uni_id = as.character(UNITID)) |>
     select(uni_id, pell, year)
 }

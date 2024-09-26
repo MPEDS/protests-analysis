@@ -17,7 +17,7 @@ get_us_nonwhite <- function(){
       mutate(year = year)
     return(result)
   }) |>
-    mutate(white_prop = whiteE / totalE) |>
+    mutate(white_prop = 100*(whiteE / totalE)) |>
     select(geoid = GEOID, white_prop, year)
 }
 

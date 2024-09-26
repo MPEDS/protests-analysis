@@ -40,7 +40,7 @@ get_ipeds_finance_fasb <- function(){
             # Grants and contracts
             F2D05 + F2D06 + F2D07,
           sales_services_revenue = F2D11 + F2D12,
-          endowment_assets = as.numeric(F2H01),
+          endowment_assets = log(as.numeric(F2H01)),
           year = year
         ) |>
         select(

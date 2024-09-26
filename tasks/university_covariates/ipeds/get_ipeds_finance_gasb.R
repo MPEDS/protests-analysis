@@ -34,13 +34,13 @@ get_ipeds_finance_gasb <- function(){
           uni_id = as.character(UNITID),
           government_revenue =
             # Appropriations (federal, state, local)
-            F1B10 + F1B11 + F1B22 + 
+            F1B10 + F1B11 + F1B22 +
             # Operating grants and contracts
-            F1B02 + F1B03 + F1B04A + 
+            F1B02 + F1B03 + F1B04A +
             # Nonoperating grants
             F1B13 + F1B14 + F1B15,
           sales_services_revenue = F1B26 + F1B05,
-          endowment_assets = as.numeric(F1H01),
+          endowment_assets = log(as.numeric(F1H01)),
           year = year
         ) |>
         select(

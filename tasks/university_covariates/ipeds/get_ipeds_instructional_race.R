@@ -15,8 +15,8 @@ get_ipeds_instructional_race <- function(){
     filter(SISCAT == 1, FACSTAT == 0) |>
     # nonwhite = (total - white) / total
     mutate(
-      nonwhite_staff_prop = 1-HRWHITT/HRTOTLT,
+      nonwhite_staff_pct = 100*(1-HRWHITT/HRTOTLT),
       uni_id = as.character(UNITID)) |>
-    select(uni_id, nonwhite_staff_prop, year)
+    select(uni_id, nonwhite_staff_pct, year)
 }
 

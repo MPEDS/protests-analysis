@@ -39,15 +39,43 @@ get_mizzou_subset <- function(integrated, canonical_event_relationship){
 }
 
 get_tbtn_subset <- function(integrated, canonical_event_relationship){
-  campaign_ids <- canonical_event_relationship |> 
-    filter(canonical_id2 == 6497) |> 
+  campaign_ids <- canonical_event_relationship |>
+    filter(canonical_id2 == 6497) |>
     pull(canonical_id1)
-  
-  integrated |> 
+
+  integrated |>
+    st_drop_geometry() |>
     filter(canonical_id %in% campaign_ids)
 }
 
-join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_reference){
+get_divest_subset <- function(integrated){
+  # 291 that have "divest" in canonical event description
+  # 194 that have "divest" in article text but not description
+  # - on cursory glance, these are indeed false matches
+
+  # con <- connect_sheriff()
+  # article_xwalk <- tbl(con, "coder_event_creator") |>
+  #   select(id, article_id, event_id) |>
+  #   left_join(tbl(con, "canonical_event_link") |>
+  #               select(canonical_id, cec_id), by = c("id" = "cec_id")) |>
+  #   select(article_id, canonical_id) |>
+  #   distinct() |>
+  #   left_join(tbl(con, "article_metadata"), by= c("article_id" = "id")) |>
+  #   select(canonical_id, text) |>
+  #   collect() |>
+  #   group_by(canonical_id) |>
+  #   summarize(article_text = list(text))
+
+
+  integrated |>
+    st_drop_geometry() |>
+    # mutate(canonical_id = as.integer(canonical_id)) |>
+    # left_join(article_xwalk, by = "canonical_id") |>
+    filter(str_detect(str_to_lower(description), "divest"))
+            # map_lgl(article_text, ~any(str_detect(str_to_lower(.), "divest"))))
+}
+
+join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_reference, protest_unis_only = FALSE){
   with_university <- subset |>
     # University covariates, which are present as a nested tibble, have to have
     # the relevant entry selected and brought out. Convoluted logic
@@ -69,6 +97,18 @@ join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_refere
     drop_na(uni_id) |>
     pull(uni_id) |>
     unique()
+
+  protest_uni_ids <- integrated$university |>
+    bind_rows() |>
+    drop_na(uni_id) |>
+    pull(uni_id) |>
+    unique()
+
+  print(length(protest_uni_ids))
+  print(length(mpeds_universe_ids))
+  # Disgusting syntax
+  mpeds_universe_ids <- if(protest_unis_only){protest_uni_ids} else {mpeds_universe_ids}
+
   mpeds_universe <- ipeds |>
     filter(uni_id %in% mpeds_universe_ids)
 
@@ -118,7 +158,7 @@ model_helper <- function(subset, variables){
   )
 
   broom::tidy(model) |>
-    mutate(estimate = exp(estimate)) |> 
+    mutate(estimate = exp(estimate)) |>
     bind_rows(meta) |>
     select(-statistic) |>
     mutate(
@@ -142,7 +182,7 @@ model_helper <- function(subset, variables){
 run_subset <- function(subset){
   covariates <- get_covariates()
   model_combinations <- covariates |>
-    group_split(category) |> 
+    group_split(category) |>
     map(\(cov_dta){
       covs <- cov_dta$name
       # generate list of all possible covariate combinations
@@ -153,9 +193,8 @@ run_subset <- function(subset){
         pivot_longer(cols = c(everything(), -id),
                      values_to = "is_variable_included") |>
         filter(is_variable_included) |>
-        group_split(id) |> 
+        group_split(id) |>
         imap(\(cov_grp, i){
-          message(cov_grp$name)
           model_helper(subset, cov_grp$name)
         }) |>
         reduce(full_join, by = "term") |>
@@ -165,9 +204,17 @@ run_subset <- function(subset){
     }) |>
     set_names("uni_model_combinations", "county_model_combinations")
 
-  full_model <- model_helper(subset, covariates$name)
 
-  lst(model_combinations, lst(full_model)) |> flatten()
+  model_overview <- list(
+    model_helper(subset, covariates$name),
+    model_helper(subset, covariates$name[covariates$category == "University"]),
+    model_helper(subset, covariates$name[covariates$category == "County"])
+    ) |>
+    reduce(full_join, by = "term") |>
+      mutate(across(everything(), ~replace_na(., ""))) |>
+      set_names("")
+
+  lst(lst(model_overview), model_combinations) |> flatten()
 }
 
 
@@ -176,26 +223,44 @@ run_ols <- function(integrated,
                     canonical_event_relationship,
                     ipeds,
                     us_covariates,
-                    uni_pub_xwalk_reference) {
+                    uni_pub_xwalk_reference
+                    ) {
   models <- lst(
     trump = get_trump_subset(integrated),
     brown = get_brown_subset(integrated),
     mizzou = get_mizzou_subset(integrated, canonical_event_relationship),
-    take_back_the_night = get_tbtn_subset(integrated, canonical_event_relationship)
+    take_back_the_night = get_tbtn_subset(integrated, canonical_event_relationship),
+    divest = get_divest_subset(integrated)
   ) |>
+    map(\(subset){
+      join_universities(subset, ipeds, us_covariates, uni_pub_xwalk_reference)
+    }) |>
     imap(\(subset, name) {
-      model_subset <- run_subset(join_universities(subset, ipeds, us_covariates, uni_pub_xwalk_reference))
-
-      writexl::write_xlsx(model_subset,
+      writexl::write_xlsx(run_subset(subset),
                           paste0("docs/data-cleaning-requests/modeling/", name, ".xlsx"))
 
-      return(model_subset$full_model)
+      return(model_subset$model_overview)
     })
-    
-  models |> 
+
+  models |>
     imap(\(x, name){
-      x |> 
+      x |>
         rename({{name}} := estimate)
-    }) |> 
+    }) |>
+    reduce(left_join, by = "term")
+}
+
+test_divest <- function(){
+  divest <- get_divest_subset(integrated)
+  full <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference)
+  protest_unis <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference,
+                                    protest_unis_only = TRUE)
+
+  divest_test_result <- lst(full, protest_unis) |>
+    map(\(x){run_subset(x)$model_overview})
+    imap(\(x, name){
+      x |>
+        rename({{name}} := estimate)
+    }) |>
     reduce(left_join, by = "term")
 }

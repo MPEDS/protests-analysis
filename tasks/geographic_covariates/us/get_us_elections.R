@@ -14,7 +14,7 @@ get_us_elections <- function(){
     filter(year %in% c(2012, 2016),
            party == "REPUBLICAN"
           ) |>
-    mutate(republican_vote_prop = candidatevotes / totalvotes) |>
+    mutate(republican_vote_prop = 100*(candidatevotes / totalvotes)) |>
     select(year, geoid = county_fips, republican_vote_prop) |>
     drop_na()
 
@@ -23,7 +23,7 @@ get_us_elections <- function(){
                       true_year = min(elections$year):2018)
   elections <- elections |>
     full_join(keys, by = "geoid") |>
-    # Produces empty values and many false matches -- 
+    # Produces empty values and many false matches --
     # a row that has year (true_year) as 2018 should be matched with 2016 election data
     filter(true_year >= year, true_year < year + 4) |>
     select(-year) |>

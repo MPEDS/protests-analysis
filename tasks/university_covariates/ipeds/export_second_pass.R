@@ -1,7 +1,7 @@
 export_second_pass <- function(initial_xwalk, cleaned_events, ipeds_raw, glued_raw, canada_geo){
   initial_xwalk <- initial_xwalk |>
     select(
-      canonical_event_key,
+      canonical_id,
       uni_id = authoritative_id,
       authoritative_name,
       original_name,
@@ -14,27 +14,26 @@ export_second_pass <- function(initial_xwalk, cleaned_events, ipeds_raw, glued_r
 
   with_unis <- cleaned_events |>
     mutate(
-      university = pmap(list(university, key), \(x, y) {
-        x |> mutate(key = y)
+      university = pmap(list(university, canonical_id), \(x, y) {
+        x |> mutate(canonical_id = y)
       })
     ) |>
     nest_left_join(
       university,
       initial_xwalk,
       by = c("university_name" = "original_name",
-             "key" = "canonical_event_key",
+             "canonical_id",
              "uni_name_source" = "source")
     )
 
   unmatched_corrections <- initial_xwalk |>
-    filter(map_lgl(canonical_event_key, ~!(. %in% cleaned_events$key)),
+    filter(map_lgl(canonical_id, ~!(. %in% cleaned_events$canonical_id)),
            !is.na(uni_id),
-           source != "publication") |>
-    arrange(canonical_event_key)
+           source != "publication")
 
   unmatched_database_entries <- cleaned_events |>
     filter(!str_detect(key, "Umbrella"),
-           map_lgl(key, ~!(. %in% initial_xwalk$canonical_event_key))) |>
+           map_lgl(canonical_id, ~!(. %in% initial_xwalk$canonical_id))) |>
     select(key, description, publication, start_date, location, university) |>
     nest_select(university, uni_name_source, university_name) |>
     unnest(university) |>

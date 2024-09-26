@@ -131,15 +131,18 @@ get_covariates <- function() {
   tribble(
     ~category, ~name, ~formatted,
     "University", "is_uni_public", "Public/Private status (1 = Public)",
-    "University", "nonwhite_staff_prop", "Proportion of nonwhite instructors",
-    "University", "instruction_expenses", "Proportion of expenses spent on instruction",
-    "University", "investment_revenue", "Proportion of revenue coming from investments",
+    "University", "nonwhite_staff_pct", "Percent of nonwhite instructors",
+    "University", "pct_non_tenure", "Percent of non-tenured instructional staff",
+    "University", "pct_women_instructors", "Percent of instructional staff that are women",
+    "University", "instruction_expenses", "Percent of expenses spent on instruction",
+    "University", "investment_revenue", "Percent of revenue coming from investments",
     "University", "uni_total_pop", "Total enrollment at university (thousands)",
-    "University", "pell", "Proportion of Pell grant recipients",
-    "County", "white_prop", "White proportion in county of university",
+    "University", "pell", "Percent of Pell grant recipients",
+    "University", "endowment_assets", "Log-10 of endowment assets",
+    "County", "white_prop", "White percent in county of university",
     "County", "mhi", "Median household income (thousands)",
-    "County", "rent_burden", "Proportion of households spending more than 30% of income on rent",
-    "County", "republican_vote_prop", "Proportion in county voting Republican in 2016 presidential election"
+    "County", "rent_burden", "Percent of households spending more than 30% of income on rent",
+    "County", "republican_vote_prop", "Percent in county voting Republican in 2016 presidential election"
   )
 }
 

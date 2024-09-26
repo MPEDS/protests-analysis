@@ -140,7 +140,18 @@ list(
   # tar_target(canada_rentburden, get_canada_rentburden(canada_rentburden_raw, canada_geo)),
   #tar_target(canada_mhi, get_canada_mhi(canada_geo)),
   #tar_target(canada_covariates, get_canada_covariates(canada_rentburden, canada_mhi, canada_geo)),
-  tar_target(us_covariates, get_us_covariates()),
+
+  tar_target(us_covariates, list(
+    get_us_nonwhite(),
+    get_us_income(),
+    # get_us_unemp(),
+    get_us_rentburden(),
+    get_us_elections()
+  ) |>
+    reduce(left_join, by = c("geoid", "year")) |>
+    mutate(geoid = paste0("us_", geoid))),
+
+
   tar_target(covariates, us_covariates),
 
   tar_target(elephrame_blm, get_elephrame_blm()),
@@ -149,6 +160,7 @@ list(
   tar_target(ipeds_raw, get_ipeds_directory()),
   tar_target(ipeds_directory, clean_ipeds_directory(ipeds_raw)),
   tar_target(ipeds_tuition, get_ipeds_tuition()),
+  tar_target(ipeds_instructional_gender, get_ipeds_instructional_gender()),
   tar_target(ipeds_instructional_race, get_ipeds_instructional_race()),
   tar_target(ipeds_race, get_ipeds_race()),
   tar_target(ipeds_finance, bind_rows(get_ipeds_finance_fasb(), get_ipeds_finance_gasb())),
@@ -163,6 +175,7 @@ list(
     ipeds_finance,
     ipeds_stem,
     ipeds_tenure,
+    ipeds_instructional_gender,
     ipeds_instructional_race
     ) |>
       combine_ipeds()),
