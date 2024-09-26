@@ -37,9 +37,10 @@ get_big_umbrella <- function() {
            university_reactions_to_protest, university_discourse_on_protest,
            university_action_on_issue, university_discourse_on_issue,
            ) |>
-    mutate(across(where(is.list), ~map_chr(., ~paste0(.[. != "NA/Unclear"], collapse = ", "))))
+    mutate(across(where(is.list), ~map_chr(., ~paste0(.[. != "NA/Unclear"], collapse = ", ")))) |>
+    filter(if_any(starts_with("university_"), ~.!=""))
 
   writexl::write_xlsx(responses,
-                      "docs/data_cleaning_requests/all_umbrella_uni_responses.xlsx")
+                      "docs/data-cleaning-requests/all_umbrella_uni_responses.xlsx")
 
 }

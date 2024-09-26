@@ -21,4 +21,6 @@ get_any_umbrella <- function(umbrella_event_key){
     left_join(mpeds, by = c("canonical_id1" = "canonical_id")) |>
     select(!canonical_id2)
 
+  return(all_umbrella_events)
+
 }
