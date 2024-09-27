@@ -264,6 +264,17 @@ list(
     )
   ),
 
+  tar_target(
+    logit_results,
+    run_logit(
+      integrated,
+      canonical_event_relationship,
+      ipeds,
+      us_covariates,
+      uni_pub_xwalk_reference
+    )
+  ),
+
   # Can't figure out how to get targets loading to work with testthat working
   # # directory situation
   # tar_target(tests,

@@ -15,11 +15,10 @@ get_divest <- function(){
     summarize(article_text = list(text))
 
 
-  integrated |>
+  divest <- tar_read(integrated) |>
     get_key_variables(university) |>
     left_join(article_xwalk, by = "canonical_id") |>
-    mutate(description_has_divest = str_detect(str_to_lower(description), "divest")) |>
-    filter(!description_has_divest) |>
+    filter(!str_detect(str_to_lower(description), "divest")) |>
     mutate(
       # Publication if present, uni where protest occurs if otherwise
       main_university = map_chr(university, pick_university),
@@ -27,6 +26,9 @@ get_divest <- function(){
     # Annoying excel thing, only affects one event
     filter(map_lgl(article_text, ~!any(str_length(.) > 32767))) |>
     unnest(cols = article_text) |>
-    filter(str_detect(str_to_lower(article_text), "divest")) |>
+    arrange(canonical_id) |>
+    filter(str_detect(str_to_lower(article_text), "divest"))
+  divest |>
     writexl::write_xlsx("docs/data-cleaning-requests/divest.xlsx")
+  return(divest)
 }

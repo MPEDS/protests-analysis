@@ -75,7 +75,12 @@ get_divest_subset <- function(integrated){
             # map_lgl(article_text, ~any(str_detect(str_to_lower(.), "divest"))))
 }
 
-join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_reference, protest_unis_only = FALSE){
+join_universities <- function(subset,
+                              ipeds,
+                              us_covariates,
+                              uni_pub_xwalk_reference,
+                              integrated,
+                              protest_unis_only = FALSE){
   with_university <- subset |>
     # University covariates, which are present as a nested tibble, have to have
     # the relevant entry selected and brought out. Convoluted logic
@@ -104,8 +109,6 @@ join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_refere
     pull(uni_id) |>
     unique()
 
-  print(length(protest_uni_ids))
-  print(length(mpeds_universe_ids))
   # Disgusting syntax
   mpeds_universe_ids <- if(protest_unis_only){protest_uni_ids} else {mpeds_universe_ids}
 
@@ -141,7 +144,7 @@ join_universities <- function(subset, ipeds, us_covariates, uni_pub_xwalk_refere
   return(with_covariates)
 }
 
-model_helper <- function(subset, variables){
+run_single_model <- function(subset, variables){
   covariates <- get_covariates()
   formula <- as.formula(paste("had_protest ~", paste(variables, collapse = " + ")))
   model <- glm(formula, data = subset, family=binomial)
@@ -179,7 +182,7 @@ model_helper <- function(subset, variables){
     select(term, everything(), -category, -formatted)
 }
 
-run_subset <- function(subset){
+run_subset_models <- function(subset){
   covariates <- get_covariates()
   model_combinations <- covariates |>
     group_split(category) |>
@@ -195,7 +198,7 @@ run_subset <- function(subset){
         filter(is_variable_included) |>
         group_split(id) |>
         imap(\(cov_grp, i){
-          model_helper(subset, cov_grp$name)
+          run_single_model(subset, cov_grp$name)
         }) |>
         reduce(full_join, by = "term") |>
         mutate(across(everything(), ~replace_na(., ""))) |>
@@ -205,21 +208,24 @@ run_subset <- function(subset){
     set_names("uni_model_combinations", "county_model_combinations")
 
 
-  model_overview <- list(
-    model_helper(subset, covariates$name),
-    model_helper(subset, covariates$name[covariates$category == "University"]),
-    model_helper(subset, covariates$name[covariates$category == "County"])
+  model_overview <- lst(
+    full = run_single_model(subset, covariates$name),
+    university = run_single_model(subset, covariates$name[covariates$category == "University"]),
+    county = run_single_model(subset, covariates$name[covariates$category == "County"])
     ) |>
+    imap(\(x, name){
+      x |>
+        rename({{name}} := estimate)
+    }) |>
     reduce(full_join, by = "term") |>
-      mutate(across(everything(), ~replace_na(., ""))) |>
-      set_names("")
+    mutate(across(everything(), ~replace_na(., "")))
 
   lst(lst(model_overview), model_combinations) |> flatten()
 }
 
 
 
-run_ols <- function(integrated,
+run_logit <- function(integrated,
                     canonical_event_relationship,
                     ipeds,
                     us_covariates,
@@ -233,10 +239,11 @@ run_ols <- function(integrated,
     divest = get_divest_subset(integrated)
   ) |>
     map(\(subset){
-      join_universities(subset, ipeds, us_covariates, uni_pub_xwalk_reference)
+      join_universities(subset, ipeds, us_covariates, uni_pub_xwalk_reference, integrated)
     }) |>
     imap(\(subset, name) {
-      writexl::write_xlsx(run_subset(subset),
+      model_subset <- run_subset_models(subset)
+      writexl::write_xlsx(model_subset,
                           paste0("docs/data-cleaning-requests/modeling/", name, ".xlsx"))
 
       return(model_subset$model_overview)
@@ -245,16 +252,16 @@ run_ols <- function(integrated,
   models |>
     imap(\(x, name){
       x |>
-        rename({{name}} := estimate)
+        rename_with(\(oldname){ifelse(oldname != "term", paste0(name, "_", oldname), oldname)})
     }) |>
     reduce(left_join, by = "term")
 }
 
 test_divest <- function(){
   divest <- get_divest_subset(integrated)
-  full <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference)
+  full <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference, integrated)
   protest_unis <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference,
-                                    protest_unis_only = TRUE)
+                                    integrated, protest_unis_only = TRUE)
 
   divest_test_result <- lst(full, protest_unis) |>
     map(\(x){run_subset(x)$model_overview})
