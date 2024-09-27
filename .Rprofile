@@ -35,5 +35,13 @@ if(interactive()){
   library(nplyr)
   library(googledrive)
   library(readxl)
+
+
+  # Loads some utility functions that are a pain to manually load in interactive
+  # IMO doesn't break reproducibility because these same functions are
+  # sources automatically in pipeline runs
+  utils <- list.files("tasks/utils", full.names=T)
+  walk(utils, \(util){source(util, local = .GlobalEnv)})
+
 }
 
