@@ -111,9 +111,10 @@ breaks <- seq.Date(from = as.Date("2011-10-01"),
                    to = as.Date("2018-04-01"),
                    by = "6 months")
 
-ggplot(protests_by_country, aes(fill = country, x = date, y = n)) + 
+ggplot(protests_by_country, aes(x = date, y = n)) + 
   geom_bar(stat = "identity") + 
-  scale_fill_manual(values = country_scale) + 
+  facet_wrap(factor(protests_by_country$country, levels=c("US", "Canada")), scales = "free_y", 
+             axes = "all", axis.labels = "all", ncol = 1) + 
   scale_x_date(date_labels = "%b '%y",
                breaks = breaks,
                expand = c(0, 0),
@@ -124,8 +125,7 @@ ggplot(protests_by_country, aes(fill = country, x = date, y = n)) +
     x = NULL,
     fill = NULL,
     title = "Frequency of U.S. and Canadian higher ed protest events, Jan. 2012 - July 2018"
-  ) + 
-  theme(legend.position = "bottom")
+  ) + theme_bw()
 
 ```
 
@@ -226,7 +226,7 @@ location_counts <- mpeds |>
   slice_max(order_by = location_n, n = 15, with_ties = FALSE)
 
 bind_cols(university_counts, location_counts) |> 
-  kable()
+  kable(col.names = c("University", "Count", "City", "Count"))
 ```
 
 # Table 2: Top 15 U.S. Higher Ed Protest Issues
