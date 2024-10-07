@@ -706,6 +706,7 @@ lat,lng,location
 43.2103817,-77.95108309999999,SUNY Brockport
 44.6925546,-73.4669464,SUNY College at Plattsburgh
 49.2780937,-122.9198833,Simon Fraser University
+22.5800451,88.37009169999999,eight of City College's 11 campuses
 51.04473309999999,-114.0718831,University of Calgary
 46.1672583,-60.08976879999999,Cape Breton University
 35.9049122,-79.0469134,UNC-Chapel Hill
@@ -1435,15 +1436,15 @@ lat,lng,location
 39.4014955,-76.6019125,Towson
 39.4089481,-76.5926005,Goucher
 30.23218,-97.75833,St Edward's University
-34.4139629,-119.848947,UC campuses in Santa Barbara
 33.6845673,-117.8265049,Irvine
 33.9806005,-117.3754942,Riverside
 32.715738,-117.1610838,San Diego
 37.8715226,-122.273042,Berkeley
 37.7749295,-122.4194155,San Francisco
 40.9628845,-112.0953297,Davis
-37.3021632,-120.4829677,Merced
 36.9741171,-122.0307963,Santa Cruz
+37.3021632,-120.4829677,Merced
+34.4139629,-119.848947,UC campuses in Santa Barbara
 30.33528919999999,-81.6601938,Florida Community College at Jacksonville
 43.076592,-89.4124875,University of Wisconsin - Madison
 44.6495501,-63.574157,NSCAD
@@ -1492,3 +1493,4 @@ lat,lng,location
 34.1439461,-118.118761,Pasadena City College
 39.0343551,-94.5834274,University of Missouri-Kansas City
 43.0125274,-83.6874562,University of Michigan in Flint
+37.72569,-122.4510797,City College of San Francisco Ocean Campus

@@ -57,7 +57,7 @@ Exploratory Plots
 
 | Statistic                                             |  Value |
 |:------------------------------------------------------|-------:|
-| Total imported events                                 | 6017.0 |
+| Total imported events                                 | 6016.0 |
 | Total non-umbrella events                             | 5561.0 |
 | Unique locations                                      |  533.0 |
 | US counties                                           |  314.0 |
@@ -76,8 +76,8 @@ Exploratory Plots
 | mean of issue counts                                  |    2.1 |
 | \# of events with just one issue                      | 2035.0 |
 
-The initial import of the MPEDS db found 6017 unique canonical events,
-and after all cleaning steps we still have 6016 canonical events.
+The initial import of the MPEDS db found 6016 unique canonical events,
+and after all cleaning steps we still have 6015 canonical events.
 
 However, there’s still an issue regarding duplicate matches in IPEDS we
 can detect (there are likely also incorrect matches that we can’t detect
@@ -283,9 +283,9 @@ notes Google Doc for details.
 
 | university_action_on_issue | Canada |   US | Total |
 |:---------------------------|-------:|-----:|------:|
-| NA                         |    736 | 3198 |  3934 |
-| NA/Unclear                 |    152 |  677 |   829 |
-| Action in Process          |     59 |  332 |   391 |
+| NA                         |    736 | 3197 |  3933 |
+| NA/Unclear                 |    152 |  678 |   830 |
+| Action in Process          |     59 |  331 |   390 |
 | Reject Demand              |     30 |  152 |   182 |
 | Structural Change          |      4 |   86 |    90 |
 | Fulfill Demand             |      8 |   75 |    83 |
@@ -301,8 +301,8 @@ notes Google Doc for details.
 
 | university_discourse_on_issue   | Canada |   US | Total |
 |:--------------------------------|-------:|-----:|------:|
-| NA                              |    729 | 3182 |  3911 |
-| NA/Unclear                      |     97 |  444 |   541 |
+| NA                              |    729 | 3181 |  3910 |
+| NA/Unclear                      |     97 |  445 |   542 |
 | Explain Bureaucracy/Law         |    111 |  384 |   495 |
 | Express Contrary Position       |     54 |  284 |   338 |
 | Express Agreement               |     29 |  297 |   326 |
@@ -317,14 +317,14 @@ notes Google Doc for details.
 
 | university_reactions_to_protest | Canada |   US | Total |
 |:--------------------------------|-------:|-----:|------:|
-| NA                              |    735 | 3186 |  3921 |
+| NA                              |    735 | 3185 |  3920 |
 | NA/Unclear                      |    119 |  583 |   702 |
 | Monitor/Present                 |     31 |  255 |   286 |
 | Meet                            |     27 |  164 |   191 |
 | Direct Communications           |     30 |  156 |   186 |
-| Get Confronted                  |     28 |  155 |   183 |
+| Get Confronted                  |     29 |  155 |   184 |
 | Instruct/Warn                   |     26 |   89 |   115 |
-| Participate/Aid                 |      8 |  105 |   113 |
+| Participate/Aid                 |      8 |  106 |   114 |
 | Penalize                        |     15 |   32 |    47 |
 | Avoid Penalizing                |     13 |   20 |    33 |
 | Revisit Protest P&P             |      9 |   24 |    33 |
@@ -620,12 +620,12 @@ combined racial-nonracial issue was relevant to.
 | form                                          | Canada |   US | Total |
 |:----------------------------------------------|-------:|-----:|------:|
 | Rally/demonstration                           |    374 | 2391 |  2765 |
-| March                                         |    241 | 1346 |  1587 |
+| March                                         |    241 | 1347 |  1588 |
 | Blockade/slowdown/disruption                  |    157 |  397 |   554 |
 | Symbolic display/symbolic action              |     37 |  502 |   539 |
 | Petition                                      |    128 |  407 |   535 |
 | Strike/walkout/lockout                        |    200 |  331 |   531 |
-| \_Other Form                                  |     76 |  398 |   474 |
+| \_Other Form                                  |     76 |  399 |   475 |
 | Occupation/sit-in                             |     45 |  253 |   298 |
 | Information distribution                      |     60 |  207 |   267 |
 | NA                                            |     20 |  204 |   224 |
@@ -639,7 +639,7 @@ combined racial-nonracial issue was relevant to.
 | Riot                                          |      1 |    8 |     9 |
 | Violence/attack                               |      1 |    1 |     2 |
 | Civil disobedience                            |     NA |    2 |    NA |
-| Information distribution/leafleting           |     NA |   21 |    NA |
+| Information distribution/leafleting           |     NA |   20 |    NA |
 
 ## Counts of targets
 
@@ -871,21 +871,21 @@ protests were heavily policed.
 
 | issue                                                        |   pct |
 |:-------------------------------------------------------------|------:|
-| Percent of events with any value                             | 74.30 |
-| University governance, admin, policies, programs, curriculum | 28.24 |
-| \_Not relevant                                               | 17.05 |
-| Labor and work                                               | 15.72 |
+| Percent of events with any value                             | 74.31 |
+| University governance, admin, policies, programs, curriculum | 28.25 |
+| \_Not relevant                                               | 17.06 |
+| Labor and work                                               | 15.73 |
 | Tuition, fees, financial aid                                 |  9.84 |
 | Trump and/or his administration (Against)                    |  9.38 |
-| NA                                                           |  8.76 |
-| \_Other Issue                                                |  8.29 |
+| NA                                                           |  8.74 |
+| \_Other Issue                                                |  8.30 |
 | Environmental                                                |  6.83 |
 | Economy/inequality                                           |  6.02 |
 | Sexual assault/violence                                      |  5.29 |
 | Feminism/women’s issues                                      |  4.67 |
 | Public funding for higher education                          |  4.39 |
 | Faith-based discrimination                                   |  4.09 |
-| LGB+/Sexual orientation (For)                                |  3.12 |
+| LGB+/Sexual orientation (For)                                |  3.13 |
 | Transgender issues (For)                                     |  2.16 |
 | Far Right/Alt Right (Against)                                |  1.98 |
 | Hate speech                                                  |  1.73 |
@@ -918,8 +918,8 @@ protests were heavily policed.
 
 | racial_issue                                                 |   pct |
 |:-------------------------------------------------------------|------:|
-| \_Not relevant                                               | 55.15 |
-| Percent of events with any value                             | 44.96 |
+| \_Not relevant                                               | 55.16 |
+| Percent of events with any value                             | 44.95 |
 | Anti-racism                                                  | 14.15 |
 | Police violence                                              |  9.51 |
 | University governance, admin, policies, programs, curriculum |  9.28 |
@@ -1076,7 +1076,7 @@ counts are driven by an uptick in racial issues. This is
 
 | name                 | type    |   mean |     sd |
 |:---------------------|:--------|-------:|-------:|
-| campaign             | boolean |  0.258 |     NA |
+| campaign             | boolean |  0.259 |     NA |
 | counterprotest       | boolean |  0.047 |     NA |
 | inaccurate_date      | boolean |  0.009 |     NA |
 | multiple_cities      | boolean |  0.026 |     NA |
