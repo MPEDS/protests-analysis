@@ -248,7 +248,7 @@ list(
   ),
   tar_target(
     audited_names,
-    audit_university_names(integrated)
+    audit_university_names(integrated, ipeds, glued, uni_xwalk)
   ),
 
   # Modeling (in progress, a bit messy/in flux in terms of data structures)

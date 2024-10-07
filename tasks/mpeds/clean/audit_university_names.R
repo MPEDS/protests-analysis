@@ -1,6 +1,5 @@
 audit_university_names <- function(integrated, ipeds, glued, uni_xwalk){
   source("tasks/mpeds/import/connect_sheriff.R")
-  tar_load(integrated)
   con <- connect_sheriff()
 
   all_mismatches <- integrated |>

@@ -122,8 +122,6 @@ get_summary_count<- function(country = NULL) {
                         paste0("docs/data-cleaning-requests/university-police-actions/university_police_actions_", file_end, ".xlsx"))
 
 
-
-
 }
 
 get_all_summary_counts <- function() {

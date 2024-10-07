@@ -15,7 +15,7 @@ export_second_pass <- function(initial_xwalk, cleaned_events, ipeds_raw, glued_r
   with_unis <- cleaned_events |>
     mutate(
       university = pmap(list(university, canonical_id), \(x, y) {
-        x |> mutate(canonical_id = y)
+        x |> mutate(canonical_id = as.character(y))
       })
     ) |>
     nest_left_join(
