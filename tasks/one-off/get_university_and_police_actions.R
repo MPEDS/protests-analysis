@@ -2,12 +2,17 @@
 
 # University and Police Involvement
 
-get_summary_count<- function(country = NULL) {
+get_summary_count<- function(country = NULL, include_virtual = FALSE) {
 
   tar_load(integrated)
 
   integrated <- integrated |>
-    filter(!str_detect(tolower(key), "umbrella|virtual"))
+    filter(!str_detect(tolower(key), "umbrella"))
+
+  if(!include_virtual | is.null(country)) {
+    integrated <- integrated |>
+      filter(!str_detect(tolower(key), "virtual"))
+  }
 
   codes <- tribble(
     ~category, ~question,
@@ -116,8 +121,11 @@ get_summary_count<- function(country = NULL) {
 
 
     # Output
+    file_end <- paste0(
+      ifelse(include_virtual, "all", "novirtual"),
+      ifelse(is.null(country), "", paste0("_", country))
+    )
 
-    file_end <- ifelse(is.null(country), "novirtual", country)
     writexl::write_xlsx(lst(summary_counts, response_action_counts),
                         paste0("docs/data-cleaning-requests/university-police-actions/university_police_actions_", file_end, ".xlsx"))
 
@@ -125,6 +133,7 @@ get_summary_count<- function(country = NULL) {
 }
 
 get_all_summary_counts <- function() {
+  get_summary_count(include_virtual=TRUE)
   get_summary_count()
   get_summary_count("USA")
   get_summary_count("Canada")
