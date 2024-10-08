@@ -22,7 +22,8 @@ get_labor_movement_orgs <- function() {
 
   movement_orgs_text <- integrated |>
     filter(map_lgl(movement_organizations_text, ~any(str_detect(tolower(.), "union")))) |>
-    select(canonical_id, key, country, description, issue, movement_organizations_text) |>
+    mutate(uni_name = map_chr(university, pick_university)) |>
+    select(canonical_id, key, country, description, issue, movement_organizations_text, uni_name, location) |>
     filter(!is.na(movement_organizations_text)) |>
     unnest(movement_organizations_text) |>
     filter(str_detect(tolower(movement_organizations_text),"union")) |>
@@ -30,7 +31,8 @@ get_labor_movement_orgs <- function() {
 
   labor_movement_orgs <- labor_issue |>
     bind_rows(movement_orgs_text) |>
-    arrange(movement_organizations_text)
+    arrange(movement_organizations_text) |>
+    mutate(across(where(is.list), ~map_chr(., ~paste(., collapse = ", "))))
 
   labor_movement_orgs_us <- labor_movement_orgs |>
     filter(country=="US")
