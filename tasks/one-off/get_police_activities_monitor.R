@@ -16,8 +16,15 @@ get_police_activities_monitor <- function() {
     select(canonical_id, key, description, police_activities) |>
     mutate(across(where(is.list), ~map_chr(., ~paste(., collapse = ", "))))
 
+  other_monitor <- integrated |>
+    st_drop_geometry() |>
+    filter(map_lgl(police_activities, ~"Monitor/Present" %in% .),
+           !(key %in% police_responses$key)) |>
+    select(canonical_id, key, description, police_activities) |>
+    mutate(across(where(is.list), ~map_chr(., ~paste(., collapse = ", "))))
 
-  writexl::write_xlsx(police_responses,
+
+  writexl::write_xlsx(lst(police_responses, other_monitor),
                       "docs/data-cleaning-requests/low-level-data-cleaning/police_responses_monitor.xlsx")
 
 }
