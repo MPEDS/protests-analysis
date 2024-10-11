@@ -2,17 +2,21 @@
 
 # University and Police Involvement
 
+# US-specific with no virtual protests
+# Canada-specific with no virtual protests
+# all protests, with no virtual protests
+# All protests, with virtual protests
 get_summary_count<- function(country = NULL, include_virtual = FALSE) {
 
-  tar_load(integrated)
+  integrated <- tar_read(integrated)
 
   integrated <- integrated |>
-    filter(!str_detect(tolower(key), "umbrella"))
-
-  if(!include_virtual | is.null(country)) {
-    integrated <- integrated |>
-      filter(!str_detect(tolower(key), "virtual"))
-  }
+    mutate(
+      is_virtual = str_detect(str_to_lower(key), "virtual")
+    ) |>
+    filter(!str_detect(tolower(key), "umbrella"),
+           # Exclude virtual events if include_virtual is FALSE
+           (include_virtual | (!is_virtual)))
 
   codes <- tribble(
     ~category, ~question,
@@ -34,21 +38,23 @@ get_summary_count<- function(country = NULL, include_virtual = FALSE) {
       )) |>
       filter(!str_detect(str_to_lower(key), "delete"))
 
-    responses <- all_protests
 
-    if (!is.null(country)) {
-      if(country == "USA") {
-        responses <- all_protests |>
-          filter(str_detect(str_to_lower(location), "(usa)|(us$)|(united states)"))
-      }
+    country_protests <- all_protests |>
+      filter(str_detect(str_to_lower(location),
+                        ifelse(is.null(country), ".", country)))
+    # if (!is.null(country)) {
+    #   if(country == "USA") {
+    #     country_protests <- all_protests |>
+    #       filter(str_detect(str_to_lower(location), "(usa)|(us$)|(united states)"))
+    #   }
+    #
+    #   if(country == "Canada") {
+    #     country_protests <- all_protests |>
+    #       filter(str_detect(str_to_lower(location), "(canada)|(, ca$)|(, can$)"))
+    #   }
+    # }
 
-      if(country == "Canada") {
-        responses <- all_protests |>
-          filter(str_detect(str_to_lower(location), "(canada)|(, ca$)|(, can$)"))
-      }
-    }
-
-    responses <- responses |>
+    responses <- country_protests |>
       st_drop_geometry() |>
       select(key, codes$question) |>
       mutate(across(c(where(is.character), -key), as.list)) |>
@@ -73,19 +79,30 @@ get_summary_count<- function(country = NULL, include_virtual = FALSE) {
                   question = "Number of events with any police coding")
 
     # Number of events with both any university response coding and any police coding
+    # NOT BEING USED RN
+    # total_both_university_police <- responses |>
+    #   select(key, category) |>
+    #   distinct() |>
+    #   mutate(value = TRUE) |>
+    #   pivot_wider(names_from = category) |>
+    #   drop_na() |>
+    #   pull(key) |>
+    #   unique() |>
+    #   length()
+
+    # Number of events with either any university response coding OR any police coding
     total_university_or_police_events <- responses |>
       filter(grepl("police|^university_", question))  |>
       summarize("Number of canonical events with valid response" = length(unique(key)),
-                question = "Number of events with both any university response coding and any police coding")
+                question = "Number of events with either any university response coding or any police coding")
 
     # Number of events with neither a university response nor any police coding
-
-    total_no_response <- tibble("Number of canonical events with valid response" = length(unique(all_protests$key)) - length(unique(responses$key)),
+    total_no_response <- tibble("Number of canonical events with valid response" = length(unique(country_protests$key)) - length(unique(responses$key)),
                                 question = "Number of events with neither university response nor police coding")
 
     # Total protest count variables depending on country selection. Used twice
     if (!is.null(country)) {
-      total_protest_count <- length(unique(responses$key))
+      total_protest_count <- length(unique(country_protests$key))
       total_protest_string <- paste0("Total number of protests in ", country)
     } else {
       total_protest_count <- length(unique(all_protests$key))
@@ -97,8 +114,11 @@ get_summary_count<- function(country = NULL, include_virtual = FALSE) {
                              question = total_protest_string)
 
     # Put everything together
-    summary_counts <- bind_rows(summary_counts, total_university_response_events,
-                                total_police_response_events, total_university_or_police_events, total_no_response,
+    summary_counts <- bind_rows(summary_counts,
+                                total_university_response_events,
+                                total_police_response_events,
+                                total_university_or_police_events,
+                                total_no_response,
                                 total_protests)
 
 
@@ -134,7 +154,7 @@ get_summary_count<- function(country = NULL, include_virtual = FALSE) {
 
 get_all_summary_counts <- function() {
   get_summary_count(include_virtual=TRUE)
-  get_summary_count()
-  get_summary_count("USA")
-  get_summary_count("Canada")
+  get_summary_count(include_virtual=FALSE) #already default but just for clarity
+  get_summary_count("us")
+  get_summary_count("canada")
 }
