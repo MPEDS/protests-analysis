@@ -79,16 +79,18 @@ get_summary_count<- function(country = NULL, include_virtual = FALSE) {
                   question = "Number of events with any police coding")
 
     # Number of events with both any university response coding and any police coding
-    # NOT BEING USED RN
-    # total_both_university_police <- responses |>
-    #   select(key, category) |>
-    #   distinct() |>
-    #   mutate(value = TRUE) |>
-    #   pivot_wider(names_from = category) |>
-    #   drop_na() |>
-    #   pull(key) |>
-    #   unique() |>
-    #   length()
+    total_both_university_police_num <- responses |>
+      select(key, category) |>
+      distinct() |>
+      mutate(value = TRUE) |>
+      pivot_wider(names_from = category) |>
+      drop_na() |>
+      pull(key) |>
+      unique() |>
+      length()
+
+    total_both_university_police <- tibble("Number of canonical events with valid response" = total_both_university_police_num,
+                                           question = "Number of events with both any university response coding and any police coding")
 
     # Number of events with either any university response coding OR any police coding
     total_university_or_police_events <- responses |>
@@ -118,6 +120,7 @@ get_summary_count<- function(country = NULL, include_virtual = FALSE) {
                                 total_university_response_events,
                                 total_police_response_events,
                                 total_university_or_police_events,
+                                total_both_university_police,
                                 total_no_response,
                                 total_protests)
 
