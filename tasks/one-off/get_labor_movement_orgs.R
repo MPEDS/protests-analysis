@@ -13,7 +13,7 @@ get_labor_movement_orgs <- function() {
   labor_protests <- integrated |>
     st_drop_geometry() |>
     filter(map_lgl(issue, ~"Labor and work" %in% .)) |>
-    select(canonical_id, key, country, description, issue, movement_organizations_text)
+    select(canonical_id, key, location, country, description, issue, movement_organizations_text)
 
   labor_issue <- labor_protests |>
     filter(!is.na(movement_organizations_text)) |>
