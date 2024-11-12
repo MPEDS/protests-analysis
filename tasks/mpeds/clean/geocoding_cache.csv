@@ -306,7 +306,6 @@ lat,lng,location
 51.04473309999999,-114.0718831,"Calgary, AB, CAN"
 42.5348993,-92.4453161,"Cedar Falls, IA, USA"
 47.4873895,-117.5757622,"Cheney, WA, USA"
-43.7764258,-79.2317521,"Scarborough, ON, Canada"
 41.0639506,-80.0564468,"Slippery Rock, PA, USA"
 41.6763545,-86.25198979999999,"South Bend, IN, USA"
 34.1336186,-117.9075627,"Azusa, CA, USA"
@@ -338,6 +337,7 @@ lat,lng,location
 38.8338816,-104.8213634,"Colorado Springs, CO, USA"
 37.2709704,-79.9414266,"Roanoke, VA, USA"
 33.9806005,-117.3754942,"Riverside, CA, USA"
+46.8130816,-71.20745959999999,"Quebec City, QC, Canada"
 46.8130816,-71.20745959999999,"Québec City, QC, CAN"
 50.4452112,-104.6188944,"Regina, SK, Canada"
 36.9759345,-82.5757108,"Wise, VA, USA"
@@ -416,7 +416,6 @@ lat,lng,location
 45.6397183,-73.8439099,"Sainte-Thérèse, QC, Canada"
 44.8484524,-123.2339888,"Monmouth, OR, USA"
 40.8259007,-74.2090053,"Montclair, NJ, USA"
-46.8130816,-71.20745959999999,"Quebec City, QC, Canada"
 39.165325,-86.52638569999999,"Bloomington, Indiana, USA"
 48.4120843,-71.05110789999999,"Chicoutimi, QC, Canada"
 45.5135059,-73.4329187,"Longueuil, QC, Canada"
@@ -433,6 +432,7 @@ lat,lng,location
 37.7749295,-122.4194155,"San Francisco, CA, uSA"
 38.9822282,-94.6707917,"Overland Park, KS, USA"
 52.157902,-106.6701577,"Saskatoon, SK, CAN"
+43.7764258,-79.2317521,"Scarborough, ON, Canada"
 38.9896967,-76.93776,"College Park, MD, USA"
 26.3017374,-98.1633432,"Edinburg, TX, USA."
 39.9606643,-75.6054882,"West Chester, PA , USA"
@@ -448,7 +448,6 @@ lat,lng,location
 39.21886629999999,-76.0690036,"Chestertown, MD, USA"
 21.315643,-157.8039891,"Manoa, HI, USA"
 37.4418834,-122.1430195,"Palo Alto, CA, USA"
-49.2488091,-122.9805104,"Burnaby, British Columbia, Canada"
 39.0638705,-108.5506486,"Grand Junction, CO, USA"
 44.8857087,-63.1005273,"Halifax, NS, CA"
 40.0022406,-75.3208107,"Haverford, PA, USA"
@@ -485,7 +484,7 @@ lat,lng,location
 27.8005828,-97.396381,"Corpus Christi, TX, USA"
 46.78667189999999,-92.1004852,"Duluth, MN, USA"
 41.8781136,-87.6297982,"Chicago, iL, USA"
-45.897903,-64.3682803,"Sackville, New Brunswick, Canada"
+45.897903,-64.3682803,"Sackville, NB, Canada"
 32.7947731,-116.9625269,"El Cajon, CA, USA"
 37.9715592,-87.5710898,"Evansville, IN, USA"
 44.9428975,-123.0350963,"Salem, OR, USA"
@@ -528,7 +527,6 @@ lat,lng,location
 42.9849233,-81.2452768,"London, ON, Canada"
 43.653226,-79.3831843,"Toronto, ON, Canada."
 43.653226,-79.3831843,"Toronto,ON, Canada"
-43.653226,-79.3831843,"Toronto, Ontario, Canada"
 42.1142112,-84.2910759,"Columbia, MI, USA"
 43.0125274,-83.6874562,"Flint, MI, USA"
 43.653226,-79.3831843,"Toronto, ON, CAN"
@@ -707,6 +705,7 @@ lat,lng,location
 44.6925546,-73.4669464,SUNY College at Plattsburgh
 49.2780937,-122.9198833,Simon Fraser University
 22.5800451,88.37009169999999,eight of City College's 11 campuses
+35.3050053,-120.6624942,Polytechnic State University
 51.04473309999999,-114.0718831,University of Calgary
 46.1672583,-60.08976879999999,Cape Breton University
 35.9049122,-79.0469134,UNC-Chapel Hill
@@ -1302,7 +1301,6 @@ lat,lng,location
 41.8685636,-87.6484497,University of Illinois at Chicago campus
 41.9748871,-87.7108736,North Park University
 49.28458939999999,-123.11146,SFU’s Vancouver and Surrey campuses
-49.1865906,-122.8490733,all three of SFU’s campuses
 42.2930114,-71.26378199999999,Olin College of Engineering
 48.4634067,-123.3116935,the University of Victoria
 33.8823476,-117.8851033,California State University - Fullerton
