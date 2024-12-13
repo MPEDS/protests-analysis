@@ -75,12 +75,24 @@ get_divest_subset <- function(integrated){
             # map_lgl(article_text, ~any(str_detect(str_to_lower(.), "divest"))))
 }
 
-join_universities <- function(subset,
-                              ipeds,
-                              us_covariates,
-                              uni_pub_xwalk_reference,
-                              integrated,
-                              protest_unis_only = FALSE){
+get_hotbeds_subset <- function(integrated){
+  integrated |>
+    st_drop_geometry() |>
+    filter(map_lgl(university, ~any(.$in_hotbeds)))
+}
+
+#' This function prepares subsets of our integrated events dataset for the
+#' logit models.
+#' It selects the correct university if there are multiple for a given
+#' event, ensures that the entire MPEDS universe is included in a model,
+#' and attaches all necessary covariates.
+prepare_subset <- function(subset,
+                           ipeds,
+                           us_covariates,
+                           uni_pub_xwalk_reference,
+                           integrated,
+                           hotbeds,
+                           protest_unis_only = FALSE) {
   with_university <- subset |>
     # University covariates, which are present as a nested tibble, have to have
     # the relevant entry selected and brought out. Convoluted logic
@@ -89,11 +101,16 @@ join_universities <- function(subset,
     nest_select(university, uni_id, uni_name_source) |>
     unnest(university) |>
     group_by(key) |>
-    filter(!is.na(uni_id), (uni_name_source %in% c("other univ where protest occurs", "publication"))) |>
-    mutate(uni_name_source = factor(uni_name_source, levels = c(
-      "other univ where protest occurs", "publication"
-      )),
-      year = lubridate::year(start_date)) |>
+    filter(!is.na(uni_id), (
+      uni_name_source %in% c("other univ where protest occurs", "publication")
+    )) |>
+    mutate(
+      uni_name_source = factor(
+        uni_name_source,
+        levels = c("other univ where protest occurs", "publication")
+      ),
+      year = lubridate::year(start_date)
+    ) |>
     arrange(key, uni_name_source) |>
     slice_head(n = 1)
 
@@ -132,6 +149,7 @@ join_universities <- function(subset,
     filter(year == lubridate::year(protest_age)) |>
     mutate(ipeds_fips = paste0("us_", ipeds_fips)) |>
     left_join(us_covariates, by = c("ipeds_fips" = "geoid", "year")) |>
+    left_join(hotbeds, by = "uni_id") |>
     mutate(
       tuition = tuition / 1000,
       uni_total_pop = uni_total_pop / 1000,
@@ -184,34 +202,36 @@ run_single_model <- function(subset, variables){
 
 run_subset_models <- function(subset){
   covariates <- get_covariates()
-  model_combinations <- covariates |>
-    group_split(category) |>
-    map(\(cov_dta){
-      covs <- cov_dta$name
-      # generate list of all possible covariate combinations
-      covs_list <- map(covs, \(x){c(T, F)}) |>
-        set_names(covs)
-      do.call(expand_grid, covs_list) |>
-        mutate(id = 1:n()) |>
-        pivot_longer(cols = c(everything(), -id),
-                     values_to = "is_variable_included") |>
-        filter(is_variable_included) |>
-        group_split(id) |>
-        imap(\(cov_grp, i){
-          run_single_model(subset, cov_grp$name)
-        }) |>
-        reduce(full_join, by = "term") |>
-        mutate(across(everything(), ~replace_na(., ""))) |>
-        set_names("")
-
-    }) |>
-    set_names("uni_model_combinations", "county_model_combinations")
+  # model_combinations <- covariates |>
+  #   group_split(category) |>
+  #   map(\(cov_dta){
+  #     covs <- cov_dta$name
+  #     # generate list of all possible covariate combinations
+  #     covs_list <- map(covs, \(x){c(T, F)}) |>
+  #       set_names(covs)
+  #     do.call(expand_grid, covs_list) |>
+  #       mutate(id = 1:n()) |>
+  #       pivot_longer(cols = c(everything(), -id),
+  #                    values_to = "is_variable_included") |>
+  #       filter(is_variable_included) |>
+  #       group_split(id) |>
+  #       imap(\(cov_grp, i){
+  #         run_single_model(subset, cov_grp$name)
+  #       }) |>
+  #       reduce(full_join, by = "term") |>
+  #       mutate(across(everything(), ~replace_na(., ""))) |>
+  #       set_names("")
+  #
+  #   }) |>
+  #   set_names("uni_model_combinations", "county_model_combinations", "historical")
 
 
   model_overview <- lst(
     full = run_single_model(subset, covariates$name),
+    full_minus_historical = run_single_model(subset, covariates$name[covariates$category != "Historical"]),
     university = run_single_model(subset, covariates$name[covariates$category == "University"]),
-    county = run_single_model(subset, covariates$name[covariates$category == "County"])
+    county = run_single_model(subset, covariates$name[covariates$category == "County"]),
+    historical = run_single_model(subset, covariates$name[covariates$category == "Historical"])
     ) |>
     imap(\(x, name){
       x |>
@@ -220,7 +240,8 @@ run_subset_models <- function(subset){
     reduce(full_join, by = "term") |>
     mutate(across(everything(), ~replace_na(., "")))
 
-  lst(lst(model_overview), model_combinations) |> flatten()
+  # lst(lst(model_overview), model_combinations) |> flatten()
+  lst(model_overview)
 }
 
 
@@ -236,13 +257,12 @@ run_logit <- function(integrated,
     brown = get_brown_subset(integrated),
     mizzou = get_mizzou_subset(integrated, canonical_event_relationship),
     take_back_the_night = get_tbtn_subset(integrated, canonical_event_relationship),
-    divest = get_divest_subset(integrated)
+    divest = get_divest_subset(integrated),
+    hotbeds = get_hotbeds_subset(integrated)
   ) |>
-    map(\(subset){
-      join_universities(subset, ipeds, us_covariates, uni_pub_xwalk_reference, integrated)
-    }) |>
     imap(\(subset, name) {
-      model_subset <- run_subset_models(subset)
+      model_subset <- prepare_subset(subset, ipeds, us_covariates, uni_pub_xwalk_reference, integrated, hotbeds) |>
+        run_subset_models()
       writexl::write_xlsx(model_subset,
                           paste0("docs/data-cleaning-requests/modeling/", name, ".xlsx"))
 
@@ -259,9 +279,9 @@ run_logit <- function(integrated,
 
 test_divest <- function(){
   divest <- get_divest_subset(integrated)
-  full <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference, integrated)
-  protest_unis <- join_universities(divest, ipeds, us_covariates, uni_pub_xwalk_reference,
-                                    integrated, protest_unis_only = TRUE)
+  full <- prepare_subset(divest, ipeds, us_covariates, uni_pub_xwalk_reference, integrated, hotbeds)
+  protest_unis <- prepare_subset(divest, ipeds, us_covariates, uni_pub_xwalk_reference,
+                                    integrated, hotbeds, protest_unis_only = TRUE)
 
   divest_test_result <- lst(full, protest_unis) |>
     map(\(x){run_subset(x)$model_overview})

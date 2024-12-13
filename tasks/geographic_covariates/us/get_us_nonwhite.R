@@ -14,7 +14,7 @@ get_us_nonwhite <- function(){
                       variables = variables,
                       year = year,
                       output = "wide") |>
-      mutate(year = year)
+      mutate(year = year - 2)
     return(result)
   }) |>
     mutate(white_prop = 100*(whiteE / totalE)) |>

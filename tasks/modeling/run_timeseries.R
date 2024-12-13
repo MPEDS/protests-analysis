@@ -1,4 +1,4 @@
-run_models <- function(integrated, canonical_event_relationship, ipeds, us_covariates, uni_pub_xwalk_reference, us_geo){
+run_timeseries <- function(integrated, canonical_event_relationship, ipeds, us_covariates, uni_pub_xwalk_reference, us_geo){
   timeseries <- create_timeseries(integrated |>
                                     filter(!str_detect(key, "Columbia|Reno")),
                                   canonical_event_relationship,

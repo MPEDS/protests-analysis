@@ -31,6 +31,7 @@ tar_option_set(
     "RMariaDB",
     "sf",
     "ssh",
+    "survival",
     "testthat",
     "tidyverse",
     "tigris",
@@ -148,7 +149,7 @@ list(
     get_us_rentburden(),
     get_us_elections()
   ) |>
-    reduce(left_join, by = c("geoid", "year")) |>
+    reduce(full_join, by = c("geoid", "year")) |>
     mutate(geoid = paste0("us_", geoid))),
 
 
@@ -182,6 +183,10 @@ list(
   tar_target(glued_raw, get_glued()),
   tar_target(glued, clean_glued(glued_raw)),
   tar_target(tuition, get_tuition()),
+  tar_target(hotbeds, get_hotbeds(
+    xwalk_sheet_id = "1bS8e4ZWGPZO5Sj7iOPwtzucV30qAjhiZXvls2xw0TXg",
+    hotbeds_sheet_id = "18R4bfsCd6aktf27S3Rqju7xLDzHYjT60"
+  )),
 
   # Integration steps ---
   # IPEDS and MPEDS
@@ -244,7 +249,8 @@ list(
                       glued,
                       uni_xwalk,
                       covariates,
-                      geo)
+                      geo,
+                      hotbeds)
   ),
   tar_target(
     audited_names,

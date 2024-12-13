@@ -5,7 +5,8 @@ integrate_targets <- function(cleaned_events,
                               glued,
                               uni_xwalk,
                               covariates,
-                              geo) {
+                              geo,
+                              hotbeds) {
   uni_xwalk <- uni_xwalk |>
     select(
       canonical_id,
@@ -42,6 +43,11 @@ integrate_targets <- function(cleaned_events,
       university,
       uni_contextual,
       by = c("uni_id", "year")
+    ) |>
+    nest_left_join(
+      university,
+      hotbeds,
+      by = "uni_id"
     )
     # nest_select(university, -university_name)
 

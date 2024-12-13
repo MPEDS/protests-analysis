@@ -17,7 +17,7 @@ get_campaign_umbrellas <- function(){
     }
   }
 
-  umbrella_campaigns <- integrated |>
+  umbrella_campaigns <- tar_read(integrated) |>
     mutate(
       # Publication if present, uni where protest occurs if otherwise
       main_university = map_chr(university, pick_university),
@@ -35,9 +35,9 @@ get_campaign_umbrellas <- function(){
   #   count()
 
   lst(
-    umbrella_not_campaign = umbrella_campaigns |>
-      filter(is_umbrella, !is_campaign) |>
-      select(-is_umbrella, -is_campaign),
+    # umbrella_not_campaign = umbrella_campaigns |>
+    #   filter(is_umbrella, !is_campaign) |>
+    #   select(-is_umbrella, -is_campaign),
     campaign_not_umbrella = umbrella_campaigns |>
       filter(!is_umbrella, is_campaign) |>
       select(-is_umbrella, -is_campaign)

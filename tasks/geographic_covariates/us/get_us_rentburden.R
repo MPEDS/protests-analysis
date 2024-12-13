@@ -8,7 +8,7 @@ get_us_rentburden <- function(){
       rent_50 = "B25070_010",
       rent_total = "B25070_001"),
       output = "wide", year = year) |>
-      mutate(year = year,
+      mutate(year = year - 2,
              rent_burden = 100*(rent_30E + rent_35E + rent_40E + rent_50E)/rent_totalE
              ) |>
       select(year, rent_burden, geoid = GEOID)

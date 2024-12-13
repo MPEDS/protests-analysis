@@ -9,10 +9,15 @@ get_covariates <- function() {
     "University", "investment_revenue", "Percent of revenue coming from investments",
     "University", "uni_total_pop", "Total enrollment at university (thousands)",
     "University", "pell", "Percent of Pell grant recipients",
+    # "University", "media_bias", ...
     "University", "endowment_assets", "Log-10 of endowment assets",
     "County", "white_prop", "White percent in county of university",
     "County", "mhi", "Median household income (thousands)",
     "County", "rent_burden", "Percent of households spending more than 30% of income on rent",
-    "County", "republican_vote_prop", "Percent in county voting Republican in 2016 presidential election"
+    "County", "republican_vote_prop", "Percent in county voting Republican in 2016 presidential election",
+    "Historical", "fspart", "Number of freedom summer participants from school",
+    "Historical", "pastact", "Did school have activism in the 1930s?",
+    "Historical", "earlysds", "Did the school have an SDS chapter in 1965?",
+    "Historical", "sdschap", "Did the school have an SDS chapter in 1969?"
   )
 }
